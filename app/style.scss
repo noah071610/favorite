@@ -1,0 +1,19 @@
+@import "@/_styles/global.scss";
+@import "@/_styles/variables.scss";
+
+.contents-wrapper {
+  flex-grow: 1;
+  background-color: #fbfbfbd3;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  .contents {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+    width: 100%;
+    height: 100%;
+    padding: 20px 0;
+  }
+}

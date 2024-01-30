@@ -1,0 +1,31 @@
+.emo-gauge {
+  &-outer {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+  &-inner {
+    width: 100%;
+    height: 15px;
+    border-radius: 22px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+
+    background: rgb(254, 239, 255);
+    background: linear-gradient(135deg, rgba(254, 239, 255, 1) 10%, rgba(221, 147, 247, 1) 100%);
+  }
+
+  background-color: transparent;
+  border-right: 2px solid white;
+  height: 100%;
+
+  &:first-of-type {
+    border-top-left-radius: 22px;
+    border-bottom-left-radius: 22px;
+  }
+  &:last-of-type {
+    border-bottom-right-radius: 22px;
+    border-top-right-radius: 22px;
+    border-right: none;
+  }
+}

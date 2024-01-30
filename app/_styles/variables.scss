@@ -1,0 +1,26 @@
+$pink: rgba(229, 125, 125, 0.8);
+$pink_hover: rgba(229, 106, 106, 0.898);
+$gray: rgba(235, 235, 235, 0.5);
+$border: rgba(214, 214, 214, 0.7);
+
+@mixin flex_center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute_center() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+$z-index-map: (
+  overlay: 1000,
+  modal: 1100,
+);
+
+@mixin z-index($id) {
+  z-index: map-get($z-index-map, $id);
+}

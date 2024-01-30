@@ -1,0 +1,29 @@
+@import "@/_styles/global.scss";
+@import "@/_styles/variables.scss";
+
+.search-modal {
+  width: 100%;
+  margin-top: 5px;
+
+  &-content {
+    width: 400px;
+    height: 500px;
+    background-color: white;
+    border: 1px solid $gray;
+    border-radius: 30px;
+    box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
+    transform: translateY(15px) scale(0.97);
+    max-height: 0;
+    opacity: 0;
+    transition: 200ms opacity, 100ms transform cubic-bezier(0.29, 0.44, 0.1, 1.06);
+  }
+
+  &.active {
+    .search-modal-content {
+      opacity: 1;
+      max-height: 100%;
+      transform: translateY(0px) scale(1);
+      transition: 300ms opacity, 400ms transform cubic-bezier(0.29, 0.44, 0.1, 1.06);
+    }
+  }
+}
