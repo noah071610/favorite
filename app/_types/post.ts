@@ -9,3 +9,5 @@ export interface ContentCardType {
     userImage: string
   }
 }
+
+export type GaugeStyle = "happy" | "crying" | "enraged" | "flushed"

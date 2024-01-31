@@ -9,8 +9,8 @@ export default function Home() {
     description: generateRandomDescription(),
     images: [
       `https://picsum.photos/id/${index + 10}/1200/800`,
-      `https://picsum.photos/id/${index + 20}/1200/800`,
-      `https://picsum.photos/id/${index + 30}/1200/800`,
+      `https://picsum.photos/id/${index + 20}/800/800`,
+      `https://picsum.photos/id/${index + 30}/800/1200`,
     ],
     postId: `post${index + 1}`,
     user: {

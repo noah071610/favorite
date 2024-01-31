@@ -7,6 +7,10 @@ import Header from "./_components/Header"
 import Nav from "./_components/Nav"
 import Overlay from "./_components/Overlay"
 
+import { config } from "@fortawesome/fontawesome-svg-core"
+import "@fortawesome/fontawesome-svg-core/styles.css"
+config.autoAddCss = false
+
 const pretendard = localFont({
   src: [
     {

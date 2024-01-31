@@ -1,20 +1,43 @@
 "use client"
 
+import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { ContentCardType } from "@/_types/post"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
+import CountUp from "react-countup"
+import LoadingBar from "../LoadingBar"
 import Gauge from "./Gauge"
+import ImageSlider from "./ImageSlider"
 import "./style.scss"
 
-const useProgressiveImage = (src) => {
-  const [sourceLoaded, setSourceLoaded] = useState(null)
+function Images({
+  src,
+  setCurrentSlide,
+  index,
+}: {
+  src: string
+  setCurrentSlide: Dispatch<SetStateAction<number | null>>
+  index: number
+}) {
+  const loaded = useProgressiveImage(src)
 
-  useEffect(() => {
-    const img = new Image()
-    img.src = src
-    img.onload = () => setSourceLoaded(src)
-  }, [src])
+  const onClickImage = () => {
+    setCurrentSlide(index)
+  }
 
-  return sourceLoaded
+  return loaded ? (
+    <div className="photo">
+      <div
+        onClick={onClickImage}
+        style={{
+          background: `url('${src}') 100% 100% / cover`,
+        }}
+      />
+    </div>
+  ) : (
+    <div className="loading">
+      <LoadingBar />
+    </div>
+  )
 }
 
 export default function ContentCard({ dummyContentCard }: { dummyContentCard: ContentCardType }) {
@@ -25,8 +48,11 @@ export default function ContentCard({ dummyContentCard }: { dummyContentCard: Co
     images,
   } = dummyContentCard
 
+  const [currentSlide, setCurrentSlide] = useState<number | null>(null)
+
   return (
     <article className="content-card">
+      <ImageSlider currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} images={images} />
       <div className="profile">
         <div className="user-image">
           <img src={userImage} alt={`user_image_${userId}`} />
@@ -36,54 +62,34 @@ export default function ContentCard({ dummyContentCard }: { dummyContentCard: Co
       <div className="main">
         <p>{description}</p>
         <div className="photos">
-          {images.map((src, i) => {
-            const loaded = useProgressiveImage(src)
-            return loaded ? (
-              <div
-                key={`${postId}_image_${i}`}
-                className="photo"
-                style={{ background: `url('${src}') 100% 100% / cover` }}
-              />
-            ) : (
-              <div className="loading" key={`${postId}_image_loading_${i}`}>
-                <div className="lds-ripple">
-                  <div></div>
-                  <div></div>
-                </div>
-              </div>
-            )
-          })}
+          {images.map((src, i) => (
+            <Images index={i} key={`${postId}_image_${i}`} src={src} setCurrentSlide={setCurrentSlide} />
+          ))}
         </div>
         <div className="travel-info">
           <div className="map"></div>
           <div className="todays-happened">
+            <h3>How feel?</h3>
             <div className="feelings">
-              <div className="emo-happy">
-                <div className="emo-image">
-                  <img src="./images/emoji/smile_heart.png" alt="" />
-                </div>
-                <Gauge postId={postId} />
+              <Gauge style="happy" postId={postId} />
+              <Gauge style="enraged" postId={postId} />
+              <Gauge style="flushed" postId={postId} />
+              <Gauge style="crying" postId={postId} />
+            </div>
+            <h3>Spend Money</h3>
+            <div className="spend-budget">
+              <div className="emo-image">
+                <img src={`./images/emoji/money.png`} alt="" />
               </div>
-              <div className="emo-angry">
-                <div className="emo-image">
-                  <img src="./images/emoji/smile_heart.png" alt="" />
+              <div className="budget-wrapper">
+                <div className="budget-count">
+                  <span className="count">
+                    <CountUp end={15300} />
+                  </span>
+                  <span className="suffix"> ₩</span>
                 </div>
-                <Gauge postId={postId} />
-              </div>
-              <div className="emo-surprise">
-                <div className="emo-image">
-                  <img src="./images/emoji/smile_heart.png" alt="" />
-                </div>
-                <Gauge postId={postId} />
-              </div>
-              <div className="emo-sad">
-                <div className="emo-image">
-                  <img src="./images/emoji/smile_heart.png" alt="" />
-                </div>
-                <Gauge postId={postId} />
               </div>
             </div>
-            <div className="spend-money"></div>
           </div>
         </div>
       </div>
