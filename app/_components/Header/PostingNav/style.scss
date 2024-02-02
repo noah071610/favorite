@@ -1,0 +1,47 @@
+@import "@/_styles/global.scss";
+@import "@/_styles/variables.scss";
+
+$nav-width: 80px;
+
+.posting-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  a {
+    width: $nav-width;
+    padding: 10px 15px;
+    position: inherit;
+    z-index: 10;
+    @include flex_center();
+    span {
+      font-size: 15px;
+    }
+    &.active {
+      span {
+        font-weight: 700;
+        color: white;
+      }
+    }
+  }
+  .follower-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $nav-width;
+    padding: 0 15px;
+    height: 100%;
+    border-radius: 22px;
+    background-color: $pink;
+    transition: transform 230ms cubic-bezier(0, 0.99, 0.47, 1.04);
+    &.init {
+      transform: translateX(0);
+    }
+    &.result {
+      transform: translateX(calc($nav-width + 30px));
+    }
+    &.rending {
+      transform: translateX(calc(($nav-width + 30px) * 2));
+    }
+  }
+}

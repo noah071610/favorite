@@ -1,0 +1,26 @@
+@import "@/_styles/global.scss";
+@import "@/_styles/variables.scss";
+
+.new-post {
+  width: 100%;
+  min-height: calc(100vh - 60px - 40px); // 나중에 수정 예정
+  display: flex;
+  .editor {
+    padding: 20px;
+    width: 50%;
+    height: 100%;
+    border-right: 1px solid $border;
+  }
+  .preview {
+    padding: 20px;
+    width: 50%;
+    height: 100%;
+    background: url("https://picsum.photos/id/200/1200/800") 100% 100%;
+  }
+
+  section {
+    h3 {
+      font-size: 18px;
+    }
+  }
+}

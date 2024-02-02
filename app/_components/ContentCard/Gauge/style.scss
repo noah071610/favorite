@@ -12,7 +12,8 @@
 
 .gauge-wrapper {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 25px 1fr;
   gap: 10px;
   align-items: center;
   .emo-gauge {
@@ -21,7 +22,7 @@
       display: flex;
       align-items: center;
       position: relative;
-      width: 200px;
+      width: 100%;
       border-radius: 22px;
       overflow: hidden;
       background: rgba(255, 138, 138, 0.3);
@@ -48,15 +49,15 @@
   }
 
   .emo-image {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     @include flex_center();
     border: 1px solid $gray;
     border-radius: 100%;
-    padding: 3px;
+    padding: 2px;
     img {
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
     }
   }
 }

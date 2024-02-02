@@ -1,11 +1,13 @@
 $pink: rgba(255, 138, 138, 0.8);
-$pink_hover: rgba(229, 106, 106, 0.9);
-$pink: rgba(255, 138, 138, 0.8);
+$pink-soft: rgba(255, 176, 176, 0.7);
 $pink_hover: rgba(229, 106, 106, 0.9);
 $red: rgba(255, 81, 81, 0.8);
 $red_hover: rgba(255, 81, 81, 0.9);
 $gray: rgba(235, 235, 235, 0.5);
 $border: rgba(214, 214, 214, 0.7);
+$gray-hover: rgba(234, 234, 234, 0.4);
+$purple: rgba(201, 135, 255, 0.875);
+$purple-hover: rgba(190, 111, 255, 0.903);
 
 @mixin flex_center() {
   display: flex;

@@ -7,11 +7,9 @@ export default function Home() {
   const dummyContentCards: ContentCardType[] = Array.from({ length: 10 }, (_, index) => ({
     title: `Card ${index + 1}`,
     description: generateRandomDescription(),
-    images: [
-      `https://picsum.photos/id/${index + 10}/1200/800`,
-      `https://picsum.photos/id/${index + 20}/800/800`,
-      `https://picsum.photos/id/${index + 30}/800/1200`,
-    ],
+    images: Array.from({ length: Math.floor(Math.random() * 4) + 2 }).map(
+      (_, i) => `https://picsum.photos/id/${index * 10 + i * 10}/1200/800`
+    ),
     postId: `post${index + 1}`,
     user: {
       userId: `user${index + 1}`,
