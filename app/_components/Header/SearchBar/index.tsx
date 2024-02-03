@@ -1,9 +1,9 @@
-import { useModalStore } from "@/_store"
+import { useMainStore } from "@/_store"
 import classNames from "classnames"
 import "./style.scss"
 
 export default function SearchBar() {
-  const { modalStatus, setModal } = useModalStore()
+  const { modalStatus, setModal } = useMainStore()
   const onClickInput = () => {
     setModal("search")
   }

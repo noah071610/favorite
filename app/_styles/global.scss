@@ -128,9 +128,11 @@ a {
   color: inherit;
   text-decoration: none;
   cursor: pointer;
+  display: inline-block;
 }
 
 button {
+  display: inline-block;
   margin: 0;
   padding: 0;
   border: 0;
@@ -159,7 +161,8 @@ body {
   background-color: white;
 }
 
-.main {
+.home-page {
   display: flex;
   background-color: white;
+  padding-top: 60px;
 }

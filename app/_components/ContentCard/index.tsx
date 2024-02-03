@@ -3,10 +3,10 @@
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { ContentCardType } from "@/_types/post"
 import { Dispatch, SetStateAction, useState } from "react"
-import CountUp from "react-countup"
 import LoadingBar from "../LoadingBar"
 import Gauge from "./Gauge"
 import ImageSlider from "./ImageSlider"
+import Profile from "./Profile"
 import "./style.scss"
 
 function Images({
@@ -41,26 +41,16 @@ function Images({
 }
 
 export default function ContentCard({ dummyContentCard }: { dummyContentCard: ContentCardType }) {
-  const {
-    user: { userId, userImage, userName },
-    description,
-    postId,
-    images,
-  } = dummyContentCard
+  const { user, description, postId, images } = dummyContentCard
 
   const [currentSlide, setCurrentSlide] = useState<number | null>(null)
 
   return (
     <article className="content-card">
       <ImageSlider currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} images={images} />
-      <div className="profile">
-        <div className="user-image">
-          <img src={userImage} alt={`user_image_${userId}`} />
-        </div>
-        <span>{userName}</span>
-      </div>
+      <Profile user={user} />
       <div className="main">
-        <p>{description}</p>
+        <h1>{description}</h1>
         <div className="photos">
           {images.map((src, i) => (
             <Images index={i} key={`${postId}_image_${i}`} src={src} setCurrentSlide={setCurrentSlide} />
@@ -76,8 +66,8 @@ export default function ContentCard({ dummyContentCard }: { dummyContentCard: Co
               <Gauge style="flushed" postId={postId} />
               <Gauge style="crying" postId={postId} />
             </div>
-            <h3>Spend Money</h3>
-            <div className="spend-budget">
+            {/* <h3>Spend Money</h3> */}
+            {/* <div className="spend-budget">
               <div className="emo-image">
                 <img src={`./images/emoji/money.png`} alt="" />
               </div>
@@ -89,7 +79,16 @@ export default function ContentCard({ dummyContentCard }: { dummyContentCard: Co
                   <span className="suffix"> ₩</span>
                 </div>
               </div>
-            </div>
+            </div> */}
+          </div>
+        </div>
+        <div className="comment">
+          <div className="comment-profile">
+            <img src={user.userImage} alt={`user_image_${user.userId}`} />
+          </div>
+          <div className="comment-text">
+            <span>{user.userName}</span>
+            <p>나는 코멘트입니다. 안녕하세요! 글 잘 보고있어요~</p>
           </div>
         </div>
       </div>

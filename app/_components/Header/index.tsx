@@ -1,14 +1,25 @@
 "use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import PostingNav from "./PostingNav"
 import SearchBar from "./SearchBar"
-import SearchModal from "./SearchModal"
 import "./style.scss"
 
 function Center() {
+  const pathname = usePathname()
+  const isPostingPage = pathname.includes("/post/new")
+
   return (
     <div className="center">
-      <SearchBar />
-      <SearchModal />
+      {isPostingPage ? (
+        <PostingNav pathname={pathname} />
+      ) : (
+        <>
+          <SearchBar />
+          {/* <SearchModal /> */}
+        </>
+      )}
     </div>
   )
 }
@@ -17,15 +28,18 @@ export default function Header() {
   return (
     <div className="header">
       <div className="left">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/512px-Logo_of_Twitter.svg.png"></img>
+        <img src=""></img>
       </div>
 
       <Center />
 
       <div className="right">
-        <a>
-          <span>로그인</span>
-        </a>
+        <Link href="/post/new" className="new-post-btn">
+          <span>New post</span>
+        </Link>
+        <Link href="/post/new" className="login-btn">
+          <span>Login</span>
+        </Link>
       </div>
     </div>
   )
