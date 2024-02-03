@@ -1,0 +1,21 @@
+@import "@/_styles/global.scss";
+@import "@/_styles/variables.scss";
+
+.right .result {
+  width: 100%;
+
+  &-nav {
+    position: relative;
+    margin-bottom: 8px;
+
+    button {
+      width: 60px;
+      text-align: center;
+      padding: 8px 0;
+      &.active {
+        font-weight: 700;
+        color: $pink-hover;
+      }
+    }
+  }
+}

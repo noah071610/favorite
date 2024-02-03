@@ -63,3 +63,16 @@
     }
   }
 }
+
+.right .unselected {
+  width: 100%;
+  height: 100%;
+  @include flex_center();
+  & > div {
+    span {
+      color: rgba(55, 34, 0, 0.3);
+      font-size: 25px;
+      font-weight: 600;
+    }
+  }
+}

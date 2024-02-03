@@ -1,0 +1,41 @@
+@import "@/_styles/global.scss";
+@import "@/_styles/variables.scss";
+
+.result {
+  .ranking {
+    margin-bottom: 30px;
+  }
+
+  .chart {
+    display: grid !important;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr !important;
+    height: 250px;
+    margin-bottom: 30px;
+  }
+
+  .gender {
+    padding: 10px;
+    @include flex_center();
+
+    &-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      .icon {
+        font-size: 100px;
+        display: block;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+    }
+  }
+
+  &-description {
+    p {
+      font-size: 15px;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+  }
+}

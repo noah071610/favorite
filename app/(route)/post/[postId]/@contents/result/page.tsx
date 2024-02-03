@@ -1,9 +1,11 @@
 "use client"
 
-import { faPerson, faPersonDress } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { candidates } from "@/_utils/faker"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
-import { Bar, Doughnut } from "react-chartjs-2"
+import classNames from "classnames"
+import { useState } from "react"
+import ChartPart from "./_components/Chartpart"
+import CommentPart from "./_components/CommentPart"
 import "./style.scss"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -44,8 +46,10 @@ export const options = {
   scales: {
     x: {
       ticks: {
-        // Include a dollar sign in the ticks
-        callback: function (value: string) {
+        min: 0,
+        precision: 0,
+        beginAtZero: true,
+        callback: function (value: number) {
           return value + "표"
         },
       },
@@ -59,13 +63,11 @@ export const options = {
   },
 }
 
-const labels = ["January", "February", "March", "January", "February", "January", "February", "March"]
-
 export const data = {
-  labels,
+  labels: candidates.map(({ title }) => title),
   datasets: [
     {
-      data: labels.map(() => Math.floor(Math.random() * 7) + 1),
+      data: candidates.map(({ count }) => count),
       backgroundColor: [
         "rgba(255, 99, 132, 0.2)",
         "rgba(54, 162, 235, 0.2)",
@@ -84,45 +86,30 @@ export const data = {
   ],
 }
 
-export default function Result({}: {}) {
+export default function ResultPage({}: {}) {
+  const [currentSection, setCurrentSection] = useState<"analytics" | "comments">("analytics")
+
+  const onClickNav = (type: "analytics" | "comments") => {
+    setCurrentSection(type)
+  }
   return (
     <div className="result">
-      <div className="ranking" style={{ height: `${labels.length <= 5 ? labels.length * 50 : labels.length * 40}px` }}>
-        <Bar options={options as any} data={data} />
+      <div className="result-nav">
+        <button
+          className={classNames({ active: currentSection === "analytics" })}
+          onClick={() => onClickNav("analytics")}
+        >
+          통계
+        </button>
+        <button
+          className={classNames({ active: currentSection === "comments" })}
+          onClick={() => onClickNav("comments")}
+        >
+          코멘트
+        </button>
+        <div className={classNames("follower-div", {})}></div>
       </div>
-      <div className="test">
-        <div>
-          <Doughnut
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              elements: {
-                bar: {
-                  borderWidth: 0,
-                },
-              },
-            }}
-            data={d_data}
-          />
-        </div>
-        <div>
-          <div className="icon-wrapper">
-            <FontAwesomeIcon
-              className="icon girl"
-              style={{
-                background: "linear-gradient(to right, #ff6e7f, #bfe9ff) !important", // 그라데이션 색상을 조절하세요.
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-                backgroundClip: "text", // 수정된 부분
-              }}
-              icon={faPerson}
-            />
-          </div>
-          <div className="icon-wrapper">
-            <FontAwesomeIcon className="icon girl" icon={faPersonDress} />
-          </div>
-        </div>
-      </div>
+      {currentSection === "analytics" ? <ChartPart /> : <CommentPart />}
     </div>
   )
 }
