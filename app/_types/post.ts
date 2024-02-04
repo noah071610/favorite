@@ -12,4 +12,15 @@ export interface ContentCardType {
   user: UserType
 }
 
+export interface CommentType {
+  user: UserType
+  text: string
+  like: number
+  favorite: {
+    id: string
+    color: string
+    number: number
+  }
+}
+
 export type GaugeStyle = "happy" | "crying" | "enraged" | "flushed"

@@ -1,8 +1,8 @@
 "use client"
 
-"use client"
-
-import { dummyContentCards } from "@/_utils/faker"
+import { useMainStore } from "@/_store"
+import { candidates as _candidates, dummyContentCards } from "@/_utils/faker"
+import { useEffect } from "react"
 import "./style.scss"
 
 export default function PostPageLayout({
@@ -17,6 +17,11 @@ export default function PostPageLayout({
   const {
     user: { userName, userImage, userId },
   } = dummyContentCards[0]
+
+  const { setSelectedCandidate } = useMainStore()
+  useEffect(() => {
+    setSelectedCandidate(_candidates[0]) // todo : 임시데이터
+  }, [])
 
   return (
     <main className="post-wrapper">

@@ -1,5 +1,6 @@
 "use client"
 
+import { chartBackgroundColors, chartBorderColors } from "@/_data"
 import { useMainStore } from "@/_store"
 import { candidates } from "@/_utils/faker"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
@@ -16,20 +17,8 @@ export const d_data = {
     {
       label: "표",
       data: [12, 19, 3, 5, 2],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-      ],
+      backgroundColor: chartBackgroundColors,
+      borderColor: chartBorderColors,
       borderWidth: 1,
     },
   ],
@@ -98,20 +87,8 @@ export default function ChartPart() {
             datasets: [
               {
                 data: ranking_data.data,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(54, 162, 235, 0.2)",
-                  "rgba(255, 206, 86, 0.2)",
-                  "rgba(75, 192, 192, 0.2)",
-                  "rgba(153, 102, 255, 0.2)",
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(153, 102, 255, 1)",
-                ],
+                backgroundColor: chartBackgroundColors,
+                borderColor: chartBorderColors,
               },
             ],
           }}
@@ -133,7 +110,7 @@ export default function ChartPart() {
           />
         </div>
         <div className="gender">
-          <div className="gender-inner">
+          <div style={{ animation: "scale-up 500ms ease-out forwards" }} className="gender-inner">
             <i
               style={{
                 background: "linear-gradient(180deg, rgba(207,229,255,0.3) 50%, rgba(112,145,255,1) 50%)",

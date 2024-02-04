@@ -5,9 +5,25 @@
   &-list {
     display: flex;
     flex-direction: column;
-    // gap: 3px;
     border-radius: 10px;
     gap: 5px;
+
+    .gradient {
+      position: absolute;
+      width: 395px; // memo: 부모가 콘텐츠 전체임
+      height: 80px;
+      background-color: red;
+      left: 10px;
+      z-index: 10;
+    }
+    .top-div {
+      top: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+    }
+    .bottom-div {
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+    }
   }
 
   &-card {
@@ -97,6 +113,13 @@
     h3 {
       font-size: 17px;
       margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      .count {
+        margin-left: 5px;
+        font-size: 12px;
+        font-weight: 600;
+      }
     }
     p {
       font-size: 13px;
