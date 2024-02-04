@@ -52,7 +52,7 @@ export default function RootLayout({
         </head>
         <body>
           <Header />
-          <div className="home-page">{children}</div>
+          <main>{children}</main>
           <Overlay />
         </body>
       </html>

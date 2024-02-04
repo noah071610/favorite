@@ -1,30 +1,26 @@
 "use client"
 
-import { useMainStore } from "@/_store"
-import { candidates as _candidates, dummyContentCards } from "@/_utils/faker"
-import { useEffect } from "react"
+import { dummyPostCards } from "@/_utils/faker"
+import classNames from "classnames"
+import { usePathname } from "next/navigation"
 import "./style.scss"
 
 export default function PostPageLayout({
-  children,
   candidates,
   contents,
 }: Readonly<{
-  children: React.ReactNode
   candidates: React.ReactNode
   contents: React.ReactNode
 }>) {
   const {
     user: { userName, userImage, userId },
-  } = dummyContentCards[0]
+  } = dummyPostCards[0]
 
-  const { setSelectedCandidate } = useMainStore()
-  useEffect(() => {
-    setSelectedCandidate(_candidates[0]) // todo : 임시데이터
-  }, [])
+  const pathname = usePathname()
+  const isResultPage = !!pathname.includes("result")
 
   return (
-    <main className="post-wrapper">
+    <div className="post-wrapper">
       <div className="post">
         <div className="post-info">
           <div className="post-info-title">
@@ -41,11 +37,21 @@ export default function PostPageLayout({
             </div>
           </div>
         </div>
-        <div className="post-content">
-          <div className="left">{candidates}</div>
-          <div className="right">{contents}</div>
+        <div className={classNames("post-content", { "result-page": isResultPage })}>
+          {/* <div className="left">{candidates}</div>
+          <div className="right">{contents}</div> */}
+          <div className="loading">
+            <div className="global-loading">
+              <div className="global-loading-inner">
+                <i className="global-loading-icon fa-solid fa-gift"></i>
+                <i className="global-loading-icon fa-solid fa-heart"></i>
+                <i className="global-loading-icon fa-solid fa-rocket"></i>
+              </div>
+              <span>Loading</span>
+            </div>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

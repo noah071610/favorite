@@ -3,11 +3,11 @@ import Link from "next/link"
 
 import { useMainStore } from "@/_store"
 import { fadeMoveUpAnimation } from "@/_utils/animation"
-import { dummyContentCards } from "@/_utils/faker"
+import { dummyPostCards } from "@/_utils/faker"
 import "./style.scss"
 
 export default function ContentsPage() {
-  const { postId } = dummyContentCards[0]
+  const { postId } = dummyPostCards[0]
   const { selectedCandidate } = useMainStore()
 
   return (
@@ -16,7 +16,7 @@ export default function ContentsPage() {
         <div key={selectedCandidate.listId} className="submit">
           <div
             style={{
-              background: `url('${selectedCandidate.image_src}') center / cover`,
+              background: `url('${selectedCandidate.imageSrc}') center / cover`,
               animation: "scale-up 250ms ease-out forwards",
             }}
             className="submit-image"

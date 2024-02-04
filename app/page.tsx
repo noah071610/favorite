@@ -1,17 +1,17 @@
-import ContentCard from "./_components/ContentCard"
-import { dummyContentCards } from "./_utils/faker"
+import PostCard from "./_components/PostCard"
+import { dummyPostCards } from "./_utils/faker"
 import "./style.scss"
 
-// todo: 슬릭 카로셀 npnm 삭제하기
+// todo: 폰트어썸 npm 삭제하기
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="contents-wrapper">
-      <div className="contents">
-        {dummyContentCards.map((v) => (
-          <ContentCard key={v.postId} dummyContentCard={v} />
+    <div className="home-wrapper">
+      <div className="home">
+        {dummyPostCards.map((v) => (
+          <PostCard key={v.postId} dummyContentCard={v} />
         ))}
       </div>
-    </main>
+    </div>
   )
 }

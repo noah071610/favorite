@@ -4,7 +4,7 @@ export type ModalStatus = "none" | "search"
 export type PostingStatus = "init" | "result" | "rending"
 export type CandidateType = {
   listId: string
-  image_src: string
+  imageSrc: string
   title: string
   description: string
   count: number
@@ -23,6 +23,7 @@ type Actions = {
   setSelectedCandidate: (state: States["selectedCandidate"]) => void
   addViewCandidate: (state: CandidateType) => void
   removeViewCandidate: (listId: string) => void
+  removeAllViewCandidate: () => void
 }
 
 export const useMainStore = create<States & Actions>()((set) => ({
@@ -37,5 +38,9 @@ export const useMainStore = create<States & Actions>()((set) => ({
   removeViewCandidate: (listId) =>
     set((origin) => ({
       viewCandidates: origin.viewCandidates.filter(({ listId: originListId }) => originListId !== listId),
+    })),
+  removeAllViewCandidate: () =>
+    set(() => ({
+      viewCandidates: [],
     })),
 }))

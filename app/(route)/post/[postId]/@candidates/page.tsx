@@ -1,27 +1,26 @@
 "use client"
 
-import useIntersectionObserver from "@/_hooks/useIntersectionObserver"
 import { CandidateType, useMainStore } from "@/_store"
 import { fadeMoveUpAnimation } from "@/_utils/animation"
 import { candidates } from "@/_utils/faker"
 import classNames from "classnames"
 import { usePathname } from "next/navigation"
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo } from "react"
 import CountUp from "react-countup"
 import "./style.scss"
 
 export default function CandidatesPage() {
-  const { viewCandidates, selectedCandidate, setSelectedCandidate, addViewCandidate, removeViewCandidate } =
-    useMainStore()
+  const {
+    viewCandidates,
+    selectedCandidate,
+    setSelectedCandidate,
+    addViewCandidate,
+    removeViewCandidate,
+    removeAllViewCandidate,
+  } = useMainStore()
 
   const pathname = usePathname()
   const isResultPage = !!pathname.includes("result")
-
-  const topRef = useRef<HTMLLIElement | null>(null)
-  const isReachedTop = useIntersectionObserver(topRef)
-
-  const bottomRef = useRef<HTMLLIElement | null>(null)
-  const isReachedBottom = useIntersectionObserver(bottomRef)
 
   const onClickSelect = (candidate: CandidateType) => {
     if (isResultPage) {
@@ -42,23 +41,26 @@ export default function CandidatesPage() {
     [isResultPage]
   ) // todo: 서버에서 받으면 수정
 
+  useEffect(() => {
+    if (isResultPage) {
+      removeAllViewCandidate()
+    } else {
+      setSelectedCandidate(null)
+    }
+    // memo: 돌아가기 리프레쉬 사용시 스테이트 초기화
+  }, [isResultPage, removeAllViewCandidate, setSelectedCandidate])
+
   return (
     <ul className="candidate-list">
-      {!isResultPage && !isReachedTop && <div className="gradient top-div"></div>}
       {_candidates.map((candidate, index) => (
-        <li
-          ref={
-            isResultPage ? undefined : index === 0 ? topRef : index === candidates.length - 1 ? bottomRef : undefined
-          }
-          key={`${candidate.listId}_${isResultPage ? "result" : "vote"}`}
-        >
+        <li key={`${candidate.listId}_${isResultPage ? "result" : "vote"}`}>
           <div
             onClick={() => onClickSelect(candidate)}
             style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
             className={classNames("candidate-card", {
               // memo: selected->투표페이지에서 선택, onView: 결과페이지 통계 보기용
               selected: !isResultPage && selectedCandidate?.listId === candidate.listId,
-              onView: viewCandidates.find(({ listId }) => listId === candidate.listId),
+              onView: isResultPage && viewCandidates.find(({ listId }) => listId === candidate.listId),
             })}
           >
             {/* memo: 결과 페이지만 적용 */}
@@ -79,7 +81,7 @@ export default function CandidatesPage() {
               <div className="candidate-image-wrapper">
                 <div
                   style={{
-                    background: `url('${candidate.image_src}') center / cover`,
+                    background: `url('${candidate.imageSrc}') center / cover`,
                   }}
                   className="candidate-image"
                 />
@@ -99,7 +101,6 @@ export default function CandidatesPage() {
           </div>
         </li>
       ))}
-      {!isResultPage && !isReachedBottom && <div className="gradient bottom-div"></div>}
     </ul>
   )
 }

@@ -26,6 +26,7 @@
       .icon {
         font-size: 100px;
         display: block;
+        background-clip: text !important;
         -webkit-background-clip: text !important;
         -webkit-text-fill-color: transparent !important;
       }

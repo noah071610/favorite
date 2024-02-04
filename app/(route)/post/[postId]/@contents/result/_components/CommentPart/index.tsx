@@ -1,6 +1,5 @@
 "use client"
 
-import { useMainStore } from "@/_store"
 import { UserType } from "@/_types/post"
 import { fadeMoveUpAnimation } from "@/_utils/animation"
 import { dummyComments, dummyUser } from "@/_utils/faker"
@@ -49,8 +48,10 @@ function CommentArea({
               }}
               className="comment-area-btn"
             >
-              <button className="cancel">취소</button>
-              <button className="submit">코멘트</button>
+              <div className="comment-area-btn-inner">
+                <button className="cancel">취소</button>
+                <button className="submit">코멘트</button>
+              </div>
             </div>
           </>
         ) : (
@@ -60,8 +61,7 @@ function CommentArea({
               <button className="like-btn">
                 <i className="fa-regular fa-heart"></i>
               </button>
-              <span>2</span>
-              {/* todo: 카운트 */}
+              <span>{like}</span>
             </div>
           </>
         )}
@@ -72,20 +72,17 @@ function CommentArea({
 
 export default function CommentPart() {
   const user = dummyUser
-  const {
-    selectedCandidate: { title, number }, // todo: null 해결
-  } = useMainStore()
   return (
     <div className="comment">
       <CommentArea isPostComment={true} user={user} />
       <section className="comments">
-        {dummyComments.map(({ text, favorite: { id, color, number } }, index) => (
-          // todo: number는 꼭 필요할까?
+        {dummyComments.map(({ text, like }, index) => (
           <CommentArea
             isPostComment={false}
             text={text}
-            key={`postId_comment_${id}_${index}`} // todo: 포스트 아이디
+            key={`postId_comment_${index}`} // todo: 포스트 아이디
             user={user}
+            like={like}
             animation={fadeMoveUpAnimation(700 + index * 20, index * 100).animation}
           />
         ))}

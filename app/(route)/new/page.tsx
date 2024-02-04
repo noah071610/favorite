@@ -4,7 +4,7 @@ import "./style.scss"
 
 export default function NewPost() {
   return (
-    <main className="new-post">
+    <div className="new-post">
       <div className="editor">
         <section>
           <h3>타이틀 작성</h3>
@@ -23,6 +23,6 @@ export default function NewPost() {
         </section>
       </div>
       <div className="preview"></div>
-    </main>
+    </div>
   )
 }
