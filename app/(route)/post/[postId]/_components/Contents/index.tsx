@@ -1,14 +1,14 @@
 "use client"
 import Link from "next/link"
 
-import { useMainStore } from "@/_store"
+import { usePostStore } from "@/_store/post"
 import { fadeMoveUpAnimation } from "@/_utils/animation"
 import { dummyPostCards } from "@/_utils/faker"
 import "./style.scss"
 
-export default function ContentsPage() {
+export default function Contents() {
   const { postId } = dummyPostCards[0]
-  const { selectedCandidate } = useMainStore()
+  const { selectedCandidate } = usePostStore()
 
   return (
     <>

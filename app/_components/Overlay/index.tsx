@@ -1,6 +1,6 @@
 "use client"
 
-import { useMainStore } from "@/_store"
+import { useMainStore } from "@/_store/main"
 import classNames from "classnames"
 import { MouseEvent } from "react"
 import "./style.scss"

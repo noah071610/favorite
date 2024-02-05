@@ -1,7 +1,5 @@
 import { create } from "zustand"
 
-export type ModalStatus = "none" | "search"
-export type PostingStatus = "init" | "result" | "rending"
 export type CandidateType = {
   listId: string
   imageSrc: string
@@ -11,29 +9,25 @@ export type CandidateType = {
 }
 
 interface States {
-  modalStatus: ModalStatus
-  currentPostingPage: PostingStatus
   selectedCandidate: CandidateType | null
   viewCandidates: CandidateType[]
+  postLoaded: boolean
 }
 
 type Actions = {
-  setModal: (state: States["modalStatus"]) => void
-  setCurrentPostingPage: (state: States["currentPostingPage"]) => void
   setSelectedCandidate: (state: States["selectedCandidate"]) => void
+  setPostLoaded: (state: States["postLoaded"]) => void
   addViewCandidate: (state: CandidateType) => void
   removeViewCandidate: (listId: string) => void
   removeAllViewCandidate: () => void
 }
 
-export const useMainStore = create<States & Actions>()((set) => ({
-  modalStatus: "none",
-  currentPostingPage: "init",
+export const usePostStore = create<States & Actions>()((set) => ({
+  postLoaded: false,
   selectedCandidate: null,
   viewCandidates: [],
-  setModal: (state) => set(() => ({ modalStatus: state })),
-  setCurrentPostingPage: (state) => set(() => ({ currentPostingPage: state })),
   setSelectedCandidate: (state) => set(() => ({ selectedCandidate: state })),
+  setPostLoaded: (state) => set(() => ({ postLoaded: state })),
   addViewCandidate: (state) => set((origin) => ({ viewCandidates: [...origin.viewCandidates, state] })),
   removeViewCandidate: (listId) =>
     set((origin) => ({

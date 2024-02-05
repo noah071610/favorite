@@ -86,12 +86,13 @@ export const data = {
   ],
 }
 
-export default function ResultPage({}: {}) {
+export default function Result({}: {}) {
   const [currentSection, setCurrentSection] = useState<"analytics" | "comments">("analytics")
 
   const onClickNav = (type: "analytics" | "comments") => {
     setCurrentSection(type)
   }
+
   return (
     <div className="result">
       <div className="result-nav">

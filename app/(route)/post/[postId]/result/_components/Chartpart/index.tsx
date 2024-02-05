@@ -1,7 +1,7 @@
 "use client"
 
 import { chartBackgroundColors, chartBorderColors } from "@/_data"
-import { useMainStore } from "@/_store"
+import { usePostStore } from "@/_store/post"
 import { candidates } from "@/_utils/faker"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
 import { useEffect, useMemo, useState } from "react"
@@ -52,7 +52,7 @@ const ranking_options = {
 }
 
 export default function ChartPart() {
-  const { viewCandidates } = useMainStore()
+  const { viewCandidates } = usePostStore()
 
   const [candidateData, setCandidateData] = useState<{ title: string; count: number }[]>(
     candidates.map(({ title, count }) => ({ title, count }))

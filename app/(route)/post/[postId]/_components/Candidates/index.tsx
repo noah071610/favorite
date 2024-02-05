@@ -1,16 +1,14 @@
 "use client"
 
-import { CandidateType, useMainStore } from "@/_store"
+import { CandidateType, usePostStore } from "@/_store/post"
 import { fadeMoveUpAnimation } from "@/_utils/animation"
 import { candidates } from "@/_utils/faker"
 import classNames from "classnames"
-import { usePathname } from "next/navigation"
 import { useEffect, useMemo } from "react"
 import CountUp from "react-countup"
 import "./style.scss"
 
-// todo: 마지막에 컴포넌트화 과정 해야함
-export default function CandidatesPage() {
+export default function Candidates({ isResultPage }: { isResultPage: boolean }) {
   const {
     viewCandidates,
     selectedCandidate,
@@ -18,10 +16,7 @@ export default function CandidatesPage() {
     addViewCandidate,
     removeViewCandidate,
     removeAllViewCandidate,
-  } = useMainStore()
-
-  const pathname = usePathname()
-  const isResultPage = !!pathname.includes("result")
+  } = usePostStore()
 
   const onClickSelect = (candidate: CandidateType) => {
     if (isResultPage) {
@@ -43,10 +38,13 @@ export default function CandidatesPage() {
   ) // todo: 서버에서 받으면 수정
 
   useEffect(() => {
-    setSelectedCandidate(null)
-    removeAllViewCandidate()
+    if (isResultPage) {
+      removeAllViewCandidate()
+    } else {
+      setSelectedCandidate(null)
+    }
     // memo: 돌아가기 리프레쉬 사용시 스테이트 초기화
-  }, [])
+  }, [isResultPage, removeAllViewCandidate, setSelectedCandidate])
 
   return (
     <ul className="candidate-list">
@@ -58,7 +56,7 @@ export default function CandidatesPage() {
             className={classNames("candidate-card", {
               // memo: selected->투표페이지에서 선택, onView: 결과페이지 통계 보기용
               selected: !isResultPage && selectedCandidate?.listId === candidate.listId,
-              onView: viewCandidates.find(({ listId }) => listId === candidate.listId),
+              onView: isResultPage && viewCandidates.find(({ listId }) => listId === candidate.listId),
             })}
           >
             {/* memo: 결과 페이지만 적용 */}

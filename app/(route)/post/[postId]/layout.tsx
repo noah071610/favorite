@@ -1,23 +1,31 @@
 "use client"
 
-import { dummyPostCards } from "@/_utils/faker"
+import { useProgressiveImageAll } from "@/_hooks/useProgressiveImageAll"
+import { candidates, dummyPostCards } from "@/_utils/faker"
 import classNames from "classnames"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import Candidates from "./_components/Candidates"
+import Contents from "./_components/Contents"
+import Result from "./result/page"
 import "./style.scss"
 
-export default function PostPageLayout({
-  candidates,
-  contents,
-}: Readonly<{
-  candidates: React.ReactNode
-  contents: React.ReactNode
-}>) {
+export default function PostPageLayout() {
   const {
     user: { userName, userImage, userId },
   } = dummyPostCards[0]
 
   const pathname = usePathname()
   const isResultPage = !!pathname.includes("result")
+
+  const imagesLoaded = useProgressiveImageAll(candidates.map(({ imageSrc }) => imageSrc))
+  const [loaded, setLoaded] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoaded(true)
+    }, 4500)
+  }, []) // todo: 단순 로딩, 지금은 true임. 나중에 쓸 수도..
 
   return (
     <div className="post-wrapper">
@@ -38,18 +46,25 @@ export default function PostPageLayout({
           </div>
         </div>
         <div className={classNames("post-content", { "result-page": isResultPage })}>
-          {/* <div className="left">{candidates}</div>
-          <div className="right">{contents}</div> */}
-          <div className="loading">
-            <div className="global-loading">
-              <div className="global-loading-inner">
-                <i className="global-loading-icon fa-solid fa-gift"></i>
-                <i className="global-loading-icon fa-solid fa-heart"></i>
-                <i className="global-loading-icon fa-solid fa-rocket"></i>
+          {imagesLoaded && loaded ? (
+            <>
+              <div className="left">
+                <Candidates isResultPage={isResultPage} />
               </div>
-              <span>Loading</span>
+              <div className="right">{isResultPage ? <Result /> : <Contents />}</div>
+            </>
+          ) : (
+            <div className="loading">
+              <div className="global-loading">
+                <div className="global-loading-inner">
+                  <i className="global-loading-icon fa-solid fa-gift"></i>
+                  <i className="global-loading-icon fa-solid fa-heart"></i>
+                  <i className="global-loading-icon fa-solid fa-rocket"></i>
+                </div>
+                <span>Loading</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

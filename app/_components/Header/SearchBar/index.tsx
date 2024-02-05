@@ -1,4 +1,4 @@
-import { useMainStore } from "@/_store"
+import { useMainStore } from "@/_store/main"
 import classNames from "classnames"
 import "./style.scss"
 
