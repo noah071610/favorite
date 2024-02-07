@@ -2,12 +2,9 @@ import "@/_styles/global.scss"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import Header from "./_components/Header"
-import Overlay from "./_components/Overlay"
 
-import { config } from "@fortawesome/fontawesome-svg-core"
-import "@fortawesome/fontawesome-svg-core/styles.css"
+import OverlayInjector from "./_hooks/OverlayInjector"
 import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
-config.autoAddCss = false
 
 const pretendard = localFont({
   src: [
@@ -55,7 +52,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <Header />
             <main>{children}</main>
-            <Overlay />
+            <OverlayInjector />
           </ReactQueryProvider>
         </body>
       </html>

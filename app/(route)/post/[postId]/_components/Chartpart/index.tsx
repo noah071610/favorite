@@ -3,6 +3,7 @@
 import { chartBackgroundColors as _chartBackgroundColors, chartBorderColors as _chartBorderColors } from "@/_data"
 import { getPost } from "@/_queries/post"
 import { usePostStore } from "@/_store/post"
+import { scaleUpAnimation } from "@/_styles/animation"
 import { PostType } from "@/_types/post"
 import { useQuery } from "@tanstack/react-query"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
@@ -120,7 +121,7 @@ export default function ChartPart() {
             />
           </div>
           <div className="gender">
-            <div style={{ animation: "scale-up 500ms ease-out forwards" }} className="gender-inner">
+            <div style={scaleUpAnimation(500)} className="gender-inner">
               <i
                 style={{
                   background: "linear-gradient(180deg, rgba(207,229,255,0.3) 50%, rgba(112,145,255,1) 50%)",

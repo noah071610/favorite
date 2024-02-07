@@ -1,11 +1,8 @@
 import { UserType } from "@/_types/post"
-import { faHeart } from "@fortawesome/free-regular-svg-icons"
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "./style.scss"
 
 export default function Profile({ user, like, shareCount }: { user: UserType; like: number; shareCount: number }) {
-  const { userId, userImage, userName } = user
+  const { userId, userImage } = user
   return (
     <div className="profile">
       <button className="user-image">
@@ -14,13 +11,13 @@ export default function Profile({ user, like, shareCount }: { user: UserType; li
       <div className="meta">
         <button className="meta-content">
           <div className="meta-icon">
-            <FontAwesomeIcon icon={faHeart} />
+            <i className="fa-solid fa-heart" />
           </div>
           <span>{like}</span>
         </button>
         <button className="meta-content">
           <div className="meta-icon">
-            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            <i className="fa-solid fa-arrow-up-from-bracket" />
           </div>
           <span>{shareCount}</span>
         </button>

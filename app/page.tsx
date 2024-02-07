@@ -3,12 +3,11 @@
 import { useQuery } from "@tanstack/react-query"
 import PostCard from "./_components/PostCard"
 import { getPosts } from "./_queries/post"
+import { PostCardType } from "./_types/post"
 import "./style.scss"
 
-// todo: 폰트어썸 npm 삭제하기
-
 export default function HomePage() {
-  const { error, data: postCards } = useQuery({
+  const { error, data: postCards } = useQuery<PostCardType[]>({
     queryKey: ["getPosts"],
     queryFn: () => getPosts("all", 1),
   })

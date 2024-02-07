@@ -9,12 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "6.5.1",
-    "@fortawesome/free-regular-svg-icons": "6.5.1",
-    "@fortawesome/free-solid-svg-icons": "6.5.1",
-    "@fortawesome/react-fontawesome": "0.2.0",
     "@tanstack/react-query": "5.18.1",
     "axios": "1.6.7",
+    "body-scroll-lock": "4.0.0-beta.0",
     "chart.js": "4.4.1",
     "classnames": "2.5.1",
     "dayjs": "1.11.10",
@@ -24,12 +21,14 @@
     "react-chartjs-2": "5.2.0",
     "react-countup": "6.5.0",
     "react-dom": "^18",
+    "react-dropzone": "14.2.3",
     "react-textarea-autosize": "8.5.3",
     "swiper": "11.0.5",
     "zustand": "4.5.0"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "5.18.1",
+    "@types/body-scroll-lock": "3.1.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

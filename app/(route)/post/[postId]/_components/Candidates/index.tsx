@@ -3,18 +3,24 @@
 import { CandidateType, usePostStore } from "@/_store/post"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import classNames from "classnames"
-import { useMemo } from "react"
+import { Dispatch, SetStateAction, useMemo } from "react"
 import CountUp from "react-countup"
 import "./style.scss"
 
 export default function Candidates({
   candidates,
   isResultPage,
+  votedListId,
+  selectedCandidate,
+  setSelectedCandidate,
 }: {
   candidates: CandidateType[]
   isResultPage: boolean
+  selectedCandidate: CandidateType | null
+  votedListId: string | undefined
+  setSelectedCandidate: Dispatch<SetStateAction<CandidateType | null>>
 }) {
-  const { selectedCandidate, setSelectedCandidate, setViewCandidate, viewCandidate } = usePostStore()
+  const { setViewCandidate } = usePostStore()
 
   const onClickSelect = (candidate: CandidateType) => {
     !isResultPage && setSelectedCandidate(candidate)
@@ -31,7 +37,7 @@ export default function Candidates({
     [candidates, isResultPage]
   ) // todo: 서버에서 받으면 수정
 
-  const isSelected = (candidate: CandidateType) => selectedCandidate?.listId === candidate.listId
+  const isSelected = (candidate: CandidateType) => (selectedCandidate?.listId || votedListId) === candidate.listId
 
   return (
     <ul className="candidate-list">

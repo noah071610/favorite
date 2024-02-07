@@ -1,5 +1,10 @@
 export type PostFindQuery = "all" | "popular" | "like" | "participate"
 
+export type VoteIdType = {
+  postId: string
+  listId: string
+}
+
 export interface CandidateType {
   listId: string
   number: number
@@ -35,15 +40,8 @@ interface _PostCardType {
 export interface PostCardType extends _PostCardType {
   info: PostCardInfo
 }
-export interface PostCardDataType extends _PostCardType {
-  info: string
-}
 export interface PostType extends _PostCardType {
   content: CandidateType[]
-  comments: CommentType[]
-}
-export interface PostDataType extends _PostCardType {
-  content: string
   comments: CommentType[]
 }
 

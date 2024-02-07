@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-export type ModalStatus = "none" | "search"
+export type ModalStatus = "none" | "search" | "createCandidate"
 
 interface States {
   modalStatus: ModalStatus

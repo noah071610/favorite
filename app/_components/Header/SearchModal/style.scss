@@ -3,6 +3,9 @@
 .search-modal {
   width: 100%;
   margin-top: 5px;
+  position: absolute;
+  top: 40px;
+  left: 0;
 
   &-content {
     width: 400px;
@@ -11,10 +14,10 @@
     border: 1px solid $gray;
     border-radius: 30px;
     box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
-    transform: translateY(15px) scale(0.97);
+    transform: translateY(10%) scale(0.8);
     max-height: 0;
     opacity: 0;
-    transition: 200ms opacity, 100ms transform cubic-bezier(0.29, 0.44, 0.1, 1.06);
+    transition: 300ms opacity, 450ms transform cubic-bezier(0.29, 0.44, 0.1, 1.06), 500ms max-height;
   }
 
   &.active {

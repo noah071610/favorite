@@ -1,50 +1,5 @@
 @import "@/_styles/variables.scss";
 
-@keyframes scale-up {
-  from {
-    transform: scale(0.3);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes fade-move-up {
-  from {
-    transform: translateY(100%);
-  }
-
-  70% {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes rotateY_out {
-  from {
-    transform: rotateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: rotateY(90deg);
-    opacity: 0;
-  }
-}
-
-@keyframes rotateY_in {
-  from {
-    transform: rotateY(90deg);
-    opacity: 0;
-  }
-  to {
-    transform: rotateY(180deg);
-    opacity: 1;
-  }
-}
-
 @keyframes rotate_1 {
   0% {
     transform: rotateY(-90deg);
@@ -111,7 +66,7 @@
     justify-content: center;
     padding-top: 60px;
 
-    &.isResultPage {
+    &.result-page {
       padding-bottom: 100px;
     }
   }
@@ -196,7 +151,7 @@
 
     position: relative;
 
-    border: 1px solid $border;
+    @include border();
     border-radius: 10px;
     padding: 12px;
 
@@ -220,47 +175,23 @@
       }
     }
   }
-}
 
-.global-loading {
-  &-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  @include flex_center();
-  flex-direction: column;
+  .result {
+    width: 100%;
 
-  &-inner {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
-  &-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: rotateY(0deg);
-    opacity: 0;
-    font-size: 40px;
-    color: $pink-soft;
-    &:nth-of-type(1) {
-      animation: rotate_1 3000ms infinite;
+    &-nav {
+      position: relative;
+      margin-bottom: 8px;
+
+      button {
+        width: 60px;
+        text-align: center;
+        padding: 8px 0;
+        &.active {
+          font-weight: 700;
+          color: $pink-hover;
+        }
+      }
     }
-    &:nth-of-type(2) {
-      animation: rotate_2 3000ms infinite;
-    }
-    &:nth-of-type(3) {
-      animation: rotate_3 3000ms infinite;
-    }
-  }
-  span {
-    display: inline-block;
-    font-size: 12px;
-    text-align: center;
   }
 }

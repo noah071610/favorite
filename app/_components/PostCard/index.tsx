@@ -3,7 +3,7 @@
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { PostCardType } from "@/_types/post"
 import Link from "next/link"
-import LoadingBar from "../LoadingBar"
+import LoadingBar from "../Loading/LoadingBar"
 import Profile from "./Profile"
 import "./style.scss"
 

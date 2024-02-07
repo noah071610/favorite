@@ -8,6 +8,7 @@ $bar-height: 36px;
   height: 100%;
   @include flex_center();
   position: relative;
+
   input {
     width: calc(100% - 2px);
     height: $bar-height;

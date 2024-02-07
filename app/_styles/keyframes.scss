@@ -3,3 +3,26 @@
     background-position: -200% 0;
   }
 }
+
+@keyframes fade-move-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-up {
+  from {
+    transform: scale(0.3);
+  }
+  to {
+    transform: scale(1);
+  }
+}

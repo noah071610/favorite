@@ -14,7 +14,8 @@ const queryClientOptions = {
     queries: {
       baseURL: _url.server,
       refetchOnWindowFocus: false,
-      staleTime: 300000,
+      retry: 1,
+      retryDelay: 1000,
     },
   },
 }
