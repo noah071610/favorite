@@ -2,12 +2,12 @@
 import Link from "next/link"
 
 import { usePostStore } from "@/_store/post"
-import { fadeMoveUpAnimation } from "@/_utils/animation"
-import { dummyPostCards } from "@/_utils/faker"
+import { fadeMoveUpAnimation } from "@/_styles/animation"
+import { useParams } from "next/navigation"
 import "./style.scss"
 
 export default function Contents() {
-  const { postId } = dummyPostCards[0]
+  const { postId } = useParams<{ postId: string }>()
   const { selectedCandidate } = usePostStore()
 
   return (

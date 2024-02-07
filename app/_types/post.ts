@@ -1,3 +1,5 @@
+export type PostFindQuery = "all" | "popular" | "like" | "participate"
+
 export interface CandidateType {
   listId: string
   number: number
@@ -13,26 +15,41 @@ export interface UserType {
   userImage: string
 }
 
-export interface PostCardType {
+export interface PostCardInfo {
+  participateImages: string[]
+  shareCount: number
+  like: number
+  participateCount: number
+}
+
+interface _PostCardType {
   postId: string
-  thumbnail: string
+  type: string
   title: string
   description: string
+  thumbnail: string
   user: UserType
-  like: number
-  shareCount: number
-  participate: string[]
+  createdAt: string
+  updatedAt: string
+}
+export interface PostCardType extends _PostCardType {
+  info: PostCardInfo
+}
+export interface PostCardDataType extends _PostCardType {
+  info: string
+}
+export interface PostType extends _PostCardType {
+  content: CandidateType[]
+  comments: CommentType[]
+}
+export interface PostDataType extends _PostCardType {
+  content: string
+  comments: CommentType[]
 }
 
 export interface CommentType {
+  commentId: number
   user: UserType
   text: string
   like: number
-  favorite: {
-    id: string
-    color: string
-    number: number
-  } // todo: 꼭 필요할까?
 }
-
-export type GaugeStyle = "happy" | "crying" | "enraged" | "flushed"

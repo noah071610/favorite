@@ -1,9 +1,11 @@
-@import "@/_styles/global.scss";
 @import "@/_styles/variables.scss";
 
 $side-width: 300px;
 
 .header {
+  &-padding {
+    height: calc(40px + 20px);
+  }
   width: calc(100% - 40px);
   height: 40px;
   padding: 10px 20px;

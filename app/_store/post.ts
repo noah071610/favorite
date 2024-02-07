@@ -1,3 +1,4 @@
+import { PostType } from "@/_types/post"
 import { create } from "zustand"
 
 export type CandidateType = {
@@ -6,35 +7,30 @@ export type CandidateType = {
   title: string
   description: string
   count: number
+  number: number
 }
 
 interface States {
   selectedCandidate: CandidateType | null
-  viewCandidates: CandidateType[]
+  viewCandidate: CandidateType | null // todo: 꼭 전부?
   postLoaded: boolean
+  post: PostType | null // todo: 이거 좀 별론데?
 }
 
 type Actions = {
   setSelectedCandidate: (state: States["selectedCandidate"]) => void
+  setViewCandidate: (state: States["viewCandidate"]) => void
   setPostLoaded: (state: States["postLoaded"]) => void
-  addViewCandidate: (state: CandidateType) => void
-  removeViewCandidate: (listId: string) => void
-  removeAllViewCandidate: () => void
+  setPost: (state: States["post"]) => void
 }
 
 export const usePostStore = create<States & Actions>()((set) => ({
   postLoaded: false,
   selectedCandidate: null,
-  viewCandidates: [],
+  viewCandidate: null,
+  post: null,
   setSelectedCandidate: (state) => set(() => ({ selectedCandidate: state })),
+  setViewCandidate: (state) => set(() => ({ viewCandidate: state })),
   setPostLoaded: (state) => set(() => ({ postLoaded: state })),
-  addViewCandidate: (state) => set((origin) => ({ viewCandidates: [...origin.viewCandidates, state] })),
-  removeViewCandidate: (listId) =>
-    set((origin) => ({
-      viewCandidates: origin.viewCandidates.filter(({ listId: originListId }) => originListId !== listId),
-    })),
-  removeAllViewCandidate: () =>
-    set(() => ({
-      viewCandidates: [],
-    })),
+  setPost: (state) => set(() => ({ post: state })),
 }))

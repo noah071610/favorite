@@ -1,12 +1,11 @@
-@import "@/_styles/global.scss";
 @import "@/_styles/variables.scss";
 
 .home-wrapper {
-  flex-grow: 1;
   background-color: #fbfbfbd3;
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  width: 100%;
   .home {
     display: flex;
     align-items: center;

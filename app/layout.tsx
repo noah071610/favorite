@@ -6,6 +6,7 @@ import Overlay from "./_components/Overlay"
 
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
+import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
 config.autoAddCss = false
 
 const pretendard = localFont({
@@ -27,10 +28,10 @@ const pretendard = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "Travel Receipt",
-    template: "%s | Travel Receipt",
+    default: "Favorite",
+    template: "%s | Favorite",
   },
-  description: "What is going on your trip",
+  description: "What is your Favorite?",
 }
 
 export default function RootLayout({
@@ -51,9 +52,11 @@ export default function RootLayout({
           />
         </head>
         <body>
-          <Header />
-          <main>{children}</main>
-          <Overlay />
+          <ReactQueryProvider>
+            <Header />
+            <main>{children}</main>
+            <Overlay />
+          </ReactQueryProvider>
         </body>
       </html>
     </>

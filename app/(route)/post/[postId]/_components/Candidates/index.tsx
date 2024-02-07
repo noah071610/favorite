@@ -1,62 +1,56 @@
 "use client"
 
 import { CandidateType, usePostStore } from "@/_store/post"
-import { fadeMoveUpAnimation } from "@/_utils/animation"
-import { candidates } from "@/_utils/faker"
+import { fadeMoveUpAnimation } from "@/_styles/animation"
 import classNames from "classnames"
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import CountUp from "react-countup"
 import "./style.scss"
 
-export default function Candidates({ isResultPage }: { isResultPage: boolean }) {
-  const {
-    viewCandidates,
-    selectedCandidate,
-    setSelectedCandidate,
-    addViewCandidate,
-    removeViewCandidate,
-    removeAllViewCandidate,
-  } = usePostStore()
+export default function Candidates({
+  candidates,
+  isResultPage,
+}: {
+  candidates: CandidateType[]
+  isResultPage: boolean
+}) {
+  const { selectedCandidate, setSelectedCandidate, setViewCandidate, viewCandidate } = usePostStore()
 
   const onClickSelect = (candidate: CandidateType) => {
-    if (isResultPage) {
-      // memo: 결과페이지 통계 보기용
-      if (viewCandidates.find(({ listId }) => listId === candidate.listId)) {
-        removeViewCandidate(candidate.listId)
-      } else {
-        addViewCandidate(candidate)
-      }
-    } else {
-      // memo: 투표페이지에서 후보 선택
-      setSelectedCandidate(candidate)
-    }
+    !isResultPage && setSelectedCandidate(candidate)
+  }
+  const onMouseEnterCard = (candidate: CandidateType) => {
+    setViewCandidate(candidate)
+  }
+  const onMouseLeaveCard = () => {
+    setViewCandidate(null)
   }
 
   const _candidates = useMemo(
     () => (isResultPage ? [...candidates].sort((a, b) => b.count - a.count) : candidates),
-    [isResultPage]
+    [candidates, isResultPage]
   ) // todo: 서버에서 받으면 수정
 
-  useEffect(() => {
-    if (isResultPage) {
-      removeAllViewCandidate()
-    } else {
-      setSelectedCandidate(null)
-    }
-    // memo: 돌아가기 리프레쉬 사용시 스테이트 초기화
-  }, [isResultPage, removeAllViewCandidate, setSelectedCandidate])
+  const isSelected = (candidate: CandidateType) => selectedCandidate?.listId === candidate.listId
 
   return (
     <ul className="candidate-list">
       {_candidates.map((candidate, index) => (
-        <li key={`${candidate.listId}_${isResultPage ? "result" : "vote"}`}>
+        <li
+          onClick={() => onClickSelect(candidate)}
+          onMouseEnter={() => onMouseEnterCard(candidate)}
+          onMouseLeave={onMouseLeaveCard}
+          style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
+          key={`${candidate.listId}_${isResultPage ? "result" : "vote"}`}
+        >
           <div
-            onClick={() => onClickSelect(candidate)}
-            style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
+            className={classNames("candidate-card-bg", {
+              selected: isSelected(candidate),
+            })}
+          ></div>
+          <div
             className={classNames("candidate-card", {
-              // memo: selected->투표페이지에서 선택, onView: 결과페이지 통계 보기용
-              selected: !isResultPage && selectedCandidate?.listId === candidate.listId,
-              onView: isResultPage && viewCandidates.find(({ listId }) => listId === candidate.listId),
+              selected: isSelected(candidate),
             })}
           >
             {/* memo: 결과 페이지만 적용 */}
@@ -73,7 +67,7 @@ export default function Candidates({ isResultPage }: { isResultPage: boolean }) 
               </>
             )}
 
-            <div className="candidate-card-inner">
+            <div className={classNames("candidate-card-inner", { isResultPage })}>
               <div className="candidate-image-wrapper">
                 <div
                   style={{

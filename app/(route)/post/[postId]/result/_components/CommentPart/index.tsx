@@ -1,9 +1,11 @@
 "use client"
 
-import { UserType } from "@/_types/post"
-import { fadeMoveUpAnimation } from "@/_utils/animation"
-import { dummyComments, dummyUser } from "@/_utils/faker"
+import { getPost } from "@/_queries/post"
+import { fadeMoveUpAnimation } from "@/_styles/animation"
+import { PostType, UserType } from "@/_types/post"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
+import { useParams } from "next/navigation"
 import { useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 import "swiper/css"
@@ -71,22 +73,31 @@ function CommentArea({
 }
 
 export default function CommentPart() {
-  const user = dummyUser
+  const { postId } = useParams<{ postId: string }>()
+  const { data: post } = useQuery<PostType>({
+    queryKey: ["getPost"],
+    queryFn: () => getPost(postId),
+  })
+
+  const comments = post?.comments ?? []
+
   return (
-    <div className="comment">
-      <CommentArea isPostComment={true} user={user} />
-      <section className="comments">
-        {dummyComments.map(({ text, like }, index) => (
-          <CommentArea
-            isPostComment={false}
-            text={text}
-            key={`postId_comment_${index}`} // todo: 포스트 아이디
-            user={user}
-            like={like}
-            animation={fadeMoveUpAnimation(700 + index * 20, index * 100).animation}
-          />
-        ))}
-      </section>
-    </div>
+    post && (
+      <div className="comment">
+        <CommentArea isPostComment={true} user={post.user} />
+        <section className="comments">
+          {comments.map(({ text, like, user: commentUser }, index) => (
+            <CommentArea
+              isPostComment={false}
+              text={text}
+              key={`postId_comment_${index}`} // todo: 포스트 아이디
+              user={commentUser}
+              like={like}
+              animation={fadeMoveUpAnimation(700 + index * 20, index * 100).animation}
+            />
+          ))}
+        </section>
+      </div>
+    )
   )
 }

@@ -1,13 +1,7 @@
-@import "@/_styles/global.scss";
 @import "@/_styles/variables.scss";
+@import "@/_styles/keyframes.scss";
 
 $bar-height: 36px;
-
-@keyframes shine {
-  to {
-    background-position: -200% 0;
-  }
-}
 
 .search-bar {
   width: 400px;

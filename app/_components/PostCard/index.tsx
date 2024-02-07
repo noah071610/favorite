@@ -3,16 +3,21 @@
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { PostCardType } from "@/_types/post"
 import Link from "next/link"
-import { useMemo } from "react"
 import LoadingBar from "../LoadingBar"
 import Profile from "./Profile"
 import "./style.scss"
 
 const participateShowNumber = 8
 
-export default function PostCard({ dummyContentCard }: { dummyContentCard: PostCardType }) {
-  const { user, description, postId, thumbnail, title, participate, like, shareCount } = dummyContentCard
-  const participateSlice = useMemo(() => participate.slice(0, participateShowNumber), [participate])
+export default function PostCard({ postCard }: { postCard: PostCardType }) {
+  const {
+    user,
+    description,
+    postId,
+    thumbnail,
+    title,
+    info: { participateImages, like, shareCount, participateCount },
+  } = postCard
 
   const loaded = useProgressiveImage(thumbnail)
   return (
@@ -39,26 +44,26 @@ export default function PostCard({ dummyContentCard }: { dummyContentCard: PostC
           </div>
         </Link>
 
-        {participateSlice.length > 0 && (
+        {participateImages.length > 0 && (
           <div className="participate">
-            {participateSlice.map((participate_image, i) => (
+            {participateImages.map((image, i) => (
               <img
                 style={{ left: `${i * 13}px` }}
                 className="participate-profile"
                 key={`${postId}_participate_${i + 1}`}
-                src={participate_image}
+                src={image}
                 alt={`${postId}_participate_${i + 1}`}
               />
             ))}
             {/* memo: 기본패딩 + 프로필 하나 + 13픽셀 겹친 프로필 나머지 */}
             <span
               style={{
-                paddingLeft: `${4 + 25 + (participateSlice.length - 1) * 13}px`,
+                paddingLeft: `${4 + 25 + (participateImages.length - 1) * 13}px`,
               }}
             >
-              {participate.length > participateShowNumber
-                ? `등 총 ${participate.length}명 참여`
-                : `${participate.length}명 참여`}
+              {participateImages.length > participateShowNumber
+                ? `등 총 ${participateCount}명 참여`
+                : `${participateCount}명 참여`}
             </span>
           </div>
         )}

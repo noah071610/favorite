@@ -25,22 +25,27 @@ function Center() {
 }
 
 export default function Header() {
-  return (
-    <div className="header">
-      <div className="left">
-        <img src=""></img>
-      </div>
+  const pathname = usePathname()
+  const isResultPage = pathname.includes("/post/")
 
-      <Center />
-
-      <div className="right">
-        <Link href="/post/new" className="new-post-btn">
-          <span>New post</span>
-        </Link>
-        <Link href="/post/new" className="login-btn">
-          <span>Login</span>
-        </Link>
-      </div>
-    </div>
+  return isResultPage ? null : (
+    <>
+      <header className="header">
+        <div className="left">
+          <img src=""></img>
+          {/* todo: 로고 만들기 */}
+        </div>
+        <Center />
+        <div className="right">
+          <Link href="/post/new" className="new-post-btn">
+            <span>New post</span>
+          </Link>
+          <Link href="/post/new" className="login-btn">
+            <span>Login</span>
+          </Link>
+        </div>
+      </header>
+      <div className="header-padding" />
+    </>
   )
 }

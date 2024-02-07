@@ -1,5 +1,5 @@
-@import "@/_styles/global.scss";
 @import "@/_styles/variables.scss";
+@import "@/_styles/keyframes.scss";
 
 .candidate {
   &-list {
@@ -8,36 +8,18 @@
     border-radius: 10px;
     gap: 5px;
 
-    .gradient {
-      position: absolute;
-      width: 395px; // memo: 부모가 콘텐츠 전체임
-      height: 80px;
-      background-color: red;
-      left: 10px;
-      z-index: 10;
-    }
-    .top-div {
-      top: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
-    }
-    .bottom-div {
-      bottom: 0;
-      background: linear-gradient(0deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+    li {
+      position: relative;
+      opacity: 0;
     }
   }
 
   &-card {
     padding: 1px;
     border-radius: 11px;
-    opacity: 0;
     position: relative;
 
-    &.selected,
-    &.onView {
-      background: linear-gradient(45deg, $pink, #f5ff62, $pink);
-      background-size: 200% 200%;
-      animation: shine 2s linear infinite;
-      opacity: 1;
+    &.selected {
       .candidate-card-inner {
         background: rgb(255, 255, 255);
         background: radial-gradient(circle, rgba(255, 255, 255, 1) 23%, rgba(255, 241, 244, 1) 100%);
@@ -46,6 +28,33 @@
         }
       }
     }
+
+    &-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 11px;
+      &.selected {
+        background: linear-gradient(45deg, $pink, #f5ff62, $pink);
+        background-size: 200% 200%;
+        animation: shine 2s linear infinite;
+      }
+    }
+
+    // &.selected {
+    //   background: linear-gradient(45deg, $pink, #f5ff62, $pink);
+    //   background-size: 200% 200%;
+    //   animation: shine 2s linear infinite;
+    //   .candidate-card-inner {
+    //     background: rgb(255, 255, 255);
+    //     background: radial-gradient(circle, rgba(255, 255, 255, 1) 23%, rgba(255, 241, 244, 1) 100%);
+    //     h3 {
+    //       color: $pink-hover;
+    //     }
+    //   }
+    // }
 
     .number-one {
       position: absolute;
@@ -93,6 +102,9 @@
           color: $pink-hover;
         }
       }
+    }
+    &.isResultPage {
+      cursor: default;
     }
   }
 

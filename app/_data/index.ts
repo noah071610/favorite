@@ -12,3 +12,8 @@ export const chartBackgroundColors = [
 ]
 
 export const chartBorderColors = chartBackgroundColors.map((v) => v.replace("0.2)", "1)"))
+
+export const _url = {
+  client: "http://localhost:3000",
+  server: "http://localhost:5555",
+}
