@@ -1,0 +1,44 @@
+@import "@/_styles/variables.scss";
+
+.voting-description {
+  @include flex_center();
+  flex-direction: column;
+  width: 100%;
+  input {
+    width: 90%;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: $gray-hover;
+    padding: 7px 15px;
+  }
+  textarea {
+    width: 90%;
+    background-color: $gray-hover;
+    font-size: 15px;
+    line-height: 1.2;
+    text-align: center;
+    padding: 7px 15px;
+  }
+}
+
+.voting-image {
+  cursor: pointer;
+  @include flex_center();
+  &:hover,
+  &.active {
+    background-color: $gray-hover;
+    &::before {
+      border-color: $pink;
+      opacity: 0.3;
+    }
+    i {
+      color: $pink-hover;
+    }
+  }
+  i {
+    color: $gray-hard;
+    font-size: 40px;
+  }
+}

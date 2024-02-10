@@ -1,16 +1,18 @@
-@import "@/_styles/global.scss";
 @import "@/_styles/variables.scss";
 
 $side-width: 300px;
 
 .header {
+  &-padding {
+    height: calc(40px + 20px);
+  }
   width: calc(100% - 40px);
   height: 40px;
   padding: 10px 20px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 10;
 
   display: flex;
   justify-content: space-between;
@@ -56,8 +58,11 @@ $side-width: 300px;
     }
   }
 
-  .center {
-    @include flex_center();
-    z-index: 1100;
+  &-search {
+    position: fixed;
+    top: 10px; // memo: 패딩값
+    left: 50%;
+    z-index: 30;
+    transform: translateX(-50%);
   }
 }

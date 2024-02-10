@@ -4,6 +4,7 @@ $pink_hover: rgba(229, 106, 106, 0.9);
 $red: rgba(255, 81, 81, 0.8);
 $red_hover: rgba(255, 81, 81, 0.9);
 $gray: rgba(235, 235, 235, 0.5);
+$gray-hard: rgb(158, 158, 158);
 $border: rgba(214, 214, 214, 0.7);
 $gray-hover: rgba(234, 234, 234, 0.4);
 $purple: rgba(201, 135, 255, 0.875);
@@ -29,4 +30,8 @@ $z-index-map: (
 
 @mixin z-index($id) {
   z-index: map-get($z-index-map, $id);
+}
+
+@mixin border($color: $border) {
+  border: 1px solid $color;
 }

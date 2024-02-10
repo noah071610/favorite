@@ -1,6 +1,6 @@
 "use client"
 
-import { PostingStatus, useMainStore } from "@/_store"
+import { PostingStatus, usePostingStore } from "@/_store/posting"
 import classNames from "classnames"
 import "./style.scss"
 
@@ -11,7 +11,7 @@ const posting_nav = {
 }
 
 export default function PostingNav({ pathname }: { pathname: string }) {
-  const { currentPostingPage, setCurrentPostingPage } = useMainStore()
+  const { currentPostingPage, setCurrentPostingPage } = usePostingStore()
 
   const onClickNav = (status: PostingStatus) => {
     setCurrentPostingPage(status)

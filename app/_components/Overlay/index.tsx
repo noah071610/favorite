@@ -1,8 +1,9 @@
 "use client"
 
-import { useMainStore } from "@/_store"
+import { useMainStore } from "@/_store/main"
+import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 import classNames from "classnames"
-import { MouseEvent } from "react"
+import { MouseEvent, useEffect } from "react"
 import "./style.scss"
 
 export default function Overlay() {
@@ -11,15 +12,28 @@ export default function Overlay() {
   const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.className.includes("overlay") && modalStatus !== "none") {
       setModal("none")
+      const body: HTMLBodyElement | null = document.querySelector("body")
+      if (body) enableBodyScroll(body)
     }
   }
+
+  useEffect(() => {
+    const body: HTMLBodyElement | null = document.querySelector("body")
+    if (body && modalStatus !== "none") disableBodyScroll(body)
+
+    return () => {
+      clearAllBodyScrollLocks()
+    }
+  }, [modalStatus])
 
   return (
     <div
       onClick={onClickOverlay}
-      className={classNames("overlay", {
-        active: modalStatus !== "none",
-      })}
+      style={{
+        animation:
+          modalStatus !== "none" ? "overlay_animation 400ms forwards" : "overlay_animation_rollback 400ms forwards",
+      }}
+      className={classNames("overlay")}
     />
   )
 }

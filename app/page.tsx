@@ -1,17 +1,24 @@
-import ContentCard from "./_components/ContentCard"
-import { dummyContentCards } from "./_utils/faker"
+"use client"
+
+import { useQuery } from "@tanstack/react-query"
+import PostCard from "./_components/PostCard"
+import { getPosts } from "./_queries/post"
+import { PostCardType } from "./_types/post"
 import "./style.scss"
 
-// todo: 슬릭 카로셀 npnm 삭제하기
+export default function HomePage() {
+  const { error, data: postCards } = useQuery<PostCardType[]>({
+    queryKey: ["getPosts"],
+    queryFn: () => getPosts("all", 1),
+  })
 
-export default function Home() {
   return (
-    <main className="contents-wrapper">
-      <div className="contents">
-        {dummyContentCards.map((v) => (
-          <ContentCard key={v.postId} dummyContentCard={v} />
+    <div className="home-wrapper">
+      <div className="home">
+        {postCards?.map((v) => (
+          <PostCard key={v.postId} postCard={v} />
         ))}
       </div>
-    </main>
+    </div>
   )
 }

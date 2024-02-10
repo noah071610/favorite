@@ -154,6 +154,9 @@ select {
   background-color: transparent;
   box-sizing: border-box;
 }
+textarea {
+  resize: none;
+}
 
 body {
   width: 100%;
@@ -161,8 +164,7 @@ body {
   background-color: white;
 }
 
-.home-page {
+main {
   display: flex;
   background-color: white;
-  padding-top: 60px;
 }
