@@ -7,11 +7,12 @@ export type VoteIdType = {
 
 export interface CandidateType {
   listId: string
-  number: number
-  imageSrc: string
+  imageSrc?: string
   title: string
-  description: string
+  description?: string
   count: number
+  number: number
+  animation?: "candidate-add" | "none" | "fade-up"
 }
 
 export interface UserType {
@@ -32,6 +33,7 @@ interface _PostCardType {
   type: string
   title: string
   description: string
+  chartDescription: string
   thumbnail: string
   user: UserType
   createdAt: string

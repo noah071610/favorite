@@ -1,13 +1,5 @@
+import { CandidateType } from "@/_types/post"
 import { create } from "zustand"
-
-export type CandidateType = {
-  listId: string
-  imageSrc: string
-  title: string
-  description: string
-  count: number
-  number: number
-}
 
 interface States {
   viewCandidate: CandidateType | null // todo: 꼭 전부?

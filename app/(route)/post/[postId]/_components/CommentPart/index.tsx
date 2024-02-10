@@ -8,8 +8,6 @@ import classNames from "classnames"
 import { useParams } from "next/navigation"
 import { useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
-import "swiper/css"
-import "swiper/css/free-mode" // todo
 import "./style.scss"
 
 function CommentArea({

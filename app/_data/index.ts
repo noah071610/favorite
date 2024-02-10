@@ -17,3 +17,54 @@ export const _url = {
   client: "http://localhost:3000",
   server: "http://localhost:5555",
 }
+
+export const rankingOptions = {
+  indexAxis: "y" as const,
+  maintainAspectRatio: false,
+  elements: {
+    bar: {
+      borderWidth: 1,
+    },
+  },
+  scales: {
+    x: {
+      ticks: {
+        min: 0,
+        precision: 0,
+        beginAtZero: true,
+        callback: function (value: number) {
+          return value + "표"
+        },
+      },
+    },
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+}
+
+export const generationChartOption = {
+  responsive: true,
+  maintainAspectRatio: false,
+  elements: {
+    bar: {
+      borderWidth: 0,
+    },
+  },
+}
+
+export const generationChartData = {
+  labels: ["10대", "20대", "30대", "40~50대", "60대 이상"],
+  datasets: [
+    {
+      label: "표",
+      data: [12, 19, 3, 5, 2],
+      backgroundColor: chartBackgroundColors,
+      borderColor: chartBorderColors,
+      borderWidth: 1,
+    },
+  ],
+}

@@ -6,31 +6,35 @@ import { CandidateType, PostType, VoteIdType } from "@/_types/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import Candidates from "./_components/Candidates"
+import { useEffect, useMemo, useState } from "react"
+import Candidate from "./_components/Candidate"
 import ChartPart from "./_components/Chartpart"
 import CommentPart from "./_components/CommentPart"
 import Voting from "./_components/Voting"
 import "./style.scss"
 
-export default function PostPageLayout() {
+export default function PostPage() {
   const router = useRouter()
   const { postId } = useParams<{ postId: string }>()
 
   const {
     isError,
     error,
+    isLoading,
     data: post,
   } = useQuery<PostType>({
     queryKey: ["getPost"],
     queryFn: () => getPost(postId),
   })
 
+  console.log(post)
+
   const [isImagesLoaded, setIsImagesLoaded] = useState(false)
   const [imageLoadedCount, setImageLoadedCount] = useState<number>(0)
   const [currentSection, setCurrentSection] = useState<"analytics" | "comments">("analytics")
   const [votedId, setVotedId] = useState<VoteIdType | null>(null)
   const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null)
+  const isResultPage = !!votedId
 
   if (isError) {
     alert((error as any).response.data.message)
@@ -68,25 +72,40 @@ export default function PostPageLayout() {
     const imageLoadHandlers =
       post &&
       post.content.map(({ imageSrc }) => {
-        const image = new Image()
+        if (imageSrc) {
+          const image = new Image()
 
-        image.src = imageSrc
-        image.onload = () => handleImageLoad(image)
-        return image
+          image.src = imageSrc
+          image.onload = () => handleImageLoad(image)
+          image.onerror = () => {
+            setImageLoadedCount((n) => n + 1)
+          }
+          return image
+        } else {
+          setImageLoadedCount((n) => n + 1)
+        }
       })
 
     return () => {
       if (imageLoadHandlers) {
+        setImageLoadedCount(0)
         imageLoadHandlers.forEach((image) => {
-          image.onload = null
-          image.onerror = null
+          if (image) {
+            image.onload = null
+            image.onerror = null
+          }
         })
       }
     }
   }, [post])
 
+  const candidates = useMemo(() => {
+    const target = post?.content ?? []
+    return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
+  }, [post?.content, isResultPage])
+
   return (
-    <div className={classNames("post-wrapper", { "result-page": !!votedId })}>
+    <div className={classNames("post-wrapper", { "result-page": isResultPage })}>
       {post && isImagesLoaded ? (
         <div className="post">
           <div className="post-info">
@@ -104,15 +123,21 @@ export default function PostPageLayout() {
               </div>
             </div>
           </div>
-          <div className={classNames("post-content", { "result-page": !!votedId })}>
+          <div className={classNames("post-content", { "result-page": isResultPage })}>
             <div className="left">
-              <Candidates
-                candidates={post.content}
-                isResultPage={!!votedId}
-                selectedCandidate={selectedCandidate}
-                setSelectedCandidate={setSelectedCandidate}
-                votedListId={votedId?.listId}
-              />
+              <ul className="candidate-list">
+                {candidates.map((candidate, index) => (
+                  <Candidate
+                    isResultPage={isResultPage}
+                    selectedCandidate={selectedCandidate}
+                    setSelectedCandidate={setSelectedCandidate}
+                    votedListId={votedId?.listId}
+                    candidate={candidate}
+                    index={index}
+                    key={`${candidate.listId}_${isResultPage ? "result" : "vote"}`}
+                  />
+                ))}
+              </ul>
             </div>
             <div className="right">
               {votedId ? (
@@ -132,7 +157,7 @@ export default function PostPageLayout() {
                     </button>
                     <div className={classNames("follower-div", {})}></div>
                   </div>
-                  {currentSection === "analytics" ? <ChartPart /> : <CommentPart />}
+                  {currentSection === "analytics" ? <ChartPart candidates={post.content} /> : <CommentPart />}
                 </div>
               ) : (
                 <Voting setVotedId={setVotedId} selectedCandidate={selectedCandidate} />

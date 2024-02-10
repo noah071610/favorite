@@ -1,11 +1,11 @@
 @import "@/_styles/variables.scss";
 
 .result {
-  .ranking {
+  .ranking-chart {
     margin-bottom: 30px;
   }
 
-  .chart {
+  .sub-chart {
     display: grid !important;
     gap: 20px;
     grid-template-columns: 1fr 1fr !important;
@@ -33,9 +33,20 @@
   }
 
   &-description {
+    textarea {
+      width: 100%;
+      display: block;
+      background-color: rgba(234, 234, 234, 0.4);
+      padding: 10px;
+      font-size: 15px;
+      word-break: keep-all;
+      line-height: 1.5;
+      min-height: 80px;
+    }
     p {
       font-size: 15px;
       line-height: 1.5;
+      padding: 10px;
       word-break: keep-all;
     }
   }
