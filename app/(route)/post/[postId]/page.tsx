@@ -20,14 +20,11 @@ export default function PostPage() {
   const {
     isError,
     error,
-    isLoading,
     data: post,
   } = useQuery<PostType>({
     queryKey: ["getPost"],
     queryFn: () => getPost(postId),
   })
-
-  console.log(post)
 
   const [isImagesLoaded, setIsImagesLoaded] = useState(false)
   const [imageLoadedCount, setImageLoadedCount] = useState<number>(0)
@@ -36,10 +33,12 @@ export default function PostPage() {
   const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null)
   const isResultPage = !!votedId
 
-  if (isError) {
-    alert((error as any).response.data.message)
-    router.back()
-  } // memo: 리액트는 순수함수여야 하는데.. 이건 그냥 리디렉션이니까 뭐?
+  useEffect(() => {
+    if (isError) {
+      alert((error as any).response.data.message)
+      router.back()
+    }
+  }, [error, isError, router])
 
   const onClickNav = (type: "analytics" | "comments") => {
     setCurrentSection(type)
@@ -105,7 +104,7 @@ export default function PostPage() {
   }, [post?.content, isResultPage])
 
   return (
-    <div className={classNames("post-wrapper", { "result-page": isResultPage })}>
+    <div className={classNames("post-page", { "result-page": isResultPage })}>
       {post && isImagesLoaded ? (
         <div className="post">
           <div className="post-info">

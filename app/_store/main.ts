@@ -1,6 +1,5 @@
+import { ModalStatus } from "@/_types"
 import { create } from "zustand"
-
-export type ModalStatus = "none" | "search" | "createCandidate"
 
 interface States {
   modalStatus: ModalStatus

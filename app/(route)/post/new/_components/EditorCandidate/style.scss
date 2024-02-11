@@ -1,0 +1,71 @@
+@import "@/_styles/variables.scss";
+@import "@/_styles/keyframes.scss";
+
+@keyframes candidate-add {
+  0% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    height: 96px;
+  }
+
+  60% {
+    transform: scale(0);
+    height: 96px;
+  }
+  100% {
+    transform: scale(1);
+    height: auto;
+    min-height: 96px;
+    opacity: 1;
+  }
+}
+@keyframes candidate-delete {
+  0% {
+    transform: scale(1);
+    min-height: auto;
+    height: 96px;
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0);
+    height: 96px;
+  }
+
+  100% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.candidate-description > h3.isEdit {
+  .title {
+    width: calc(100% - 20px);
+  }
+}
+
+.delete-candidate {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  padding: 5px;
+  i {
+    font-size: 10px;
+    color: $gray-hard;
+  }
+  &:hover {
+    i {
+      color: $pink;
+    }
+  }
+}
+
+.candidate-description {
+  display: none;
+}
+.candidate-card-inner {
+  display: block;
+}

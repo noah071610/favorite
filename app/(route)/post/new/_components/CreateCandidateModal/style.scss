@@ -46,7 +46,7 @@
       width: 100%;
       height: 180px;
       @include border();
-      @include flex_center();
+      @include flex();
       flex-direction: column;
       border-radius: 15px;
       gap: 3px;
@@ -60,7 +60,7 @@
     }
 
     &:hover {
-      background-color: $gray-hover;
+      background-color: $gray-soft;
       .frame {
         border-color: $pink;
         i {

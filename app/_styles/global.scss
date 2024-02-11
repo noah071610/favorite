@@ -161,10 +161,8 @@ textarea {
 body {
   width: 100%;
   line-height: 1;
-  background-color: white;
 }
 
 main {
-  display: flex;
-  background-color: white;
+  min-height: calc(100vh - 60px);
 }

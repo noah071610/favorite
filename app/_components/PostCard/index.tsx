@@ -9,17 +9,20 @@ import "./style.scss"
 
 const participateShowNumber = 8
 
-export default function PostCard({ postCard }: { postCard: PostCardType }) {
-  const {
+export default function PostCard({
+  postCard: {
     user,
     description,
     postId,
     thumbnail,
     title,
     info: { participateImages, like, shareCount, participateCount },
-  } = postCard
-
+  },
+}: {
+  postCard: PostCardType
+}) {
   const loaded = useProgressiveImage(thumbnail)
+
   return (
     <article className="post-card">
       <Profile user={user} like={like} shareCount={shareCount} />

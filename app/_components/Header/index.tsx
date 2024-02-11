@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import PostingNav from "./PostingNav"
+import NewPostNavigation from "./PostingNav"
 import SearchBar from "./SearchBar"
 import SearchModal from "./SearchModal"
 import "./style.scss"
@@ -19,7 +19,7 @@ export default function Header() {
           <img src=""></img>
           {/* todo: 로고 만들기 */}
         </div>
-        <div className="center">{isPostingPage && <PostingNav pathname={pathname} />}</div>
+        <div className="center">{isPostingPage && <NewPostNavigation />}</div>
         <div className="right">
           <Link href="/post/new" className="new-post-btn">
             <span>New post</span>

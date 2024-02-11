@@ -1,22 +1,28 @@
-$pink: rgba(255, 138, 138, 0.8);
 $pink-soft: rgba(255, 176, 176, 0.7);
-$pink_hover: rgba(229, 106, 106, 0.9);
-$red: rgba(255, 81, 81, 0.8);
-$red_hover: rgba(255, 81, 81, 0.9);
-$gray: rgba(235, 235, 235, 0.5);
+$pink: rgba(255, 138, 138, 0.8);
+$pink-hard: rgba(229, 106, 106, 0.9);
+
+$gray-soft: rgba(235, 235, 235, 0.45);
+$gray: rgba(161, 161, 161, 0.6);
 $gray-hard: rgb(158, 158, 158);
+
 $border: rgba(214, 214, 214, 0.7);
-$gray-hover: rgba(234, 234, 234, 0.4);
+
 $purple: rgba(201, 135, 255, 0.875);
 $purple-hover: rgba(190, 111, 255, 0.903);
 
-@mixin flex_center() {
+$bg-color: rgba(249, 249, 249, 0.8);
+$shadow-color: rgba(0, 0, 0, 0.08);
+
+$content-width: 1000px;
+
+@mixin flex() {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-@mixin absolute_center() {
+@mixin center() {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -34,4 +40,10 @@ $z-index-map: (
 
 @mixin border($color: $border) {
   border: 1px solid $color;
+}
+
+@mixin bg-shine() {
+  background: linear-gradient(45deg, $pink, #f5ff62, $pink);
+  background-size: 200% 200%;
+  animation: shine 2s linear infinite;
 }

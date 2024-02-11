@@ -15,7 +15,7 @@
 
   .gender {
     padding: 10px;
-    @include flex_center();
+    @include flex();
 
     &-inner {
       display: flex;

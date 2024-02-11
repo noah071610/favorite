@@ -13,8 +13,12 @@ export async function getPost(postId: string) {
   return response.data
 }
 
-export async function uploadImage(file: any) {
-  const response = await server.post(`/file/image`, { file })
+export async function uploadImage(file: FormData) {
+  const response = await server.post(`/upload${process.env.NODE_ENV === "development" ? "/dev" : ""}`, file, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
 
   return response.data
 }

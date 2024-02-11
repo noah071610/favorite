@@ -1,7 +1,7 @@
 @import "@/_styles/variables.scss";
 
 .voting-description {
-  @include flex_center();
+  @include flex();
   flex-direction: column;
   width: 100%;
   input {
@@ -10,12 +10,12 @@
     font-weight: 700;
     margin-bottom: 10px;
     text-align: center;
-    background-color: $gray-hover;
+    background-color: $gray-soft;
     padding: 7px 15px;
   }
   textarea {
     width: 90%;
-    background-color: $gray-hover;
+    background-color: $gray-soft;
     font-size: 15px;
     line-height: 1.2;
     text-align: center;
@@ -25,16 +25,16 @@
 
 .voting-image {
   cursor: pointer;
-  @include flex_center();
+  @include flex();
   &:hover,
   &.active {
-    background-color: $gray-hover;
+    background-color: $gray-soft;
     &::before {
       border-color: $pink;
       opacity: 0.3;
     }
     i {
-      color: $pink-hover;
+      color: $pink-hard;
     }
   }
   i {

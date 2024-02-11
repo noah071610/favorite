@@ -2,7 +2,7 @@
 
 $nav-width: 80px;
 
-.posting-nav {
+.new-post-nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -12,7 +12,7 @@ $nav-width: 80px;
     padding: 10px 15px;
     position: inherit;
     z-index: 10;
-    @include flex_center();
+    @include flex();
     span {
       font-size: 15px;
     }
@@ -37,11 +37,14 @@ $nav-width: 80px;
     &.init {
       transform: translateX(0);
     }
-    &.result {
+    &.edit {
       transform: translateX(calc($nav-width + 30px));
     }
-    &.rending {
+    &.result {
       transform: translateX(calc(($nav-width + 30px) * 2));
+    }
+    &.rending {
+      transform: translateX(calc(($nav-width + 30px) * 3));
     }
   }
 }

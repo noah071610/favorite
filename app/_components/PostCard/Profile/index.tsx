@@ -4,7 +4,7 @@ import "./style.scss"
 export default function Profile({ user, like, shareCount }: { user: UserType; like: number; shareCount: number }) {
   const { userId, userImage } = user
   return (
-    <div className="profile">
+    <div className="post-card-profile">
       <button className="user-image">
         <img src={userImage} alt={`user_image_${userId}`} />
       </button>

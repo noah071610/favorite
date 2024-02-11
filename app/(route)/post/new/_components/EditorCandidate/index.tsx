@@ -1,33 +1,34 @@
 "use client"
 
+import "@/(route)/post/[postId]/_components/Candidate/style.scss"
+import { useNewPostStore } from "@/_store/newPost"
 import { usePostStore } from "@/_store/post"
-import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { CandidateType } from "@/_types/post"
 import classNames from "classnames"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import CountUp from "react-countup"
 import "./style.scss"
 
-function Candidate({
+function EditorCandidate({
   isResultPage,
-  votedListId,
-  selectedCandidate,
-  setSelectedCandidate,
   candidate,
   index,
 }: {
   isResultPage: boolean
-  selectedCandidate: CandidateType | null
-  setSelectedCandidate: (state: CandidateType | null) => void
-  votedListId?: string
   candidate: CandidateType
   index: number
 }) {
   const { count, description, listId, title, imageSrc } = candidate
+  const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const { setViewCandidateNum } = usePostStore()
+  const { selectedCandidate, deleteCandidate, setSelectedCandidate } = useNewPostStore()
 
-  const onClickSelect = (candidate: CandidateType) => {
-    !isResultPage && setSelectedCandidate(candidate)
+  const onClickSelect = (e: any, candidate: CandidateType) => {
+    if (!e.target.className.includes("delete-")) {
+      !isResultPage && setSelectedCandidate(candidate)
+    } else {
+      setCandidateStatus("delete")
+    }
   }
   const onMouseEnterCard = (candidate: CandidateType) => {
     setViewCandidateNum(candidate.number)
@@ -36,14 +37,37 @@ function Candidate({
     setViewCandidateNum(0)
   }
 
-  const isSelected = (selectedCandidate?.listId || votedListId) === listId
+  useEffect(() => {
+    if (candidateStatus === "delete") {
+      setTimeout(() => {
+        deleteCandidate(listId)
+      }, 480)
+    }
+  }, [candidateStatus, listId, deleteCandidate])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCandidateStatus("static")
+    }, 500)
+  }, [])
+
+  const isSelected = selectedCandidate?.listId === listId
 
   return (
     <li
-      onClick={() => onClickSelect(candidate)}
+      onClick={(e) => onClickSelect(e, candidate)}
       onMouseEnter={() => onMouseEnterCard(candidate)}
       onMouseLeave={onMouseLeaveCard}
-      style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
+      style={{
+        animation: isResultPage
+          ? `fade-move-up ${1100 + index * 20}ms ${index * 100}ms cubic-bezier(0,1.1,.78,1) forwards`
+          : candidateStatus === "delete"
+          ? "candidate-delete 500ms forwards"
+          : candidateStatus === "add"
+          ? "candidate-add 500ms forwards"
+          : "none", // memo: 드래그 드롭 순서변경 시 애니메이션 방지용
+        opacity: isResultPage ? 0 : 1,
+      }}
     >
       <div
         className={classNames("candidate-card-bg", {
@@ -51,10 +75,15 @@ function Candidate({
         })}
       ></div>
       <div
-        className={classNames("candidate-card", {
+        className={classNames("candidate-card editor-candidate-card", {
           selected: isSelected,
         })}
       >
+        {!isResultPage && (
+          <button className="delete-candidate">
+            <i className="fa-solid fa-x delete-icon"></i>
+          </button>
+        )}
         {/* memo: 결과 페이지만 적용 */}
         {isResultPage && (
           <>
@@ -82,13 +111,16 @@ function Candidate({
           </div>
           <div className="candidate-description">
             <h3>
-              <span className="title">{title}</span>
+              <span className={classNames("title", { isEdit: !isResultPage })}>
+                {title.trim() ? title : "후보명 입력 (필수)"}
+              </span>
               {isResultPage && (
                 <span className="count">
                   <CountUp prefix="(" suffix="표)" duration={4} end={count} />
                 </span>
               )}
             </h3>
+            {!isResultPage && !description && <p className="place-holder">후보 설명 입력 (옵션)</p>}
             {description && <p>{description}</p>}
           </div>
         </div>
@@ -97,4 +129,4 @@ function Candidate({
   )
 }
 
-export default React.memo(Candidate)
+export default React.memo(EditorCandidate)

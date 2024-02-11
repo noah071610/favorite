@@ -1,10 +1,12 @@
 import { CandidateType, PostType } from "@/_types/post"
 import { create } from "zustand"
 
-export type PostingStatus = "init" | "result" | "rending"
+export type PostingStatus = "init" | "edit" | "result" | "rending"
+export type CandidateDisplayType = "text" | "image" | "textImage"
 
 interface States {
   newPost: PostType | null
+  candidateDisplayType: CandidateDisplayType
   newCandidates: CandidateType[]
   selectedCandidate: CandidateType | null
   currentPostingPage: PostingStatus
@@ -12,36 +14,52 @@ interface States {
 
 type Actions = {
   setNewPost: (state: { [key: string]: any } | null) => void
+  setCandidateDisplayType: (state: CandidateDisplayType) => void
   setSelectedCandidate: (state: States["selectedCandidate"]) => void
   setCurrentPostingPage: (state: States["currentPostingPage"]) => void
   addCandidate: (candidate: CandidateType) => void
-  setNewCandidates: (targetListId: string, from: number, to: number) => void
+  moveCandidates: (targetListId: string, from: number, to: number) => void
   deleteCandidate: (listId: string) => void
   changeCandidate: (listId: string, state: { title?: string; description?: string; imageSrc?: string }) => void
   clearCandidate: () => void
 }
 
-export const usePostingStore = create<States & Actions>()((set) => ({
+export const useNewPostStore = create<States & Actions>()((set) => ({
   newPost: null,
+  candidateDisplayType: "textImage",
   newCandidates: [],
   selectedCandidate: null,
   currentPostingPage: "init",
   setNewPost: (state) =>
     set((origin) => ({ newPost: origin.newPost ? { ...origin.newPost, ...state } : (state as PostType) })),
+  setCandidateDisplayType: (state) => set(() => ({ candidateDisplayType: state })),
   setSelectedCandidate: (state) => set(() => ({ selectedCandidate: state })),
   setCurrentPostingPage: (state) => set(() => ({ currentPostingPage: state })),
   addCandidate: (state) =>
     set((origin) => {
       return { newCandidates: [...origin.newCandidates, state] }
     }),
-  setNewCandidates: (targetListId, from, to) =>
+  moveCandidates: (targetListId, from, to) =>
     set((origin) => {
+      // memo: 1. 위치 변경
       const _newCandidates = [...origin.newCandidates]
       const targetCandidate: CandidateType = origin.newCandidates.find(({ listId }) => listId === targetListId)!
       _newCandidates.splice(from, 1)
       _newCandidates.splice(to, 0, targetCandidate)
 
-      return { newCandidates: _newCandidates.map((v, i) => ({ ...v, animation: "none", number: i + 1 })) }
+      // memo: 2. 넘버값 변경 (고유 인덱스)
+      const newCandidates = _newCandidates.map((v, i) => ({ ...v, number: i + 1 }))
+
+      // memo: 3. 작업중인 후보도 넘버 변경
+      const selectedCandidate: CandidateType | null = origin.selectedCandidate
+      if (selectedCandidate) {
+        selectedCandidate.number = newCandidates.find(({ listId }) => listId === selectedCandidate.listId)!.number
+      }
+
+      return {
+        newCandidates,
+        selectedCandidate,
+      }
     }),
   changeCandidate: (targetListId, state) =>
     set((origin) => ({
@@ -50,13 +68,22 @@ export const usePostingStore = create<States & Actions>()((set) => ({
     })),
   deleteCandidate: (targetListId) =>
     set((origin) => {
-      const newCandidates = origin.newCandidates.filter((v, index) => {
-        if (v.listId !== targetListId) {
-          return true
+      // memo: 1. 삭제
+      const newCandidates = origin.newCandidates
+        .filter((v) => v.listId !== targetListId)
+        .map((v, i) => ({ ...v, number: i + 1 }))
+
+      // memo: 2. 선택된 후보가 만약 삭제되는 리스트라면 에디트 창을 닫아주고 아니면 넘버 변경
+      let selectedCandidate: CandidateType | null = origin.selectedCandidate
+      if (selectedCandidate) {
+        if (targetListId === origin.selectedCandidate?.listId) {
+          selectedCandidate = null
+        } else {
+          selectedCandidate.number = newCandidates.find(({ listId }) => listId === selectedCandidate?.listId)!.number
         }
-        return false
-      })
-      return { newCandidates }
+      }
+
+      return { newCandidates, selectedCandidate }
     }),
   clearCandidate: () =>
     set(() => {

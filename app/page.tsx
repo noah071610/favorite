@@ -7,14 +7,14 @@ import { PostCardType } from "./_types/post"
 import "./style.scss"
 
 export default function HomePage() {
-  const { error, data: postCards } = useQuery<PostCardType[]>({
+  const { data: postCards } = useQuery<PostCardType[]>({
     queryKey: ["getPosts"],
     queryFn: () => getPosts("all", 1),
   })
 
   return (
-    <div className="home-wrapper">
-      <div className="home">
+    <div className="home-page">
+      <div className="home-page-inner">
         {postCards?.map((v) => (
           <PostCard key={v.postId} postCard={v} />
         ))}

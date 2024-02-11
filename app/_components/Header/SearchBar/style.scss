@@ -6,13 +6,13 @@ $bar-height: 36px;
 .search-bar {
   width: 400px;
   height: 100%;
-  @include flex_center();
+  @include flex();
   position: relative;
 
   input {
     width: calc(100% - 2px);
     height: $bar-height;
-    background-color: $gray;
+    background-color: $gray-soft;
     border-radius: 42px;
     padding: 5px 25px;
     font-size: 0.875rem;
@@ -21,8 +21,8 @@ $bar-height: 36px;
   }
 
   .border {
-    @include absolute_center();
-    @include flex_center();
+    @include center();
+    @include flex();
     width: 100%;
     height: calc($bar-height + 2px);
     border-radius: 42px;
@@ -38,9 +38,7 @@ $bar-height: 36px;
       background-color: white;
     }
     &.active {
-      background: linear-gradient(45deg, $pink, #f5ff62, $pink);
-      background-size: 200% 200%;
-      animation: shine 2s linear infinite;
+      @include bg-shine();
       opacity: 1;
     }
   }

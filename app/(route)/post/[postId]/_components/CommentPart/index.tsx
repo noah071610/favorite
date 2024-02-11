@@ -88,7 +88,7 @@ export default function CommentPart() {
             <CommentArea
               isPostComment={false}
               text={text}
-              key={`postId_comment_${index}`} // todo: 포스트 아이디
+              key={`${post.postId}_comment_${index}`}
               user={commentUser}
               like={like}
               animation={fadeMoveUpAnimation(700 + index * 20, index * 100).animation}

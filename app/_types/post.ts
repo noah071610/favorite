@@ -12,7 +12,6 @@ export interface CandidateType {
   description?: string
   count: number
   number: number
-  animation?: "candidate-add" | "none" | "fade-up"
 }
 
 export interface UserType {
