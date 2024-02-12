@@ -2,28 +2,32 @@
 
 .rending {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 220px);
   @include flex();
-  flex-direction: column;
-  h1 {
-    font-size: 17px;
-    margin-bottom: 10px;
+  gap: 15px; // memo: 시각적인 중앙정렬
+
+  .finish {
+    padding: 15px;
+    // h1 {
+    //   font-size: 17px;
+    //   margin-bottom: 10px;
+    // }
+    // p {
+    //   font-size: 14px;
+    //   color: $gray-hard;
+    //   margin-bottom: 20px;
+    // }
   }
-  p {
-    font-size: 14px;
-    color: $gray-hard;
-    margin-bottom: 20px;
-  }
+
   .btn-wrapper {
     width: 100%;
     @include flex();
     flex-direction: column;
     gap: 10px;
-    padding-bottom: 50px; // memo: 시각적인 중앙정렬
     button {
       width: 100%;
-      padding: 14px 25px;
-      font-size: 20px;
+      padding: 15px 20px;
+      font-size: 17px;
       font-weight: 700;
       color: white;
       background-color: $pink;

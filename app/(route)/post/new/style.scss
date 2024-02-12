@@ -2,11 +2,6 @@
 
 //memo: 덮어 씌우기
 
-.post-page {
-  padding-top: 20px;
-  padding-bottom: 100px;
-}
-
 .post-info-title {
   width: 60%;
   padding: 0;
@@ -32,7 +27,6 @@
 }
 
 .edit-wrapper {
-  padding-top: 30px;
   padding-bottom: 50px;
   h1 {
     font-size: 20px;
@@ -41,6 +35,65 @@
   p {
     font-size: 14px;
     color: $gray-hard;
+  }
+
+  &.layout-selector-wrapper {
+    padding-bottom: 80px;
+  }
+}
+
+.thumbnail-wrapper {
+  .thumbnail {
+    width: 440px;
+    height: 200px;
+    &-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: hidden;
+      border-radius: 15px;
+
+      & > div {
+        width: 100%;
+        height: 200px;
+        transition: all 250ms;
+      }
+    }
+  }
+  .thumbnail-image {
+    border-radius: 12px;
+    width: 440px;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      border: 5px solid $gray-soft;
+    }
+
+    cursor: pointer;
+    @include flex();
+    &:hover,
+    &.active {
+      background-color: $gray-soft;
+      &::before {
+        border-color: $pink;
+        opacity: 0.3;
+      }
+      i {
+        color: $pink-hard;
+      }
+    }
+    i {
+      color: $gray-hard;
+      font-size: 40px;
+    }
   }
 }
 

@@ -8,7 +8,7 @@ export default function SearchModal() {
   const { modalStatus } = useMainStore()
   return (
     <div className={classNames("search-modal", { active: modalStatus === "search" })}>
-      <div className="search-modal-content"></div>
+      <div className="search-modal-content" />
     </div>
   )
 }

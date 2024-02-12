@@ -10,8 +10,9 @@ import {
 import { useNewPostStore } from "@/_store/newPost"
 import { usePostStore } from "@/_store/post"
 import { scaleUpAnimation } from "@/_styles/animation"
-import { CandidateType } from "@/_types/post"
+import { ListType } from "@/_types/post"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
+import classNames from "classnames"
 import { useMemo } from "react"
 import { Bar, Doughnut } from "react-chartjs-2"
 import TextareaAutosize from "react-textarea-autosize"
@@ -20,7 +21,7 @@ import "./style.scss"
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 ChartJS.register(ArcElement)
 
-export default function ChartPart({ candidates, isEdit }: { candidates: CandidateType[]; isEdit?: boolean }) {
+export default function ChartPart({ candidates, isEdit }: { candidates: ListType[]; isEdit?: boolean }) {
   const { viewCandidateNum } = usePostStore()
   const { newPost, setNewPost } = useNewPostStore()
 
@@ -61,42 +62,49 @@ export default function ChartPart({ candidates, isEdit }: { candidates: Candidat
       ],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ranking_data]
+    [ranking_data, chartBackgroundColors]
   )
 
   return (
     <div className="result">
-      <section
-        className="ranking-chart"
-        style={{
-          height: `${
-            candidates.length <= 5 ? (candidates.length ? candidates.length * 50 === 0 : 200) : candidates.length * 40
-          }px`,
-        }}
-      >
-        <Bar options={rankingOptions as any} data={barData} />
-      </section>
-      <section className="sub-chart">
-        <div className="generation">
-          <Doughnut options={generationChartOption} data={generationChartData} />
-        </div>
-        <div className="gender">
-          <div style={scaleUpAnimation(500)} className="gender-inner">
-            <i
-              style={{
-                background: "linear-gradient(180deg, rgba(207,229,255,0.3) 50%, rgba(112,145,255,1) 50%)",
-              }}
-              className="icon fa-solid fa-person"
-            ></i>
-            <i
-              style={{
-                background: "linear-gradient(180deg, rgba(255,207,207,0.3) 50%, rgba(255,141,141,1) 50%)",
-              }}
-              className="icon fa-solid fa-person-dress"
-            ></i>
+      <div className={classNames("chart-part")}>
+        {isEdit && (
+          <div className="edit-overlay">
+            <span>예시 데이터 입니다</span>
           </div>
-        </div>
-      </section>
+        )}
+        <section
+          className="ranking-chart"
+          style={{
+            height: `${
+              candidates.length <= 5 ? (candidates.length > 1 ? candidates.length * 50 : 200) : candidates.length * 40
+            }px`,
+          }}
+        >
+          <Bar options={rankingOptions as any} data={barData} />
+        </section>
+        <section className="sub-chart">
+          <div className="generation">
+            <Doughnut options={generationChartOption} data={generationChartData} />
+          </div>
+          <div className="gender">
+            <div style={scaleUpAnimation(500)} className="gender-inner">
+              <i
+                style={{
+                  background: "linear-gradient(180deg, rgba(207,229,255,0.3) 50%, rgba(112,145,255,1) 50%)",
+                }}
+                className="icon fa-solid fa-person"
+              />
+              <i
+                style={{
+                  background: "linear-gradient(180deg, rgba(255,207,207,0.3) 50%, rgba(255,141,141,1) 50%)",
+                }}
+                className="icon fa-solid fa-person-dress"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
       <section className="result-description">
         {isEdit ? (
           <TextareaAutosize
@@ -107,7 +115,7 @@ export default function ChartPart({ candidates, isEdit }: { candidates: Candidat
             maxLength={180}
           />
         ) : (
-          <p>{newPost?.chartDescription}</p>
+          newPost?.chartDescription && <p>{newPost?.chartDescription}</p>
         )}
       </section>
     </div>

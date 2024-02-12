@@ -1,30 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { MutableRefObject, useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
-const useIntersectionObserver = (targetRef: MutableRefObject<HTMLElement | null>) => {
-  const [isIntersecting, setIsIntersecting] = useState(true)
+export const useIntersectionObserver = () => {
+  const ref = useRef<HTMLDivElement | null>()
+  const [isIntersecting, setIntersecting] = useState(false)
 
   useEffect(() => {
-    const callback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        setIsIntersecting(entry.isIntersecting)
-      })
-    }
+    const observer = new IntersectionObserver(([entry]) => {
+      setIntersecting(entry.isIntersecting)
+    })
 
-    const observer = new IntersectionObserver(callback)
+    const currentRef = ref.current
 
-    if (targetRef?.current) {
-      observer.observe(targetRef?.current)
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (targetRef?.current) {
-        observer.unobserve(targetRef?.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
-  }, [])
+  }, [ref?.current])
 
-  return isIntersecting
+  return [ref, isIntersecting]
 }
-
-export default useIntersectionObserver

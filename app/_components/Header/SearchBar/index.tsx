@@ -11,7 +11,7 @@ export default function SearchBar() {
   return (
     <div className="search-bar">
       <input onClick={onClickInput} />
-      <div className={classNames("border", { active: modalStatus === "search" })}></div>
+      <div className={classNames("border", { active: modalStatus === "search" })} />
     </div>
   )
 }

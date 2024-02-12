@@ -5,6 +5,27 @@
     margin-bottom: 30px;
   }
 
+  .chart-part {
+    position: relative;
+    padding: 5px;
+    margin-bottom: 10px;
+    .edit-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      z-index: 20;
+      @include flex();
+      span {
+        color: white;
+        font-size: 25px;
+        font-weight: 700;
+      }
+    }
+  }
+
   .sub-chart {
     display: grid !important;
     gap: 20px;

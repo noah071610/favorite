@@ -1,8 +1,7 @@
-import { PostFindQuery } from "@/_types/post"
 import { server } from "./provider/reactQueryProvider"
 
-export async function getPosts(query: PostFindQuery, page: number) {
-  const response = await server.get(`/post/all?query=${query}&page=${page}`)
+export async function getPosts({ pageParam = 0 }) {
+  const response = await server.get(`/post/all?cursor=${pageParam}`)
 
   return response.data
 }
@@ -14,7 +13,7 @@ export async function getPost(postId: string) {
 }
 
 export async function uploadImage(file: FormData) {
-  const response = await server.post(`/upload${process.env.NODE_ENV === "development" ? "/dev" : ""}`, file, {
+  const response = await server.post(`/upload`, file, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

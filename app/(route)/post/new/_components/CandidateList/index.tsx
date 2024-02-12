@@ -5,18 +5,19 @@ import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea
 import { useNewPostStore } from "@/_store/newPost"
 import { nanoid } from "nanoid"
 
+import { randomNum } from "@/_utils/math"
 import { useCallback } from "react"
 import EditorCandidate from "../EditorCandidate"
 import "./style.scss"
 
 export default function CandidateList() {
-  const { newCandidates, addCandidate, moveCandidates, currentPostingPage } = useNewPostStore()
+  const { newCandidates, addCandidate, moveCandidates, section } = useNewPostStore()
 
   const createNewCandidate = useCallback(() => {
     addCandidate({
       listId: nanoid(10),
       title: "",
-      count: 0,
+      count: randomNum(1, 100),
       number: newCandidates.length + 1,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,10 +44,10 @@ export default function CandidateList() {
         <Droppable droppableId="fields">
           {(provided) => (
             <div className="fields" {...provided.droppableProps} ref={provided.innerRef}>
-              <ul className="candidate-list">
+              <ul>
                 {newCandidates.map((candidate, i) => (
                   <Draggable
-                    isDragDisabled={currentPostingPage === "result"}
+                    isDragDisabled={section === "result"}
                     index={i}
                     key={candidate.listId}
                     draggableId={candidate.listId}
@@ -57,11 +58,7 @@ export default function CandidateList() {
                         {...draggableProvided.dragHandleProps}
                         {...draggableProvided.draggableProps}
                       >
-                        <EditorCandidate
-                          candidate={candidate}
-                          index={i}
-                          isResultPage={currentPostingPage === "result"}
-                        />
+                        <EditorCandidate candidate={candidate} index={i} isResultPage={section === "result"} />
                       </div>
                     )}
                   </Draggable>
@@ -72,7 +69,7 @@ export default function CandidateList() {
           )}
         </Droppable>
       </DragDropContext>
-      {currentPostingPage === "edit" && (
+      {section === "edit" && (
         <div className="add-candidate-btn">
           <button onClick={createNewCandidate}>
             <i className="fa-solid fa-plus" />

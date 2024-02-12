@@ -1,4 +1,4 @@
-import { CandidateType, PostType } from "@/_types/post"
+import { ListType, PostType } from "@/_types/post"
 import { create } from "zustand"
 
 export type PostingStatus = "init" | "edit" | "result" | "rending"
@@ -7,17 +7,17 @@ export type CandidateDisplayType = "text" | "image" | "textImage"
 interface States {
   newPost: PostType | null
   candidateDisplayType: CandidateDisplayType
-  newCandidates: CandidateType[]
-  selectedCandidate: CandidateType | null
-  currentPostingPage: PostingStatus
+  newCandidates: ListType[]
+  selectedCandidate: ListType | null
+  section: PostingStatus
 }
 
 type Actions = {
   setNewPost: (state: { [key: string]: any } | null) => void
   setCandidateDisplayType: (state: CandidateDisplayType) => void
   setSelectedCandidate: (state: States["selectedCandidate"]) => void
-  setCurrentPostingPage: (state: States["currentPostingPage"]) => void
-  addCandidate: (candidate: CandidateType) => void
+  setSection: (state: States["section"]) => void
+  addCandidate: (candidate: ListType) => void
   moveCandidates: (targetListId: string, from: number, to: number) => void
   deleteCandidate: (listId: string) => void
   changeCandidate: (listId: string, state: { title?: string; description?: string; imageSrc?: string }) => void
@@ -29,12 +29,12 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
   candidateDisplayType: "textImage",
   newCandidates: [],
   selectedCandidate: null,
-  currentPostingPage: "init",
+  section: "init",
   setNewPost: (state) =>
     set((origin) => ({ newPost: origin.newPost ? { ...origin.newPost, ...state } : (state as PostType) })),
   setCandidateDisplayType: (state) => set(() => ({ candidateDisplayType: state })),
   setSelectedCandidate: (state) => set(() => ({ selectedCandidate: state })),
-  setCurrentPostingPage: (state) => set(() => ({ currentPostingPage: state })),
+  setSection: (state) => set(() => ({ section: state })),
   addCandidate: (state) =>
     set((origin) => {
       return { newCandidates: [...origin.newCandidates, state] }
@@ -43,7 +43,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
     set((origin) => {
       // memo: 1. 위치 변경
       const _newCandidates = [...origin.newCandidates]
-      const targetCandidate: CandidateType = origin.newCandidates.find(({ listId }) => listId === targetListId)!
+      const targetCandidate: ListType = origin.newCandidates.find(({ listId }) => listId === targetListId)!
       _newCandidates.splice(from, 1)
       _newCandidates.splice(to, 0, targetCandidate)
 
@@ -51,7 +51,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
       const newCandidates = _newCandidates.map((v, i) => ({ ...v, number: i + 1 }))
 
       // memo: 3. 작업중인 후보도 넘버 변경
-      const selectedCandidate: CandidateType | null = origin.selectedCandidate
+      const selectedCandidate: ListType | null = origin.selectedCandidate
       if (selectedCandidate) {
         selectedCandidate.number = newCandidates.find(({ listId }) => listId === selectedCandidate.listId)!.number
       }
@@ -74,7 +74,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         .map((v, i) => ({ ...v, number: i + 1 }))
 
       // memo: 2. 선택된 후보가 만약 삭제되는 리스트라면 에디트 창을 닫아주고 아니면 넘버 변경
-      let selectedCandidate: CandidateType | null = origin.selectedCandidate
+      let selectedCandidate: ListType | null = origin.selectedCandidate
       if (selectedCandidate) {
         if (targetListId === origin.selectedCandidate?.listId) {
           selectedCandidate = null

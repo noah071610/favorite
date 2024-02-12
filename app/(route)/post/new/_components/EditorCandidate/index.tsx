@@ -3,7 +3,7 @@
 import "@/(route)/post/[postId]/_components/Candidate/style.scss"
 import { useNewPostStore } from "@/_store/newPost"
 import { usePostStore } from "@/_store/post"
-import { CandidateType } from "@/_types/post"
+import { ListType } from "@/_types/post"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import CountUp from "react-countup"
@@ -15,22 +15,22 @@ function EditorCandidate({
   index,
 }: {
   isResultPage: boolean
-  candidate: CandidateType
+  candidate: ListType
   index: number
 }) {
   const { count, description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const { setViewCandidateNum } = usePostStore()
-  const { selectedCandidate, deleteCandidate, setSelectedCandidate } = useNewPostStore()
+  const { selectedCandidate, deleteCandidate, setSelectedCandidate, candidateDisplayType } = useNewPostStore()
 
-  const onClickSelect = (e: any, candidate: CandidateType) => {
+  const onClickSelect = (e: any, candidate: ListType) => {
     if (!e.target.className.includes("delete-")) {
       !isResultPage && setSelectedCandidate(candidate)
     } else {
       setCandidateStatus("delete")
     }
   }
-  const onMouseEnterCard = (candidate: CandidateType) => {
+  const onMouseEnterCard = (candidate: ListType) => {
     setViewCandidateNum(candidate.number)
   }
   const onMouseLeaveCard = () => {
@@ -53,6 +53,19 @@ function EditorCandidate({
 
   const isSelected = selectedCandidate?.listId === listId
 
+  const titleComponent = () => (
+    <h3>
+      <span className={classNames("title", { isEdit: !isResultPage })}>
+        {title.trim() ? title : "후보명 입력 (필수)"}
+      </span>
+      {isResultPage && (
+        <span className="count">
+          <CountUp prefix="(" suffix="표)" duration={4} end={count} />
+        </span>
+      )}
+    </h3>
+  )
+
   return (
     <li
       onClick={(e) => onClickSelect(e, candidate)}
@@ -62,9 +75,9 @@ function EditorCandidate({
         animation: isResultPage
           ? `fade-move-up ${1100 + index * 20}ms ${index * 100}ms cubic-bezier(0,1.1,.78,1) forwards`
           : candidateStatus === "delete"
-          ? "candidate-delete 500ms forwards"
+          ? (candidateDisplayType === "image" ? "image-" : "") + "candidate-delete 500ms forwards"
           : candidateStatus === "add"
-          ? "candidate-add 500ms forwards"
+          ? (candidateDisplayType === "image" ? "image-" : "") + "candidate-add 500ms forwards"
           : "none", // memo: 드래그 드롭 순서변경 시 애니메이션 방지용
         opacity: isResultPage ? 0 : 1,
       }}
@@ -73,15 +86,15 @@ function EditorCandidate({
         className={classNames("candidate-card-bg", {
           selected: isSelected,
         })}
-      ></div>
+      />
       <div
-        className={classNames("candidate-card editor-candidate-card", {
+        className={classNames("candidate-card editor-candidate-card", candidateDisplayType, {
           selected: isSelected,
         })}
       >
         {!isResultPage && (
           <button className="delete-candidate">
-            <i className="fa-solid fa-x delete-icon"></i>
+            <i className="fa-solid fa-x delete-icon" />
           </button>
         )}
         {/* memo: 결과 페이지만 적용 */}
@@ -99,27 +112,24 @@ function EditorCandidate({
         )}
 
         <div className={classNames("candidate-card-inner", { isResultPage })}>
-          <div className="candidate-image-wrapper">
+          <div
+            className={classNames("candidate-image-wrapper", {
+              isSelected: isSelected && candidateDisplayType === "image",
+            })}
+          >
             <div
               style={{
                 backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
-              className="candidate-image"
+              className={classNames("candidate-image")}
             />
+            {candidateDisplayType === "image" && titleComponent()}
+            {candidateDisplayType === "image" && <div className="overlay" />}
           </div>
           <div className="candidate-description">
-            <h3>
-              <span className={classNames("title", { isEdit: !isResultPage })}>
-                {title.trim() ? title : "후보명 입력 (필수)"}
-              </span>
-              {isResultPage && (
-                <span className="count">
-                  <CountUp prefix="(" suffix="표)" duration={4} end={count} />
-                </span>
-              )}
-            </h3>
+            {titleComponent()}
             {!isResultPage && !description && <p className="place-holder">후보 설명 입력 (옵션)</p>}
             {description && <p>{description}</p>}
           </div>

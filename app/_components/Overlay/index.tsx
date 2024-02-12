@@ -33,7 +33,7 @@ export default function Overlay() {
         animation:
           modalStatus !== "none" ? "overlay_animation 400ms forwards" : "overlay_animation_rollback 400ms forwards",
       }}
-      className={classNames("overlay")}
+      className={classNames("global-overlay")}
     />
   )
 }

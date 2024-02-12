@@ -11,13 +11,13 @@ export default function CreateCandidateModal() {
     <div className={classNames("create-candidate-modal", { active: modalStatus === "createCandidate" })}>
       <button className="single">
         <div className="frame">
-          <i className="fa-regular fa-pen-to-square"></i>
+          <i className="fa-regular fa-pen-to-square" />
         </div>
         <span>한 개 생성</span>
       </button>
       <button className="multiple">
         <div className="frame">
-          <i className="fa-solid fa-list"></i>
+          <i className="fa-solid fa-list" />
         </div>
         <span>여러 개 생성</span>
       </button>

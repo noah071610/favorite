@@ -40,7 +40,7 @@ function CommentArea({
           <>
             <div className={classNames("comment-area-text-inner", { focus: isFocused })}>
               <TextareaAutosize onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} />
-              <div className="border"></div>
+              <div className="border" />
             </div>
             <div
               style={{
@@ -59,7 +59,7 @@ function CommentArea({
             <p className="comment-area-content">{text}</p>
             <div className="like">
               <button className="like-btn">
-                <i className="fa-regular fa-heart"></i>
+                <i className="fa-regular fa-heart" />
               </button>
               <span>{like}</span>
             </div>

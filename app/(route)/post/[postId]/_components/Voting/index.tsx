@@ -1,50 +1,33 @@
 "use client"
 
 import { fadeMoveUpAnimation, scaleUpAnimation } from "@/_styles/animation"
-import { CandidateType, VoteIdType } from "@/_types/post"
-import { useParams } from "next/navigation"
-import { Dispatch, SetStateAction } from "react"
+import { ListType } from "@/_types/post"
+import classNames from "classnames"
 import "./style.scss"
 
-export default function Voting({
-  setVotedId,
+export default function VotingPart({
+  onClickSubmit,
   selectedCandidate,
 }: {
-  setVotedId: Dispatch<SetStateAction<VoteIdType | null>>
-  selectedCandidate: CandidateType | null
+  onClickSubmit: () => void
+  selectedCandidate: ListType | null
 }) {
-  const { postId } = useParams<{ postId: string }>()
-
-  const onClickSubmit = () => {
-    if (selectedCandidate) {
-      const participated: string[] = JSON.parse(localStorage.getItem("participated") ?? "[]")
-
-      // memo: submit을 했다는건 안했다는거임. 한 사람은 이미 리디렉트 당함
-      const obj = { postId, listId: selectedCandidate.listId }
-      if (participated.length > 0) {
-        if (!participated.find((v) => v === postId))
-          localStorage.setItem("participated", JSON.stringify([...participated, obj]))
-      } else {
-        localStorage.setItem("participated", JSON.stringify([obj]))
-      }
-      setVotedId(obj)
-    }
-  }
-
   return (
     <>
       {selectedCandidate ? (
-        <div key={selectedCandidate.listId} className="voting">
+        <div key={selectedCandidate.listId} className={classNames("voting")}>
           <div
             style={{
               background: `url('${selectedCandidate.imageSrc}') center / cover`,
               ...scaleUpAnimation(250),
             }}
             className="voting-image"
-          ></div>
+          />
           <div className="voting-description">
             <h2 style={fadeMoveUpAnimation(500, 100)}>{selectedCandidate.title}</h2>
-            <p style={fadeMoveUpAnimation(510, 150)}>{selectedCandidate.description}</p>
+            {selectedCandidate.description?.trim() && (
+              <p style={fadeMoveUpAnimation(510, 150)}>{selectedCandidate.description}</p>
+            )}
           </div>
           <div className="voting-btn">
             <a onClick={onClickSubmit} style={fadeMoveUpAnimation(530, 210)}>

@@ -2,6 +2,7 @@
 
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { PostCardType } from "@/_types/post"
+import classNames from "classnames"
 import Link from "next/link"
 import LoadingBar from "../Loading/LoadingBar"
 import Profile from "./Profile"
@@ -18,28 +19,41 @@ export default function PostCard({
     title,
     info: { participateImages, like, shareCount, participateCount },
   },
+  isEdit,
 }: {
   postCard: PostCardType
+  isEdit?: boolean
 }) {
-  const loaded = useProgressiveImage(thumbnail)
+  const imageStatus = useProgressiveImage(thumbnail)
 
   return (
     <article className="post-card">
+      {isEdit && <div className="overlay" />}
       <Profile user={user} like={like} shareCount={shareCount} />
       <div className="post-card-main">
         <Link className="post-card-link" href={`/post/${postId}`}>
           <h1>{title}</h1>
           <h2>{description}</h2>
-          <div className="thumbnail">
-            {loaded ? (
-              <div className="thumbnail-image">
+          <div className={classNames("thumbnail", { isFull: !description.trim() })}>
+            <div className="thumbnail-image">
+              {imageStatus === "success" && (
                 <div
                   style={{
                     background: `url('${thumbnail}') center / cover`,
                   }}
                 />
-              </div>
-            ) : (
+              )}
+              {imageStatus === "error" && (
+                <div className="no-thumbnail">
+                  <div>
+                    <i className="fa-solid fa-gift" />
+                    <i className="fa-solid fa-heart" />
+                    <i className="fa-solid fa-rocket" />
+                  </div>
+                </div>
+              )}
+            </div>
+            {imageStatus === "loading" && (
               <div className="loading">
                 <LoadingBar />
               </div>

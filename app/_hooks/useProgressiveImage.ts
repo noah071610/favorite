@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react"
 
 export const useProgressiveImage = (src: string) => {
-  const [sourceLoaded, setSourceLoaded] = useState<string | null>(null)
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading")
 
   useEffect(() => {
     const img = new Image()
     img.src = src
     img.onload = () => {
-      setSourceLoaded(src)
+      setStatus("success")
+    }
+    img.onerror = () => {
+      setStatus("error")
     }
   }, [src])
 
-  return sourceLoaded
+  return status
 }

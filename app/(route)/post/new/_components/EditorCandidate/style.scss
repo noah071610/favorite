@@ -22,6 +22,28 @@
     opacity: 1;
   }
 }
+@keyframes image-candidate-add {
+  0% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    height: 154px;
+  }
+
+  60% {
+    transform: scale(0);
+    height: 154px;
+  }
+  100% {
+    transform: scale(1);
+    height: auto;
+    min-height: 154px;
+    opacity: 1;
+  }
+}
+
 @keyframes candidate-delete {
   0% {
     transform: scale(1);
@@ -40,32 +62,49 @@
     opacity: 0;
   }
 }
+@keyframes image-candidate-delete {
+  0% {
+    transform: scale(1);
+    min-height: auto;
+    height: 154px;
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0);
+    height: 154px;
+  }
 
-.candidate-description > h3.isEdit {
+  100% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.candidate-description > h3 {
   .title {
-    width: calc(100% - 20px);
+    width: calc(100% - 25px);
   }
 }
 
 .delete-candidate {
   position: absolute;
-  top: 3px;
+  top: 6px;
   right: 6px;
-  padding: 5px;
+  @include flex();
+  width: 26px;
+  height: 26px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 100%;
+  z-index: 10;
   i {
     font-size: 10px;
     color: $gray-hard;
   }
   &:hover {
+    background-color: $pink-soft;
     i {
-      color: $pink;
+      color: white;
     }
   }
-}
-
-.candidate-description {
-  display: none;
-}
-.candidate-card-inner {
-  display: block;
 }

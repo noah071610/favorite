@@ -3,14 +3,19 @@
 .home-page {
   background-color: $bg-color;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
-  &-inner {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 25px;
+  padding-bottom: 180px;
+  &-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     padding: 20px 0;
     min-height: calc(100vh - 60px);
   }
+}
+
+.home-infinity-observer {
+  height: 50px;
 }

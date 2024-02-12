@@ -12,24 +12,20 @@ const navList = {
 }
 
 export default function NewPostNavigation() {
-  const { currentPostingPage, setCurrentPostingPage } = useNewPostStore()
+  const { section, setSection } = useNewPostStore()
 
   const onClickNav = (status: PostingStatus) => {
-    setCurrentPostingPage(status)
+    setSection(status)
   }
 
   return (
     <nav className="new-post-nav">
       {(Object.keys(navList) as PostingStatus[]).map((status) => (
-        <a
-          className={classNames({ active: currentPostingPage === status })}
-          key={status}
-          onClick={() => onClickNav(status)}
-        >
+        <a className={classNames({ active: section === status })} key={status} onClick={() => onClickNav(status)}>
           <span>{navList[status]}</span>
         </a>
       ))}
-      <div className={classNames("follower-div", { [currentPostingPage]: currentPostingPage })}></div>
+      <div className={classNames("follower-div", { [section]: section })} />
     </nav>
   )
 }

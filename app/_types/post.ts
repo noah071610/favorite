@@ -5,7 +5,7 @@ export type VoteIdType = {
   listId: string
 }
 
-export interface CandidateType {
+export interface ListType {
   listId: string
   imageSrc?: string
   title: string
@@ -42,7 +42,7 @@ export interface PostCardType extends _PostCardType {
   info: PostCardInfo
 }
 export interface PostType extends _PostCardType {
-  content: CandidateType[]
+  content: ListType[]
   comments: CommentType[]
 }
 

@@ -9,8 +9,8 @@ import "./style.scss"
 
 export default function Header() {
   const pathname = usePathname()
-  const isPostingPage = pathname.includes("new")
-  const isPostPage = pathname.includes("/post/") && !isPostingPage
+  const isNewPostPage = pathname.includes("new")
+  const isPostPage = pathname.includes("/post/") && !isNewPostPage
 
   return isPostPage ? null : (
     <>
@@ -19,10 +19,10 @@ export default function Header() {
           <img src=""></img>
           {/* todo: 로고 만들기 */}
         </div>
-        <div className="center">{isPostingPage && <NewPostNavigation />}</div>
+        <div className="center">{isNewPostPage && <NewPostNavigation />}</div>
         <div className="right">
-          <Link href="/post/new" className="new-post-btn">
-            <span>New post</span>
+          <Link href={isNewPostPage ? "/" : "/post/new"} className="new-post-btn">
+            <span>{isNewPostPage ? "Go back" : "New post"}</span>
           </Link>
           <Link href="/post/new" className="login-btn">
             <span>Login</span>
@@ -30,7 +30,7 @@ export default function Header() {
         </div>
       </header>
       <div className="header-padding" />
-      {!isPostPage && !isPostingPage && (
+      {!isPostPage && !isNewPostPage && (
         <div className="header-search">
           <SearchBar />
           <SearchModal />

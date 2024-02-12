@@ -11,7 +11,7 @@ export default function Gauge({ style, postId }: { style: any; postId: string })
       </div>
       <div className="emo-gauge-outer">
         <div style={{ width: `${t_num * 10}%` }} className="emo-gauge-inner">
-          <div className="emo-gauge"></div>
+          <div className="emo-gauge" />
         </div>
       </div>
     </div>

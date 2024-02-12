@@ -5,8 +5,7 @@ import { useNewPostStore } from "@/_store/newPost"
 import "./style.scss"
 
 export default function InitEditSection() {
-  const { newPost, newCandidates, setSelectedCandidate, setNewPost, setCurrentPostingPage, clearCandidate } =
-    useNewPostStore()
+  const { newPost, newCandidates, setSelectedCandidate, setNewPost, setSection, clearCandidate } = useNewPostStore()
 
   return (
     <div className="init">
@@ -15,7 +14,7 @@ export default function InitEditSection() {
         <div className="type-list">
           <button className="type-vote">
             <div>
-              <i className="fa-solid fa-chart-simple symbol"></i>
+              <i className="fa-solid fa-chart-simple symbol" />
             </div>
             <span>투표</span>
           </button>
@@ -27,7 +26,7 @@ export default function InitEditSection() {
           </button>
           <button className="type-tournament">
             <div>
-              <i className="fa-solid fa-trophy"></i>
+              <i className="fa-solid fa-trophy" />
             </div>
             <span>월드컵</span>
           </button>
