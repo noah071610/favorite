@@ -7,7 +7,7 @@ import { nanoid } from "nanoid"
 
 import { randomNum } from "@/_utils/math"
 import { useCallback } from "react"
-import EditorCandidate from "../EditorCandidate"
+import Candidate from "../Candidate"
 import "./style.scss"
 
 export default function CandidateList() {
@@ -41,10 +41,10 @@ export default function CandidateList() {
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="fields">
+        <Droppable droppableId="candidate-drop-zone">
           {(provided) => (
-            <div className="fields" {...provided.droppableProps} ref={provided.innerRef}>
-              <ul>
+            <div className="candidate-drop-zone" {...provided.droppableProps} ref={provided.innerRef}>
+              <ul className="candidate-list">
                 {newCandidates.map((candidate, i) => (
                   <Draggable
                     isDragDisabled={section === "result"}
@@ -58,7 +58,7 @@ export default function CandidateList() {
                         {...draggableProvided.dragHandleProps}
                         {...draggableProvided.draggableProps}
                       >
-                        <EditorCandidate candidate={candidate} index={i} isResultPage={section === "result"} />
+                        <Candidate candidate={candidate} index={i} isResultPage={section === "result"} />
                       </div>
                     )}
                   </Draggable>

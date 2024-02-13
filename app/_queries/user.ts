@@ -1,4 +1,4 @@
-import { server } from "./provider/reactQueryProvider"
+import { server } from "@/_data"
 
 export async function getUser(userId: number) {
   const response = await server.get(`/user/${userId}`)

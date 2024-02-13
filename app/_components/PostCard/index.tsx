@@ -29,7 +29,7 @@ export default function PostCard({
   return (
     <article className="post-card">
       {isEdit && <div className="overlay" />}
-      <Profile user={user} like={like} shareCount={shareCount} />
+      <Profile postId={postId} user={user} like={like} shareCount={shareCount} />
       <div className="post-card-main">
         <Link className="post-card-link" href={`/post/${postId}`}>
           <h1>{title}</h1>

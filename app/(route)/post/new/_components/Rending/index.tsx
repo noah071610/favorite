@@ -7,11 +7,11 @@ import { UserType } from "@/_types/post"
 import { useQuery } from "@tanstack/react-query"
 
 import PostCard from "@/_components/PostCard"
-import { createNewPost } from "@/_queries/post"
+import { createNewPost } from "@/_queries/newPost"
 import { useRouter } from "next/navigation"
 import "./style.scss"
 
-export default function RendingEditSection() {
+export default function Rending() {
   const { data: user } = useQuery<UserType>({
     queryKey: ["getUser"],
     queryFn: () => getUser(1),

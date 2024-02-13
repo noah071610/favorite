@@ -81,9 +81,18 @@
   }
 }
 
-.candidate-description > h3 {
-  .title {
-    width: calc(100% - 25px);
+.candidate-card {
+  .text-info {
+    .title {
+      width: calc(100% - 25px);
+    }
+  }
+  &.isResultPage {
+    .text-info {
+      .title {
+        width: 100%;
+      }
+    }
   }
 }
 

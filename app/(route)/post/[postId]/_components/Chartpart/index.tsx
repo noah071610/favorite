@@ -1,14 +1,13 @@
 "use client"
 
 import {
-  chartBackgroundColors as _chartBackgroundColors,
-  chartBorderColors as _chartBorderColors,
+  chartBackgroundColors,
+  chartBorderColors,
   generationChartData,
   generationChartOption,
   rankingOptions,
 } from "@/_data/chart"
 import { useNewPostStore } from "@/_store/newPost"
-import { usePostStore } from "@/_store/post"
 import { scaleUpAnimation } from "@/_styles/animation"
 import { ListType } from "@/_types/post"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
@@ -22,7 +21,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 ChartJS.register(ArcElement)
 
 export default function ChartPart({ candidates, isEdit }: { candidates: ListType[]; isEdit?: boolean }) {
-  const { viewCandidateNum } = usePostStore()
   const { newPost, setNewPost } = useNewPostStore()
 
   const ranking_data = useMemo(
@@ -38,32 +36,16 @@ export default function ChartPart({ candidates, isEdit }: { candidates: ListType
     setNewPost({ chartDescription: text })
   }
 
-  const { chartBackgroundColors, chartBorderColors } = useMemo(
-    () => ({
-      chartBackgroundColors: viewCandidateNum
-        ? _chartBackgroundColors.map((v, i) => (viewCandidateNum === i + 1 ? v : "rgba(202, 202, 202, 0.2)"))
-        : _chartBackgroundColors,
-      chartBorderColors: viewCandidateNum
-        ? _chartBorderColors.map((v, i) => (viewCandidateNum === i + 1 ? v : "rgba(202, 202, 202, 1)"))
-        : _chartBorderColors,
-    }),
-    [viewCandidateNum]
-  )
-
-  const barData = useMemo(
-    () => ({
-      labels: ranking_data.labels,
-      datasets: [
-        {
-          data: ranking_data.data,
-          backgroundColor: chartBackgroundColors,
-          borderColor: chartBorderColors,
-        },
-      ],
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ranking_data, chartBackgroundColors]
-  )
+  const rankingData = {
+    labels: ranking_data.labels,
+    datasets: [
+      {
+        data: ranking_data.data,
+        backgroundColor: chartBackgroundColors,
+        borderColor: chartBorderColors,
+      },
+    ],
+  }
 
   return (
     <div className="result">
@@ -81,7 +63,7 @@ export default function ChartPart({ candidates, isEdit }: { candidates: ListType
             }px`,
           }}
         >
-          <Bar options={rankingOptions as any} data={barData} />
+          <Bar options={rankingOptions as any} data={rankingData} />
         </section>
         <section className="sub-chart">
           <div className="generation">

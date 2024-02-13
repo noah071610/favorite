@@ -1,4 +1,13 @@
-import { server } from "./provider/reactQueryProvider"
+import { server } from "@/_data"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+function sliceArray(array: any[]) {
+  const result = []
+  for (let i = 0; i < array.length; i += 12) {
+    result.push(array.slice(i, i + 12))
+  }
+  return result
+}
 
 export async function getPosts({ pageParam = 0 }) {
   const response = await server.get(`/post/all?cursor=${pageParam}`)
@@ -12,22 +21,31 @@ export async function getPost(postId: string) {
   return response.data
 }
 
-export async function uploadImage(file: FormData) {
-  const response = await server.post(`/upload`, file, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })
+export async function likePost(userId: number, postId: string) {
+  const response = await server.patch(`/post/like?postId=${postId}&userId=${userId}`)
 
   return response.data
 }
 
-export async function createNewPost(newPost: { [key: string]: any }) {
-  try {
-    const response = await server.post(`/post`, newPost)
+export function likeMutate(userId: number, postId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationKey: ["getPosts"],
+    mutationFn: () => likePost(userId, postId),
 
-    return { msg: "ok", data: response.data }
-  } catch (error) {
-    return error
-  }
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ["getPosts"] })
+
+      await queryClient.setQueryData(["getPosts"], (oldData: any) => {
+        const pages = [...oldData.pages.flat()]
+
+        return {
+          pageParams: oldData.pageParams,
+          pages: sliceArray(
+            pages.map((v) => (v.postId === postId ? { ...v, info: { ...v.info, like: v.info.like + 1 } } : v))
+          ),
+        }
+      })
+    },
+  })
 }

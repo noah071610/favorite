@@ -13,16 +13,16 @@ import { UserType } from "@/_types/post"
 import classNames from "classnames"
 import { nanoid } from "nanoid"
 
-import { uploadImage } from "@/_queries/post"
+import { uploadImage } from "@/_queries/newPost"
 import { useDropzone } from "react-dropzone"
 import ChartPart from "../[postId]/_components/Chartpart"
 import CandidateList from "./_components/CandidateList"
 import InitEditSection from "./_components/InitEditSection"
-import RendingEditSection from "./_components/RendingEditSection"
-import VotingEditSection from "./_components/VotingEditSection"
+import Rending from "./_components/Rending"
+import VotingPart from "./_components/VotingPart"
 
 const NewPostInput = React.memo(() => {
-  const { newPost, setNewPost } = useNewPostStore()
+  const { newPost, setNewPost, section } = useNewPostStore()
   const onChangeInput = (e: any, type: "title" | "description") => {
     if (type === "title" && e.target.value.length >= 60) return
     if (type === "description" && e.target.value.length >= 80) return
@@ -33,13 +33,13 @@ const NewPostInput = React.memo(() => {
     newPost && (
       <>
         <input
-          className="post-title-input"
+          className="title-input"
           placeholder="제목 입력"
           value={newPost.title ?? ""}
           onChange={(e) => onChangeInput(e, "title")}
         />
         <input
-          className="post-description-input"
+          className="description-input"
           placeholder="설명 입력"
           value={newPost.description ?? ""}
           onChange={(e) => onChangeInput(e, "description")}
@@ -99,7 +99,7 @@ export default function NewPost() {
   })
 
   return (
-    <div className={classNames("post-page new-post-page")}>
+    <div className={classNames("post-page new-post-page", { isResultPage: section === "result" })}>
       <div className="post">
         {/* INIT SECTION */}
         {section === "init" && <InitEditSection />}
@@ -107,25 +107,25 @@ export default function NewPost() {
         {/* CANDIDATE LAYOUT FOR EDIT SECTION */}
         {section === "edit" && (
           <>
-            <section className="edit-wrapper thumbnail-wrapper">
+            <section className="thumbnail-edit">
               <h1>썸네일 변경</h1>
               <div
                 style={{
                   background: `url('${newPost?.thumbnail}') center / cover`,
                 }}
-                className={classNames("thumbnail-image", { active: isDragActive })}
+                className={classNames("thumbnail", { active: isDragActive })}
                 {...getRootProps()}
               >
                 <input {...getInputProps()} />
                 <i className={classNames("fa-solid fa-plus", { active: isDragActive })} />
               </div>
             </section>
-            <section className="edit-wrapper layout-selector-wrapper">
+            <section className="candidate-style-edit">
               <h1>후보 스타일 변경</h1>
-              <div className="layout-selector-inner">
+              <div className="inner">
                 <button
                   onClick={() => onChangeCandidateLayout("textImage")}
-                  className={classNames("layout-selector", { active: candidateDisplayType === "textImage" })}
+                  className={classNames("card", { active: candidateDisplayType === "textImage" })}
                 >
                   <div className="icon-wrapper">
                     <i className="fa-solid fa-heading" />
@@ -136,7 +136,7 @@ export default function NewPost() {
                 </button>
                 <button
                   onClick={() => onChangeCandidateLayout("image")}
-                  className={classNames("layout-selector", { active: candidateDisplayType === "image" })}
+                  className={classNames("card", { active: candidateDisplayType === "image" })}
                 >
                   <div className="icon-wrapper">
                     <i className="fa-solid fa-image" />
@@ -145,7 +145,7 @@ export default function NewPost() {
                 </button>
                 <button
                   onClick={() => onChangeCandidateLayout("text")}
-                  className={classNames("layout-selector", { active: candidateDisplayType === "text" })}
+                  className={classNames("card", { active: candidateDisplayType === "text" })}
                 >
                   <div className="icon-wrapper">
                     <i className="fa-solid fa-heading" />
@@ -160,40 +160,40 @@ export default function NewPost() {
         {/* EDIT & RESULT SECTION */}
         {(section === "edit" || section === "result") && (
           <>
-            <section className="post-info">
-              <div className="post-info-title">
+            <section className="info">
+              <div className="title">
                 {section === "edit" && newPost && <NewPostInput />}
                 {section === "result" && newPost && (
                   <>
                     <h1>{!!newPost.title.trim() ? newPost.title : "제목 입력"}</h1>
-                    <p>{!!newPost.description.trim() ? newPost.description : "설명 입력"}</p>
+                    <h2>{!!newPost.description.trim() ? newPost.description : "설명 입력"}</h2>
                   </>
                 )}
               </div>
-              <div className="post-info-profile">
+              <div className="profile">
                 <button className="user-image">
                   <img src={user?.userImage} alt={`user_image_${user?.userId}`} />
                 </button>
-                <div>
-                  <h3>{user?.userName}</h3>
-                  <span>작성일: 2024/01/13</span>
+                <div className="user-info">
+                  <span>{user?.userName}</span>
+                  <span>2024/01/13</span>
                 </div>
               </div>
             </section>
-            <div className={classNames("post-content", { ["result-page"]: section === "result" })}>
-              <section className="left">
+            <div className={classNames("content", { ["result-page"]: section === "result" })}>
+              <div className="left">
                 <CandidateList />
-              </section>
-              <section className="right">
-                {section === "edit" && <VotingEditSection />}
+              </div>
+              <div className="right">
+                {section === "edit" && <VotingPart />}
                 {section === "result" && <ChartPart candidates={newCandidates} isEdit={true} />}
-              </section>
+              </div>
             </div>
           </>
         )}
 
         {/* RENDING SECTION */}
-        {section === "rending" && <RendingEditSection />}
+        {section === "rending" && <Rending />}
       </div>
     </div>
   )

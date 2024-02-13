@@ -2,9 +2,8 @@
 
 //memo: 덮어 씌우기
 
-.post-info-title {
-  width: 60%;
-  padding: 0;
+.new-post-page .title {
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -13,20 +12,20 @@
     display: block;
     background-color: rgba(234, 234, 234, 0.4);
   }
-  .post-title-input {
+  .title-input {
     font-size: 18px;
     font-weight: 700;
     padding: 5px;
     margin-bottom: 2px;
   }
 
-  .post-description-input {
+  .description-input {
     font-size: 14px;
     padding: 5px;
   }
 }
 
-.edit-wrapper {
+.new-post-page .edit-wrapper {
   padding-bottom: 50px;
   h1 {
     font-size: 20px;
@@ -42,25 +41,14 @@
   }
 }
 
-.thumbnail-wrapper {
-  .thumbnail {
-    width: 440px;
-    height: 200px;
-    &-image {
-      width: 100%;
-      height: 100%;
-      display: block;
-      overflow: hidden;
-      border-radius: 15px;
+.new-post-page .thumbnail-edit {
+  padding-bottom: 50px;
 
-      & > div {
-        width: 100%;
-        height: 200px;
-        transition: all 250ms;
-      }
-    }
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
   }
-  .thumbnail-image {
+  .thumbnail {
     border-radius: 12px;
     width: 440px;
     height: 200px;
@@ -97,47 +85,54 @@
   }
 }
 
-.layout-selector {
-  &-wrapper {
-    width: 100%;
-  }
-  &-inner {
+.new-post-page .candidate-style-edit {
+  width: 100%;
+  padding-bottom: 80px;
+
+  .inner {
     display: flex;
     align-items: center;
     gap: 20px;
   }
 
-  width: 200px;
-
-  .icon-wrapper {
-    @include border();
-    border-radius: 10px;
-    padding: 15px;
-    i {
-      font-size: 25px;
-      color: $gray-hard;
-    }
-    .fa-plus {
-      font-size: 14px;
-      margin: 0 5px;
-    }
-    margin-bottom: 10px;
-  }
-  span {
-    font-size: 14px;
-    color: $gray-hard;
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
   }
 
-  &:hover,
-  &.active {
+  .card {
+    width: 200px;
+
     .icon-wrapper {
-      border-color: $pink-hard;
+      @include border();
+      border-radius: 10px;
+      padding: 15px;
       i {
-        color: $pink-hard;
+        font-size: 25px;
+        color: $gray-hard;
       }
+      .fa-plus {
+        font-size: 14px;
+        margin: 0 5px;
+      }
+      margin-bottom: 10px;
     }
     span {
-      color: $pink-hard;
+      font-size: 14px;
+      color: $gray-hard;
+    }
+
+    &:hover,
+    &.active {
+      .icon-wrapper {
+        border-color: $pink-hard;
+        i {
+          color: $pink-hard;
+        }
+      }
+      span {
+        color: $pink-hard;
+      }
     }
   }
 }

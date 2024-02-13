@@ -9,15 +9,7 @@ import React, { useEffect, useState } from "react"
 import CountUp from "react-countup"
 import "./style.scss"
 
-function EditorCandidate({
-  isResultPage,
-  candidate,
-  index,
-}: {
-  isResultPage: boolean
-  candidate: ListType
-  index: number
-}) {
+function Candidate({ isResultPage, candidate, index }: { isResultPage: boolean; candidate: ListType; index: number }) {
   const { count, description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const { setViewCandidateNum } = usePostStore()
@@ -54,20 +46,23 @@ function EditorCandidate({
   const isSelected = selectedCandidate?.listId === listId
 
   const titleComponent = () => (
-    <h3>
-      <span className={classNames("title", { isEdit: !isResultPage })}>
-        {title.trim() ? title : "후보명 입력 (필수)"}
-      </span>
+    <div className="title">
+      <h3>{title.trim() ? title : "후보명 입력 (필수)"}</h3>
       {isResultPage && (
         <span className="count">
           <CountUp prefix="(" suffix="표)" duration={4} end={count} />
         </span>
       )}
-    </h3>
+    </div>
   )
 
   return (
     <li
+      className={classNames("candidate-card", {
+        selected: isSelected,
+        isResultPage,
+        [candidateDisplayType]: candidateDisplayType,
+      })}
       onClick={(e) => onClickSelect(e, candidate)}
       onMouseEnter={() => onMouseEnterCard(candidate)}
       onMouseLeave={onMouseLeaveCard}
@@ -82,61 +77,47 @@ function EditorCandidate({
         opacity: isResultPage ? 0 : 1,
       }}
     >
-      <div
-        className={classNames("candidate-card-bg", {
-          selected: isSelected,
-        })}
-      />
-      <div
-        className={classNames("candidate-card editor-candidate-card", candidateDisplayType, {
-          selected: isSelected,
-        })}
-      >
-        {!isResultPage && (
-          <button className="delete-candidate">
-            <i className="fa-solid fa-x delete-icon" />
-          </button>
-        )}
-        {/* memo: 결과 페이지만 적용 */}
-        {isResultPage && (
-          <>
-            {index === 0 && (
-              <img
-                className="number-one"
-                src={`/images/ranking/number_${index + 1}.png`}
-                alt={`ranking_number_${index + 1}`}
-              />
-            )}
-            <div className="number ranking">{index + 1}</div>
-          </>
-        )}
-
-        <div className={classNames("candidate-card-inner", { isResultPage })}>
-          <div
-            className={classNames("candidate-image-wrapper", {
-              isSelected: isSelected && candidateDisplayType === "image",
-            })}
-          >
-            <div
-              style={{
-                backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-              className={classNames("candidate-image")}
+      <div className={classNames("border")} />
+      {!isResultPage && (
+        <button className="delete-candidate">
+          <i className="fa-solid fa-x delete-icon" />
+        </button>
+      )}
+      {/* memo: 결과 페이지만 적용 */}
+      {isResultPage && (
+        <>
+          {index === 0 && (
+            <img
+              className="number-one"
+              src={`/images/ranking/number_${index + 1}.png`}
+              alt={`ranking_number_${index + 1}`}
             />
-            {candidateDisplayType === "image" && titleComponent()}
-            {candidateDisplayType === "image" && <div className="overlay" />}
-          </div>
-          <div className="candidate-description">
-            {titleComponent()}
-            {!isResultPage && !description && <p className="place-holder">후보 설명 입력 (옵션)</p>}
-            {description && <p>{description}</p>}
-          </div>
+          )}
+          <div className="number ranking">{index + 1}</div>
+        </>
+      )}
+
+      <div className={classNames("inner")}>
+        <div className={classNames("image-wrapper")}>
+          <div
+            style={{
+              backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+            className={classNames("image")}
+          />
+          {candidateDisplayType === "image" && titleComponent()}
+          {candidateDisplayType === "image" && <div className="overlay" />}
+        </div>
+        <div className="text-info">
+          {titleComponent()}
+          {!isResultPage && !description && <p className="place-holder">후보 설명 입력 (옵션)</p>}
+          {description && <p>{description}</p>}
         </div>
       </div>
     </li>
   )
 }
 
-export default React.memo(EditorCandidate)
+export default React.memo(Candidate)

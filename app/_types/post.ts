@@ -15,9 +15,10 @@ export interface ListType {
 }
 
 export interface UserType {
-  userId: string
+  userId: number
   userName: string
   userImage: string
+  liked: string[]
 }
 
 export interface PostCardInfo {
@@ -51,4 +52,9 @@ export interface CommentType {
   user: UserType
   text: string
   like: number
+}
+
+export interface PostCardListType {
+  pageParams: number[]
+  pages: PostCardType[][]
 }

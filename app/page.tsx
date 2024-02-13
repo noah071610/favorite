@@ -1,11 +1,12 @@
 "use client"
 
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import PostCard from "./_components/PostCard"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
 import { getPosts } from "./_queries/post"
-import { PostCardType } from "./_types/post"
+import { getUser } from "./_queries/user"
+import { PostCardType, UserType } from "./_types/post"
 import "./style.scss"
 
 export default function HomePage() {
@@ -34,6 +35,11 @@ export default function HomePage() {
       setHasNextPage(false)
     }
   }, [data?.pages])
+
+  const { data: user } = useQuery<UserType>({
+    queryKey: ["getUser"],
+    queryFn: () => getUser(1),
+  })
 
   return (
     <>

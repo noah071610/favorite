@@ -11,7 +11,7 @@ import { useEffect, useMemo, useState } from "react"
 import Candidate from "./_components/Candidate"
 import ChartPart from "./_components/Chartpart"
 import CommentPart from "./_components/CommentPart"
-import VotingPart from "./_components/Voting"
+import VotingPart from "./_components/VotingPart"
 import "./style.scss"
 
 export default function PostPage() {
@@ -134,11 +134,11 @@ export default function PostPage() {
               </button>
               <div className="user-info">
                 <span>{post.user.userName}</span>
-                <span>작성일: 2024/01/13</span>
+                <span>2024/01/13</span>
               </div>
             </div>
           </div>
-          <div className={classNames("content", { isResultPage, textOnly: candidateType === "text" && !isResultPage })}>
+          <div className={classNames("content", { textOnly: candidateType === "text" && !isResultPage })}>
             <div className={classNames("left")}>
               <ul className="candidate-list">
                 {candidates.map((candidate, index) => (
@@ -159,12 +159,12 @@ export default function PostPage() {
             <div className={classNames("right")}>
               {votedId ? (
                 <div className="result">
-                  <div className="section-title">
+                  <div className="title">
                     <i className="fa-solid fa-chart-simple" />
                     <span>통계</span>
                   </div>
                   <ChartPart candidates={post.content} />
-                  <div className="section-title">
+                  <div className="title">
                     <i className="fa-solid fa-comment" />
                     <span>코멘트</span>
                   </div>

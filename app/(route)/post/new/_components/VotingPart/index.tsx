@@ -1,10 +1,10 @@
 "use client"
 
-import "@/(route)/post/[postId]/_components/Voting/style.scss"
+import "@/(route)/post/[postId]/_components/VotingPart/style.scss"
 import { scaleUpAnimation } from "@/_styles/animation"
 import TextareaAutosize from "react-textarea-autosize"
 
-import { uploadImage } from "@/_queries/post"
+import { uploadImage } from "@/_queries/newPost"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classnames"
 import React, { useCallback } from "react"
@@ -48,7 +48,7 @@ const CandidateInput = React.memo(() => {
 })
 CandidateInput.displayName = "CandidateInput"
 
-export default function VotingEditSection() {
+export default function VotingPart() {
   const { changeCandidate, selectedCandidate, candidateDisplayType } = useNewPostStore()
   const { listId, imageSrc } = selectedCandidate ?? {}
 
@@ -81,7 +81,7 @@ export default function VotingEditSection() {
   return (
     <>
       {selectedCandidate ? (
-        <div key={listId} className={classNames("voting", { isTextType: candidateDisplayType === "text" })}>
+        <div key={listId} className={classNames("voting")}>
           {candidateDisplayType !== "text" && (
             <div
               style={{
