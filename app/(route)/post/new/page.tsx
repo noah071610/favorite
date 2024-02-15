@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useEffect } from "react"
+import React, { useEffect } from "react"
 
 import "@/(route)/post/[postId]/style.scss"
 import "./style.scss"
@@ -13,13 +13,16 @@ import { UserType } from "@/_types/post"
 import classNames from "classnames"
 import { nanoid } from "nanoid"
 
-import { uploadImage } from "@/_queries/newPost"
-import { useDropzone } from "react-dropzone"
-import ChartPart from "../[postId]/_components/Chartpart"
-import CandidateList from "./_components/CandidateList"
 import InitEditSection from "./_components/InitEditSection"
-import Rending from "./_components/Rending"
-import VotingPart from "./_components/VotingPart"
+import RendingSection from "./_components/RendingSection"
+import VoteTypeContent from "./_components/VoteType"
+import VsTypeContent from "./_components/VsType"
+
+const selectorTypes = [
+  { type: "textImage", icons: ["fa-heading", "fa-plus", "fa-image"], label: "이미지와 텍스트" },
+  { type: "image", icons: ["fa-image"], label: "이미지 중심" },
+  { type: "text", icons: ["fa-heading"], label: "텍스트만" },
+]
 
 const NewPostInput = React.memo(() => {
   const { newPost, setNewPost, section } = useNewPostStore()
@@ -66,7 +69,7 @@ export default function NewPost() {
     // todo: 불러오기 로직 추가
     setNewPost({
       postId: nanoid(10),
-      type: "vote-textImage",
+      type: "",
       title: "",
       description: "",
       chartDescription: "",
@@ -75,31 +78,8 @@ export default function NewPost() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      acceptedFiles.forEach(async (file: any) => {
-        const formData = new FormData()
-        formData.append("image", file)
-
-        const { msg, imageSrc } = await uploadImage(formData)
-        if (msg === "ok") {
-          setNewPost({ thumbnail: imageSrc })
-        }
-      })
-    },
-    [setNewPost]
-  )
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    multiple: false,
-    accept: {
-      "image/*": [],
-    },
-  })
-
   return (
-    <div className={classNames("post-page new-post-page", { isResultPage: section === "result" })}>
+    <div className={classNames("post-page new-post-page", { isInit: section === "init" })}>
       <div className="post">
         {/* INIT SECTION */}
         {section === "init" && <InitEditSection />}
@@ -107,53 +87,27 @@ export default function NewPost() {
         {/* CANDIDATE LAYOUT FOR EDIT SECTION */}
         {section === "edit" && (
           <>
-            <section className="thumbnail-edit">
-              <h1>썸네일 변경</h1>
-              <div
-                style={{
-                  background: `url('${newPost?.thumbnail}') center / cover`,
-                }}
-                className={classNames("thumbnail", { active: isDragActive })}
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                <i className={classNames("fa-solid fa-plus", { active: isDragActive })} />
-              </div>
-            </section>
-            <section className="candidate-style-edit">
-              <h1>후보 스타일 변경</h1>
-              <div className="inner">
-                <button
-                  onClick={() => onChangeCandidateLayout("textImage")}
-                  className={classNames("card", { active: candidateDisplayType === "textImage" })}
-                >
-                  <div className="icon-wrapper">
-                    <i className="fa-solid fa-heading" />
-                    <i className="fa-solid fa-plus" />
-                    <i className="fa-solid fa-image" />
-                  </div>
-                  <span>이미지와 텍스트</span>
-                </button>
-                <button
-                  onClick={() => onChangeCandidateLayout("image")}
-                  className={classNames("card", { active: candidateDisplayType === "image" })}
-                >
-                  <div className="icon-wrapper">
-                    <i className="fa-solid fa-image" />
-                  </div>
-                  <span>이미지 중심</span>
-                </button>
-                <button
-                  onClick={() => onChangeCandidateLayout("text")}
-                  className={classNames("card", { active: candidateDisplayType === "text" })}
-                >
-                  <div className="icon-wrapper">
-                    <i className="fa-solid fa-heading" />
-                  </div>
-                  <span>텍스트만</span>
-                </button>
-              </div>
-            </section>
+            {newPost?.type.includes("vote") && (
+              <section className="candidate-style-edit">
+                <h1>후보 스타일 변경</h1>
+                <div className="inner">
+                  {selectorTypes.map(({ type, icons, label }) => (
+                    <button
+                      key={type}
+                      onClick={() => onChangeCandidateLayout(type as CandidateDisplayType)}
+                      className={classNames("card", { active: candidateDisplayType === type })}
+                    >
+                      <div className="icon-wrapper">
+                        {icons.map((icon, index) => (
+                          <i key={index} className={`fa-solid ${icon}`} />
+                        ))}
+                      </div>
+                      <span>{label}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
           </>
         )}
 
@@ -180,20 +134,13 @@ export default function NewPost() {
                 </div>
               </div>
             </section>
-            <div className={classNames("content", { ["result-page"]: section === "result" })}>
-              <div className="left">
-                <CandidateList />
-              </div>
-              <div className="right">
-                {section === "edit" && <VotingPart />}
-                {section === "result" && <ChartPart candidates={newCandidates} isEdit={true} />}
-              </div>
-            </div>
+            {newPost?.type === "vote" && <VoteTypeContent />}
+            {newPost?.type === "vs" && <VsTypeContent />}
           </>
         )}
 
         {/* RENDING SECTION */}
-        {section === "rending" && <Rending />}
+        {section === "rending" && <RendingSection />}
       </div>
     </div>
   )

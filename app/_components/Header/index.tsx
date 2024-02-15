@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import NewPostNavigation from "./PostingNav"
+import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
 import SearchModal from "./SearchModal"
 import "./style.scss"

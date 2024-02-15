@@ -1,0 +1,84 @@
+@import "@/_styles/variables.scss";
+
+.rending {
+  width: 100%;
+  height: calc(100vh - 220px);
+  @include flex();
+  gap: 15px; // memo: 시각적인 중앙정렬
+
+  .thumbnail-edit {
+    padding-bottom: 50px;
+
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .thumbnail {
+      border-radius: 12px;
+      width: 440px;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+        border: 5px solid $gray-soft;
+      }
+
+      cursor: pointer;
+      @include flex();
+      &:hover,
+      &.active {
+        background-color: $gray-soft;
+        &::before {
+          border-color: $pink;
+          opacity: 0.3;
+        }
+        i {
+          color: $pink-hard;
+        }
+      }
+      i {
+        color: $gray-hard;
+        font-size: 40px;
+      }
+    }
+  }
+
+  .finish {
+    padding: 15px;
+    // h1 {
+    //   font-size: 17px;
+    //   margin-bottom: 10px;
+    // }
+    // p {
+    //   font-size: 14px;
+    //   color: $gray-hard;
+    //   margin-bottom: 20px;
+    // }
+  }
+
+  .btn-wrapper {
+    width: 100%;
+    @include flex();
+    flex-direction: column;
+    gap: 10px;
+    button {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 17px;
+      font-weight: 700;
+      color: white;
+      background-color: $pink;
+      border-radius: 15px;
+      &:hover {
+        background-color: $pink-hard;
+      }
+    }
+  }
+}

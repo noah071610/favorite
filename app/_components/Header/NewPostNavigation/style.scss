@@ -1,6 +1,6 @@
 @import "@/_styles/variables.scss";
 
-$nav-width: 80px;
+$nav-width: 100px;
 
 .new-post-nav {
   display: flex;
@@ -9,7 +9,7 @@ $nav-width: 80px;
   position: relative;
   a {
     width: $nav-width;
-    padding: 10px 15px;
+    padding: 10px 0;
     position: inherit;
     z-index: 10;
     @include flex();
@@ -34,17 +34,18 @@ $nav-width: 80px;
     border-radius: 22px;
     background-color: $pink;
     transition: transform 500ms cubic-bezier(0, 0.99, 0.47, 1.04);
-    &.init {
+    &.init,
+    &.none {
       transform: translateX(0);
     }
     &.edit {
-      transform: translateX(calc($nav-width + 30px));
+      transform: translateX(calc($nav-width));
     }
     &.result {
-      transform: translateX(calc(($nav-width + 30px) * 2));
+      transform: translateX(calc(($nav-width) * 2));
     }
     &.rending {
-      transform: translateX(calc(($nav-width + 30px) * 3));
+      transform: translateX(calc(($nav-width) * 3));
     }
   }
 }

@@ -7,11 +7,14 @@ import { UserType } from "@/_types/post"
 import { useQuery } from "@tanstack/react-query"
 
 import PostCard from "@/_components/PostCard"
-import { createNewPost } from "@/_queries/newPost"
+import { createNewPost, uploadImage } from "@/_queries/newPost"
+import classNames from "classnames"
 import { useRouter } from "next/navigation"
+import { useCallback } from "react"
+import { useDropzone } from "react-dropzone"
 import "./style.scss"
 
-export default function Rending() {
+export default function RendingSection() {
   const { data: user } = useQuery<UserType>({
     queryKey: ["getUser"],
     queryFn: () => getUser(1),
@@ -51,9 +54,45 @@ export default function Rending() {
     })
   }
 
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(async (file: any) => {
+        const formData = new FormData()
+        formData.append("image", file)
+
+        const { msg, imageSrc } = await uploadImage(formData)
+        if (msg === "ok") {
+          setNewPost({ thumbnail: imageSrc })
+        }
+      })
+    },
+    [setNewPost]
+  )
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: {
+      "image/*": [],
+    },
+  })
+
   return (
     user && (
       <div className="rending">
+        <section className="thumbnail-edit">
+          <h1>썸네일 변경</h1>
+          <div
+            style={{
+              background: `url('${newPost?.thumbnail}') center / cover`,
+            }}
+            className={classNames("thumbnail", { active: isDragActive })}
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} />
+            <i className={classNames("fa-solid fa-plus", { active: isDragActive })} />
+          </div>
+        </section>
         <div className="rending-content">
           {newPost && (
             <div className="card-preview">

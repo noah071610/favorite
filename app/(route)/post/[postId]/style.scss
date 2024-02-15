@@ -1,5 +1,22 @@
 @import "@/_styles/variables.scss";
 
+@keyframes gaugeUp-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(-2px);
+  }
+}
+@keyframes gaugeUp-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(2px);
+  }
+}
+
 .post {
   &-page {
     width: 100%;
@@ -7,6 +24,16 @@
     justify-content: center;
     padding-top: 60px;
     padding-bottom: 40px;
+
+    &.isResultPage {
+      padding-bottom: 100px;
+      .content {
+        height: auto;
+        .left {
+          overflow: visible;
+        }
+      }
+    }
   }
 
   .candidate-list {
@@ -112,64 +139,181 @@
   border-radius: 10px;
   padding: 12px;
 
-  .left {
-    width: 400px;
-    padding-right: 12px;
-    border-right: 1px solid $border;
-    overflow: scroll; //memo: 투표 페이지에서만
-  }
-
-  .right {
-    width: 600px;
-    padding-left: 12px;
-  }
-
-  .result {
-    width: 100%;
-    .title {
-      padding-left: 5px;
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      span {
-        font-size: 20px;
-        font-weight: 700;
-        padding-bottom: 1px;
-      }
-      i {
-        margin-right: 8px;
-        padding: 8px;
-        background-color: $pink-soft;
-        color: white;
-        border-radius: 100%;
-        font-size: 14px;
-        width: 14px;
-        height: 14px;
-      }
-    }
-    .title:last-of-type {
-      margin-bottom: 20px;
-    }
-  }
-
-  &.textOnly {
+  &.vote-type {
     .left {
-      width: 65%;
-      padding-right: 0;
-      border: none;
+      width: 400px;
+      padding-right: 12px;
+      border-right: 1px solid $border;
+      overflow: scroll; //memo: 투표 페이지에서만
+    }
+
+    .right {
+      width: 600px;
+      padding-left: 12px;
+
+      .result {
+        width: 100%;
+        .title {
+          padding-left: 5px;
+          margin: 10px 0;
+          display: flex;
+          align-items: center;
+          span {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 1px;
+          }
+          i {
+            margin-right: 8px;
+            padding: 8px;
+            background-color: $pink-soft;
+            color: white;
+            border-radius: 100%;
+            font-size: 14px;
+            width: 14px;
+            height: 14px;
+          }
+        }
+        .title:last-of-type {
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    &.textOnly {
+      .left {
+        width: 65%;
+        padding-right: 0;
+        border: none;
+      }
+      .right {
+        display: none;
+      }
+    }
+  }
+
+  &.vs-type {
+    padding: 0;
+    overflow: hidden;
+    .left {
+      width: 50%;
+      border-right: 1px solid $border;
     }
     .right {
-      display: none;
+      width: 50%;
     }
-  }
-}
+    .vs-candidate {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      .thumbnail {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
 
-.post-page.isResultPage {
-  padding-bottom: 100px;
-  .content {
-    height: auto;
-    .left {
-      overflow: visible;
+        cursor: pointer;
+        @include flex();
+        &:hover,
+        &.active {
+          background-color: $gray-soft;
+          &::before {
+            border-color: $pink;
+            opacity: 0.3;
+          }
+          i {
+            color: $pink-hard;
+          }
+        }
+        i {
+          color: $gray-hard;
+          font-size: 40px;
+        }
+      }
+
+      &.vs-result {
+        .image-wrapper {
+          width: 100%;
+          height: 100%;
+          .image {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
+      .description {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      .title-wrapper {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        @include flex();
+        flex-direction: column;
+        padding: 15px;
+        position: relative;
+        .title-input,
+        .title {
+          width: 100%;
+          font-size: 22px;
+          text-align: center;
+          color: white;
+          line-height: 1.3;
+          font-weight: 700;
+          z-index: 10;
+          &::placeholder {
+            color: white;
+          }
+        }
+        .count {
+          text-align: center;
+          font-size: 17px;
+          color: white;
+          padding-top: 5px;
+          z-index: 10;
+        }
+
+        .graph {
+          position: absolute;
+          top: 0;
+          height: 100%;
+
+          &-left {
+            right: 0;
+          }
+          &-right {
+            left: 0;
+          }
+          .gauge {
+            width: 100%;
+            height: 100%;
+            position: relative;
+          }
+
+          &-left {
+            .gauge {
+              animation: gaugeUp-left 1500ms 300ms cubic-bezier(0.38, 1, 0.61, 0.98) forwards;
+              transform: translateX(100%);
+              background-color: rgba(255, 182, 193, 0.7);
+              border: 1px solid rgba(255, 182, 193, 1);
+            }
+          }
+          &-right {
+            .gauge {
+              animation: gaugeUp-right 1500ms 300ms cubic-bezier(0.38, 1, 0.61, 0.98) forwards;
+              transform: translateX(-100%);
+              background-color: rgba(173, 216, 230, 0.7);
+              border: 1px solid rgba(173, 216, 230, 1);
+            }
+          }
+        }
+      }
     }
   }
 }

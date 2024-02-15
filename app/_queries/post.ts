@@ -1,5 +1,7 @@
 import { server } from "@/_data"
+import { PostCardType } from "@/_types/post"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { produce } from "immer"
 
 function sliceArray(array: any[]) {
   const result = []
@@ -21,13 +23,13 @@ export async function getPost(postId: string) {
   return response.data
 }
 
-export async function likePost(userId: number, postId: string) {
+export async function likePost(userId?: number, postId?: string) {
   const response = await server.patch(`/post/like?postId=${postId}&userId=${userId}`)
 
   return response.data
 }
 
-export function likeMutate(userId: number, postId: string) {
+export function likeMutate(postId: string, userId?: number, userImage?: string) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["getPosts"],
@@ -42,7 +44,17 @@ export function likeMutate(userId: number, postId: string) {
         return {
           pageParams: oldData.pageParams,
           pages: sliceArray(
-            pages.map((v) => (v.postId === postId ? { ...v, info: { ...v.info, like: v.info.like + 1 } } : v))
+            pages.map((v: PostCardType) =>
+              produce(v, (draft) => {
+                if (v.postId === postId) {
+                  draft.info.like++
+                  draft.info.participateCount++
+                  if (draft.info.participateImages.length < 10 && userImage) {
+                    draft.info.participateImages.push(userImage)
+                  }
+                }
+              })
+            )
           ),
         }
       })
