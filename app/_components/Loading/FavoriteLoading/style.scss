@@ -61,10 +61,12 @@
 
 .favorite-loading {
   &-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    &.full {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
   @include flex();
   flex-direction: column;

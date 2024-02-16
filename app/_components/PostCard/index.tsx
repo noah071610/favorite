@@ -5,6 +5,7 @@ import { PostCardType } from "@/_types/post"
 import classNames from "classnames"
 import Link from "next/link"
 import LoadingBar from "../Loading/LoadingBar"
+import NoThumbnail from "../Loading/NoThumbnail"
 import "./style.scss"
 
 const participateShowNumber = 8
@@ -16,7 +17,7 @@ export default function PostCard({
     postId,
     thumbnail,
     title,
-    info: { participateImages, like, shareCount, participateCount },
+    info: { participateImages, participateCount },
   },
   isEdit,
 }: {
@@ -42,15 +43,7 @@ export default function PostCard({
                   }}
                 />
               )}
-              {imageStatus === "error" && (
-                <div className="no-thumbnail">
-                  <div>
-                    <i className="fa-solid fa-gift" />
-                    <i className="fa-solid fa-heart" />
-                    <i className="fa-solid fa-rocket" />
-                  </div>
-                </div>
-              )}
+              {imageStatus === "error" && <NoThumbnail type="postCard" />}
             </div>
             {imageStatus === "loading" && (
               <div className="loading">

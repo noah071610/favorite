@@ -1,0 +1,126 @@
+@import "@/_styles/variables.scss";
+@import "@/_styles/keyframes.scss";
+
+@keyframes candidate-add {
+  0% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+    min-height: 0;
+  }
+
+  60% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+    min-height: $candidate-height;
+  }
+  100% {
+    transform: scale(1);
+    height: auto;
+    min-height: $candidate-height;
+    opacity: 1;
+  }
+}
+@keyframes image-candidate-add {
+  0% {
+    transform: scale(0);
+    height: 0;
+    opacity: 0;
+  }
+  30% {
+    height: $image-candidate-height;
+  }
+
+  60% {
+    transform: scale(0);
+    height: $image-candidate-height;
+  }
+  100% {
+    transform: scale(1);
+    height: auto;
+    min-height: $image-candidate-height;
+    opacity: 1;
+  }
+}
+
+@keyframes candidate-delete {
+  0% {
+    transform: scale(1);
+    min-height: $candidate-height;
+    opacity: 1;
+    margin-bottom: 5px;
+  }
+  50% {
+    transform: scale(0);
+    min-height: $candidate-height;
+    margin-bottom: 5px;
+  }
+
+  100% {
+    transform: scale(0);
+    margin-bottom: 0;
+    height: 0;
+    min-height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes image-candidate-delete {
+  0% {
+    transform: scale(1);
+    min-height: $image-candidate-height;
+    opacity: 1;
+    margin-bottom: 5px;
+  }
+  50% {
+    transform: scale(0);
+    min-height: $image-candidate-height;
+    margin-bottom: 5px;
+  }
+
+  100% {
+    transform: scale(0);
+    margin-bottom: 0;
+    height: 0;
+    min-height: 0;
+    opacity: 0;
+  }
+}
+
+.candidate-card {
+  .text-info {
+    .title {
+      width: calc(100% - 25px);
+    }
+  }
+  &.isResultPage {
+    .text-info {
+      .title {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.delete-candidate {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  @include flex();
+  width: 26px;
+  height: 26px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 100%;
+  z-index: 20;
+  i {
+    font-size: 10px;
+    color: $gray-hard;
+  }
+  &:hover {
+    background-color: $pink-soft;
+    i {
+      color: white;
+    }
+  }
+}

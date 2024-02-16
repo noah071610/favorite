@@ -1,13 +1,16 @@
+import { ThumbnailType } from "@/_store/newPost"
+
 export type PostFindQuery = "all" | "popular" | "like" | "participate"
+export type PostFormatType = "default" | "secret" | "preview"
 
 export type VoteIdType = {
   postId: string
   listId: string
 }
 
-export interface ListType {
+export interface CandidateType {
   listId: string
-  imageSrc?: string
+  imageSrc: string
   title: string
   description?: string
   count: number
@@ -26,24 +29,45 @@ export interface PostCardInfo {
   shareCount: number
   like: number
   participateCount: number
+  thumbnailType: ThumbnailType
+  isNoComments: number
 }
 
-interface _PostCardType {
+//todo : chartDescription
+
+interface ContentType {
+  chartDescription?: string
+  layout: "text" | "image" | "textImage"
+  candidates: CandidateType[]
+}
+
+interface _PostType {
   postId: string
   type: string
   title: string
   description: string
-  chartDescription: string
   thumbnail: string
   user: UserType
   createdAt: string
-  updatedAt: string
 }
-export interface PostCardType extends _PostCardType {
+
+export interface NewPostType {
+  postId: string
+  type: string | null
+  title: string
+  format: PostFormatType
+  description: string
+  thumbnail: string
+  user: UserType
+  info: PostCardInfo
+  content: ContentType
+}
+
+export interface PostCardType extends _PostType {
   info: PostCardInfo
 }
-export interface PostType extends _PostCardType {
-  content: ListType[]
+export interface PostType extends _PostType {
+  content: ContentType
   comments: CommentType[]
 }
 
