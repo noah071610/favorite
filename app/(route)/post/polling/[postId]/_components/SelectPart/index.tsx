@@ -1,17 +1,12 @@
 "use client"
 
+import { usePostStore } from "@/_store/post"
 import { fadeMoveUpAnimation, scaleUpAnimation } from "@/_styles/animation"
-import { CandidateType } from "@/_types/post"
 import classNames from "classnames"
 import "./style.scss"
 
-export default function SelectPart({
-  onClickSubmit,
-  selectedCandidate,
-}: {
-  onClickSubmit: () => void
-  selectedCandidate: CandidateType | null
-}) {
+export default function SelectPart({ onClickSubmit }: { onClickSubmit: () => void }) {
+  const { selectedCandidate } = usePostStore()
   return (
     <>
       {selectedCandidate ? (

@@ -3,7 +3,7 @@
 import { getUser } from "@/_queries/user"
 
 import { PostOptionType, ThumbnailType, useNewPostStore } from "@/_store/newPost"
-import { UserType } from "@/_types/post"
+import { UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 
 import NoThumbnail from "@/_components/Loading/NoThumbnail"
@@ -52,12 +52,16 @@ export default function RendingSection() {
     if (newCandidates.length < 2) return alert("후보는 적어도 2개 이상 필요해요")
     if (!newCandidates.every(({ title }) => !!title.trim())) return alert("타이틀이 없는 후보가 존재해요")
 
-    await createNewPost(newPost).then(() => {
-      setSelectedCandidate(null)
-      setStatus("init")
-      clearCandidate()
-      router.push(`/`)
-    })
+    if (type === "preview") {
+      router.push("/post/preview")
+    } else {
+      await createNewPost(newPost).then(() => {
+        setSelectedCandidate(null)
+        setStatus("init")
+        clearCandidate()
+        router.push(`/`)
+      })
+    }
   }
 
   const onDrop = useCallback(

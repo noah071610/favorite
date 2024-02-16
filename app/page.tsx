@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import PostCard from "./_components/PostCard"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
 import { getPosts } from "./_queries/post"
-import { PostCardType } from "./_types/post"
+import { PostCardType } from "./_types/post/post"
 import "./style.scss"
 
 export default function HomePage() {

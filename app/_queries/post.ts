@@ -1,5 +1,5 @@
 import { server } from "@/_data"
-import { PostCardType } from "@/_types/post"
+import { PostCardType } from "@/_types/post/post"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { produce } from "immer"
 

@@ -1,6 +1,6 @@
 "use client"
 
-import ChartPart from "@/(route)/post/[postId]/_components/@Polling/Chartpart"
+import ChartPart from "@/(route)/post/polling/_components/Chartpart"
 import { useNewPostStore } from "@/_store/newPost"
 import { usePollingStore } from "@/_store/newPost/polling"
 import classNames from "classnames"

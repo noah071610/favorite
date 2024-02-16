@@ -9,7 +9,7 @@ import {
 } from "@/_data/chart"
 import { useNewPostStore } from "@/_store/newPost"
 import { scaleUpAnimation } from "@/_styles/animation"
-import { CandidateType } from "@/_types/post"
+import { PollingCandidateType } from "@/_types/post/polling"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
 import classNames from "classnames"
 import { useMemo } from "react"
@@ -20,7 +20,15 @@ import "./style.scss"
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 ChartJS.register(ArcElement)
 
-export default function ChartPart({ candidates, isEdit }: { candidates: CandidateType[]; isEdit?: boolean }) {
+export default function ChartPart({
+  candidates,
+  chartDescription,
+  isEdit,
+}: {
+  chartDescription?: string
+  candidates: PollingCandidateType[]
+  isEdit?: boolean
+}) {
   const { newPost, setNewPost } = useNewPostStore()
 
   const ranking_data = useMemo(
@@ -47,7 +55,7 @@ export default function ChartPart({ candidates, isEdit }: { candidates: Candidat
     ],
   }
 
-  const description = newPost?.content.chartDescription
+  const description = isEdit ? newPost?.content.chartDescription : chartDescription
 
   return (
     <div className="result">

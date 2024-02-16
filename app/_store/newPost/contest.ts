@@ -1,10 +1,6 @@
+import { ContestCandidateType } from "@/_types/post/contest"
 import { create } from "zustand"
 
-export interface ContestCandidateType {
-  title: string
-  imageSrc: string
-  count: number
-}
 interface States {
   leftCandidate: ContestCandidateType
   rightCandidate: ContestCandidateType

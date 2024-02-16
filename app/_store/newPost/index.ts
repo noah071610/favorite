@@ -1,4 +1,4 @@
-import { NewPostType } from "@/_types/post"
+import { NewPostType } from "@/_types/post/post"
 import { produce } from "immer"
 import { create } from "zustand"
 

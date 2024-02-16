@@ -1,14 +1,14 @@
-import { CandidateType } from "@/_types/post"
+import { PollingCandidateType } from "@/_types/post/polling"
 import { create } from "zustand"
 
 interface States {
-  newCandidates: CandidateType[]
-  selectedCandidate: CandidateType | null
+  newCandidates: PollingCandidateType[]
+  selectedCandidate: PollingCandidateType | null
 }
 
 type Actions = {
   setSelectedCandidate: (state: States["selectedCandidate"]) => void
-  addCandidate: (candidate: CandidateType) => void
+  addCandidate: (candidate: PollingCandidateType) => void
   moveCandidates: (targetListId: string, from: number, to: number) => void
   deleteCandidate: (listId: string) => void
   changeCandidate: (listId: string, state: { title?: string; description?: string; imageSrc?: string }) => void
@@ -27,7 +27,7 @@ export const usePollingStore = create<States & Actions>((set) => ({
     set((origin) => {
       // memo: 1. 위치 변경
       const _newCandidates = [...origin.newCandidates]
-      const targetCandidate: CandidateType = origin.newCandidates.find(({ listId }) => listId === targetListId)!
+      const targetCandidate: PollingCandidateType = origin.newCandidates.find(({ listId }) => listId === targetListId)!
       _newCandidates.splice(from, 1)
       _newCandidates.splice(to, 0, targetCandidate)
 
@@ -35,7 +35,7 @@ export const usePollingStore = create<States & Actions>((set) => ({
       const newCandidates = _newCandidates.map((v, i) => ({ ...v, number: i + 1 }))
 
       // memo: 3. 작업중인 후보도 넘버 변경
-      const selectedCandidate: CandidateType | null = origin.selectedCandidate
+      const selectedCandidate: PollingCandidateType | null = origin.selectedCandidate
       if (selectedCandidate) {
         selectedCandidate.number = newCandidates.find(({ listId }) => listId === selectedCandidate.listId)!.number
       }
@@ -58,7 +58,7 @@ export const usePollingStore = create<States & Actions>((set) => ({
         .map((v, i) => ({ ...v, number: i + 1 }))
 
       // memo: 2. 선택된 후보가 만약 삭제되는 리스트라면 에디트 창을 닫아주고 아니면 넘버 변경
-      let selectedCandidate: CandidateType | null = origin.selectedCandidate
+      let selectedCandidate: PollingCandidateType | null = origin.selectedCandidate
       if (selectedCandidate) {
         if (targetListId === origin.selectedCandidate?.listId) {
           selectedCandidate = null

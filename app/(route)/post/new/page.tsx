@@ -2,14 +2,13 @@
 
 import React, { useEffect } from "react"
 
-import "@/(route)/post/[postId]/style.scss"
 import "./style.scss"
 
 import { getUser } from "@/_queries/user"
 import { useQuery } from "@tanstack/react-query"
 
 import { PollingLayoutType, useNewPostStore } from "@/_store/newPost"
-import { UserType } from "@/_types/post"
+import { UserType } from "@/_types/user"
 import classNames from "classnames"
 import { nanoid } from "nanoid"
 

@@ -1,11 +1,9 @@
 "use client"
 
-import { getPost } from "@/_queries/post"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { PostType, UserType } from "@/_types/post"
-import { useQuery } from "@tanstack/react-query"
+import { PollingPostType } from "@/_types/post/post"
+import { UserType } from "@/_types/user"
 import classNames from "classnames"
-import { useParams } from "next/navigation"
 import { useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 import "./style.scss"
@@ -70,13 +68,7 @@ function CommentArea({
   )
 }
 
-export default function CommentPart() {
-  const { postId } = useParams<{ postId: string }>()
-  const { data: post } = useQuery<PostType>({
-    queryKey: ["getPost"],
-    queryFn: () => getPost(postId),
-  })
-
+export default function CommentPart({ post }: { post: PollingPostType }) {
   const comments = post?.comments ?? []
 
   return (

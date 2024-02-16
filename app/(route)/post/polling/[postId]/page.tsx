@@ -1,40 +1,51 @@
 "use client"
 
+import CommentPart from "@/_components/CommentPart"
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import { getPost } from "@/_queries/post"
-import { PollingLayoutType } from "@/_store/newPost"
-import { CandidateType, PostType, VoteIdType } from "@/_types/post"
+import { usePostStore } from "@/_store/post"
+import { PollingPostType, VoteIdType } from "@/_types/post/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
+import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
-import Candidate from "./_components/@Polling/Candidate"
-import ChartPart from "./_components/@Polling/Chartpart"
-import SelectPart from "./_components/@Polling/SelectPart"
-import CommentPart from "./_components/CommentPart"
+import Candidate from "./_components/Candidate"
+import ChartPart from "./_components/Chartpart"
+import SelectPart from "./_components/SelectPart"
 import "./style.scss"
 
-export default function PostPage({ previewPost }: { previewPost?: PostType }) {
+export default function PostPage({ previewPost }: { previewPost?: PollingPostType }) {
   const router = useRouter()
   const { postId } = useParams<{ postId: string }>()
-  console.log(previewPost)
+  const {
+    isPreview,
+    layoutType,
+    isResultPage,
+    setIsResultPage,
+    setVotedId,
+    resetStates,
+    selectedCandidate,
+    setSelectedCandidate,
+  } = usePostStore()
 
   const {
     isError,
     error,
     data: post,
-  } = !previewPost
-    ? useQuery<PostType>({
+  } = !isPreview
+    ? useQuery<PollingPostType>({
         queryKey: ["getPost", postId],
         queryFn: () => getPost(postId),
       })
     : { isError: false, error: false, data: previewPost }
 
+  useEffect(() => {
+    resetStates({ isPreview: !!previewPost, layoutType: post?.content.layout ?? null })
+  }, [post])
+
   const [isImagesLoaded, setIsImagesLoaded] = useState(false)
   const [imageLoadedCount, setImageLoadedCount] = useState<number>(0)
-  const [votedId, setVotedId] = useState<VoteIdType | null>(null)
-  const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null)
-  const isResultPage = !!votedId
 
   useEffect(() => {
     if (isError) {
@@ -43,20 +54,12 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
     }
   }, [error, isError, router])
 
-  const candidates = useMemo(() => {
-    const target = post?.content.candidates ?? []
-    return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
-  }, [post?.content, isResultPage])
-
-  const layoutType: PollingLayoutType | undefined = useMemo(() => {
-    return post?.content?.layout
-  }, [post])
-
   useEffect(() => {
-    if (!previewPost && postId) {
+    if (!isPreview && postId) {
       const participated: VoteIdType[] = JSON.parse(localStorage.getItem("participated") ?? "[]")
       const localVotedId = participated.find((v) => v.postId === postId)
       if (localVotedId) {
+        setIsResultPage(true)
         setVotedId(localVotedId)
       }
     }
@@ -108,9 +111,14 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
     }
   }, [post])
 
+  const candidates = useMemo(() => {
+    const target = post?.content.candidates ?? []
+    return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
+  }, [post, isResultPage])
+
   const onClickSubmit = () => {
     if (selectedCandidate) {
-      if (!previewPost) {
+      if (!isPreview) {
         const participated: string[] = JSON.parse(localStorage.getItem("participated") ?? "[]")
 
         // memo: submit을 했다는건 안했다는거임. 한 사람은 이미 리디렉트 당함
@@ -126,11 +134,19 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
         //memo: preview
         setVotedId({ postId: "preview", listId: selectedCandidate.listId })
       }
+      setIsResultPage(true)
     }
   }
 
   return (
     <div className={classNames("post-page", { isResultPage })}>
+      {isPreview && (
+        <div className="preview-back">
+          <Link href="/post/new">
+            <i className="fa-solid fa-back"></i>
+          </Link>
+        </div>
+      )}
       {post && isImagesLoaded && layoutType ? (
         <div className="post-page-inner">
           <div className="info">
@@ -153,7 +169,7 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
               textOnly: layoutType === "text" && !isResultPage,
               isResultPage,
               [layoutType]: layoutType,
-              [post.type]: post.type,
+              polling: post.type === "polling",
             })}
           >
             <div className={classNames("left")}>
@@ -161,11 +177,6 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
                 {candidates.map((candidate, index) => (
                   <Candidate
                     onClickSubmit={onClickSubmit}
-                    isResultPage={isResultPage}
-                    type={layoutType}
-                    selectedCandidate={selectedCandidate}
-                    setSelectedCandidate={setSelectedCandidate}
-                    votedListId={votedId?.listId}
                     candidate={candidate}
                     index={index}
                     key={`${candidate.listId}_${isResultPage ? "result" : "polling"}`}
@@ -174,7 +185,7 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
               </ul>
             </div>
             <div className={classNames("right")}>
-              {votedId ? (
+              {isResultPage ? (
                 <div className="result">
                   <div className="title">
                     <div className="icon">
@@ -183,23 +194,28 @@ export default function PostPage({ previewPost }: { previewPost?: PostType }) {
 
                     <span>통계</span>
                   </div>
-                  <ChartPart candidates={post.content.candidates} />
+                  <ChartPart chartDescription={post.content.chartDescription} candidates={post.content.candidates} />
                   <div className="title">
                     <div className="icon">
                       <i className="fa-solid fa-comment" />
                     </div>
                     <span>코멘트</span>
                   </div>
-                  <CommentPart />
+                  <CommentPart post={post} />
                 </div>
               ) : (
-                <SelectPart onClickSubmit={onClickSubmit} selectedCandidate={selectedCandidate} />
+                <SelectPart onClickSubmit={onClickSubmit} />
               )}
             </div>
           </div>
         </div>
       ) : (
         <FavoriteLoading type="full" />
+      )}
+      {isPreview && (
+        <div className="preview-notification">
+          <span>PREVIEW</span>
+        </div>
       )}
     </div>
   )

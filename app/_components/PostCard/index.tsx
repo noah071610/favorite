@@ -1,7 +1,7 @@
 "use client"
 
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
-import { PostCardType } from "@/_types/post"
+import { PostCardType } from "@/_types/post/post"
 import classNames from "classnames"
 import Link from "next/link"
 import LoadingBar from "../Loading/LoadingBar"

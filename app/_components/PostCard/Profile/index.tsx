@@ -1,6 +1,6 @@
 import { likeMutate } from "@/_queries/post"
 import { getUser } from "@/_queries/user"
-import { UserType } from "@/_types/post"
+import { UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import "./style.scss"
 

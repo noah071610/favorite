@@ -3,7 +3,7 @@
 import "@/(route)/post/[postId]/_components/@Polling/Candidate/style.scss"
 import { useNewPostStore } from "@/_store/newPost"
 import { usePollingStore } from "@/_store/newPost/polling"
-import { CandidateType } from "@/_types/post"
+import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import CountUp from "react-countup"
@@ -15,7 +15,7 @@ function Candidate({
   index,
 }: {
   isResultPage: boolean
-  candidate: CandidateType
+  candidate: PollingCandidateType
   index: number
 }) {
   const { count, description, listId, title, imageSrc } = candidate
@@ -23,7 +23,7 @@ function Candidate({
   const { newPost } = useNewPostStore()
   const { selectedCandidate, deleteCandidate, setSelectedCandidate } = usePollingStore()
 
-  const onClickSelect = (e: any, candidate: CandidateType) => {
+  const onClickSelect = (e: any, candidate: PollingCandidateType) => {
     if (!e.target.className.includes("delete-")) {
       !isResultPage && setSelectedCandidate(candidate)
     } else {
