@@ -47,7 +47,7 @@ export default function Dropzone({ direction }: { direction: "left" | "right" })
           style={{
             background: `url('${candidate.imageSrc}') center / cover`,
           }}
-          className={classNames("thumbnail", { active: isDragActive })}
+          className={classNames("thumbnail thumbnail-drop-zone", { active: isDragActive })}
           {...getRootProps()}
         >
           <input {...getInputProps()} />

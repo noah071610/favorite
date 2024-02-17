@@ -1,6 +1,6 @@
 "use client"
 
-import "@/(route)/post/[postId]/_components/@Polling/SelectPart/style.scss"
+import "@/(route)/post/polling/[postId]/_components/SelectPart/style.scss"
 import { scaleUpAnimation } from "@/_styles/animation"
 import TextareaAutosize from "react-textarea-autosize"
 

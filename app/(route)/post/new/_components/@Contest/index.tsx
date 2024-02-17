@@ -1,5 +1,6 @@
 "use client"
 
+import "@/(route)/post/contest/[postId]/style.scss"
 import { useNewPostStore } from "@/_store/newPost"
 import { useContestTypeStore } from "@/_store/newPost/contest"
 import { calculateVoteRatio, randomNum } from "@/_utils/math"

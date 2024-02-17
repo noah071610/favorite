@@ -1,6 +1,6 @@
 "use client"
 
-import "@/(route)/post/[postId]/_components/@Polling/Candidate/style.scss"
+import "@/(route)/post/polling/[postId]/_components/Candidate/style.scss"
 import { useNewPostStore } from "@/_store/newPost"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PollingCandidateType } from "@/_types/post/polling"

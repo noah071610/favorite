@@ -1,7 +1,8 @@
 "use client"
 
-import { PostContentType, useNewPostStore } from "@/_store/newPost"
+import { useNewPostStore } from "@/_store/newPost"
 
+import { PostContentType } from "@/_types/post/post"
 import classNames from "classnames"
 import "./style.scss"
 

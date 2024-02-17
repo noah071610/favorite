@@ -12,14 +12,13 @@ const participateShowNumber = 8
 
 export default function PostCard({
   postCard: {
-    user,
     description,
+    type,
     postId,
     thumbnail,
     title,
     info: { participateImages, participateCount },
   },
-  isEdit,
 }: {
   postCard: PostCardType
   isEdit?: boolean
@@ -28,10 +27,9 @@ export default function PostCard({
 
   return (
     <article className="post-card">
-      {isEdit && <div className="overlay" />}
       {/* <Profile postId={postId} user={user} like={like} shareCount={shareCount} /> */}
       <div className="post-card-main">
-        <Link className="post-card-link" href={`/post/${postId}`}>
+        <Link className="post-card-link" href={`/post/${type}/${postId}`}>
           <h1>{title}</h1>
           <h2>{description}</h2>
           <div className={classNames("thumbnail", { isFull: !description.trim() })}>

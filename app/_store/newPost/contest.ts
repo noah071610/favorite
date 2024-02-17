@@ -15,15 +15,18 @@ type Actions = {
       count?: number
     }
   ) => void
+  clearContestContent: () => void
 }
 
 export const useContestTypeStore = create<States & Actions>((set) => ({
   leftCandidate: {
+    listId: "left",
     title: "",
     imageSrc: "",
     count: 0,
   },
   rightCandidate: {
+    listId: "right",
     title: "",
     imageSrc: "",
     count: 0,
@@ -36,4 +39,19 @@ export const useContestTypeStore = create<States & Actions>((set) => ({
         return { rightCandidate: { ...origin.rightCandidate, ...state } }
       }
     }),
+  clearContestContent: () =>
+    set(() => ({
+      leftCandidate: {
+        listId: "left",
+        title: "",
+        imageSrc: "",
+        count: 0,
+      },
+      rightCandidate: {
+        listId: "right",
+        title: "",
+        imageSrc: "",
+        count: 0,
+      },
+    })),
 }))

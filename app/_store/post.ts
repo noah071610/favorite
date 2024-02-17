@@ -1,7 +1,6 @@
 import { PollingCandidateType } from "@/_types/post/polling"
-import { VoteIdType } from "@/_types/post/post"
+import { PollingLayoutType, VoteIdType } from "@/_types/post/post"
 import { create } from "zustand"
-import { PollingLayoutType } from "./newPost"
 
 interface States {
   isPreview: boolean

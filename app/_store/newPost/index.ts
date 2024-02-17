@@ -1,12 +1,13 @@
-import { NewPostType } from "@/_types/post/post"
+import {
+  NewPostType,
+  PollingLayoutType,
+  PostContentType,
+  PostOptionType,
+  PostingStatus,
+  ThumbnailType,
+} from "@/_types/post/post"
 import { produce } from "immer"
 import { create } from "zustand"
-
-export type PostingStatus = "init" | "edit" | "result" | "rending"
-export type PostContentType = "polling" | "contest" | "tournament"
-export type PollingLayoutType = "text" | "image" | "textImage"
-export type ThumbnailType = "custom" | "layout" | "none"
-export type PostOptionType = "isSecret" | "isNoComments"
 
 interface States {
   newPost: NewPostType | null
@@ -27,6 +28,7 @@ type Actions = {
   createNewPost: (state: NewPostType) => void
   setStatus: (state: States["newPostStatus"]) => void
   setNewPost: (action: SetNewPostAction) => void
+  clearNewPost: () => void
 }
 
 export const useNewPostStore = create<States & Actions>()((set) => ({
@@ -44,6 +46,9 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
               break
             case "description":
               draft.newPost.description = action.payload
+              break
+            case "chartDescription":
+              draft.newPost.content.chartDescription = action.payload
               break
             case "layout":
               draft.newPost.content.layout = action.payload
@@ -69,13 +74,11 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
             case "thumbnail":
               draft.newPost.thumbnail = action.payload
               break
-            case "chartDescription":
-              draft.newPost.content.chartDescription = action.payload
-              break
             default:
               break
           }
         }
       })
     ),
+  clearNewPost: () => set(() => ({ newPost: null, newPostStatus: "init" })),
 }))

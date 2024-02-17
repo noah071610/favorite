@@ -7,11 +7,12 @@ import "./style.scss"
 import { getUser } from "@/_queries/user"
 import { useQuery } from "@tanstack/react-query"
 
-import { PollingLayoutType, useNewPostStore } from "@/_store/newPost"
+import { useNewPostStore } from "@/_store/newPost"
 import { UserType } from "@/_types/user"
 import classNames from "classnames"
 import { nanoid } from "nanoid"
 
+import { PollingLayoutType } from "@/_types/post/post"
 import ContestContent from "./_components/@Contest"
 import PollingContent from "./_components/@Polling"
 import InitSection from "./_components/InitSection"
@@ -54,9 +55,11 @@ NewPostInput.displayName = "NewPostInput"
 
 export default function NewPostPage() {
   const { data: user } = useQuery<UserType>({
-    queryKey: ["getUser"],
+    queryKey: ["getUser", "edit"],
     queryFn: () => getUser(1),
+    select: ({ userId, userName, userImage }) => ({ userId, userName, userImage }), // 여기서 data는 전체 데이터 객체입니다.
   })
+
   const { newPost, newPostStatus, setNewPost, createNewPost } = useNewPostStore()
 
   const onChangeCandidateLayout = (style: PollingLayoutType) => {
@@ -73,7 +76,7 @@ export default function NewPostPage() {
         title: "",
         description: "",
         format: "default",
-        user,
+        userId: user.userId,
         info: {
           participateImages: [],
           shareCount: 0,
@@ -82,11 +85,7 @@ export default function NewPostPage() {
           isNoComments: 0,
           thumbnailType: "custom",
         },
-        content: {
-          chartDescription: "",
-          layout: "textImage",
-          candidates: [],
-        },
+        content: null,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +93,12 @@ export default function NewPostPage() {
 
   return (
     <>
-      <div className={classNames("post-page new-post-page", { isInit: newPostStatus === "init" })}>
+      <div
+        className={classNames("post-page new-post-page", {
+          isInit: newPostStatus === "init",
+          [newPost?.type ?? "polling"]: newPost?.type,
+        })}
+      >
         <div className="post">
           {/* INIT SECTION */}
           {newPostStatus === "init" && <InitSection />}

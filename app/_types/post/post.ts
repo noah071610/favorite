@@ -1,10 +1,14 @@
-import { PostContentType, ThumbnailType } from "@/_store/newPost"
 import { UserType } from "../user"
 import { ContestCandidateType } from "./contest"
 import { PollingCandidateType } from "./polling"
 
 //todo: export type PostFindQuery = "all" | "popular" | "like" | "participate"
 export type PostFormatType = "default" | "secret" | "preview"
+export type PostingStatus = "init" | "edit" | "result" | "rending"
+export type PostContentType = "polling" | "contest" | "tournament"
+export type PollingLayoutType = "text" | "image" | "textImage"
+export type ThumbnailType = "custom" | "layout" | "none"
+export type PostOptionType = "isSecret" | "isNoComments"
 
 export type VoteIdType = {
   postId: string
@@ -22,7 +26,7 @@ export interface PostCardInfo {
 
 interface PollingContentType {
   chartDescription: string
-  layout: "text" | "image" | "textImage"
+  layout: PollingLayoutType
   candidates: PollingCandidateType[]
 }
 export interface ContestContentType {
@@ -36,24 +40,30 @@ interface PostBaseType {
   format: PostFormatType
   description: string
   thumbnail: string
-  user: UserType
 }
 
 export interface NewPostType extends PostBaseType {
   type: PostContentType | null
   info: PostCardInfo
+  userId: number
   content: any
 }
 
 export interface PostCardType extends PostBaseType {
+  user: UserType
   type: PostContentType
+
   info: PostCardInfo
+
   createdAt: Date
 }
 
 interface PostType extends PostBaseType {
+  user: UserType
   type: PostContentType
+
   comments: CommentType[]
+
   createdAt: Date
 }
 export interface PollingPostType extends PostType {

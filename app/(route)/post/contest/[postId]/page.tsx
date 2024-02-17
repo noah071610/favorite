@@ -4,17 +4,16 @@ import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import { getPost } from "@/_queries/post"
 import { usePostStore } from "@/_store/post"
 import { ContestContentType, ContestPostType, VoteIdType } from "@/_types/post/post"
-import { calculateVoteRatio } from "@/_utils/math"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import ResultPart from "./_components/ResultPart"
 import SelectPart from "./_components/SelectPart"
 import "./style.scss"
 
-export default function PostPage({ previewPost }: { previewPost?: ContestPostType }) {
+export default function ContestPostPage({ previewPost }: { previewPost?: ContestPostType }) {
   const router = useRouter()
   const { postId } = useParams<{ postId: string }>()
   const { isPreview, isResultPage, setIsResultPage, setVotedId, resetStates } = usePostStore()
@@ -30,6 +29,7 @@ export default function PostPage({ previewPost }: { previewPost?: ContestPostTyp
       })
     : { isError: false, error: false, data: previewPost }
   const [content, setContent] = useState<ContestContentType | null>(null)
+  const [selected, setSelected] = useState<"left" | "right" | null>(null)
 
   useEffect(() => {
     if (post) {
@@ -40,14 +40,6 @@ export default function PostPage({ previewPost }: { previewPost?: ContestPostTyp
 
   const [isImagesLoaded, setIsImagesLoaded] = useState(false)
   const [imageLoadedCount, setImageLoadedCount] = useState<number>(0)
-
-  const ratio = useMemo(() => {
-    if (content) {
-      return calculateVoteRatio(content.left.count, content.right.count)
-    } else {
-      return calculateVoteRatio(0, 0)
-    }
-  }, [content])
 
   useEffect(() => {
     if (isError) {
@@ -114,7 +106,7 @@ export default function PostPage({ previewPost }: { previewPost?: ContestPostTyp
   }, [content])
 
   return (
-    <div className={classNames("post-page", { isResultPage })}>
+    <div className={classNames("post-page", "contest", { isResultPage })}>
       {isPreview && (
         <div className="preview-back">
           <Link href="/post/new">
@@ -143,9 +135,9 @@ export default function PostPage({ previewPost }: { previewPost?: ContestPostTyp
             {(["left", "right"] as Array<"left" | "right">).map((dr) => (
               <div key={dr} className={dr}>
                 {isResultPage ? (
-                  <ResultPart content={content} ratio={dr === "left" ? ratio.left : ratio.right} direction={dr} />
+                  <ResultPart selected={selected} content={content} direction={dr} />
                 ) : (
-                  <SelectPart content={content} direction={dr} />
+                  <SelectPart setSelected={setSelected} content={content} setContent={setContent} direction={dr} />
                 )}
               </div>
             ))}

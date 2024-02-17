@@ -8,14 +8,21 @@
   padding-top: 60px;
   padding-bottom: 40px;
 
-  // POST PAGE RESULT
-  &.isResultPage {
+  // POLLING POST PAGE RESULT
+  &.polling.isResultPage {
     padding-bottom: 100px;
     .content {
       height: auto;
       .left {
         overflow: visible;
       }
+    }
+  }
+
+  // CONTEST POST PAGE RESULT
+  &.contest.isResultPage {
+    .content {
+      overflow: hidden;
     }
   }
 }

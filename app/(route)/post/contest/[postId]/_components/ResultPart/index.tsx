@@ -1,31 +1,44 @@
 "use client"
 
 import { ContestContentType } from "@/_types/post/post"
+import { calculateVoteRatio } from "@/_utils/math"
 import classNames from "classnames"
 import CountUp from "react-countup"
 
 export default function ResultPart({
   content,
   direction,
-  ratio,
+  selected,
 }: {
   content: ContestContentType
   direction: "left" | "right"
-  ratio: string
+  selected: "left" | "right" | null
 }) {
   const candidate = content[direction]
+  const ratio = calculateVoteRatio(content.left.count, content.right.count)[direction]
 
   return (
-    <div className="contest-candidate contest-result">
-      <div className={classNames("image-wrapper")}>
+    <div
+      className={classNames("contest-candidate", "isResultPage", {
+        selected: selected === direction,
+        unselected: selected !== direction,
+      })}
+    >
+      <div className="border"></div>
+      <div className={classNames("card")}>
         <div
           style={{
-            backgroundImage: `url('${candidate.imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundImage: `url('${candidate.imageSrc}')`,
           }}
-          className={classNames("image")}
-        />
+          className={classNames("thumbnail")}
+        ></div>
+        <div
+          onClick={() => console.log("gg")}
+          className="thumbnail-overlay"
+          style={{
+            backgroundImage: `url('${candidate.imageSrc}')`,
+          }}
+        ></div>
         <div className="description">
           {/* <div className={`graph-wrapper graph-wrapper-${direction}`}></div> */}
 

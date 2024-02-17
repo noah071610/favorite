@@ -11,7 +11,7 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import Candidate from "./_components/Candidate"
-import ChartPart from "./_components/Chartpart"
+import ChartPart from "./_components/ChartPart"
 import SelectPart from "./_components/SelectPart"
 import "./style.scss"
 
@@ -139,7 +139,7 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
   }
 
   return (
-    <div className={classNames("post-page", { isResultPage })}>
+    <div className={classNames("post-page", "polling", { isResultPage })}>
       {isPreview && (
         <div className="preview-back">
           <Link href="/post/new">

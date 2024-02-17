@@ -2,16 +2,18 @@
 
 import { getUser } from "@/_queries/user"
 
-import { PostOptionType, ThumbnailType, useNewPostStore } from "@/_store/newPost"
+import { useNewPostStore } from "@/_store/newPost"
 import { UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 
 import NoThumbnail from "@/_components/Loading/NoThumbnail"
 import { createNewPost, uploadImage } from "@/_queries/newPost"
+import { useContestTypeStore } from "@/_store/newPost/contest"
 import { usePollingStore } from "@/_store/newPost/polling"
+import { PostOptionType, ThumbnailType } from "@/_types/post/post"
 import classNames from "classnames"
 import { useRouter } from "next/navigation"
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
 import "./style.scss"
 
@@ -27,12 +29,15 @@ const selectorTypes = [
 
 export default function RendingSection() {
   const { data: user } = useQuery<UserType>({
-    queryKey: ["getUser"],
+    queryKey: ["getUser", "edit"],
     queryFn: () => getUser(1),
+    select: ({ userId, userName, userImage }) => ({ userId, userName, userImage }), // 여기서 data는 전체 데이터 객체입니다.
   })
+
   const router = useRouter()
-  const { newPost, setNewPost, setStatus } = useNewPostStore()
-  const { setSelectedCandidate, newCandidates, clearCandidate } = usePollingStore()
+  const { newPost, setNewPost, clearNewPost } = useNewPostStore()
+  const { leftCandidate, rightCandidate, clearContestContent } = useContestTypeStore()
+  const { newCandidates, clearPollingContent } = usePollingStore()
 
   const onChangeThumbnailStyle = (type: ThumbnailType) => {
     setNewPost({ type: "thumbnailType", payload: type })
@@ -45,20 +50,43 @@ export default function RendingSection() {
     if (!newPost) {
       return alert("에러 발생")
     }
-    const { title } = newPost
+    const _post = { ...newPost }
 
-    if (title.trim().length < 3) return alert("타이틀은 공백을 제외하고 3글자 이상으로 작성해주세요!")
+    if (_post.title.trim().length < 3) return alert("타이틀은 공백을 제외하고 3글자 이상으로 작성해주세요!")
     if (!user) return alert("로그인이 필요해요")
-    if (newCandidates.length < 2) return alert("후보는 적어도 2개 이상 필요해요")
-    if (!newCandidates.every(({ title }) => !!title.trim())) return alert("타이틀이 없는 후보가 존재해요")
+
+    switch (newPost?.type) {
+      case "polling":
+        if (newCandidates.length < 2) return alert("후보는 적어도 2개 이상 필요해요")
+        if (!newCandidates.every(({ title }) => !!title.trim())) return alert("타이틀이 없는 후보가 존재해요")
+        _post.content = {
+          ..._post.content.content,
+          candidates: newCandidates.map((v) => ({ ...v, count: 0 })),
+        }
+      case "contest":
+        if (!leftCandidate.imageSrc.trim()) return alert("왼쪽 후보의 이미지가 필요해요")
+        if (!rightCandidate.imageSrc.trim()) return alert("오른쪽 후보의 이미지가 필요해요")
+        if (!leftCandidate.title.trim()) return alert("왼쪽 후보의 타이틀을 입력해주세요")
+        if (!rightCandidate.title.trim()) return alert("오른쪽 후보의 타이틀을 입력해주세요")
+        _post.content = {
+          left: {
+            ...leftCandidate,
+            count: 0,
+          },
+          right: {
+            ...rightCandidate,
+            count: 0,
+          },
+        }
+    }
 
     if (type === "preview") {
       router.push("/post/preview")
     } else {
-      await createNewPost(newPost).then(() => {
-        setSelectedCandidate(null)
-        setStatus("init")
-        clearCandidate()
+      await createNewPost(_post).then(() => {
+        clearNewPost()
+        clearContestContent()
+        clearPollingContent()
         router.push(`/`)
       })
     }
@@ -90,6 +118,16 @@ export default function RendingSection() {
 
   const thumbnailType = newPost?.info.thumbnailType
   const info = newPost?.info
+  const layoutImages = useMemo(() => {
+    switch (newPost?.type) {
+      case "polling":
+        return newCandidates
+      case "contest":
+        return [leftCandidate, rightCandidate]
+      default:
+        return []
+    }
+  }, [newPost?.type])
 
   return (
     user && (
@@ -111,7 +149,7 @@ export default function RendingSection() {
             )}
             {thumbnailType === "layout" && (
               <div className="thumbnail layout">
-                {newCandidates.slice(0, 5).map(({ listId, imageSrc }) => (
+                {layoutImages.slice(0, 5).map(({ listId, imageSrc }) => (
                   <div
                     key={`thumb_${listId}`}
                     style={{

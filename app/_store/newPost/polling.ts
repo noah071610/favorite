@@ -12,7 +12,7 @@ type Actions = {
   moveCandidates: (targetListId: string, from: number, to: number) => void
   deleteCandidate: (listId: string) => void
   changeCandidate: (listId: string, state: { title?: string; description?: string; imageSrc?: string }) => void
-  clearCandidate: () => void
+  clearPollingContent: () => void
 }
 
 export const usePollingStore = create<States & Actions>((set) => ({
@@ -69,8 +69,8 @@ export const usePollingStore = create<States & Actions>((set) => ({
 
       return { newCandidates, selectedCandidate }
     }),
-  clearCandidate: () =>
+  clearPollingContent: () =>
     set(() => {
-      return { newCandidates: [] }
+      return { newCandidates: [], selectedCandidate: null }
     }),
 }))
