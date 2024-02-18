@@ -1,17 +1,19 @@
 "use client"
 
-import "@/(route)/post/polling/[postId]/_components/SelectPart/style.scss"
+import selectPartStyle from "@/(route)/post/polling/[postId]/_components/SelectPart/style.module.scss"
 import { scaleUpAnimation } from "@/_styles/animation"
 import TextareaAutosize from "react-textarea-autosize"
 
 import { uploadImage } from "@/_queries/newPost"
 import { useNewPostStore } from "@/_store/newPost"
 import { usePollingStore } from "@/_store/newPost/polling"
-import classNames from "classnames"
 import React, { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import Resizer from "react-image-file-resizer"
-import "./style.scss"
+
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style, selectPartStyle)
 
 const resizeFile = (file: File) =>
   new Promise((res) => {
@@ -24,7 +26,7 @@ const CandidateInput = React.memo(() => {
   const onChangeInput = (e: any, type: "title" | "description") => {
     if (selectedCandidate) {
       if (type === "title" && e.target.value.length >= 30) return
-      changeCandidate(selectedCandidate.listId, { [type]: e.target.value })
+      changeCandidate(selectedCandidate.listId, { [style[type]]: e.target.value })
     }
   }
   return (
@@ -32,13 +34,13 @@ const CandidateInput = React.memo(() => {
       <>
         <input
           placeholder="후보명 입력 (필수)"
-          className="title-input"
+          className={cx(style["title-input"])}
           value={selectedCandidate.title}
           onChange={(e) => onChangeInput(e, "title")}
         />
         <TextareaAutosize
           placeholder="후보 설명 입력 (옵션)"
-          className="description-input"
+          className={cx(style["description-input"])}
           value={selectedCandidate.description}
           onChange={(e) => onChangeInput(e, "description")}
           maxLength={180}
@@ -83,26 +85,26 @@ export default function SelectPart() {
   return (
     <>
       {selectedCandidate ? (
-        <div key={listId} className={classNames("select-part")}>
+        <div key={listId} className={cx(style["select-part"])}>
           {newPost?.content.layout !== "text" && (
             <div
               style={{
                 background: `url('${imageSrc}') center / cover`,
                 ...scaleUpAnimation(250),
               }}
-              className={classNames("select-part-image", { active: isDragActive })}
+              className={cx(style["select-part-image"], { [style.active]: isDragActive })}
               {...getRootProps()}
             >
               <input {...getInputProps()} />
-              <i className={classNames("fa-solid fa-plus", { active: isDragActive })} />
+              <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
             </div>
           )}
-          <div className="select-part-description">
+          <div className={cx(style["select-part-description"])}>
             <CandidateInput />
           </div>
         </div>
       ) : (
-        <div className="unselected">
+        <div className={cx(style.unselected)}>
           <div>
             <span>
               후보 편집창 입니다

@@ -11,20 +11,22 @@ import { createNewPost, uploadImage } from "@/_queries/newPost"
 import { useContestTypeStore } from "@/_store/newPost/contest"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PostOptionType, ThumbnailType } from "@/_types/post/post"
-import classNames from "classnames"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
-import "./style.scss"
+
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 const selectorTypes = [
-  { type: "custom", children: <i className="fa-solid fa-image"></i>, label: "커스텀 썸네일" },
+  { type: "custom", children: <i className={cx("fa-solid", "fa-image")}></i>, label: "커스텀 썸네일" },
   {
     type: "layout",
-    children: <i className="fa-solid fa-film"></i>,
+    children: <i className={cx("fa-solid", "fa-film")}></i>,
     label: "콘텐츠 레이아웃",
   },
-  { type: "none", children: <i className="fa-solid fa-close"></i>, label: "썸네일 없음" },
+  { type: "none", children: <i className={cx("fa-solid", "fa-close")}></i>, label: "썸네일 없음" },
 ]
 
 export default function RendingSection() {
@@ -131,24 +133,24 @@ export default function RendingSection() {
 
   return (
     user && (
-      <div className="rending">
-        <section className="rending-section">
+      <div className={cx(style.rending)}>
+        <section className={cx(style["rending-section"])}>
           <h1>썸네일 변경</h1>
-          <div className="thumbnail-edit">
+          <div className={cx(style["thumbnail-edit"])}>
             {thumbnailType === "custom" && (
               <div
                 style={{
                   background: `url('${newPost?.thumbnail}') center / cover`,
                 }}
-                className={classNames("thumbnail custom", { active: isDragActive })}
+                className={cx(style.thumbnail, style.custom, { [style.active]: isDragActive })}
                 {...getRootProps()}
               >
                 <input {...getInputProps()} />
-                <i className={classNames("fa-solid fa-plus", { active: isDragActive })} />
+                <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
               </div>
             )}
             {thumbnailType === "layout" && (
-              <div className="thumbnail layout">
+              <div className={cx(style.thumbnail, style.layout)}>
                 {layoutImages.slice(0, 5).map(({ listId, imageSrc }) => (
                   <div
                     key={`thumb_${listId}`}
@@ -161,13 +163,13 @@ export default function RendingSection() {
                 ))}
               </div>
             )}
-            {thumbnailType === "none" && <NoThumbnail type="postCard" />}
-            <div className="thumbnail-selector">
+            {thumbnailType === "none" && <NoThumbnail type="post-card" />}
+            <div className={cx(style["thumbnail-selector"])}>
               {selectorTypes.map(({ type, children, label }) => (
                 <button
                   key={type}
                   onClick={() => onChangeThumbnailStyle(type as ThumbnailType)}
-                  className={classNames({ active: thumbnailType === type })}
+                  className={cx({ [style.active]: thumbnailType === type })}
                 >
                   <div className={`preview`}>{children}</div>
                   <span>{label}</span>
@@ -176,20 +178,20 @@ export default function RendingSection() {
             </div>
           </div>
         </section>
-        <div className="finish">
-          <div className={classNames("option", { active: newPost?.format === "secret" })}>
+        <div className={cx(style.finish)}>
+          <div className={cx(style.option, { [style.active]: newPost?.format === "secret" })}>
             <span>비공개 콘텐츠</span>
-            <button onClick={() => onClickOption("isSecret")} className="bar">
-              <div className="circle"></div>
+            <button onClick={() => onClickOption("isSecret")} className={cx(style.bar)}>
+              <div className={cx(style.circle)}></div>
             </button>
           </div>
-          <div className={classNames("option", { active: info?.isNoComments })}>
+          <div className={cx(style.option, { [style.active]: info?.isNoComments })}>
             <span>댓글 비활성화</span>
-            <button onClick={() => onClickOption("isNoComments")} className="bar">
-              <div className="circle"></div>
+            <button onClick={() => onClickOption("isNoComments")} className={cx(style.bar)}>
+              <div className={cx(style.circle)}></div>
             </button>
           </div>
-          <div className="btn-wrapper">
+          <div className={cx(style["btn-wrapper"])}>
             <button onClick={() => create("preview")}>미리 플레이 해보기</button>
             <button onClick={() => create("posting")}>포스팅 하기</button>
           </div>

@@ -1,13 +1,14 @@
 "use client"
 
-import "@/(route)/post/polling/[postId]/_components/Candidate/style.scss"
+import candidateStyle from "@/(route)/post/polling/[postId]/_components/Candidate/style.module.scss"
 import { useNewPostStore } from "@/_store/newPost"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PollingCandidateType } from "@/_types/post/polling"
-import classNames from "classnames"
+import classNames from "classNames"
 import React, { useEffect, useState } from "react"
 import CountUp from "react-countup"
-import "./style.scss"
+import style from "./style.module.scss"
+const cx = classNames.bind(style, candidateStyle)
 
 function Candidate({
   isResultPage,
@@ -48,10 +49,10 @@ function Candidate({
   const isSelected = selectedCandidate?.listId === listId
 
   const titleComponent = () => (
-    <div className="title">
+    <div className={cx(style.title)}>
       <h3>{title.trim() ? title : "후보명 입력 (필수)"}</h3>
       {isResultPage && (
-        <span className="count">
+        <span className={cx(style.count)}>
           <CountUp prefix="(" suffix="표)" duration={4} end={count} />
         </span>
       )}
@@ -62,7 +63,7 @@ function Candidate({
 
   return (
     <li
-      className={classNames("candidate-card", {
+      className={cx(style["candidate-card"], {
         selected: isSelected,
         isResultPage,
         [layoutStyle]: layoutStyle,
@@ -79,31 +80,31 @@ function Candidate({
         opacity: isResultPage ? 0 : 1,
       }}
     >
-      <div className={classNames("border")} />
+      <div className={cx(style.border)} />
       {!isResultPage && (
-        <button className="delete-candidate">
-          <i className="fa-solid fa-x delete-icon" />
+        <button className={cx(style["delete-candidate"])}>
+          <i className={cx("fa-solid", "fa-x", style["delete-icon"])} />
         </button>
       )}
       {/* memo: 결과 페이지만 적용 */}
-      {isResultPage && <div className="number ranking">{index + 1}</div>}
+      {isResultPage && <div className={cx(style.number, style.ranking)}>{index + 1}</div>}
 
-      <div className={classNames("inner")}>
-        <div className={classNames("image-wrapper")}>
+      <div className={cx(style.inner)}>
+        <div className={cx(style["image-wrapper"])}>
           <div
             style={{
               backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            className={classNames("image")}
+            className={cx(style.image)}
           />
           {layoutStyle === "image" && titleComponent()}
-          {layoutStyle === "image" && <div className="overlay" />}
+          {layoutStyle === "image" && <div className={cx(style.overlay)} />}
         </div>
-        <div className="text-info">
+        <div className={cx(style["text-info"])}>
           {titleComponent()}
-          {!isResultPage && !description && <p className="place-holder">후보 설명 입력 (옵션)</p>}
+          {!isResultPage && !description && <p className={cx(style["place-holder"])}>후보 설명 입력 (옵션)</p>}
           {description && <p>{description}</p>}
         </div>
       </div>

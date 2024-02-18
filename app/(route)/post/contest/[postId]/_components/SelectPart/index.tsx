@@ -2,10 +2,13 @@
 
 import { usePostStore } from "@/_store/post"
 import { ContestContentType } from "@/_types/post/post"
-import classNames from "classnames"
 import { produce } from "immer"
 import { Dispatch, SetStateAction, useEffect, useRef } from "react"
 import TinderCard from "react-tinder-card"
+
+import classNames from "classNames"
+import style from "../../candidate.module.scss"
+const cx = classNames.bind(style)
 
 export default function SelectPart({
   content,
@@ -39,11 +42,11 @@ export default function SelectPart({
 
   useEffect(() => {
     const mouseDown = () => {
-      cardRef.current?.classList.add("active")
+      cardRef.current?.classList.add(style.active)
     }
     const mouseUp = () => {
       setTimeout(() => {
-        cardRef.current?.classList.remove("active")
+        cardRef.current?.classList.remove(style.active)
       }, 150)
     }
 
@@ -62,27 +65,27 @@ export default function SelectPart({
   }, [cardRef])
 
   return (
-    <div ref={cardRef} className={classNames("contest-candidate")}>
-      <TinderCard className={classNames("card swipe-card", `swipe-card-${direction}`)} onSwipe={swiped}>
+    <div ref={cardRef} className={cx(style.candidate, style["select-part"], style[direction])}>
+      <TinderCard className={cx(style["candidate-inner"], style["swipe-inner"], style[direction])} onSwipe={swiped}>
         <div
           style={{
             backgroundImage: `url('${candidate.imageSrc}')`,
           }}
-          className={classNames("thumbnail")}
+          className={cx(style.thumbnail)}
         ></div>
         <div
-          className="thumbnail-overlay"
+          className={cx(style["thumbnail-overlay"])}
           style={{
             backgroundImage: `url('${candidate.imageSrc}')`,
           }}
         ></div>
-        <div className="description">
-          <div className="title-wrapper">
-            <h1 className="title">{candidate?.title}</h1>
+        <div className={cx(style.description)}>
+          <div className={cx(style["title-wrapper"])}>
+            <h1 className={cx(style.title)}>{candidate?.title}</h1>
           </div>
         </div>
       </TinderCard>
-      <div className={classNames("contest-candidate-background", `contest-candidate-background-${direction}`)}>
+      <div className={cx(style["candidate-background"], style[direction])}>
         <span>LIKE!</span>
       </div>
     </div>

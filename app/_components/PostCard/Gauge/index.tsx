@@ -1,17 +1,16 @@
 import { randomNum } from "@/_utils/math"
 import { useMemo } from "react"
-import "./style.scss"
 // todo: 지울거임
 export default function Gauge({ style, postId }: { style: any; postId: string }) {
   const t_num = useMemo(() => randomNum(1, 10), [])
   return (
-    <div className="gauge-wrapper">
-      <div className="emo-image">
+    <div className={cx(style["gauge-wrapper"])}>
+      <div className={cx(style["emo-image"])}>
         <img src={style} alt={style} />
       </div>
-      <div className="emo-gauge-outer">
-        <div style={{ width: `${t_num * 10}%` }} className="emo-gauge-inner">
-          <div className="emo-gauge" />
+      <div className={cx(style["emo-gauge-outer"])}>
+        <div style={{ width: `${t_num * 10}%` }} className={cx(style["emo-gauge-inner"])}>
+          <div className={cx(style["emo-gauge"])} />
         </div>
       </div>
     </div>

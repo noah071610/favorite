@@ -1,0 +1,30 @@
+@import "@/_styles/variables.scss";
+
+.contest-post {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+.content {
+  width: $content-width;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 100px - 60px);
+  background-color: $gray-soft;
+
+  position: relative;
+
+  @include border();
+  border-radius: 10px;
+
+  .left,
+  .right {
+    width: 100%;
+  }
+  &.result {
+    overflow: hidden;
+  }
+}

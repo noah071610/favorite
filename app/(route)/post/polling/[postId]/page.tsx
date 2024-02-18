@@ -2,32 +2,28 @@
 
 import CommentPart from "@/_components/CommentPart"
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
+import PostInfo from "@/_components/PostInfo"
+import { useGetVotedId } from "@/_hooks/useGetVotedId"
+import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { getPost } from "@/_queries/post"
 import { usePostStore } from "@/_store/post"
-import { PollingPostType, VoteIdType } from "@/_types/post/post"
+import { PollingPostType } from "@/_types/post/post"
 import { useQuery } from "@tanstack/react-query"
-import classNames from "classnames"
+import classNames from "classNames"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import Candidate from "./_components/Candidate"
 import ChartPart from "./_components/ChartPart"
 import SelectPart from "./_components/SelectPart"
-import "./style.scss"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 export default function PostPage({ previewPost }: { previewPost?: PollingPostType }) {
   const router = useRouter()
   const { postId } = useParams<{ postId: string }>()
-  const {
-    isPreview,
-    layoutType,
-    isResultPage,
-    setIsResultPage,
-    setVotedId,
-    resetStates,
-    selectedCandidate,
-    setSelectedCandidate,
-  } = usePostStore()
+  const { isPreview, layoutType, isResultPage, setIsResultPage, setVotedId, resetStates, selectedCandidate } =
+    usePostStore()
 
   const {
     isError,
@@ -39,13 +35,17 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
         queryFn: () => getPost(postId),
       })
     : { isError: false, error: false, data: previewPost }
+  const isImagesLoaded = usePreloadImages(post ? post.content.candidates.map(({ imageSrc }) => imageSrc) : [])
+  useGetVotedId(postId)
+
+  const candidates = useMemo(() => {
+    const target = post?.content.candidates ?? []
+    return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
+  }, [post, isResultPage])
 
   useEffect(() => {
     resetStates({ isPreview: !!previewPost, layoutType: post?.content.layout ?? null })
   }, [post])
-
-  const [isImagesLoaded, setIsImagesLoaded] = useState(false)
-  const [imageLoadedCount, setImageLoadedCount] = useState<number>(0)
 
   useEffect(() => {
     if (isError) {
@@ -53,68 +53,6 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
       router.back()
     }
   }, [error, isError, router])
-
-  useEffect(() => {
-    if (!isPreview && postId) {
-      const participated: VoteIdType[] = JSON.parse(localStorage.getItem("participated") ?? "[]")
-      const localVotedId = participated.find((v) => v.postId === postId)
-      if (localVotedId) {
-        setIsResultPage(true)
-        setVotedId(localVotedId)
-      }
-    }
-  }, [postId])
-
-  useEffect(() => {
-    if (imageLoadedCount === post?.content.candidates.length) {
-      // memo: 모든 이미지가 로드된 경우에 수행할 동작
-      setTimeout(() => {
-        setIsImagesLoaded(true)
-      }, 1000)
-    }
-  }, [imageLoadedCount, post])
-
-  useEffect(() => {
-    const handleImageLoad = (image: HTMLImageElement) => {
-      if (image.naturalHeight > 0) {
-        setImageLoadedCount((n) => n + 1)
-      }
-    }
-
-    const imageLoadHandlers =
-      post &&
-      post.content.candidates.map(({ imageSrc }) => {
-        if (imageSrc) {
-          const image = new Image()
-
-          image.src = imageSrc
-          image.onload = () => handleImageLoad(image)
-          image.onerror = () => {
-            setImageLoadedCount((n) => n + 1)
-          }
-          return image
-        } else {
-          setImageLoadedCount((n) => n + 1)
-        }
-      })
-
-    return () => {
-      if (imageLoadHandlers) {
-        setImageLoadedCount(0)
-        imageLoadHandlers.forEach((image) => {
-          if (image) {
-            image.onload = null
-            image.onerror = null
-          }
-        })
-      }
-    }
-  }, [post])
-
-  const candidates = useMemo(() => {
-    const target = post?.content.candidates ?? []
-    return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
-  }, [post, isResultPage])
 
   const onClickSubmit = () => {
     if (selectedCandidate) {
@@ -139,41 +77,25 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
   }
 
   return (
-    <div className={classNames("post-page", "polling", { isResultPage })}>
+    <div className={cx(style["polling-post"], { [style["result"]]: isResultPage })}>
       {isPreview && (
-        <div className="preview-back">
+        <div className={cx(style["preview-back"])}>
           <Link href="/post/new">
-            <i className="fa-solid fa-back"></i>
+            <i className={cx("fa-solid", "fa-back")}></i>
           </Link>
         </div>
       )}
       {post && isImagesLoaded && layoutType ? (
-        <div className="post-page-inner">
-          <div className="info">
-            <div className={classNames("title")}>
-              <h1>{post.title}</h1>
-              {post.description.trim() && <h2>{post.description}</h2>}
-            </div>
-            <div className="profile">
-              <button className="user-image">
-                <img src={post.user.userImage} alt={`user_image_${post.user.userId}`} />
-              </button>
-              <div className="user-info">
-                <span>{post.user.userName}</span>
-                <span>2024/01/13</span>
-              </div>
-            </div>
-          </div>
+        <div className={cx(style["post-page-inner"])}>
+          <PostInfo post={post} />
           <div
-            className={classNames("content", {
-              textOnly: layoutType === "text" && !isResultPage,
-              isResultPage,
-              [layoutType]: layoutType,
-              polling: post.type === "polling",
+            className={cx(style.content, {
+              // textOnly: layoutType === "text" && !isResultPage,
+              [style[`layout-${layoutType}`]]: layoutType,
             })}
           >
-            <div className={classNames("left")}>
-              <ul className="candidate-list">
+            <div className={cx(style.left)}>
+              <ul className={cx(style["candidate-list"])}>
                 {candidates.map((candidate, index) => (
                   <Candidate
                     onClickSubmit={onClickSubmit}
@@ -184,20 +106,20 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
                 ))}
               </ul>
             </div>
-            <div className={classNames("right")}>
+            <div className={cx(style.right)}>
               {isResultPage ? (
-                <div className="result">
-                  <div className="title">
-                    <div className="icon">
-                      <i className="fa-solid fa-chart-simple" />
+                <div className={cx(style["right-inner"])}>
+                  <div className={cx(style.title)}>
+                    <div className={cx(style.icon)}>
+                      <i className={cx("fa-solid", "fa-chart-simple")} />
                     </div>
 
                     <span>통계</span>
                   </div>
                   <ChartPart chartDescription={post.content.chartDescription} candidates={post.content.candidates} />
-                  <div className="title">
-                    <div className="icon">
-                      <i className="fa-solid fa-comment" />
+                  <div className={cx(style.title)}>
+                    <div className={cx(style.icon)}>
+                      <i className={cx("fa-solid", "fa-comment")} />
                     </div>
                     <span>코멘트</span>
                   </div>
@@ -213,7 +135,7 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
         <FavoriteLoading type="full" />
       )}
       {isPreview && (
-        <div className="preview-notification">
+        <div className={cx(style["preview-notification"])}>
           <span>PREVIEW</span>
         </div>
       )}

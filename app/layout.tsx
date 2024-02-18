@@ -1,5 +1,5 @@
 import "@/_styles/global.scss"
-import "@/_styles/post.scss"
+// import "@/_styles/post.scss"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import Header from "./_components/Header"

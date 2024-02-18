@@ -2,8 +2,9 @@
 
 import { useNewPostStore } from "@/_store/newPost"
 import { PostingStatus } from "@/_types/post/post"
-import classNames from "classnames"
-import "./style.scss"
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 const navList = {
   init: "양식",
@@ -24,13 +25,13 @@ export default function NewPostNavigation() {
   }
 
   return (
-    <nav className="new-post-nav">
+    <nav className={cx(style.nav)}>
       {(Object.keys(navList) as PostingStatus[]).map((status, i) => (
-        <a className={classNames({ active: newPostStatus === status })} key={status} onClick={() => onClickNav(status)}>
+        <a className={cx({ [style.active]: newPostStatus === status })} key={status} onClick={() => onClickNav(status)}>
           <span>{navList[status]}</span>
         </a>
       ))}
-      <div className={classNames("follower-div", { [newPostStatus]: newPostStatus })} />
+      <div className={cx(style.shadow, { [style[newPostStatus]]: newPostStatus })} />
     </nav>
   )
 }

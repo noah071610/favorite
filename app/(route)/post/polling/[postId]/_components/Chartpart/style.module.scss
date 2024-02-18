@@ -1,0 +1,67 @@
+@import "@/_styles/variables.scss";
+
+.chart-part {
+  position: relative;
+  padding: 5px;
+  margin-bottom: 10px;
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    @include flex();
+    span {
+      color: white;
+      font-size: 25px;
+      font-weight: 700;
+    }
+  }
+}
+
+.sub-chart {
+  display: grid !important;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr !important;
+  height: 250px;
+  margin-bottom: 30px;
+}
+
+.gender-chart {
+  padding: 10px;
+  @include flex();
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    transform: scale(0.3);
+    .icon {
+      font-size: 100px;
+      display: block;
+      background-clip: text !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+  }
+}
+
+.chart-description {
+  textarea {
+    width: 100%;
+    display: block;
+    background-color: rgba(234, 234, 234, 0.4);
+    padding: 10px;
+    font-size: 15px;
+    word-break: keep-all;
+    line-height: 1.5;
+    min-height: 80px;
+  }
+  p {
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 10px;
+    word-break: keep-all;
+  }
+}

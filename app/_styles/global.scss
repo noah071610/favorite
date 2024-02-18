@@ -165,5 +165,35 @@ body {
 }
 
 main {
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
+}
+
+@keyframes shine {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes fade-move-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-up {
+  from {
+    transform: scale(0.3);
+  }
+  to {
+    transform: scale(1);
+  }
 }

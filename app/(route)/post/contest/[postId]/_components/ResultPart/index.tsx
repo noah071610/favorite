@@ -2,8 +2,11 @@
 
 import { ContestContentType } from "@/_types/post/post"
 import { calculateVoteRatio } from "@/_utils/math"
-import classNames from "classnames"
 import CountUp from "react-countup"
+
+import classNames from "classNames"
+import style from "../../candidate.module.scss"
+const cx = classNames.bind(style)
 
 export default function ResultPart({
   content,
@@ -19,35 +22,32 @@ export default function ResultPart({
 
   return (
     <div
-      className={classNames("contest-candidate", "isResultPage", {
-        selected: selected === direction,
-        unselected: selected !== direction,
+      className={cx(style.candidate, style.result, {
+        [style.selected]: selected === direction,
+        [style.unselected]: selected !== direction,
       })}
     >
-      <div className="border"></div>
-      <div className={classNames("card")}>
+      <div className={cx(style.border)}></div>
+      <div className={cx(style["candidate-inner"])}>
         <div
           style={{
             backgroundImage: `url('${candidate.imageSrc}')`,
           }}
-          className={classNames("thumbnail")}
+          className={cx(style.thumbnail)}
         ></div>
         <div
-          onClick={() => console.log("gg")}
-          className="thumbnail-overlay"
+          className={cx(style["thumbnail-overlay"])}
           style={{
             backgroundImage: `url('${candidate.imageSrc}')`,
           }}
         ></div>
-        <div className="description">
-          {/* <div className={`graph-wrapper graph-wrapper-${direction}`}></div> */}
-
-          <div className="title-wrapper">
-            <div style={{ width: `calc(${ratio}%)` }} className={`graph graph-${direction}`}>
-              <div className="gauge"></div>
+        <div className={cx(style.description)}>
+          <div className={cx(style["title-wrapper"])}>
+            <div style={{ width: `calc(${ratio}%)` }} className={cx(style.graph, style[`graph-${direction}`])}>
+              <div className={cx(style.gauge)}></div>
             </div>
-            <h1 className="title">{candidate?.title}</h1>
-            <p className="count">
+            <h1 className={cx(style.title)}>{candidate?.title}</h1>
+            <p className={cx(style.count)}>
               <span>
                 <CountUp prefix="(" suffix="표)" duration={4} end={candidate.count} />
               </span>

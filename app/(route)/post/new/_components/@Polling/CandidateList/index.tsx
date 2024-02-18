@@ -9,7 +9,10 @@ import { usePollingStore } from "@/_store/newPost/polling"
 import { randomNum } from "@/_utils/math"
 import { useCallback } from "react"
 import Candidate from "../Candidate"
-import "./style.scss"
+
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 export default function CandidateList() {
   const { newPostStatus } = useNewPostStore()
@@ -39,7 +42,7 @@ export default function CandidateList() {
     <>
       <div
         style={{ animation: newCandidates.length === 0 ? "none" : "no-candidate-disappear 500ms forwards" }}
-        className="no-candidate"
+        className={cx(style["no-candidate"])}
       >
         <span>후보가 없어요</span>
       </div>
@@ -47,8 +50,8 @@ export default function CandidateList() {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="candidate-drop-zone">
           {(provided) => (
-            <div className="candidate-drop-zone" {...provided.droppableProps} ref={provided.innerRef}>
-              <ul className="candidate-list">
+            <div className={cx(style["candidate-drop-zone"])} {...provided.droppableProps} ref={provided.innerRef}>
+              <ul className={cx(style["candidate-list"])}>
                 {newCandidates.map((candidate, i) => (
                   <Draggable
                     isDragDisabled={newPostStatus === "result"}
@@ -74,9 +77,9 @@ export default function CandidateList() {
         </Droppable>
       </DragDropContext>
       {newPostStatus === "edit" && (
-        <div className="add-candidate-btn">
+        <div className={cx(style["add-candidate-btn"])}>
           <button onClick={createNewCandidate}>
-            <i className="fa-solid fa-plus" />
+            <i className={cx("fa-solid", "fa-plus")} />
           </button>
         </div>
       )}

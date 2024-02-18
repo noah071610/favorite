@@ -1,12 +1,14 @@
 "use client"
 
 import { useInfiniteQuery } from "@tanstack/react-query"
+import classNames from "classNames"
 import { useEffect, useState } from "react"
 import PostCard from "./_components/PostCard"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
 import { getPosts } from "./_queries/post"
 import { PostCardType } from "./_types/post/post"
-import "./style.scss"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 export default function HomePage() {
   const [cursor, setCursor] = useState(0)
@@ -38,8 +40,8 @@ export default function HomePage() {
   return (
     <>
       {data && (
-        <div className="home-page">
-          <div className="home-page-content">
+        <div className={cx(style["home-page"])}>
+          <div className={cx(style.content)}>
             {data.pages.flat().map((v: PostCardType) => (
               <PostCard key={v.postId} postCard={v} />
             ))}
@@ -49,7 +51,7 @@ export default function HomePage() {
       <div
         style={{ display: hasNextPage && isSuccess && !isFetchingNextPage ? "block" : "none" }}
         ref={ref as any}
-        className="home-infinity-observer"
+        className={cx(style.observer)}
       />
     </>
   )

@@ -1,13 +1,13 @@
 @import "@/_styles/variables.scss";
 
-.search-modal {
+.modal {
   width: 100%;
   margin-top: 5px;
   position: absolute;
   top: 40px;
   left: 0;
 
-  &-content {
+  .content {
     width: 400px;
     height: 500px;
     background-color: white;
@@ -21,7 +21,7 @@
   }
 
   &.active {
-    .search-modal-content {
+    .content {
       opacity: 1;
       max-height: 100%;
       transform: translateY(0px) scale(1);

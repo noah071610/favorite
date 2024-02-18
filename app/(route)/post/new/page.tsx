@@ -2,14 +2,11 @@
 
 import React, { useEffect } from "react"
 
-import "./style.scss"
-
 import { getUser } from "@/_queries/user"
 import { useQuery } from "@tanstack/react-query"
 
 import { useNewPostStore } from "@/_store/newPost"
 import { UserType } from "@/_types/user"
-import classNames from "classnames"
 import { nanoid } from "nanoid"
 
 import { PollingLayoutType } from "@/_types/post/post"
@@ -36,13 +33,13 @@ const NewPostInput = React.memo(() => {
     newPost && (
       <>
         <input
-          className="title-input"
+          className={cx(style["title-input"])}
           placeholder="제목 입력"
           value={newPost.title ?? ""}
           onChange={(e) => onChangeInput(e, "title")}
         />
         <input
-          className="description-input"
+          className={cx(style["description-input"])}
           placeholder="설명 입력"
           value={newPost.description ?? ""}
           onChange={(e) => onChangeInput(e, "description")}
@@ -53,6 +50,9 @@ const NewPostInput = React.memo(() => {
 })
 NewPostInput.displayName = "NewPostInput"
 
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 export default function NewPostPage() {
   const { data: user } = useQuery<UserType>({
     queryKey: ["getUser", "edit"],
@@ -94,12 +94,12 @@ export default function NewPostPage() {
   return (
     <>
       <div
-        className={classNames("post-page new-post-page", {
+        className={cx(style["post-page"], style["new-post-page"], {
           isInit: newPostStatus === "init",
           [newPost?.type ?? "polling"]: newPost?.type,
         })}
       >
-        <div className="post">
+        <div className={cx(style.post)}>
           {/* INIT SECTION */}
           {newPostStatus === "init" && <InitSection />}
 
@@ -107,16 +107,16 @@ export default function NewPostPage() {
           {newPostStatus === "edit" && (
             <>
               {newPost?.type === "polling" && (
-                <section className="candidate-style-edit">
+                <section className={cx(style["candidate-style-edit"])}>
                   <h1>후보 스타일 변경</h1>
-                  <div className="inner">
+                  <div className={cx(style.inner)}>
                     {selectorTypes.map(({ value, icons, label }) => (
                       <button
                         key={value}
                         onClick={() => onChangeCandidateLayout(value as PollingLayoutType)}
-                        className={classNames("card", { active: newPost?.content.layout === value })}
+                        className={cx(style.card, { [style.active]: newPost?.content.layout === value })}
                       >
-                        <div className="icon-wrapper">
+                        <div className={cx(style["icon-wrapper"])}>
                           {icons.map((icon, index) => (
                             <i key={index} className={`fa-solid ${icon}`} />
                           ))}
@@ -133,8 +133,8 @@ export default function NewPostPage() {
           {/* EDIT & RESULT SECTION */}
           {(newPostStatus === "edit" || newPostStatus === "result") && (
             <>
-              <section className="info">
-                <div className="title">
+              <section className={cx(style.info)}>
+                <div className={cx(style.title)}>
                   {newPostStatus === "edit" && newPost && <NewPostInput />}
                   {newPostStatus === "result" && newPost && (
                     <>
@@ -143,11 +143,11 @@ export default function NewPostPage() {
                     </>
                   )}
                 </div>
-                <div className="profile">
-                  <button className="user-image">
+                <div className={cx(style.profile)}>
+                  <button className={cx(style["user-image"])}>
                     <img src={user?.userImage} alt={`user_image_${user?.userId}`} />
                   </button>
-                  <div className="user-info">
+                  <div className={cx(style["user-info"])}>
                     <span>{user?.userName}</span>
                     <span>2024/01/13</span>
                   </div>

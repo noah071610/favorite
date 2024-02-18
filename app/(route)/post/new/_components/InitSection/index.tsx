@@ -1,10 +1,10 @@
 "use client"
 
 import { useNewPostStore } from "@/_store/newPost"
-
 import { PostContentType } from "@/_types/post/post"
-import classNames from "classnames"
-import "./style.scss"
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 const typeSelectors = [
   {
@@ -12,7 +12,7 @@ const typeSelectors = [
     label: "투표",
     children: (
       <>
-        <i className="fa-solid fa-chart-simple symbol" />
+        <i className={cx("fa-solid", "fa-chart-simple", style.symbol)} />
       </>
     ),
   },
@@ -21,7 +21,7 @@ const typeSelectors = [
     label: "1:1 대결",
     children: (
       <>
-        <span className="symbol contest">VS</span>
+        <span className={cx(style.symbol, style.contest)}>VS</span>
       </>
     ),
   },
@@ -30,7 +30,7 @@ const typeSelectors = [
     label: "월드컵",
     children: (
       <>
-        <i className="fa-solid fa-trophy" />
+        <i className={cx("fa-solid", "fa-trophy")} />
       </>
     ),
   },
@@ -43,15 +43,15 @@ export default function InitSection() {
     setStatus("edit")
   }
   return (
-    <div className="init">
-      <div className="type-wrapper">
+    <div className={cx(style.init)}>
+      <div className={cx(style["type-wrapper"])}>
         <h1>콘텐츠 타입을 선택해주세요</h1>
-        <div className="type-list">
+        <div className={cx(style["type-list"])}>
           {typeSelectors.map(({ value, children, label }) => (
             <button
               onClick={() => onClickTypeSelect(value as PostContentType)}
               key={`type_selector_${value}`}
-              className={classNames(`type-${value}`, { active: newPost?.type === value })}
+              className={cx(`type-${value}`, { [style.active]: newPost?.type === value })}
             >
               <div>{children}</div>
               <span>{label}</span>

@@ -59,7 +59,7 @@
   }
 }
 
-.favorite-loading {
+.loading {
   &-wrapper {
     &.full {
       position: absolute;
@@ -68,6 +68,7 @@
       transform: translate(-50%, -50%);
     }
   }
+
   @include flex();
   flex-direction: column;
 

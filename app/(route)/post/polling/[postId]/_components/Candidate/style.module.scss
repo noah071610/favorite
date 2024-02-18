@@ -1,6 +1,6 @@
 @import "@/_styles/variables.scss";
 
-.candidate-card {
+.candidate {
   padding: 1px;
   border-radius: 11px;
   position: relative;
@@ -45,7 +45,7 @@
 
     &:hover {
       background-color: $gray-soft;
-      .text-info {
+      .content {
         h3 {
           color: $pink-hard;
         }
@@ -64,6 +64,13 @@
     height: 100%;
   }
 
+  .content {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .title {
     font-size: 17px;
     margin-bottom: 7px;
@@ -74,7 +81,7 @@
       line-height: 1.2;
       word-break: break-all;
     }
-    span {
+    .count {
       @include flex();
       padding: 0 5px;
       width: 100%;
@@ -83,23 +90,14 @@
     }
   }
 
-  .text-info {
+  p {
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    p {
-      font-size: 13px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.2;
-    }
-    .place-holder {
-      color: $gray-hard;
-    }
+    text-overflow: ellipsis;
+    line-height: 1.2;
   }
 
   .select-btn {
@@ -113,7 +111,7 @@
     top: 50%;
     right: 30px;
     transform: translateY(-50%);
-    span {
+    .select {
       font-size: 15px;
       font-weight: 700;
       color: white;
@@ -122,10 +120,7 @@
       background: rgba(229, 106, 106, 1);
     }
   }
-}
 
-.candidate-card {
-  // SELECTED
   &.selected {
     .inner {
       background: rgb(255, 255, 255);
@@ -144,114 +139,113 @@
   }
 
   // RESULT PAGE
-  &.isResultPage {
+  &.result {
     .inner {
       cursor: default;
     }
+  }
+}
+
+// TEXT TYPE
+.candidate.layout-text {
+  @include border();
+  .inner {
+    display: flex;
+    align-items: center;
+  }
+  .image {
+    display: none;
+  }
+  .content {
+    width: 100%;
+
+    // memo: 투표시 텍스트 스타일
     &.text {
-      .inner {
-        padding-left: 20px;
+      .title {
+        font-size: 19px;
+        h3 {
+          line-height: 1.3;
+        }
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.3;
+        display: block;
+        -webkit-box-orient: initial;
+        -webkit-line-clamp: initial;
+        overflow: initial;
+        text-overflow: initial;
       }
     }
   }
-
-  // TEXT TYPE
-  &.text {
-    @include border();
+  &.result {
     .inner {
-      display: flex;
-      align-items: center;
+      padding-left: 20px;
     }
-    .image {
-      display: none;
-    }
-    .text-info {
-      width: 100%;
-
-      // memo: 투표시 텍스트 스타일
-      &.onlyTextStyle {
-        .title {
-          font-size: 19px;
-          h3 {
-            line-height: 1.3;
-          }
-        }
-        p {
-          font-size: 14px;
-          line-height: 1.3;
-          display: block;
-          -webkit-box-orient: initial;
-          -webkit-line-clamp: initial;
-          overflow: initial;
-          text-overflow: initial;
-        }
-      }
-    }
-
-    &.selected,
-    &.isResultPage {
+    .content {
+      // todo:
       border-color: transparent;
     }
   }
+}
 
-  // IMAGE TYPE
-  &.image {
-    .number {
-      top: 8px;
-      left: 8px;
-    }
-    .inner {
-      display: block;
-      padding: 1px;
-    }
-    .image {
-      &-wrapper {
-        height: 150px;
-        position: relative;
-        &:hover {
-          .overlay {
-            opacity: 1;
-          }
-          h3 {
-            color: rgb(255, 141, 141);
-          }
-        }
-        .title {
-          width: 100%;
-          position: absolute;
-          bottom: 0px;
-          right: 0px;
-          margin-bottom: 0px;
-          padding: 10px;
-          padding-top: 30px;
-          color: white;
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, rgba(0, 0, 0, 0.6) 100%);
-          z-index: 20;
-        }
+// IMAGE TYPE
+.candidate.layout-image {
+  .number {
+    top: 8px;
+    left: 8px;
+  }
+  .inner {
+    display: block;
+    padding: 1px;
+  }
+  .image {
+    &-wrapper {
+      height: 150px;
+      position: relative;
+      &:hover {
         .overlay {
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.3);
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 10;
-          opacity: 0;
-          transition: 300ms all;
+          opacity: 1;
+        }
+        h3 {
+          color: rgb(255, 141, 141);
         }
       }
-    }
-    .text-info {
-      display: none;
-    }
-
-    &.selected {
+      .title {
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        margin-bottom: 0px;
+        padding: 10px;
+        padding-top: 30px;
+        color: white;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, rgba(0, 0, 0, 0.6) 100%);
+        z-index: 20;
+      }
       .overlay {
-        opacity: 1;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        opacity: 0;
+        transition: 300ms all;
       }
-      h3 {
-        color: rgb(255, 141, 141);
-      }
+    }
+  }
+  .content {
+    display: none;
+  }
+
+  &.selected {
+    .overlay {
+      opacity: 1;
+    }
+    h3 {
+      color: rgb(255, 141, 141);
     }
   }
 }

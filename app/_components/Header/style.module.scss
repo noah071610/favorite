@@ -3,9 +3,6 @@
 $side-width: 300px;
 
 .header {
-  &-padding {
-    height: calc(40px + 20px);
-  }
   width: 100%;
   height: 60px;
   padding: 10px 20px;
@@ -44,25 +41,28 @@ $side-width: 300px;
         color: white;
       }
     }
-    .login-btn {
+    .login {
       background-color: $pink;
       &:hover {
         background-color: $pink-hard;
       }
     }
-    .new-post-btn {
+    .new-post {
       background-color: $purple;
       &:hover {
         background-color: $purple_hover;
       }
     }
   }
+}
 
-  &-search {
-    position: fixed;
-    top: 10px; // memo: 패딩값
-    left: 50%;
-    z-index: 30;
-    transform: translateX(-50%);
-  }
+.ghost {
+  height: calc(40px + 20px);
+}
+.search {
+  position: fixed;
+  top: 10px; // memo: 패딩값
+  left: 50%;
+  z-index: 30;
+  transform: translateX(-50%);
 }

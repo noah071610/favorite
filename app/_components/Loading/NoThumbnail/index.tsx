@@ -1,13 +1,14 @@
-import classNames from "classnames"
-import "./style.scss"
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
-export default function NoThumbnail({ type }: { type: "postCard" }) {
+export default function NoThumbnail({ type }: { type: "post-card" }) {
   return (
-    <div className={classNames("no-thumbnail", { [type]: type })}>
+    <div className={cx(style["no-thumbnail"], { [style[type]]: type })}>
       <div>
-        <i className="fa-solid fa-gift" />
-        <i className="fa-solid fa-heart" />
-        <i className="fa-solid fa-rocket" />
+        <i className={cx("fa-solid", "fa-gift")} />
+        <i className={cx("fa-solid", "fa-heart")} />
+        <i className={cx("fa-solid", "fa-rocket")} />
       </div>
     </div>
   )

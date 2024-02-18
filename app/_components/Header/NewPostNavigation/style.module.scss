@@ -1,0 +1,52 @@
+@import "@/_styles/variables.scss";
+
+$nav-width: 100px;
+
+.nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  a {
+    width: $nav-width;
+    padding: 10px 0;
+    position: inherit;
+    z-index: 10;
+    @include flex();
+    span {
+      font-size: 15px;
+    }
+    &.active {
+      span {
+        transform: color 300ms;
+        font-weight: 700;
+        color: white;
+      }
+    }
+  }
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $nav-width;
+  padding: 0 15px;
+  height: 100%;
+  border-radius: 22px;
+  background-color: $pink;
+  transition: transform 500ms cubic-bezier(0, 0.99, 0.47, 1.04);
+  &.init,
+  &.none {
+    transform: translateX(0);
+  }
+  &.edit {
+    transform: translateX(calc($nav-width));
+  }
+  &.result {
+    transform: translateX(calc(($nav-width) * 2));
+  }
+  &.rending {
+    transform: translateX(calc(($nav-width) * 3));
+  }
+}

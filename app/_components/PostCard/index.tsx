@@ -2,11 +2,12 @@
 
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { PostCardType } from "@/_types/post/post"
-import classNames from "classnames"
+import classNames from "classNames"
 import Link from "next/link"
 import LoadingBar from "../Loading/LoadingBar"
 import NoThumbnail from "../Loading/NoThumbnail"
-import "./style.scss"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 const participateShowNumber = 8
 
@@ -21,41 +22,40 @@ export default function PostCard({
   },
 }: {
   postCard: PostCardType
-  isEdit?: boolean
 }) {
   const imageStatus = useProgressiveImage(thumbnail)
 
   return (
-    <article className="post-card">
-      {/* <Profile postId={postId} user={user} like={like} shareCount={shareCount} /> */}
-      <div className="post-card-main">
-        <Link className="post-card-link" href={`/post/${type}/${postId}`}>
+    <article className={cx(style.card)}>
+      <div className={cx(style["card-main"])}>
+        <Link className={cx(style["card-link"])} href={`/post/${type}/${postId}`}>
           <h1>{title}</h1>
           <h2>{description}</h2>
-          <div className={classNames("thumbnail", { isFull: !description.trim() })}>
-            <div className="thumbnail-image">
+          <div className={cx(style.thumbnail, { isFull: !description.trim() })}>
+            <div className={cx(style["thumbnail"])}>
               {imageStatus === "success" && (
                 <div
+                  className={cx(style.image)}
                   style={{
                     background: `url('${thumbnail}') center / cover`,
                   }}
                 />
               )}
-              {imageStatus === "error" && <NoThumbnail type="postCard" />}
+              {imageStatus === "error" && <NoThumbnail type="post-card" />}
             </div>
             {imageStatus === "loading" && (
-              <div className="loading">
+              <div className={cx(style.loading)}>
                 <LoadingBar />
               </div>
             )}
           </div>
         </Link>
         {participateImages.length > 0 && (
-          <div className="participate">
+          <div className={cx(style.participate)}>
             {participateImages.map((image, i) => (
               <img
                 style={{ left: `${i * 13}px` }}
-                className="participate-profile"
+                className={cx(style["participate-profile"])}
                 key={`${postId}_participate_${i + 1}`}
                 src={image}
                 alt={`${postId}_participate_${i + 1}`}

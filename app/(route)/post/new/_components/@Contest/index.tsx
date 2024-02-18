@@ -1,38 +1,40 @@
 "use client"
 
-import "@/(route)/post/contest/[postId]/style.scss"
 import { useNewPostStore } from "@/_store/newPost"
 import { useContestTypeStore } from "@/_store/newPost/contest"
 import { calculateVoteRatio, randomNum } from "@/_utils/math"
-import classNames from "classnames"
 import { useEffect, useMemo } from "react"
 import CountUp from "react-countup"
 import Dropzone from "./Dropzone"
+
+import style from "@/(route)/post/contest/[postId]/style.module.scss"
+import classNames from "classNames"
+const cx = classNames.bind(style)
 
 const ContestResultImage = ({ direction, ratio }: { direction: "left" | "right"; ratio: string }) => {
   const { leftCandidate, rightCandidate } = useContestTypeStore()
   const candidate = direction === "left" ? leftCandidate : rightCandidate
 
   return (
-    <div className="contest-candidate contest-result">
-      <div className={classNames("image-wrapper")}>
+    <div className={cx(style["contest-candidate"], style["contest-result"])}>
+      <div className={cx(style["image-wrapper"])}>
         <div
           style={{
             backgroundImage: `url('${candidate.imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className={classNames("image")}
+          className={cx(style.image)}
         />
-        <div className="description">
+        <div className={cx(style.description)}>
           {/* <div className={`graph-wrapper graph-wrapper-${direction}`}></div> */}
 
-          <div className="title-wrapper">
-            <div style={{ width: `calc(${ratio}%)` }} className={`graph graph-${direction}`}>
-              <div className="gauge"></div>
+          <div className={cx(style["title-wrapper"])}>
+            <div style={{ width: `calc(${ratio}%)` }}>
+              <div className={cx(style.gauge)}></div>
             </div>
-            <h1 className="title">{candidate?.title.trim() ? candidate.title : "후보명을 입력해주세요"}</h1>
-            <p className="count">
+            <h1 className={cx(style.title)}>{candidate?.title.trim() ? candidate.title : "후보명을 입력해주세요"}</h1>
+            <p className={cx(style.count)}>
               <span>
                 <CountUp prefix="(" suffix="표)" duration={4} end={candidate.count} />
               </span>
@@ -68,7 +70,7 @@ export default function ContestContent() {
   }, [])
 
   return (
-    <div className={classNames("content", "contest")}>
+    <div className={cx(style.content, "contest")}>
       {(["left", "right"] as Array<"left" | "right">).map((dr) => (
         <div key={dr} className={dr}>
           {isResultPage ? (

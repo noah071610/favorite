@@ -2,9 +2,10 @@
 
 import { useMainStore } from "@/_store/main"
 import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
-import classNames from "classnames"
+import classNames from "classNames"
 import { MouseEvent, useEffect } from "react"
-import "./style.scss"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 export default function Overlay() {
   const { modalStatus, setModal } = useMainStore()
@@ -33,7 +34,7 @@ export default function Overlay() {
         animation:
           modalStatus !== "none" ? "overlay_animation 400ms forwards" : "overlay_animation_rollback 400ms forwards",
       }}
-      className={classNames("global-overlay")}
+      className={cx(style["global-overlay"])}
     />
   )
 }

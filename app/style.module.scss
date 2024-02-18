@@ -7,7 +7,7 @@
   flex-direction: column;
   width: 100%;
   padding-bottom: 180px;
-  &-content {
+  .content {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
@@ -16,6 +16,6 @@
   }
 }
 
-.home-infinity-observer {
+.observer {
   height: 50px;
 }

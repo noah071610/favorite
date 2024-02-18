@@ -1,6 +1,7 @@
 import { useMainStore } from "@/_store/main"
-import classNames from "classnames"
-import "./style.scss"
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 export default function SearchBar() {
   const { modalStatus, setModal } = useMainStore()
@@ -9,9 +10,9 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="search-bar">
+    <div className={cx(style["search-bar"])}>
       <input onClick={onClickInput} />
-      <div className={classNames("border", { active: modalStatus === "search" })} />
+      <div className={cx(style.border, { [style.active]: modalStatus === "search" })} />
     </div>
   )
 }

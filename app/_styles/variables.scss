@@ -49,3 +49,39 @@ $z-index-map: (
   background-size: 200% 200%;
   animation: shine 2s linear infinite;
 }
+
+@mixin shine {
+  @keyframes shine {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+@mixin fade-move-up {
+  @keyframes fade-move-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+
+    70% {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@mixin scale-up {
+  @keyframes scale-up {
+    from {
+      transform: scale(0.3);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}

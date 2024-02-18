@@ -2,10 +2,13 @@
 
 import { uploadImage } from "@/_queries/newPost"
 import { useContestTypeStore } from "@/_store/newPost/contest"
-import classNames from "classnames"
 import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
+
+import style from "@/(route)/post/contest/[postId]/style.module.scss"
+import classNames from "classNames"
+const cx = classNames.bind(style)
 
 export default function Dropzone({ direction }: { direction: "left" | "right" }) {
   const { leftCandidate, rightCandidate, setCandidate } = useContestTypeStore()
@@ -42,22 +45,22 @@ export default function Dropzone({ direction }: { direction: "left" | "right" })
   })
   return (
     <>
-      <div className="contest-candidate">
+      <div className={cx(style["contest-candidate"])}>
         <div
           style={{
             background: `url('${candidate.imageSrc}') center / cover`,
           }}
-          className={classNames("thumbnail thumbnail-drop-zone", { active: isDragActive })}
+          className={cx(style.thumbnail, style["thumbnail-drop-zone"], { [style.active]: isDragActive })}
           {...getRootProps()}
         >
           <input {...getInputProps()} />
-          <i className={classNames("fa-solid fa-plus", { active: isDragActive })} />
+          <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
         </div>
-        <div className="description">
-          <div className="title-wrapper">
+        <div className={cx(style.description)}>
+          <div className={cx(style["title-wrapper"])}>
             <TextareaAutosize
               placeholder="후보명 입력 (필수)"
-              className=" title-input"
+              className={cx(style["title-input"])}
               value={candidate.title}
               onChange={onChangeInput}
             />

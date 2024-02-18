@@ -2,7 +2,9 @@ import { likeMutate } from "@/_queries/post"
 import { getUser } from "@/_queries/user"
 import { UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
-import "./style.scss"
+import classNames from "classNames"
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 export default function Profile({
   user,
@@ -29,20 +31,20 @@ export default function Profile({
   }
 
   return (
-    <div className="post-card-profile">
-      <button className="user-image">
+    <div className={cx(style["post-card-profile"])}>
+      <button className={cx(style["user-image"])}>
         <img src={userImage} alt={`user_image_${userId}`} />
       </button>
-      <div className="meta">
-        <button onClick={onClickLike} className="meta-content">
-          <div className="meta-icon">
-            <i className="fa-solid fa-heart" />
+      <div className={cx(style.meta)}>
+        <button onClick={onClickLike} className={cx(style["meta-content"])}>
+          <div className={cx(style["meta-icon"])}>
+            <i className={cx("fa-solid", "fa-heart")} />
           </div>
           <span>{like}</span>
         </button>
-        <button className="meta-content">
-          <div className="meta-icon">
-            <i className="fa-solid fa-arrow-up-from-bracket" />
+        <button className={cx(style["meta-content"])}>
+          <div className={cx(style["meta-icon"])}>
+            <i className={cx("fa-solid", "fa-arrow-up-from-bracket")} />
           </div>
           <span>{shareCount}</span>
         </button>
