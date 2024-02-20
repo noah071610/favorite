@@ -28,6 +28,13 @@ export default function ResultPart({
       })}
     >
       <div className={cx(style.border)}></div>
+
+      {selected === direction && (
+        <div className={cx(style["candidate-background"], style[direction])}>
+          <span>LIKE!</span>
+        </div>
+      )}
+
       <div className={cx(style["candidate-inner"])}>
         <div
           style={{

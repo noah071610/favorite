@@ -14,7 +14,6 @@ import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, Linear
 import classNames from "classNames"
 import { useMemo } from "react"
 import { Bar, Doughnut } from "react-chartjs-2"
-import TextareaAutosize from "react-textarea-autosize"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -24,11 +23,9 @@ ChartJS.register(ArcElement)
 export default function ChartPart({
   candidates,
   chartDescription,
-  isEdit,
 }: {
   chartDescription?: string
   candidates: PollingCandidateType[]
-  isEdit?: boolean
 }) {
   const { newPost, setNewPost } = useNewPostStore()
 
@@ -56,16 +53,9 @@ export default function ChartPart({
     ],
   }
 
-  const description = isEdit ? newPost?.content.chartDescription : chartDescription
-
   return (
     <>
       <div className={cx(style["chart-part"])}>
-        {isEdit && (
-          <div className={cx(style["overlay"])}>
-            <span>예시 데이터 입니다</span>
-          </div>
-        )}
         <section
           className={cx(style["polling-chart"])}
           style={{
@@ -99,7 +89,8 @@ export default function ChartPart({
         </section>
       </div>
       <section className={cx(style["chart-description"])}>
-        {isEdit ? (
+        {chartDescription && <p>{chartDescription}</p>}
+        {/* {isEdit ? (
           <TextareaAutosize
             placeholder="투표 결과 설명 입력"
             className={cx(style["description-input"])}
@@ -108,8 +99,7 @@ export default function ChartPart({
             maxLength={180}
           />
         ) : (
-          description && <p>{description}</p>
-        )}
+        )} */}
       </section>
     </>
   )

@@ -1,7 +1,10 @@
 import { PollingCandidateType } from "@/_types/post/polling"
+import { PollingLayoutType } from "@/_types/post/post"
 import { create } from "zustand"
 
 interface States {
+  layoutType: PollingLayoutType
+  chartDescription: string
   newCandidates: PollingCandidateType[]
   selectedCandidate: PollingCandidateType | null
 }
@@ -13,11 +16,15 @@ type Actions = {
   deleteCandidate: (listId: string) => void
   changeCandidate: (listId: string, state: { title?: string; description?: string; imageSrc?: string }) => void
   clearPollingContent: () => void
+  setLayoutType: (layout: PollingLayoutType) => void
+  setChartDescription: (description: string) => void
 }
 
 export const usePollingStore = create<States & Actions>((set) => ({
   newCandidates: [],
   selectedCandidate: null,
+  layoutType: "textImage",
+  chartDescription: "",
   setSelectedCandidate: (state) => set(() => ({ selectedCandidate: state })),
   addCandidate: (state) =>
     set((origin) => {
@@ -73,4 +80,6 @@ export const usePollingStore = create<States & Actions>((set) => ({
     set(() => {
       return { newCandidates: [], selectedCandidate: null }
     }),
+  setLayoutType: (layoutType) => set(() => ({ layoutType })),
+  setChartDescription: (description) => set(() => ({ chartDescription: description })),
 }))

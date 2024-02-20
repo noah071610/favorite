@@ -1,6 +1,6 @@
 @import "@/_styles/variables.scss";
 
-.right .select-part-description {
+.description-input {
   @include flex();
   flex-direction: column;
   width: 100%;
@@ -23,7 +23,7 @@
   }
 }
 
-.right .select-part-image {
+.drop-zone {
   cursor: pointer;
   @include flex();
   &:hover,

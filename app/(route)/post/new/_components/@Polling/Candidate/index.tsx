@@ -1,14 +1,13 @@
 "use client"
 
-import candidateStyle from "@/(route)/post/polling/[postId]/_components/Candidate/style.module.scss"
-import { useNewPostStore } from "@/_store/newPost"
+import style from "@/(route)/post/polling/[postId]/_components/Candidate/style.module.scss"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
 import CountUp from "react-countup"
-import style from "./style.module.scss"
-const cx = classNames.bind(style, candidateStyle)
+import _style from "./style.module.scss"
+const cx = classNames.bind(style)
 
 function Candidate({
   isResultPage,
@@ -21,12 +20,11 @@ function Candidate({
 }) {
   const { count, description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
-  const { newPost } = useNewPostStore()
-  const { selectedCandidate, deleteCandidate, setSelectedCandidate } = usePollingStore()
+  const { selectedCandidate, deleteCandidate, setSelectedCandidate, layoutType } = usePollingStore()
 
   const onClickSelect = (e: any, candidate: PollingCandidateType) => {
     if (!e.target.className.includes("delete-")) {
-      !isResultPage && setSelectedCandidate(candidate)
+      setSelectedCandidate(candidate)
     } else {
       setCandidateStatus("delete")
     }
@@ -59,35 +57,27 @@ function Candidate({
     </div>
   )
 
-  const layoutStyle = newPost?.content.layout!
-
   return (
     <li
-      className={cx(style["candidate-card"], {
-        selected: isSelected,
-        isResultPage,
-        [layoutStyle]: layoutStyle,
+      className={cx(style.candidate, style[`layout-${layoutType}`], {
+        [style.selected]: isSelected,
       })}
       onClick={(e) => onClickSelect(e, candidate)}
       style={{
-        animation: isResultPage
-          ? `fade-move-up ${1100 + index * 20}ms ${index * 100}ms cubic-bezier(0,1.1,.78,1) forwards`
-          : candidateStatus === "delete"
-          ? (layoutStyle === "image" ? "image-" : "") + "candidate-delete 500ms forwards"
-          : candidateStatus === "add"
-          ? (layoutStyle === "image" ? "image-" : "") + "candidate-add 500ms forwards"
-          : "none", // memo: 드래그 드롭 순서변경 시 애니메이션 방지용
-        opacity: isResultPage ? 0 : 1,
+        animation:
+          candidateStatus === "delete"
+            ? _style[(layoutType === "image" ? "image-" : "") + "candidate-delete"] + " 500ms forwards"
+            : candidateStatus === "add"
+            ? _style[(layoutType === "image" ? "image-" : "") + "candidate-add"] + " 500ms forwards"
+            : "none",
+
+        opacity: 1,
       }}
     >
       <div className={cx(style.border)} />
-      {!isResultPage && (
-        <button className={cx(style["delete-candidate"])}>
-          <i className={cx("fa-solid", "fa-x", style["delete-icon"])} />
-        </button>
-      )}
-      {/* memo: 결과 페이지만 적용 */}
-      {isResultPage && <div className={cx(style.number, style.ranking)}>{index + 1}</div>}
+      <button className={cx(_style["delete-candidate"])}>
+        <i className={cx("fa-solid", "fa-x", style["delete-icon"])} />
+      </button>
 
       <div className={cx(style.inner)}>
         <div className={cx(style["image-wrapper"])}>
@@ -99,13 +89,12 @@ function Candidate({
             }}
             className={cx(style.image)}
           />
-          {layoutStyle === "image" && titleComponent()}
-          {layoutStyle === "image" && <div className={cx(style.overlay)} />}
+          {layoutType === "image" && titleComponent()}
+          {layoutType === "image" && <div className={cx(style.overlay)} />}
         </div>
-        <div className={cx(style["text-info"])}>
+        <div className={cx(style.content)}>
           {titleComponent()}
-          {!isResultPage && !description && <p className={cx(style["place-holder"])}>후보 설명 입력 (옵션)</p>}
-          {description && <p>{description}</p>}
+          {description ? <p>{description}</p> : <p className={cx(style["place-holder"])}>후보 설명 입력 (옵션)</p>}
         </div>
       </div>
     </li>

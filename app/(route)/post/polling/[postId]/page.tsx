@@ -29,12 +29,10 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
     isError,
     error,
     data: post,
-  } = !isPreview
-    ? useQuery<PollingPostType>({
-        queryKey: ["getPost", postId],
-        queryFn: () => getPost(postId),
-      })
-    : { isError: false, error: false, data: previewPost }
+  } = useQuery<PollingPostType>({
+    queryKey: ["getPost", postId],
+    queryFn: () => getPost(postId),
+  })
   const isImagesLoaded = usePreloadImages(post ? post.content.candidates.map(({ imageSrc }) => imageSrc) : [])
   useGetVotedId(postId)
 
@@ -45,6 +43,7 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
 
   useEffect(() => {
     resetStates({ isPreview: !!previewPost, layoutType: post?.content.layout ?? null })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post])
 
   useEffect(() => {
@@ -86,11 +85,10 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
         </div>
       )}
       {post && isImagesLoaded && layoutType ? (
-        <div className={cx(style["post-page-inner"])}>
-          <PostInfo post={post} />
+        <div className={cx(style["polling-post-inner"])}>
+          <PostInfo title={post.title} description={post.description} user={post.user} />
           <div
             className={cx(style.content, {
-              // textOnly: layoutType === "text" && !isResultPage,
               [style[`layout-${layoutType}`]]: layoutType,
             })}
           >

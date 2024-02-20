@@ -5,14 +5,14 @@ import { scaleUpAnimation } from "@/_styles/animation"
 import TextareaAutosize from "react-textarea-autosize"
 
 import { uploadImage } from "@/_queries/newPost"
-import { useNewPostStore } from "@/_store/newPost"
 import { usePollingStore } from "@/_store/newPost/polling"
 import React, { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import Resizer from "react-image-file-resizer"
 
+import style from "@/(route)/post/polling/[postId]/_components/SelectPart/style.module.scss"
 import classNames from "classNames"
-import style from "./style.module.scss"
+import _style from "./style.module.scss"
 const cx = classNames.bind(style, selectPartStyle)
 
 const resizeFile = (file: File) =>
@@ -26,9 +26,10 @@ const CandidateInput = React.memo(() => {
   const onChangeInput = (e: any, type: "title" | "description") => {
     if (selectedCandidate) {
       if (type === "title" && e.target.value.length >= 30) return
-      changeCandidate(selectedCandidate.listId, { [style[type]]: e.target.value })
+      changeCandidate(selectedCandidate.listId, { [type]: e.target.value })
     }
   }
+
   return (
     selectedCandidate && (
       <>
@@ -52,8 +53,7 @@ const CandidateInput = React.memo(() => {
 CandidateInput.displayName = "CandidateInput"
 
 export default function SelectPart() {
-  const { newPost } = useNewPostStore()
-  const { changeCandidate, selectedCandidate } = usePollingStore()
+  const { changeCandidate, selectedCandidate, layoutType } = usePollingStore()
   const { listId, imageSrc } = selectedCandidate ?? {}
 
   const onDrop = useCallback(
@@ -86,20 +86,20 @@ export default function SelectPart() {
     <>
       {selectedCandidate ? (
         <div key={listId} className={cx(style["select-part"])}>
-          {newPost?.content.layout !== "text" && (
+          {layoutType !== "text" && (
             <div
               style={{
                 background: `url('${imageSrc}') center / cover`,
                 ...scaleUpAnimation(250),
               }}
-              className={cx(style["select-part-image"], { [style.active]: isDragActive })}
+              className={cx(style.image, _style["drop-zone"], { [_style.active]: isDragActive })}
               {...getRootProps()}
             >
               <input {...getInputProps()} />
-              <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
+              <i className={cx("fa-solid", "fa-plus", { [_style.active]: isDragActive })} />
             </div>
           )}
-          <div className={cx(style["select-part-description"])}>
+          <div className={cx(_style["description-input"])}>
             <CandidateInput />
           </div>
         </div>

@@ -26,6 +26,7 @@
   .title {
     padding-right: 50px;
     padding-bottom: 3px;
+    width: 100%;
     h1 {
       font-size: 20px;
     }
@@ -34,6 +35,25 @@
       font-size: 15px;
       font-weight: 400;
       line-height: 1.2;
+    }
+
+    input {
+      width: 100%;
+      display: block;
+      background-color: rgba(234, 234, 234, 0.4);
+    }
+    .title-input {
+      font-size: 20px;
+      font-weight: 700;
+      padding: 5px;
+      margin-bottom: 2px;
+    }
+
+    .description-input {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.2;
+      padding: 5px;
     }
   }
 

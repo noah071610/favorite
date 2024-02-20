@@ -6,9 +6,10 @@ import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
-import style from "@/(route)/post/contest/[postId]/style.module.scss"
+import style from "@/(route)/post/contest/[postId]/candidate.module.scss"
 import classNames from "classNames"
-const cx = classNames.bind(style)
+import _style from "./style.module.scss"
+const cx = classNames.bind(style, _style)
 
 export default function Dropzone({ direction }: { direction: "left" | "right" }) {
   const { leftCandidate, rightCandidate, setCandidate } = useContestTypeStore()
@@ -33,8 +34,14 @@ export default function Dropzone({ direction }: { direction: "left" | "right" })
         }
       })
     },
-    [direction]
+    [direction, setCandidate]
   )
+
+  const onClickDeleteImage = () => {
+    setCandidate(direction, {
+      imageSrc: undefined,
+    })
+  }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -45,25 +52,41 @@ export default function Dropzone({ direction }: { direction: "left" | "right" })
   })
   return (
     <>
-      <div className={cx(style["contest-candidate"])}>
-        <div
-          style={{
-            background: `url('${candidate.imageSrc}') center / cover`,
-          }}
-          className={cx(style.thumbnail, style["thumbnail-drop-zone"], { [style.active]: isDragActive })}
-          {...getRootProps()}
-        >
-          <input {...getInputProps()} />
-          <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
-        </div>
-        <div className={cx(style.description)}>
-          <div className={cx(style["title-wrapper"])}>
-            <TextareaAutosize
-              placeholder="후보명 입력 (필수)"
-              className={cx(style["title-input"])}
-              value={candidate.title}
-              onChange={onChangeInput}
-            />
+      <div className={cx(style.candidate, style[direction])}>
+        <div className={cx(style["candidate-inner"])}>
+          {candidate.imageSrc ? (
+            <>
+              <button onClick={onClickDeleteImage} className={cx(_style.close)}>
+                <i className={cx("fa-solid", "fa-close")}></i>
+              </button>
+              <div
+                style={{
+                  backgroundImage: `url('${candidate.imageSrc}')`,
+                }}
+                className={cx(style.thumbnail)}
+              ></div>
+              <div
+                className={cx(style["thumbnail-overlay"])}
+                style={{
+                  backgroundImage: `url('${candidate.imageSrc}')`,
+                }}
+              ></div>
+            </>
+          ) : (
+            <div className={cx(_style["thumbnail-drop-zone"])} {...getRootProps()}>
+              <input {...getInputProps()} />
+              <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
+            </div>
+          )}
+          <div className={cx(style.description)}>
+            <div className={cx(style["title-wrapper"])}>
+              <TextareaAutosize
+                placeholder="후보명 입력 (필수)"
+                className={cx(_style["title-input"])}
+                value={candidate.title}
+                onChange={onChangeInput}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -15,7 +15,9 @@ export default function SelectPart({
   setContent,
   setSelected,
   direction,
+  selected,
 }: {
+  selected: "left" | "right" | null
   content: ContestContentType
   setContent: Dispatch<SetStateAction<ContestContentType | null>>
   setSelected: Dispatch<SetStateAction<"left" | "right" | null>>

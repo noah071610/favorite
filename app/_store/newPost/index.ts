@@ -47,12 +47,6 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
             case "description":
               draft.newPost.description = action.payload
               break
-            case "chartDescription":
-              draft.newPost.content.chartDescription = action.payload
-              break
-            case "layout":
-              draft.newPost.content.layout = action.payload
-              break
             case "type":
               draft.newPost.type = action.payload
               break

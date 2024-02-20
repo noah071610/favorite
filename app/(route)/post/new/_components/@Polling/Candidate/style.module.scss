@@ -87,21 +87,6 @@
   }
 }
 
-.candidate-card {
-  .text-info {
-    .title {
-      width: calc(100% - 25px);
-    }
-  }
-  &.isResultPage {
-    .text-info {
-      .title {
-        width: 100%;
-      }
-    }
-  }
-}
-
 .delete-candidate {
   position: absolute;
   top: 6px;

@@ -1,7 +1,7 @@
 "use client"
 
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { PollingPostType } from "@/_types/post/post"
+import { ContestPostType, PollingPostType } from "@/_types/post/post"
 import { UserType } from "@/_types/user"
 import classNames from "classNames"
 import { useState } from "react"
@@ -69,7 +69,7 @@ function CommentArea({
   )
 }
 
-export default function CommentPart({ post }: { post: PollingPostType }) {
+export default function CommentPart({ post }: { post: PollingPostType | ContestPostType }) {
   const comments = post?.comments ?? []
 
   return (
