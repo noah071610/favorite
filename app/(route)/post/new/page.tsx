@@ -15,6 +15,7 @@ import InitSection from "./_components/InitSection"
 import RendingSection from "./_components/RendingSection"
 
 import classNames from "classNames"
+import TournamentContent from "./_components/@Tournament"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -52,22 +53,17 @@ export default function NewPostPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, newPost])
 
-  useEffect(() => {
-    if (newPost && user) {
-      setNewPost({ type: "layout", payload: "textImage" })
-    }
-  }, [newPost, user, setNewPost])
-
   return (
     <div className={cx(style["new-post-page"])}>
       {/* INIT SECTION */}
       {newPostStatus === "init" && <InitSection />}
 
       {/* EDIT & RESULT SECTION */}
-      {(newPostStatus === "edit" || newPostStatus === "result") && (
+      {newPostStatus === "edit" && (
         <>
           {newPost?.type === "polling" && user && <PollingContent user={user} />}
           {newPost?.type === "contest" && user && <ContestContent user={user} />}
+          {newPost?.type === "tournament" && user && <TournamentContent user={user} />}
         </>
       )}
 

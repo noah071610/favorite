@@ -58,6 +58,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .styler-section {
@@ -110,5 +112,23 @@
         color: $pink-hard;
       }
     }
+  }
+}
+
+.chart-description {
+  width: 1000px;
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  textarea {
+    width: 100%;
+    display: block;
+    background-color: rgba(234, 234, 234, 0.4);
+    padding: 10px;
+    font-size: 15px;
+    word-break: keep-all;
+    line-height: 1.5;
+    min-height: 80px;
   }
 }

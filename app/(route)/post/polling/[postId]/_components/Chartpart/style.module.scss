@@ -3,50 +3,37 @@
 .chart-part {
   position: relative;
   padding: 5px;
-  margin-bottom: 10px;
-}
-
-.sub-chart {
-  display: grid !important;
-  gap: 20px;
-  grid-template-columns: 1fr 1fr !important;
-  height: 250px;
-  margin-bottom: 30px;
-}
-
-.gender-chart {
-  padding: 10px;
-  @include flex();
-  .inner {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    transform: scale(0.3);
-    .icon {
-      font-size: 100px;
-      display: block;
-      background-clip: text !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-    }
-  }
 }
 
 .chart-description {
-  textarea {
-    width: 100%;
-    display: block;
-    background-color: rgba(234, 234, 234, 0.4);
-    padding: 10px;
-    font-size: 15px;
-    word-break: keep-all;
-    line-height: 1.5;
-    min-height: 80px;
-  }
-  p {
-    font-size: 15px;
-    line-height: 1.5;
-    padding: 10px;
-    word-break: keep-all;
-  }
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
+
+// .sub-chart {
+//   display: grid !important;
+//   gap: 20px;
+//   grid-template-columns: 1fr 1fr !important;
+//   height: 250px;
+//   margin-bottom: 30px;
+// }
+
+// .gender-chart {
+//   padding: 10px;
+//   @include flex();
+//   .inner {
+//     display: flex;
+//     justify-content: space-between;
+//     gap: 30px;
+//     transform: scale(0.3);
+//     .icon {
+//       font-size: 100px;
+//       display: block;
+//       background-clip: text !important;
+//       -webkit-background-clip: text !important;
+//       -webkit-text-fill-color: transparent !important;
+//     }
+//   }
+// }

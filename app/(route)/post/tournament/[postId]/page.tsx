@@ -3,10 +3,10 @@
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import { getPost } from "@/_queries/post"
 import { usePostStore } from "@/_store/post"
-import { ContestContentType, ContestPostType } from "@/_types/post/contest"
+import { TournamentPostType } from "@/_types/post/tournament"
 import { useQuery } from "@tanstack/react-query"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import ResultPart from "./_components/ResultPart"
 import SelectPart from "./_components/SelectPart"
 
@@ -18,25 +18,24 @@ import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function ContestPostPage({ previewPost }: { previewPost?: ContestPostType }) {
+export default function TournamentPostPage({ previewPost }: { previewPost?: TournamentPostType }) {
   const router = useRouter()
   const { postId } = useParams<{ postId: string }>()
   const { isPreview, isResultPage, resetStates } = usePostStore()
 
-  const { isError, error, data } = useQuery<ContestPostType>({
+  const { isError, error, data } = useQuery<TournamentPostType>({
     queryKey: ["getPost", postId],
     queryFn: previewPost ? async () => ({ data: null }) : () => getPost(postId),
   })
   const post = previewPost ? previewPost : data
 
-  const [content, setContent] = useState<ContestContentType | null>(null)
-  const [selected, setSelected] = useState<"left" | "right" | null>(null)
-  const isImagesLoaded = usePreloadImages(content ? [content.left.imageSrc, content.right.imageSrc] : [])
+  const isImagesLoaded = usePreloadImages(
+    post?.content.candidates ? post?.content.candidates.map(({ imageSrc }) => imageSrc) : []
+  )
   useGetVotedId(postId)
 
   useEffect(() => {
     if (post) {
-      setContent({ left: post.content.left, right: post.content.right })
       resetStates({ isPreview: !!previewPost, layoutType: null })
     }
   }, [post, previewPost, resetStates])
@@ -49,9 +48,9 @@ export default function ContestPostPage({ previewPost }: { previewPost?: Contest
   }, [error, isError, router])
 
   return (
-    <div className={cx(style["contest-post"], { [style.result]: isResultPage })}>
-      {post && content && isImagesLoaded ? (
-        <div className={cx(["contest-post-inner"])}>
+    <div className={cx(style["tournament-post"], { [style.result]: isResultPage })}>
+      {post && candidates && isImagesLoaded ? (
+        <div className={cx(["tournament-post-inner"])}>
           <PostInfo title={post.title} description={post.description} user={post.user} />
           <div className={cx(style.content, { [style.result]: isResultPage })}>
             {(["left", "right"] as Array<"left" | "right">).map((dr) => (
@@ -59,13 +58,7 @@ export default function ContestPostPage({ previewPost }: { previewPost?: Contest
                 {isResultPage ? (
                   <ResultPart selected={selected} content={content} direction={dr} />
                 ) : (
-                  <SelectPart
-                    selected={selected}
-                    setSelected={setSelected}
-                    content={content}
-                    setContent={setContent}
-                    direction={dr}
-                  />
+                  <SelectPart initialCandidates={post.content.candidates} />
                 )}
               </div>
             ))}
@@ -75,7 +68,7 @@ export default function ContestPostPage({ previewPost }: { previewPost?: Contest
         <FavoriteLoading type="full" />
       )}
       {post && isResultPage && (
-        <div className={cx(style["contest-comment"])}>
+        <div className={cx(style["tournament-comment"])}>
           <CommentPart post={post} />
         </div>
       )}

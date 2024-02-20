@@ -1,19 +1,11 @@
 "use client"
 
-import {
-  chartBackgroundColors,
-  chartBorderColors,
-  generationChartData,
-  generationChartOption,
-  rankingOptions,
-} from "@/_data/chart"
-import { useNewPostStore } from "@/_store/newPost"
-import { scaleUpAnimation } from "@/_styles/animation"
+import { chartBackgroundColors, chartBorderColors, rankingOptions } from "@/_data/chart"
 import { PollingCandidateType } from "@/_types/post/polling"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
 import classNames from "classNames"
 import { useMemo } from "react"
-import { Bar, Doughnut } from "react-chartjs-2"
+import { Bar } from "react-chartjs-2"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -27,8 +19,6 @@ export default function ChartPart({
   chartDescription?: string
   candidates: PollingCandidateType[]
 }) {
-  const { newPost, setNewPost } = useNewPostStore()
-
   const ranking_data = useMemo(
     () => ({
       labels: candidates.map(({ title }) => title),
@@ -36,11 +26,6 @@ export default function ChartPart({
     }),
     [candidates]
   )
-
-  const onChangeDescription = (event: any) => {
-    const text = event.target.value
-    setNewPost({ type: "chartDescription", payload: text })
-  }
 
   const rankingData = {
     labels: ranking_data.labels,
@@ -60,47 +45,18 @@ export default function ChartPart({
           className={cx(style["polling-chart"])}
           style={{
             height: `${
-              candidates.length <= 5 ? (candidates.length > 1 ? candidates.length * 50 : 200) : candidates.length * 40
+              candidates.length <= 4 ? (candidates.length > 2 ? candidates.length * 60 : 180) : candidates.length * 40
             }px`,
           }}
         >
           <Bar options={rankingOptions as any} data={rankingData} />
         </section>
-        <section className={cx(style["sub-chart"])}>
-          <div className={cx(style.generation)}>
-            <Doughnut options={generationChartOption} data={generationChartData} />
-          </div>
-          <div className={cx(style["gender-chart"])}>
-            <div style={scaleUpAnimation(500)} className={cx(style["inner"])}>
-              <i
-                style={{
-                  background: "linear-gradient(180deg, rgba(207,229,255,0.3) 50%, rgba(112,145,255,1) 50%)",
-                }}
-                className={cx(style.icon, "fa-solid", "fa-person")}
-              />
-              <i
-                style={{
-                  background: "linear-gradient(180deg, rgba(255,207,207,0.3) 50%, rgba(255,141,141,1) 50%)",
-                }}
-                className={cx(style.icon, "fa-solid", "fa-person-dress")}
-              />
-            </div>
-          </div>
-        </section>
       </div>
-      <section className={cx(style["chart-description"])}>
-        {chartDescription && <p>{chartDescription}</p>}
-        {/* {isEdit ? (
-          <TextareaAutosize
-            placeholder="투표 결과 설명 입력"
-            className={cx(style["description-input"])}
-            value={description ?? ""}
-            onChange={onChangeDescription}
-            maxLength={180}
-          />
-        ) : (
-        )} */}
-      </section>
+      {chartDescription && (
+        <section className={cx(style["chart-description"])}>
+          <p>{chartDescription}</p>
+        </section>
+      )}
     </>
   )
 }

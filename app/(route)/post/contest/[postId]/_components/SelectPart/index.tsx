@@ -1,7 +1,7 @@
 "use client"
 
 import { usePostStore } from "@/_store/post"
-import { ContestContentType } from "@/_types/post/post"
+import { ContestContentType } from "@/_types/post/contest"
 import { produce } from "immer"
 import { Dispatch, SetStateAction, useEffect, useRef } from "react"
 import TinderCard from "react-tinder-card"

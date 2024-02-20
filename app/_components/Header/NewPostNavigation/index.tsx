@@ -9,7 +9,6 @@ const cx = classNames.bind(style)
 const navList = {
   init: "양식",
   edit: "제작",
-  result: "결과",
   rending: "랜딩",
 }
 

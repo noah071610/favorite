@@ -5,19 +5,10 @@ import { usePollingStore } from "@/_store/newPost/polling"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
-import CountUp from "react-countup"
 import _style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-function Candidate({
-  isResultPage,
-  candidate,
-  index,
-}: {
-  isResultPage: boolean
-  candidate: PollingCandidateType
-  index: number
-}) {
+function Candidate({ candidate }: { candidate: PollingCandidateType }) {
   const { count, description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const { selectedCandidate, deleteCandidate, setSelectedCandidate, layoutType } = usePollingStore()
@@ -49,11 +40,6 @@ function Candidate({
   const titleComponent = () => (
     <div className={cx(style.title)}>
       <h3>{title.trim() ? title : "후보명 입력 (필수)"}</h3>
-      {isResultPage && (
-        <span className={cx(style.count)}>
-          <CountUp prefix="(" suffix="표)" duration={4} end={count} />
-        </span>
-      )}
     </div>
   )
 
@@ -70,13 +56,12 @@ function Candidate({
             : candidateStatus === "add"
             ? _style[(layoutType === "image" ? "image-" : "") + "candidate-add"] + " 500ms forwards"
             : "none",
-
         opacity: 1,
       }}
     >
       <div className={cx(style.border)} />
       <button className={cx(_style["delete-candidate"])}>
-        <i className={cx("fa-solid", "fa-x", style["delete-icon"])} />
+        <i className={cx("fa-solid", "fa-x", _style["delete-icon"])} />
       </button>
 
       <div className={cx(style.inner)}>

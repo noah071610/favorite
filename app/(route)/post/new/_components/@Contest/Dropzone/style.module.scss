@@ -6,12 +6,23 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
-  background-color: white;
   @include flex();
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+    border: 15px solid $gray-soft;
+  }
   &:hover,
   &.active {
     background-color: $gray-soft;
-    opacity: 0.9;
+    &::before {
+      border-color: $pink;
+      opacity: 0.3;
+    }
     i {
       color: $pink-hard;
     }
@@ -52,6 +63,6 @@
     color: white;
   }
   &:hover {
-    background-color: $gray-hard;
+    background-color: $pink-hard;
   }
 }

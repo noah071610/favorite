@@ -7,10 +7,9 @@ import { useGetVotedId } from "@/_hooks/useGetVotedId"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { getPost } from "@/_queries/post"
 import { usePostStore } from "@/_store/post"
-import { PollingPostType } from "@/_types/post/post"
+import { PollingPostType } from "@/_types/post/polling"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
-import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useMemo } from "react"
 import Candidate from "./_components/Candidate"
@@ -19,20 +18,18 @@ import SelectPart from "./_components/SelectPart"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function PostPage({ previewPost }: { previewPost?: PollingPostType }) {
+export default function PollingPostPage({ previewPost }: { previewPost?: PollingPostType }) {
   const router = useRouter()
   const { postId } = useParams<{ postId: string }>()
   const { isPreview, layoutType, isResultPage, setIsResultPage, setVotedId, resetStates, selectedCandidate } =
     usePostStore()
 
-  const {
-    isError,
-    error,
-    data: post,
-  } = useQuery<PollingPostType>({
+  const { isError, error, data } = useQuery<PollingPostType>({
     queryKey: ["getPost", postId],
-    queryFn: () => getPost(postId),
+    queryFn: previewPost ? async () => ({ data: null }) : () => getPost(postId),
   })
+  const post = previewPost ? previewPost : data
+
   const isImagesLoaded = usePreloadImages(post ? post.content.candidates.map(({ imageSrc }) => imageSrc) : [])
   useGetVotedId(postId)
 
@@ -77,13 +74,6 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
 
   return (
     <div className={cx(style["polling-post"], { [style["result"]]: isResultPage })}>
-      {isPreview && (
-        <div className={cx(style["preview-back"])}>
-          <Link href="/post/new">
-            <i className={cx("fa-solid", "fa-back")}></i>
-          </Link>
-        </div>
-      )}
       {post && isImagesLoaded && layoutType ? (
         <div className={cx(style["polling-post-inner"])}>
           <PostInfo title={post.title} description={post.description} user={post.user} />
@@ -131,11 +121,6 @@ export default function PostPage({ previewPost }: { previewPost?: PollingPostTyp
         </div>
       ) : (
         <FavoriteLoading type="full" />
-      )}
-      {isPreview && (
-        <div className={cx(style["preview-notification"])}>
-          <span>PREVIEW</span>
-        </div>
       )}
     </div>
   )

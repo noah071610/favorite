@@ -1,11 +1,10 @@
-import { PollingCandidateType } from "@/_types/post/polling"
-import { PollingLayoutType } from "@/_types/post/post"
+import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
 import { create } from "zustand"
 
 interface States {
   layoutType: PollingLayoutType
   chartDescription: string
-  newCandidates: PollingCandidateType[]
+  pollingCandidates: PollingCandidateType[]
   selectedCandidate: PollingCandidateType | null
 }
 
@@ -21,46 +20,48 @@ type Actions = {
 }
 
 export const usePollingStore = create<States & Actions>((set) => ({
-  newCandidates: [],
+  pollingCandidates: [],
   selectedCandidate: null,
   layoutType: "textImage",
   chartDescription: "",
   setSelectedCandidate: (state) => set(() => ({ selectedCandidate: state })),
   addCandidate: (state) =>
     set((origin) => {
-      return { newCandidates: [...origin.newCandidates, state] }
+      return { pollingCandidates: [...origin.pollingCandidates, state] }
     }),
   moveCandidates: (targetListId, from, to) =>
     set((origin) => {
       // memo: 1. 위치 변경
-      const _newCandidates = [...origin.newCandidates]
-      const targetCandidate: PollingCandidateType = origin.newCandidates.find(({ listId }) => listId === targetListId)!
-      _newCandidates.splice(from, 1)
-      _newCandidates.splice(to, 0, targetCandidate)
+      const _pollingCandidates = [...origin.pollingCandidates]
+      const targetCandidate: PollingCandidateType = origin.pollingCandidates.find(
+        ({ listId }) => listId === targetListId
+      )!
+      _pollingCandidates.splice(from, 1)
+      _pollingCandidates.splice(to, 0, targetCandidate)
 
       // memo: 2. 넘버값 변경 (고유 인덱스)
-      const newCandidates = _newCandidates.map((v, i) => ({ ...v, number: i + 1 }))
+      const pollingCandidates = _pollingCandidates.map((v, i) => ({ ...v, number: i + 1 }))
 
       // memo: 3. 작업중인 후보도 넘버 변경
       const selectedCandidate: PollingCandidateType | null = origin.selectedCandidate
       if (selectedCandidate) {
-        selectedCandidate.number = newCandidates.find(({ listId }) => listId === selectedCandidate.listId)!.number
+        selectedCandidate.number = pollingCandidates.find(({ listId }) => listId === selectedCandidate.listId)!.number
       }
 
       return {
-        newCandidates,
+        pollingCandidates,
         selectedCandidate,
       }
     }),
   changeCandidate: (targetListId, state) =>
     set((origin) => ({
       selectedCandidate: !origin.selectedCandidate ? null : { ...origin.selectedCandidate, ...state },
-      newCandidates: origin.newCandidates.map((v) => (v.listId === targetListId ? { ...v, ...state } : v)),
+      pollingCandidates: origin.pollingCandidates.map((v) => (v.listId === targetListId ? { ...v, ...state } : v)),
     })),
   deleteCandidate: (targetListId) =>
     set((origin) => {
       // memo: 1. 삭제
-      const newCandidates = origin.newCandidates
+      const pollingCandidates = origin.pollingCandidates
         .filter((v) => v.listId !== targetListId)
         .map((v, i) => ({ ...v, number: i + 1 }))
 
@@ -70,15 +71,17 @@ export const usePollingStore = create<States & Actions>((set) => ({
         if (targetListId === origin.selectedCandidate?.listId) {
           selectedCandidate = null
         } else {
-          selectedCandidate.number = newCandidates.find(({ listId }) => listId === selectedCandidate?.listId)!.number
+          selectedCandidate.number = pollingCandidates.find(
+            ({ listId }) => listId === selectedCandidate?.listId
+          )!.number
         }
       }
 
-      return { newCandidates, selectedCandidate }
+      return { pollingCandidates, selectedCandidate }
     }),
   clearPollingContent: () =>
     set(() => {
-      return { newCandidates: [], selectedCandidate: null }
+      return { pollingCandidates: [], selectedCandidate: null }
     }),
   setLayoutType: (layoutType) => set(() => ({ layoutType })),
   setChartDescription: (description) => set(() => ({ chartDescription: description })),

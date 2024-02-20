@@ -1,11 +1,4 @@
-import {
-  NewPostType,
-  PollingLayoutType,
-  PostContentType,
-  PostOptionType,
-  PostingStatus,
-  ThumbnailType,
-} from "@/_types/post/post"
+import { NewPostType, PostContentType, PostOptionType, PostingStatus, ThumbnailType } from "@/_types/post/post"
 import { produce } from "immer"
 import { create } from "zustand"
 
@@ -16,10 +9,8 @@ interface States {
 
 type SetNewPostAction =
   | { type: "type"; payload: PostContentType }
-  | { type: "layout"; payload: PollingLayoutType }
   | { type: "title"; payload: string }
   | { type: "description"; payload: string }
-  | { type: "chartDescription"; payload: string }
   | { type: "option"; payload: PostOptionType }
   | { type: "thumbnailType"; payload: ThumbnailType }
   | { type: "thumbnail"; payload: string }

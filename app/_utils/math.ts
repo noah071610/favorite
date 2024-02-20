@@ -13,3 +13,12 @@ export const calculateVoteRatio = (leftCount: number, rightCount: number) => {
 
   return { left: leftPercentage, right: rightPercentage }
 }
+
+export function shuffleArray(_arr: any[]) {
+  const arr = [..._arr]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}

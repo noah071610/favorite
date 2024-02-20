@@ -43,10 +43,7 @@ $nav-width: 100px;
   &.edit {
     transform: translateX(calc($nav-width));
   }
-  &.result {
-    transform: translateX(calc(($nav-width) * 2));
-  }
   &.rending {
-    transform: translateX(calc(($nav-width) * 3));
+    transform: translateX(calc(($nav-width) * 2));
   }
 }

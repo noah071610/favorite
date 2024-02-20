@@ -21,7 +21,6 @@
     "nanoid": "5.0.5",
     "next": "14.1.0",
     "react": "^18",
-    "react-18-input-autosize": "3.0.0",
     "react-chartjs-2": "5.2.0",
     "react-countup": "6.5.0",
     "react-dom": "^18",

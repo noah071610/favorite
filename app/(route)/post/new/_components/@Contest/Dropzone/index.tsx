@@ -7,19 +7,32 @@ import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
 import style from "@/(route)/post/contest/[postId]/candidate.module.scss"
+import { useTournamentStore } from "@/_store/newPost/tournament"
 import classNames from "classNames"
 import _style from "./style.module.scss"
-const cx = classNames.bind(style, _style)
+const cx = classNames.bind(style)
 
-export default function Dropzone({ direction }: { direction: "left" | "right" }) {
+export default function Dropzone({ direction }: { direction: "left" | "right" | number }) {
   const { leftCandidate, rightCandidate, setCandidate } = useContestTypeStore()
-  const candidate = direction === "left" ? leftCandidate : rightCandidate
+  const { tournamentCandidates, changeCandidate } = useTournamentStore()
+  const candidate =
+    typeof direction === "string"
+      ? direction === "left"
+        ? leftCandidate
+        : rightCandidate
+      : tournamentCandidates[direction]
 
   const onChangeInput = (e: any) => {
     if (e.target.value.length >= 40) return
-    setCandidate(direction, {
-      title: e.target.value,
-    })
+    if (typeof direction === "string") {
+      setCandidate(direction, {
+        title: e.target.value,
+      })
+    } else {
+      changeCandidate(direction, {
+        title: e.target.value,
+      })
+    }
   }
 
   const onDrop = useCallback(
@@ -30,17 +43,27 @@ export default function Dropzone({ direction }: { direction: "left" | "right" })
 
         const { msg, imageSrc } = await uploadImage(formData)
         if (msg === "ok") {
-          setCandidate(direction, { imageSrc })
+          if (typeof direction === "string") {
+            setCandidate(direction, { imageSrc })
+          } else {
+            changeCandidate(direction, {
+              imageSrc,
+            })
+          }
         }
       })
     },
-    [direction, setCandidate]
+    [changeCandidate, direction, setCandidate]
   )
 
   const onClickDeleteImage = () => {
-    setCandidate(direction, {
-      imageSrc: undefined,
-    })
+    if (typeof direction === "string") {
+      setCandidate(direction, { imageSrc: "" })
+    } else {
+      changeCandidate(direction, {
+        imageSrc: "",
+      })
+    }
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -73,7 +96,13 @@ export default function Dropzone({ direction }: { direction: "left" | "right" })
               ></div>
             </>
           ) : (
-            <div className={cx(_style["thumbnail-drop-zone"])} {...getRootProps()}>
+            <div
+              style={{
+                background: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU') center / cover`,
+              }}
+              className={cx(_style["thumbnail-drop-zone"])}
+              {...getRootProps()}
+            >
               <input {...getInputProps()} />
               <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
             </div>
