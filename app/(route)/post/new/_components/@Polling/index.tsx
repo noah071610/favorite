@@ -7,12 +7,11 @@ import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea
 
 import { nanoid } from "nanoid"
 
-import style from "@/(route)/post/polling/[postId]/style.module.scss"
+import style from "@/(route)/post/polling/[postId]/_components/style.module.scss"
 import PostInfo from "@/_components/PostInfo"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PollingLayoutType } from "@/_types/post/polling"
 import { UserType } from "@/_types/user"
-import { randomNum } from "@/_utils/math"
 import classNames from "classNames"
 import { useCallback } from "react"
 import Candidate from "./Candidate"
@@ -28,9 +27,12 @@ const selectorTypes = [
 const cx = classNames.bind(style)
 
 const ChartDescription = () => {
-  const { chartDescription, setChartDescription } = usePollingStore()
+  const {
+    setPollingContent,
+    pollingContent: { chartDescription },
+  } = usePollingStore()
   const onChangeDescription = (e: any) => {
-    setChartDescription(e.target.value)
+    setPollingContent({ type: "chartDescription", payload: e.target.value })
   }
   return (
     <div className={cx(_style.styler)}>
@@ -49,31 +51,39 @@ const ChartDescription = () => {
 }
 
 export default function PollingContent({ user }: { user: UserType }) {
-  const { newPost, newPostStatus, setNewPost } = useNewPostStore()
-  const { pollingCandidates, addCandidate, moveCandidates, setLayoutType, layoutType } = usePollingStore()
+  const { newPost, newPostStatus } = useNewPostStore()
+  const {
+    setPollingContent,
+    pollingContent: { candidates, layout },
+    moveCandidate,
+    addCandidate,
+  } = usePollingStore()
 
   const createPollingCandidate = useCallback(() => {
     addCandidate({
-      listId: nanoid(10),
-      title: "",
-      imageSrc: "",
-      description: "",
-      count: randomNum(1, 100),
-      number: pollingCandidates.length + 1,
+      index: candidates.length,
+      payload: {
+        listId: nanoid(10),
+        title: "",
+        imageSrc: "",
+        description: "",
+        count: 0,
+        number: candidates.length + 1,
+      },
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pollingCandidates.length])
+  }, [candidates.length])
 
   const onDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result
+    const { destination, source } = result
 
     if (!destination || typeof destination.index !== "number") return
 
-    moveCandidates(draggableId, source.index, destination.index)
+    moveCandidate({ from: source.index, to: destination.index })
   }
 
   const onChangeCandidateLayout = (style: PollingLayoutType) => {
-    setLayoutType(style)
+    setPollingContent({ type: "layout", payload: style })
   }
 
   return (
@@ -88,7 +98,7 @@ export default function PollingContent({ user }: { user: UserType }) {
                 <button
                   key={value}
                   onClick={() => onChangeCandidateLayout(value as PollingLayoutType)}
-                  className={cx(_style.card, { [_style.active]: layoutType === value })}
+                  className={cx(_style.card, { [_style.active]: layout === value })}
                 >
                   <div className={cx(_style["icon-wrapper"])}>
                     {icons.map((icon, index) => (
@@ -110,7 +120,7 @@ export default function PollingContent({ user }: { user: UserType }) {
                   <div
                     style={{
                       animation:
-                        pollingCandidates.length === 0 ? "none" : _style["no-candidate-disappear"] + " 500ms forwards",
+                        candidates.length === 0 ? "none" : _style["no-candidate-disappear"] + " 500ms forwards",
                     }}
                     className={cx(_style["no-candidate"])}
                   >
@@ -121,7 +131,7 @@ export default function PollingContent({ user }: { user: UserType }) {
                       {(provided) => (
                         <div className={cx("candidate-drop-zone")} {...provided.droppableProps} ref={provided.innerRef}>
                           <ul className={cx(style["candidate-list"])}>
-                            {pollingCandidates.map((candidate, i) => (
+                            {candidates.map((candidate, i) => (
                               <Draggable index={i} key={candidate.listId} draggableId={candidate.listId}>
                                 {(draggableProvided) => (
                                   <div
@@ -129,7 +139,7 @@ export default function PollingContent({ user }: { user: UserType }) {
                                     {...draggableProvided.dragHandleProps}
                                     {...draggableProvided.draggableProps}
                                   >
-                                    <Candidate candidate={candidate} />
+                                    <Candidate targetIndex={i} candidate={candidate} />
                                   </div>
                                 )}
                               </Draggable>

@@ -1,8 +1,12 @@
 "use client"
 
+import { errorMessage } from "@/_data/message"
+import { errorToastOptions } from "@/_data/toast"
 import { useNewPostStore } from "@/_store/newPost"
 import { PostingStatus } from "@/_types/post/post"
 import classNames from "classNames"
+import { useCallback } from "react"
+import { toast } from "react-toastify"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -13,15 +17,23 @@ const navList = {
 }
 
 export default function NewPostNavigation() {
-  const { newPostStatus, setStatus, newPost } = useNewPostStore()
+  const { newPostStatus, setStatus, newPost, setError } = useNewPostStore()
 
-  const onClickNav = (status: PostingStatus) => {
-    if (!newPost?.type) {
-      setStatus("init")
-    } else {
-      setStatus(status)
-    }
-  }
+  const onClickNav = useCallback(
+    (status: PostingStatus) => {
+      if (!newPost?.type) {
+        setError({ type: "selectType", text: errorMessage["selectType"] })
+        toast.error(errorMessage["selectType"], errorToastOptions)
+        setTimeout(() => {
+          setError({ type: "clear" })
+        }, 3000)
+        setStatus("init")
+      } else {
+        setStatus(status)
+      }
+    },
+    [newPost?.type, setError, setStatus]
+  )
 
   return (
     <nav className={cx(style.nav)}>

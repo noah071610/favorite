@@ -24,6 +24,7 @@ export interface PostCardInfo {
 interface PostBaseType {
   postId: string
   title: string
+  user: UserType
   format: PostFormatType
   description: string
   thumbnail: string
@@ -32,19 +33,16 @@ interface PostBaseType {
 export interface NewPostType extends PostBaseType {
   type: PostContentType | null
   info: PostCardInfo
-  userId: number
   content: any
 }
 
 export interface PostCardType extends PostBaseType {
-  user: UserType
   type: PostContentType
   info: PostCardInfo
   createdAt: Date
 }
 
 export interface PostType extends PostBaseType {
-  user: UserType
   type: PostContentType
   comments: CommentType[]
   createdAt: Date

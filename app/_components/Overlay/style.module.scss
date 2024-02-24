@@ -3,22 +3,22 @@
 @keyframes overlay_animation {
   from {
     opacity: 0;
-    z-index: 20;
+    z-index: 100;
   }
 
   to {
     opacity: 1;
-    z-index: 20;
+    z-index: 100;
   }
 }
 @keyframes overlay_animation_rollback {
   from {
     opacity: 1;
-    z-index: 20;
+    z-index: 100;
   }
 
   99% {
-    z-index: 20;
+    z-index: 100;
   }
   to {
     z-index: -1;

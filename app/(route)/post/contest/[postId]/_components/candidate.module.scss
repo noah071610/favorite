@@ -65,19 +65,11 @@
   }
 
   .border {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    @include full();
   }
 
   &-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    @include full();
     background-color: $gray-soft;
     @include flex();
     &.left {
@@ -117,11 +109,7 @@
     background-repeat: no-repeat;
 
     &-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      @include full();
       transition: all 300ms;
 
       background-size: 250%;
@@ -130,11 +118,7 @@
 
       &::before {
         content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        @include full();
         backdrop-filter: brightness(50%) blur(3px);
       }
     }

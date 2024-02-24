@@ -18,6 +18,7 @@
     "classnames": "2.5.1",
     "dayjs": "1.11.10",
     "immer": "10.0.3",
+    "lodash": "4.17.21",
     "nanoid": "5.0.5",
     "next": "14.1.0",
     "react": "^18",
@@ -29,12 +30,14 @@
     "react-image-file-resizer": "0.4.8",
     "react-textarea-autosize": "8.5.3",
     "react-tinder-card": "1.6.4",
+    "react-toastify": "10.0.4",
     "swiper": "11.0.6",
     "zustand": "4.5.0"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "5.20.2",
     "@types/body-scroll-lock": "3.1.2",
+    "@types/lodash": "4.14.202",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-beautiful-dnd": "13.1.8",

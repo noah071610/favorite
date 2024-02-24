@@ -1,0 +1,80 @@
+@import "@/_styles/variables.scss";
+
+@keyframes bounceInLeft {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(-3000px, 0, 0) scaleX(3);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(25px, 0, 0) scaleX(1);
+  }
+
+  75% {
+    transform: translate3d(-10px, 0, 0) scaleX(0.98);
+  }
+
+  90% {
+    transform: translate3d(5px, 0, 0) scaleX(0.995);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes zoomOutUp {
+  40% {
+    opacity: 1;
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+@keyframes rotate {
+  to {
+    color: $pink-hard;
+    transform: rotate(360deg);
+  }
+}
+
+.left,
+.right {
+  width: 100%;
+}
+
+.next-round {
+  width: 100%;
+  height: 100%;
+  @include flex();
+  .inner {
+    display: flex;
+    align-items: center;
+    animation: bounceInLeft 700ms forwards, zoomOutUp 500ms 1700ms forwards;
+    i {
+      color: $pink-soft;
+      font-size: 35px;
+      margin-right: 15px;
+      animation: rotate 300ms 1000ms forwards;
+    }
+    h1 {
+      color: $black-soft;
+      font-size: 27px;
+    }
+  }
+}

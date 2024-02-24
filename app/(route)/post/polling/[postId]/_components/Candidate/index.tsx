@@ -1,8 +1,7 @@
 "use client"
 
-import { usePostStore } from "@/_store/post"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { PollingCandidateType } from "@/_types/post/polling"
+import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
 import classNames from "classNames"
 import React from "react"
 import CountUp from "react-countup"
@@ -11,21 +10,20 @@ const cx = classNames.bind(style)
 
 function Candidate({
   candidate,
+  onClickCandidate,
+  layout,
+  isResultPage,
+  isSelected,
   index,
-  onClickSubmit,
 }: {
   candidate: PollingCandidateType
+  onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
+  isResultPage: boolean
+  layout: PollingLayoutType
+  isSelected: boolean
   index: number
-  onClickSubmit: () => void
 }) {
   const { count, description, listId, title, imageSrc } = candidate
-  const { isResultPage, layoutType, votedId, selectedCandidate, setSelectedCandidate } = usePostStore()
-
-  const onClickSelect = (candidate: PollingCandidateType) => {
-    !isResultPage && setSelectedCandidate(candidate)
-  }
-
-  const isSelected = (selectedCandidate?.listId || votedId?.listId) === listId
 
   const titleComponent = () => (
     <div className={cx(style.title)}>
@@ -39,48 +37,46 @@ function Candidate({
   )
 
   return (
-    layoutType && (
-      <li
-        className={cx(style.candidate, {
-          [style.selected]: isSelected,
-          [style.result]: isResultPage,
-          [style[`layout-${layoutType}`]]: layoutType,
-        })}
-        onClick={() => onClickSelect(candidate)}
-        style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
-      >
-        <div className={cx(style.border)} />
-        {isResultPage && <div className={cx(style.number)}>{index + 1}</div>}
+    <li
+      className={cx(style.candidate, {
+        [style.selected]: isSelected,
+        [style.result]: isResultPage,
+        [style[`layout-${layout}`]]: layout,
+      })}
+      onClick={() => onClickCandidate("select", candidate)}
+      style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
+    >
+      <div className={cx(style.border)} />
+      {isResultPage && <div className={cx(style.number)}>{index + 1}</div>}
 
-        <div className={cx(style.inner)}>
-          <div className={cx(style["image-wrapper"])}>
-            <div
-              style={{
-                backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-              className={cx(style.image)}
-            />
-            {layoutType === "image" && titleComponent()}
-            {layoutType === "image" && <div className={cx(style.overlay)} />}
-          </div>
+      <div className={cx(style.inner)}>
+        <div className={cx(style["image-wrapper"])}>
           <div
-            className={cx(style.content, {
-              [style.text]: !isResultPage && layoutType === "text",
-            })}
-          >
-            {titleComponent()}
-            {description && <p>{description}</p>}
-          </div>
+            style={{
+              backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+            className={cx(style.image)}
+          />
+          {layout === "image" && titleComponent()}
+          {layout === "image" && <div className={cx(style.overlay)} />}
         </div>
-        {layoutType === "text" && !isResultPage && (
-          <button onClick={onClickSubmit} className={cx(style["select-btn"])}>
-            <span className={cx(style.select)}>{title} 선택</span>
-          </button>
-        )}
-      </li>
-    )
+        <div
+          className={cx(style.content, {
+            [style.text]: !isResultPage && layout === "text",
+          })}
+        >
+          {titleComponent()}
+          {description && <p>{description}</p>}
+        </div>
+      </div>
+      {layout === "text" && !isResultPage && (
+        <button onClick={() => onClickCandidate("submit")} className={cx(style["select-btn"])}>
+          <span className={cx(style.select)}>{title} 선택</span>
+        </button>
+      )}
+    </li>
   )
 }
 

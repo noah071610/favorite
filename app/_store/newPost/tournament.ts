@@ -1,38 +1,70 @@
-import { TournamentCandidateType } from "@/_types/post/tournament"
+import { TournamentCandidateType, TournamentContentType } from "@/_types/post/tournament"
+import { produce } from "immer"
 import { create } from "zustand"
 
 interface States {
-  tournamentCandidates: TournamentCandidateType[]
+  tournamentContent: TournamentContentType
 }
 
+type SetCandidateAction =
+  | { index: number; type: "imageSrc"; payload: string }
+  | { index: number; type: "title"; payload: string }
+  | { index: number; type: "delete"; payload: string }
+
 type Actions = {
-  addCandidate: (candidate: TournamentCandidateType) => void
-  deleteCandidate: (index: number) => void
-  changeCandidate: (index: number, state: { title?: string; imageSrc?: string }) => void
+  loadTournamentContent: (state: TournamentContentType) => void
+  addCandidate: (payload: TournamentCandidateType) => void
+  setTournamentCandidate: (action: SetCandidateAction) => void
   clearTournamentContent: () => void
 }
 
 export const useTournamentStore = create<States & Actions>((set) => ({
-  tournamentCandidates: [],
-  addCandidate: (state) =>
-    set((origin) => {
-      return { tournamentCandidates: [...origin.tournamentCandidates, state] }
-    }),
-  changeCandidate: (index, state) =>
-    set((origin) => ({
-      tournamentCandidates: origin.tournamentCandidates.map((v, i) => (i === index ? { ...v, ...state } : v)),
-    })),
-  deleteCandidate: (index) =>
-    set((origin) => {
-      // memo: 1. 삭제
-      const tournamentCandidates = origin.tournamentCandidates
-        .filter((_, i) => i !== index)
-        .map((v, i) => ({ ...v, number: i + 1 }))
-
-      return { tournamentCandidates }
-    }),
+  tournamentContent: {
+    candidates: [],
+    // listId: string
+    // imageSrc: string
+    // title: string
+    // number: number
+    // win: number
+    // lose: number
+    // pick: number
+  },
+  addCandidate: (payload) =>
+    set((origin) =>
+      produce(origin, (draft) => {
+        draft.tournamentContent.candidates.push(payload)
+      })
+    ),
+  setTournamentCandidate: ({ index, payload, type }) =>
+    set((origin) =>
+      produce(origin, (draft) => {
+        const target = draft.tournamentContent.candidates[index]
+        const candidates = draft.tournamentContent.candidates
+        const actionHandlers = {
+          title: () => {
+            target.title = payload as string
+          },
+          imageSrc: () => {
+            target.imageSrc = payload as string
+          },
+          delete: () => {
+            draft.tournamentContent.candidates = candidates.filter((_, i) => i !== index)
+          },
+        }
+        const handler = actionHandlers[type]
+        if (handler && target) {
+          handler()
+        }
+      })
+    ),
   clearTournamentContent: () =>
-    set(() => {
-      return { tournamentCandidates: [] }
-    }),
+    set(() => ({
+      tournamentContent: {
+        candidates: [],
+      },
+    })),
+  loadTournamentContent: (state) =>
+    set(() => ({
+      tournamentContent: state,
+    })),
 }))

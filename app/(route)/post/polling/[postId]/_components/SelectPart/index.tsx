@@ -1,13 +1,18 @@
 "use client"
 
-import { usePostStore } from "@/_store/post"
 import { fadeMoveUpAnimation, scaleUpAnimation } from "@/_styles/animation"
+import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function SelectPart({ onClickSubmit }: { onClickSubmit: () => void }) {
-  const { selectedCandidate } = usePostStore()
+export default function SelectPart({
+  selectedCandidate,
+  onClickCandidate,
+}: {
+  selectedCandidate: PollingCandidateType | null
+  onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
+}) {
   return (
     <>
       {selectedCandidate ? (
@@ -26,7 +31,7 @@ export default function SelectPart({ onClickSubmit }: { onClickSubmit: () => voi
             )}
           </div>
           <div className={cx(style["btn"])}>
-            <a onClick={onClickSubmit} style={fadeMoveUpAnimation(530, 210)}>
+            <a onClick={() => onClickCandidate("submit")} style={fadeMoveUpAnimation(530, 210)}>
               <span>{selectedCandidate.title} 선택</span>
             </a>
           </div>

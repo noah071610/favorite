@@ -1,6 +1,7 @@
 "use client"
 
 import { getUser } from "@/_queries/user"
+import { cloneDeep } from "lodash"
 
 import { useNewPostStore } from "@/_store/newPost"
 import { UserType } from "@/_types/user"
@@ -8,21 +9,26 @@ import { useQuery } from "@tanstack/react-query"
 
 import NoThumbnail from "@/_components/Loading/NoThumbnail"
 import { createNewPost, uploadImage } from "@/_queries/newPost"
-import { useContestTypeStore } from "@/_store/newPost/contest"
+import { useContestStore } from "@/_store/newPost/contest"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PostOptionType, ThumbnailType } from "@/_types/post/post"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
-import ContestPostPage from "@/(route)/post/contest/[postId]/page"
-import PollingPostPage from "@/(route)/post/polling/[postId]/page"
+import ContestPost from "@/(route)/post/contest/[postId]/_components"
+import PollingPost from "@/(route)/post/polling/[postId]/_components"
+import TournamentPost from "@/(route)/post/tournament/[postId]/_components"
+import { errorMessage } from "@/_data/message"
+import { errorToastOptions } from "@/_data/toast"
 import { useTournamentStore } from "@/_store/newPost/tournament"
+import { ErrorTypes } from "@/_types"
 import { ContestPostType } from "@/_types/post/contest"
 import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { randomNum } from "@/_utils/math"
 import classNames from "classNames"
+import { toast } from "react-toastify"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -44,12 +50,21 @@ export default function RendingSection() {
   })
 
   const router = useRouter()
-  const { newPost, setNewPost, clearNewPost } = useNewPostStore()
-  const { leftCandidate, rightCandidate, clearContestContent } = useContestTypeStore()
-  const { tournamentCandidates, clearTournamentContent } = useTournamentStore()
-  const { pollingCandidates, clearPollingContent, chartDescription, layoutType } = usePollingStore()
+  const { newPost, setNewPost, clearNewPost, setStatus, setError } = useNewPostStore()
+  const { contestContent, clearContestContent } = useContestStore()
+  const { tournamentContent, clearTournamentContent } = useTournamentStore()
+  const { pollingContent, clearPollingContent } = usePollingStore()
   const [previewPost, setPreviewPost] = useState<PollingPostType | ContestPostType | TournamentPostType | null>(null)
   const [isOnPreview, setIsOnPreview] = useState(false)
+
+  const sendNewPostError = (type: ErrorTypes) => {
+    setError({ type, text: errorMessage[type] })
+    toast.error(errorMessage[type], errorToastOptions)
+    setTimeout(() => {
+      setError({ type: "clear" })
+    }, 3000)
+    setStatus("edit")
+  }
 
   const onChangeThumbnailStyle = (type: ThumbnailType) => {
     setNewPost({ type: "thumbnailType", payload: type })
@@ -59,55 +74,43 @@ export default function RendingSection() {
   }
 
   const create = async (type: "preview" | "posting") => {
-    if (!newPost) {
-      return alert("에러 발생")
-    }
-    const _post = { ...newPost }
+    if (!newPost) return sendNewPostError("unknown")
+    if (!newPost.type) return sendNewPostError("unknown")
+    const _post = cloneDeep(newPost)
 
-    if (_post.title.trim().length < 3) return alert("타이틀은 공백을 제외하고 3글자 이상으로 작성해주세요!")
-    if (!user) return alert("로그인이 필요해요")
+    if (_post.title.trim().length < 3) return sendNewPostError("postTitle")
+    if (!user) return sendNewPostError("login")
 
-    switch (newPost?.type) {
+    switch (newPost.type) {
       case "polling":
-        if (pollingCandidates.length < 2) return alert("후보는 적어도 2개 이상 필요해요")
-        if (!pollingCandidates.every(({ title }) => !!title.trim())) return alert("타이틀이 없는 후보가 존재해요")
+        const { candidates, chartDescription, layout } = pollingContent
+        if (candidates.length < 2) return sendNewPostError("candidateLength")
+        if (!candidates.every(({ title }) => !!title.trim())) return sendNewPostError("noCandidateTitle")
         _post.content = {
           chartDescription,
-          layout: layoutType,
-          candidates: pollingCandidates.map((v) => ({ ...v, count: 0 })),
+          layout,
+          candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })),
         }
         break
       case "contest":
-        if (!leftCandidate?.imageSrc?.trim()) return alert("왼쪽 후보의 이미지가 필요해요")
-        if (!rightCandidate?.imageSrc?.trim()) return alert("오른쪽 후보의 이미지가 필요해요")
-        if (!leftCandidate?.title?.trim()) return alert("왼쪽 후보의 타이틀을 입력해주세요")
-        if (!rightCandidate?.title?.trim()) return alert("오른쪽 후보의 타이틀을 입력해주세요")
-        _post.content = {
-          left: {
-            ...leftCandidate,
-            count: 0,
-          },
-          right: {
-            ...rightCandidate,
-            count: 0,
-          },
-        }
+        const { left, right } = contestContent
+        if (!left.imageSrc?.trim() || !right.imageSrc?.trim()) return sendNewPostError("noCandidateImage")
+        if (!left.title?.trim() || !right.title?.trim()) return sendNewPostError("noCandidateTitle")
+        _post.content = cloneDeep(contestContent)
         break
       case "tournament":
-        if (tournamentCandidates.length < 2) return alert("후보는 적어도 2개 이상 필요해요")
-        if (!tournamentCandidates.every(({ title }) => !!title.trim())) return alert("타이틀이 없는 후보가 존재해요")
+        const { candidates: tournamentCandidates } = tournamentContent
+        if (tournamentCandidates.length < 2) return sendNewPostError("candidateLength")
+        if (!tournamentCandidates.every(({ title }) => !!title.trim())) return sendNewPostError("noCandidateTitle")
         if (!tournamentCandidates.every(({ imageSrc }) => !!imageSrc.trim()))
-          return alert("이미지가 없는 후보가 존재해요")
-        _post.content = {
-          candidates: tournamentCandidates,
-        }
+          return sendNewPostError("noCandidateImage")
+        _post.content = cloneDeep(tournamentContent)
         break
     }
 
     if (type === "preview") {
-      const { userId, ...rest } = _post
       const obj = {
-        ...rest,
+        ..._post,
         format: "preview",
         postId: "preview",
         user,
@@ -116,7 +119,7 @@ export default function RendingSection() {
       }
       switch (_post.type) {
         case "polling":
-          _post.content.candidates = _post.content.candidates.map((v: PollingCandidateType) => ({
+          obj.content.candidates = obj.content.candidates.map((v: PollingCandidateType) => ({
             ...v,
             count: randomNum(20, 100),
           }))
@@ -127,8 +130,10 @@ export default function RendingSection() {
           break
 
         case "contest":
-          _post.content.left.count = randomNum(20, 100)
-          _post.content.right.count = randomNum(20, 100)
+          console.log(obj)
+
+          obj.content.left.count = randomNum(20, 100)
+          obj.content.right.count = randomNum(20, 100)
           setPreviewPost({
             ...obj,
             type: "contest",
@@ -136,8 +141,11 @@ export default function RendingSection() {
           break
 
         case "tournament":
-          _post.content.candidates = _post.content.candidates.map((v: TournamentCandidateType) => ({
+          obj.content.candidates = obj.content.candidates.map((v: TournamentCandidateType) => ({
             ...v,
+            win: randomNum(20, 100),
+            lose: randomNum(20, 100),
+            pick: randomNum(0, 20),
           }))
           setPreviewPost({
             ...obj,
@@ -155,6 +163,7 @@ export default function RendingSection() {
         clearNewPost()
         clearContestContent()
         clearPollingContent()
+        clearTournamentContent()
         router.push(`/`)
       })
     }
@@ -189,15 +198,21 @@ export default function RendingSection() {
   const layoutImages = useMemo(() => {
     switch (newPost?.type) {
       case "polling":
-        return pollingCandidates
+        return pollingContent.candidates.slice(0, 5)
       case "contest":
-        return [leftCandidate, rightCandidate]
+        return [contestContent.left, contestContent.right]
       case "tournament":
-        return tournamentCandidates
+        return tournamentContent.candidates.slice(0, 5)
       default:
         return []
     }
-  }, [newPost?.type, pollingCandidates, leftCandidate, rightCandidate, tournamentCandidates])
+  }, [
+    contestContent.left,
+    contestContent.right,
+    newPost?.type,
+    pollingContent.candidates,
+    tournamentContent.candidates,
+  ])
 
   return (
     <>
@@ -274,8 +289,9 @@ export default function RendingSection() {
               <i className={cx("fa-solid", "fa-close")}></i>
             </button>
           </div>
-          {previewPost.type === "polling" && <PollingPostPage previewPost={previewPost as PollingPostType} />}
-          {previewPost.type === "contest" && <ContestPostPage previewPost={previewPost as ContestPostType} />}
+          {previewPost.type === "polling" && <PollingPost post={previewPost as PollingPostType} />}
+          {previewPost.type === "contest" && <ContestPost post={previewPost as ContestPostType} />}
+          {previewPost.type === "tournament" && <TournamentPost post={previewPost as TournamentPostType} />}
 
           <div className={cx(style["preview-triangle"])}></div>
           <span className={cx(style["preview-label"])}>PREVIEW</span>

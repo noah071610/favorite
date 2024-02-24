@@ -21,7 +21,11 @@ const cx = classNames.bind(style)
 
 export default function TournamentContent({ user }: { user: UserType }) {
   const { newPost } = useNewPostStore()
-  const { tournamentCandidates, addCandidate, deleteCandidate } = useTournamentStore()
+  const {
+    addCandidate,
+    setTournamentCandidate,
+    tournamentContent: { candidates },
+  } = useTournamentStore()
   const swiperRef = useRef<any | null>(null)
 
   const createPollingCandidate = useCallback(() => {
@@ -32,12 +36,13 @@ export default function TournamentContent({ user }: { user: UserType }) {
       win: 0,
       lose: 0,
       pick: 0,
+      number: candidates.length + 1,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tournamentCandidates.length])
+  }, [candidates.length])
 
   const deleteCandidateList = (index: number) => {
-    deleteCandidate(index)
+    setTournamentCandidate({ index, payload: "delete", type: "delete" })
   }
 
   const clickCandidate = (index: number) => {
@@ -51,7 +56,6 @@ export default function TournamentContent({ user }: { user: UserType }) {
   const handleSlideChange = (swiper: any) => {
     setCurrentIndex(swiper.activeIndex)
   }
-  console.log(currentIndex)
 
   return (
     newPost && (
@@ -60,7 +64,7 @@ export default function TournamentContent({ user }: { user: UserType }) {
           <div className={cx(style["tournament-post-inner"])}>
             <PostInfo title={newPost.title} description={newPost.description} user={user} isEdit={true} />
             <div className={cx(style.content)}>
-              {tournamentCandidates.length ? (
+              {candidates.length ? (
                 <Swiper
                   ref={swiperRef}
                   slidesPerView={2}
@@ -69,7 +73,7 @@ export default function TournamentContent({ user }: { user: UserType }) {
                   className={cx(style.slider)}
                   onSlideChange={handleSlideChange}
                 >
-                  {tournamentCandidates.map(({ listId }, index) => (
+                  {candidates.map(({ listId }, index) => (
                     <SwiperSlide key={`tournament_candidate_${listId}`}>
                       <Dropzone direction={index} />
                     </SwiperSlide>
@@ -86,7 +90,7 @@ export default function TournamentContent({ user }: { user: UserType }) {
             <section>
               <h1 className={cx(style["section-title"])}>토너먼트 후보</h1>
               <ul className={cx(style["candidate-list"])}>
-                {tournamentCandidates.map(({ listId, imageSrc }, index) => (
+                {candidates.map(({ listId, imageSrc }, index) => (
                   <li className={cx(style.candidate)} key={`tournament_candidate_list_${listId}`}>
                     <button
                       className={cx(style.inner, {

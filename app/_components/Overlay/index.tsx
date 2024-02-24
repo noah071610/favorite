@@ -11,6 +11,7 @@ export default function Overlay() {
   const { modalStatus, setModal } = useMainStore()
 
   const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
+    if (modalStatus === "newPostLoad" || modalStatus === "roundSelect") return
     if (e.currentTarget.className.includes("overlay") && modalStatus !== "none") {
       setModal("none")
       const body: HTMLBodyElement | null = document.querySelector("body")
@@ -32,7 +33,9 @@ export default function Overlay() {
       onClick={onClickOverlay}
       style={{
         animation:
-          modalStatus !== "none" ? "overlay_animation 400ms forwards" : "overlay_animation_rollback 400ms forwards",
+          modalStatus !== "none"
+            ? style.overlay_animation + " 400ms forwards"
+            : style.overlay_animation_rollback + " 400ms forwards",
       }}
       className={cx(style["global-overlay"])}
     />

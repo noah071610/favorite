@@ -8,14 +8,19 @@ import React, { useEffect, useState } from "react"
 import _style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-function Candidate({ candidate }: { candidate: PollingCandidateType }) {
-  const { count, description, listId, title, imageSrc } = candidate
+function Candidate({ candidate, targetIndex }: { candidate: PollingCandidateType; targetIndex: number }) {
+  const { description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
-  const { selectedCandidate, deleteCandidate, setSelectedCandidate, layoutType } = usePollingStore()
+  const {
+    selectedCandidateIndex,
+    setSelectedCandidateIndex,
+    setPollingCandidate,
+    pollingContent: { layout },
+  } = usePollingStore()
 
-  const onClickSelect = (e: any, candidate: PollingCandidateType) => {
+  const onClickSelect = (e: any) => {
     if (!e.target.className.includes("delete-")) {
-      setSelectedCandidate(candidate)
+      setSelectedCandidateIndex(targetIndex)
     } else {
       setCandidateStatus("delete")
     }
@@ -24,10 +29,10 @@ function Candidate({ candidate }: { candidate: PollingCandidateType }) {
   useEffect(() => {
     if (candidateStatus === "delete") {
       setTimeout(() => {
-        deleteCandidate(listId)
+        setPollingCandidate({ index: targetIndex, payload: "delete", type: "delete" })
       }, 480)
     }
-  }, [candidateStatus, listId, deleteCandidate])
+  }, [candidateStatus, listId, setPollingCandidate, targetIndex])
 
   useEffect(() => {
     setTimeout(() => {
@@ -35,7 +40,7 @@ function Candidate({ candidate }: { candidate: PollingCandidateType }) {
     }, 500)
   }, [])
 
-  const isSelected = selectedCandidate?.listId === listId
+  const isSelected = selectedCandidateIndex === targetIndex
 
   const titleComponent = () => (
     <div className={cx(style.title)}>
@@ -45,16 +50,16 @@ function Candidate({ candidate }: { candidate: PollingCandidateType }) {
 
   return (
     <li
-      className={cx(style.candidate, style[`layout-${layoutType}`], {
+      className={cx(style.candidate, style[`layout-${layout}`], {
         [style.selected]: isSelected,
       })}
-      onClick={(e) => onClickSelect(e, candidate)}
+      onClick={onClickSelect}
       style={{
         animation:
           candidateStatus === "delete"
-            ? _style[(layoutType === "image" ? "image-" : "") + "candidate-delete"] + " 500ms forwards"
+            ? _style[(layout === "image" ? "image-" : "") + "candidate-delete"] + " 500ms forwards"
             : candidateStatus === "add"
-            ? _style[(layoutType === "image" ? "image-" : "") + "candidate-add"] + " 500ms forwards"
+            ? _style[(layout === "image" ? "image-" : "") + "candidate-add"] + " 500ms forwards"
             : "none",
         opacity: 1,
       }}
@@ -74,8 +79,8 @@ function Candidate({ candidate }: { candidate: PollingCandidateType }) {
             }}
             className={cx(style.image)}
           />
-          {layoutType === "image" && titleComponent()}
-          {layoutType === "image" && <div className={cx(style.overlay)} />}
+          {layout === "image" && titleComponent()}
+          {layout === "image" && <div className={cx(style.overlay)} />}
         </div>
         <div className={cx(style.content)}>
           {titleComponent()}

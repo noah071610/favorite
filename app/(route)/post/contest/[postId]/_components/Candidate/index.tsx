@@ -1,46 +1,24 @@
 "use client"
 
-import { usePostStore } from "@/_store/post"
-import { ContestContentType } from "@/_types/post/contest"
-import { produce } from "immer"
-import { Dispatch, SetStateAction, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import TinderCard from "react-tinder-card"
 
+import { ContestCandidateType } from "@/_types/post/contest"
+import { TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
-import style from "../../candidate.module.scss"
+import style from "../candidate.module.scss"
 const cx = classNames.bind(style)
 
-export default function SelectPart({
-  content,
-  setContent,
-  setSelected,
+export default function Candidate({
+  candidate,
   direction,
-  selected,
+  swiped,
 }: {
-  selected: "left" | "right" | null
-  content: ContestContentType
-  setContent: Dispatch<SetStateAction<ContestContentType | null>>
-  setSelected: Dispatch<SetStateAction<"left" | "right" | null>>
+  candidate: ContestCandidateType | TournamentCandidateType
   direction: "left" | "right"
+  swiped: (direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => void
 }) {
-  const { setIsResultPage } = usePostStore()
-  const candidate = content[direction]
   const cardRef = useRef<HTMLDivElement | null>(null)
-
-  const swiped = () => {
-    setContent((content) => {
-      return produce(content, (draft) => {
-        if (draft) {
-          // todo: api 요청시 옵티미스틱 유아이로
-          draft[direction].count += 1
-        }
-      })
-    })
-    setSelected(direction)
-    setTimeout(() => {
-      setIsResultPage(true)
-    }, 700)
-  }
 
   useEffect(() => {
     const mouseDown = () => {
@@ -68,7 +46,10 @@ export default function SelectPart({
 
   return (
     <div ref={cardRef} className={cx(style.candidate, style["select-part"], style[direction])}>
-      <TinderCard className={cx(style["candidate-inner"], style["swipe-inner"], style[direction])} onSwipe={swiped}>
+      <TinderCard
+        className={cx(style["candidate-inner"], style["swipe-inner"], style[direction])}
+        onSwipe={() => swiped(direction, candidate)}
+      >
         <div
           style={{
             backgroundImage: `url('${candidate.imageSrc}')`,

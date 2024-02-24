@@ -5,7 +5,7 @@ import { calculateVoteRatio } from "@/_utils/math"
 import CountUp from "react-countup"
 
 import classNames from "classNames"
-import style from "../../candidate.module.scss"
+import style from "../candidate.module.scss"
 const cx = classNames.bind(style)
 
 export default function ResultPart({
@@ -15,7 +15,7 @@ export default function ResultPart({
 }: {
   content: ContestContentType
   direction: "left" | "right"
-  selected: "left" | "right" | null
+  selected: string | null
 }) {
   const candidate = content[direction]
   const ratio = calculateVoteRatio(content.left.count, content.right.count)[direction]
@@ -23,13 +23,13 @@ export default function ResultPart({
   return (
     <div
       className={cx(style.candidate, style.result, {
-        [style.selected]: selected === direction,
-        [style.unselected]: selected !== direction,
+        [style.selected]: selected === candidate.listId,
+        [style.unselected]: selected !== candidate.listId,
       })}
     >
       <div className={cx(style.border)}></div>
 
-      {selected === direction && (
+      {selected === candidate.listId && (
         <div className={cx(style["candidate-background"], style[direction])}>
           <span>LIKE!</span>
         </div>

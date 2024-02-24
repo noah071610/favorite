@@ -14,15 +14,14 @@ export const usePreloadImages = (content: string[]) => {
   }, [content, imageLoadedCount])
 
   useEffect(() => {
-    const handleImageLoad = (image: HTMLImageElement) => {
-      if (image.naturalHeight > 0) {
-        setImageLoadedCount((n) => n + 1)
+    if (!!content.length) {
+      const handleImageLoad = (image: HTMLImageElement) => {
+        if (image.naturalHeight > 0) {
+          setImageLoadedCount((n) => n + 1)
+        }
       }
-    }
 
-    const imageLoadHandlers =
-      !!content.length &&
-      content.map((imageSrc) => {
+      const imageLoadHandlers = content.map((imageSrc) => {
         if (imageSrc) {
           const image = new Image()
 
@@ -37,15 +36,16 @@ export const usePreloadImages = (content: string[]) => {
         }
       })
 
-    return () => {
-      if (imageLoadHandlers) {
-        setImageLoadedCount(0)
-        imageLoadHandlers.forEach((image) => {
-          if (image) {
-            image.onload = null
-            image.onerror = null
-          }
-        })
+      return () => {
+        if (imageLoadHandlers) {
+          setImageLoadedCount(0)
+          imageLoadHandlers.forEach((image) => {
+            if (image) {
+              image.onload = null
+              image.onerror = null
+            }
+          })
+        }
       }
     }
   }, [content])

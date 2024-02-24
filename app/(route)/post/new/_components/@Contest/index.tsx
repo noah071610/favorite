@@ -1,11 +1,8 @@
 "use client"
 
 import { useNewPostStore } from "@/_store/newPost"
-import { useContestTypeStore } from "@/_store/newPost/contest"
-import { randomNum } from "@/_utils/math"
-import { useEffect } from "react"
 
-import style from "@/(route)/post/contest/[postId]/style.module.scss"
+import style from "@/(route)/post/contest/[postId]/_components/style.module.scss"
 import PostInfo from "@/_components/PostInfo"
 import { UserType } from "@/_types/user"
 import classNames from "classNames"
@@ -14,16 +11,6 @@ const cx = classNames.bind(style)
 
 export default function ContestContent({ user }: { user: UserType }) {
   const { newPost } = useNewPostStore()
-  const { setCandidate } = useContestTypeStore()
-
-  useEffect(() => {
-    setCandidate("left", {
-      count: randomNum(20, 100),
-    })
-    setCandidate("right", {
-      count: randomNum(20, 100),
-    })
-  }, [setCandidate])
 
   return (
     newPost && (

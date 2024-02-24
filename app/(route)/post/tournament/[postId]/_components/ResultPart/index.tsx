@@ -1,71 +1,118 @@
 "use client"
 
-import { ContestContentType } from "@/_types/post/contest"
-import { calculateVoteRatio } from "@/_utils/math"
-import CountUp from "react-countup"
-
+import { chartBackgroundColors, chartBorderColors } from "@/_data/chart"
+import { TournamentCandidateChartType, TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
-import style from "../../candidate.module.scss"
+import { cloneDeep } from "lodash"
+import { useMemo, useState } from "react"
+import CountUp from "react-countup"
+import style from "./style.module.scss"
+
 const cx = classNames.bind(style)
 
-export default function ResultPart({
-  content,
-  direction,
-  selected,
-}: {
-  content: ContestContentType
-  direction: "left" | "right"
-  selected: "left" | "right" | null
-}) {
-  const candidate = content[direction]
-  const ratio = calculateVoteRatio(content.left.count, content.right.count)[direction]
+const getTotals = (candidates: TournamentCandidateType[]) => {
+  return candidates.reduce(
+    (acc, { win, lose, pick }) => {
+      acc.win = acc.win + win
+      acc.lose = acc.lose + lose
+      acc.pick = acc.pick + pick
+      return acc
+    },
+    { win: 0, lose: 0, pick: 0 }
+  )
+}
 
+const chartDataArr = [
+  { label: "우승 확률", value: "pick" },
+  { label: "매치 승리 확률", value: "win" },
+  { label: "매치 패배 확률", value: "lose" },
+] as const
+
+const Candidate = ({ candidate }: { candidate: TournamentCandidateChartType }) => {
   return (
-    <div
-      className={cx(style.candidate, style.result, {
-        [style.selected]: selected === direction,
-        [style.unselected]: selected !== direction,
-      })}
-    >
-      <div className={cx(style.border)}></div>
-
-      {selected === direction && (
-        <div className={cx(style["candidate-background"], style[direction])}>
-          <span>LIKE!</span>
-        </div>
-      )}
-
-      <div className={cx(style["candidate-inner"])}>
-        <div
-          style={{
-            backgroundImage: `url('${candidate.imageSrc}')`,
-          }}
-          className={cx(style.thumbnail)}
-        ></div>
-        <div
-          className={cx(style["thumbnail-overlay"])}
-          style={{
-            backgroundImage: `url('${candidate.imageSrc}')`,
-          }}
-        ></div>
-        <div className={cx(style.description)}>
-          <div className={cx(style["title-wrapper"])}>
-            <div style={{ width: `calc(${ratio}%)` }} className={cx(style.graph, style[`graph-${direction}`])}>
-              <div className={cx(style.gauge)}></div>
+    <li className={cx(style.candidate)}>
+      <div className={cx(style.left)}>
+        <div style={{ backgroundImage: `url('${candidate.imageSrc}')` }} className={cx(style.image)} />
+      </div>
+      <div className={cx(style.right)}>
+        <div className={cx(style.chart)}>
+          {chartDataArr.map(({ value }, i) => (
+            <div key={`${candidate.listId}_${value}`} className={cx(style["gauge-outer"])}>
+              <div
+                style={{ width: `${candidate[value]}%`, background: chartBackgroundColors[2 - i] }}
+                className={cx(style["gauge-inner"])}
+              >
+                <div
+                  style={{ border: `1px solid ${chartBorderColors[2 - i]}`, background: chartBackgroundColors[2 - i] }}
+                  className={cx(style["gauge"])}
+                />
+              </div>
             </div>
-            <h1 className={cx(style.title)}>{candidate?.title}</h1>
-            <p className={cx(style.count)}>
-              <span>
-                <CountUp prefix="(" suffix="표)" duration={4} end={candidate.count} />
-              </span>
-              {" / "}
-              <span>
-                <CountUp prefix="(" suffix="%)" separator=" " decimals={2} decimal="," end={parseFloat(ratio)} />
-              </span>
-            </p>
-          </div>
+          ))}
+        </div>
+        <div className={cx(style.info)}>
+          {chartDataArr.map(({ value, label }) => (
+            <div key={`${candidate.listId}_${value}`} className={cx(style.table)}>
+              <div className={cx(style["info-title"])}>
+                <h4>{label}</h4>
+              </div>
+              <div className={cx(style["info-percent"])}>
+                <CountUp
+                  suffix="%"
+                  duration={4}
+                  decimals={2}
+                  decimal=","
+                  separator=" "
+                  end={parseFloat(candidate[value])}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+    </li>
+  )
+}
+
+export default function ResultPart({ candidates }: { candidates: TournamentCandidateType[] }) {
+  const [sortedStatus, setSortedStatus] = useState<"pick" | "win" | "lose">("pick")
+  const total = getTotals(candidates)
+  const sorted: TournamentCandidateChartType[] = useMemo(() => {
+    const target = cloneDeep(candidates)
+    switch (sortedStatus) {
+      case "pick":
+        target.sort((a, b) => b.pick - a.pick)
+        break
+      case "win":
+        target.sort((a, b) => b.win - a.win)
+        break
+      case "lose":
+        target.sort((a, b) => b.lose - a.lose)
+        break
+      default:
+        target.sort((a, b) => b.number - a.number)
+        break
+    }
+
+    return target.map((v) => {
+      const total_match = v.win + v.lose
+      return {
+        ...v,
+        win: ((v.win / total_match) * 100).toFixed(3),
+        lose: ((v.lose / total_match) * 100).toFixed(3),
+        pick: ((v.pick / total.pick) * 100).toFixed(3),
+      }
+    })
+  }, [sortedStatus])
+  return (
+    <div className={cx(style.result)}>
+      <section className={cx(style["tournament-chart"])}>
+        <div className={cx(style["tournament-chart-inner"])}>
+          {sorted.map((v, i) => (
+            <Candidate candidate={v} key={`${v.listId}_${i}`} />
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

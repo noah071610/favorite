@@ -1,5 +1,5 @@
-import { PollingCandidateType } from "@/_types/post/polling"
-import { PollingLayoutType, VoteIdType } from "@/_types/post/post"
+import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
+import { VoteIdType } from "@/_types/post/post"
 import { create } from "zustand"
 
 interface States {

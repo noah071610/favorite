@@ -21,28 +21,34 @@ const resizeFile = (file: File) =>
   })
 
 const CandidateInput = React.memo(() => {
-  const { selectedCandidate, changeCandidate } = usePollingStore()
+  const {
+    selectedCandidateIndex,
+    setPollingCandidate,
+    pollingContent: { candidates },
+  } = usePollingStore()
 
   const onChangeInput = (e: any, type: "title" | "description") => {
-    if (selectedCandidate) {
+    if (selectedCandidateIndex > -1) {
       if (type === "title" && e.target.value.length >= 30) return
-      changeCandidate(selectedCandidate.listId, { [type]: e.target.value })
+      setPollingCandidate({ index: selectedCandidateIndex, payload: e.target.value, type })
     }
   }
 
+  const targetCandidate = candidates[selectedCandidateIndex]
+
   return (
-    selectedCandidate && (
+    targetCandidate && (
       <>
         <input
           placeholder="후보명 입력 (필수)"
           className={cx(style["title-input"])}
-          value={selectedCandidate.title}
+          value={targetCandidate.title}
           onChange={(e) => onChangeInput(e, "title")}
         />
         <TextareaAutosize
           placeholder="후보 설명 입력 (옵션)"
           className={cx(style["description-input"])}
-          value={selectedCandidate.description}
+          value={targetCandidate.description}
           onChange={(e) => onChangeInput(e, "description")}
           maxLength={180}
         />
@@ -53,12 +59,16 @@ const CandidateInput = React.memo(() => {
 CandidateInput.displayName = "CandidateInput"
 
 export default function SelectPart() {
-  const { changeCandidate, selectedCandidate, layoutType } = usePollingStore()
-  const { listId, imageSrc } = selectedCandidate ?? {}
+  const {
+    selectedCandidateIndex,
+    setPollingCandidate,
+    pollingContent: { layout, candidates },
+  } = usePollingStore()
+  const candidate = candidates[selectedCandidateIndex]
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (selectedCandidate) {
+      if (selectedCandidateIndex > -1) {
         acceptedFiles.forEach(async (file: File) => {
           const compressFile = (await resizeFile(file)) as File
           const formData = new FormData()
@@ -66,12 +76,12 @@ export default function SelectPart() {
 
           const { msg, imageSrc } = await uploadImage(formData)
           if (msg === "ok") {
-            changeCandidate(listId ?? "", { imageSrc })
+            setPollingCandidate({ index: selectedCandidateIndex, payload: imageSrc, type: "imageSrc" })
           }
         })
       }
     },
-    [selectedCandidate, changeCandidate, listId]
+    [selectedCandidateIndex, setPollingCandidate]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -84,12 +94,12 @@ export default function SelectPart() {
 
   return (
     <>
-      {selectedCandidate ? (
-        <div key={listId} className={cx(style["select-part"])}>
-          {layoutType !== "text" && (
+      {candidate ? (
+        <div key={candidate.listId} className={cx(style["select-part"])}>
+          {layout !== "text" && (
             <div
               style={{
-                background: `url('${imageSrc}') center / cover`,
+                background: `url('${candidate.imageSrc}') center / cover`,
                 ...scaleUpAnimation(250),
               }}
               className={cx(style.image, _style["drop-zone"], { [_style.active]: isDragActive })}

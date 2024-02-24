@@ -1,36 +1,38 @@
 "use client"
 
 import { uploadImage } from "@/_queries/newPost"
-import { useContestTypeStore } from "@/_store/newPost/contest"
+import { useContestStore } from "@/_store/newPost/contest"
 import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
-import style from "@/(route)/post/contest/[postId]/candidate.module.scss"
+import style from "@/(route)/post/contest/[postId]/_components/candidate.module.scss"
 import { useTournamentStore } from "@/_store/newPost/tournament"
 import classNames from "classNames"
 import _style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function Dropzone({ direction }: { direction: "left" | "right" | number }) {
-  const { leftCandidate, rightCandidate, setCandidate } = useContestTypeStore()
-  const { tournamentCandidates, changeCandidate } = useTournamentStore()
-  const candidate =
-    typeof direction === "string"
-      ? direction === "left"
-        ? leftCandidate
-        : rightCandidate
-      : tournamentCandidates[direction]
+  const { contestContent, setContestCandidate } = useContestStore()
+  const {
+    setTournamentCandidate,
+    tournamentContent: { candidates: tournamentCandidates },
+  } = useTournamentStore()
+  const candidate = typeof direction === "string" ? contestContent[direction] : tournamentCandidates[direction]
 
   const onChangeInput = (e: any) => {
     if (e.target.value.length >= 40) return
-    if (typeof direction === "string") {
-      setCandidate(direction, {
-        title: e.target.value,
+    if (direction === "left" || direction === "right") {
+      setContestCandidate({
+        direction,
+        payload: e.target.value,
+        type: "title",
       })
     } else {
-      changeCandidate(direction, {
-        title: e.target.value,
+      setTournamentCandidate({
+        index: direction,
+        payload: e.target.value,
+        type: "title",
       })
     }
   }
@@ -43,25 +45,37 @@ export default function Dropzone({ direction }: { direction: "left" | "right" | 
 
         const { msg, imageSrc } = await uploadImage(formData)
         if (msg === "ok") {
-          if (typeof direction === "string") {
-            setCandidate(direction, { imageSrc })
+          if (direction === "left" || direction === "right") {
+            setContestCandidate({
+              direction,
+              payload: imageSrc,
+              type: "imageSrc",
+            })
           } else {
-            changeCandidate(direction, {
-              imageSrc,
+            setTournamentCandidate({
+              index: direction,
+              payload: imageSrc,
+              type: "imageSrc",
             })
           }
         }
       })
     },
-    [changeCandidate, direction, setCandidate]
+    [direction, setContestCandidate, setTournamentCandidate]
   )
 
   const onClickDeleteImage = () => {
-    if (typeof direction === "string") {
-      setCandidate(direction, { imageSrc: "" })
+    if (direction === "left" || direction === "right") {
+      setContestCandidate({
+        direction,
+        payload: "",
+        type: "imageSrc",
+      })
     } else {
-      changeCandidate(direction, {
-        imageSrc: "",
+      setTournamentCandidate({
+        index: direction,
+        payload: "",
+        type: "imageSrc",
       })
     }
   }

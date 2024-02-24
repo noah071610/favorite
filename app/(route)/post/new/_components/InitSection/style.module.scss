@@ -1,5 +1,7 @@
 @import "@/_styles/variables.scss";
 
+@include shakeX;
+
 .init {
   width: 100%;
   height: calc(100vh - 60px);
@@ -16,6 +18,11 @@
         font-size: 24px;
         font-weight: 700;
         margin-bottom: 40px;
+        transition: color 300ms;
+        &.error {
+          animation: shakeX 450ms 100ms;
+          color: $red;
+        }
       }
     }
     &-list {

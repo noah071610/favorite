@@ -119,6 +119,10 @@ q:after {
   content: "";
   content: none;
 }
+li,
+ol {
+  list-style-type: none;
+}
 
 table {
   border-collapse: collapse;
@@ -166,6 +170,17 @@ body {
 
 main {
   min-height: calc(100vh - 60px);
+}
+
+.Toastify__toast--error {
+  background: rgb(255, 255, 255) !important;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%) !important;
+  border: 1px solid rgba(235, 235, 235, 0.45) !important;
+}
+.Toastify__toast-body > div:last-child {
+  word-break: keep-all !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
 }
 
 @keyframes shine {

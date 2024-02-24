@@ -2,10 +2,12 @@ import "@/_styles/global.scss"
 // import "@/_styles/post.scss"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { ToastContainer } from "react-toastify"
 import Header from "./_components/Header"
-
 import OverlayInjector from "./_hooks/OverlayInjector"
 import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
+
+import "react-toastify/dist/ReactToastify.css"
 
 const pretendard = localFont({
   src: [
@@ -54,6 +56,7 @@ export default function RootLayout({
             <Header />
             <main>{children}</main>
             <OverlayInjector />
+            <ToastContainer />
           </ReactQueryProvider>
         </body>
       </html>
