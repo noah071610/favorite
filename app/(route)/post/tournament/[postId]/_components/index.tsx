@@ -3,7 +3,6 @@
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { useEffect, useMemo, useState } from "react"
 
-import CommentPart from "@/_components/CommentPart"
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
@@ -40,8 +39,7 @@ export default function TournamentPost({ post }: { post: TournamentPostType }) {
 
   useEffect(() => {
     if (isImagesLoaded) {
-      // setModal("roundSelect")
-      setStatus("result")
+      setModal("roundSelect")
     }
   }, [isImagesLoaded])
 
@@ -56,7 +54,7 @@ export default function TournamentPost({ post }: { post: TournamentPostType }) {
         <PostInfo title={post.title} description={post.description} user={post.user} />
         <div className={cx(style.content, { [style.result]: isResultPage })}>
           {isResultPage ? (
-            <ResultPart candidates={originCandidates} />
+            <ResultPart comments={post.comments} candidates={originCandidates} />
           ) : (
             <div className={cx(style.content, { [style.result]: isResultPage })}>
               {round && (
@@ -72,11 +70,6 @@ export default function TournamentPost({ post }: { post: TournamentPostType }) {
           )}
         </div>
       </div>
-      {isResultPage && (
-        <div className={cx(style["tournament-comment"])}>
-          <CommentPart post={post} />
-        </div>
-      )}
 
       {rounds && modalStatus === "roundSelect" && (
         <div className={cx(style["round-select"])}>

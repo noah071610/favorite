@@ -44,9 +44,8 @@ const selectorTypes = [
 
 export default function RendingSection() {
   const { data: user } = useQuery<UserType>({
-    queryKey: ["getUser", "edit"],
-    queryFn: () => getUser(1),
-    select: ({ userId, userName, userImage }) => ({ userId, userName, userImage }), // 여기서 data는 전체 데이터 객체입니다.
+    queryKey: ["user"],
+    queryFn: getUser,
   })
 
   const router = useRouter()
@@ -130,8 +129,6 @@ export default function RendingSection() {
           break
 
         case "contest":
-          console.log(obj)
-
           obj.content.left.count = randomNum(20, 100)
           obj.content.right.count = randomNum(20, 100)
           setPreviewPost({

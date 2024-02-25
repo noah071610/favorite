@@ -1,8 +1,12 @@
 "use client"
 
+import { refreshUser } from "@/_queries/user"
+import { useMainStore } from "@/_store/main"
 import classNames from "classNames"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect } from "react"
+import LoginModal from "../LoginModal"
 import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
 import SearchModal from "./SearchModal"
@@ -10,9 +14,14 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function Header() {
+  const { modalStatus, setModal } = useMainStore()
   const pathname = usePathname()
   const isNewPostPage = pathname.includes("new")
   const isPostPage = pathname.includes("/post/") && !isNewPostPage
+
+  useEffect(() => {
+    refreshUser()
+  }, [])
 
   return isPostPage ? null : (
     <>
@@ -26,9 +35,9 @@ export default function Header() {
           <Link href={isNewPostPage ? "/" : "/post/new"} className={cx(style["new-post"])}>
             <span>{isNewPostPage ? "Go back" : "New post"}</span>
           </Link>
-          <Link href="/post/new" className={cx(style["login"])}>
+          <a onClick={() => setModal("login")} className={cx(style["login"])}>
             <span>Login</span>
-          </Link>
+          </a>
         </div>
       </header>
       <div className={cx(style.ghost)} />
@@ -38,6 +47,7 @@ export default function Header() {
           <SearchModal />
         </div>
       )}
+      {modalStatus === "login" && <LoginModal />}
     </>
   )
 }

@@ -11,4 +11,5 @@ export const errorMessage = {
 
 export const successMessage = {
   voted: "이미 투표 하셨어요 😎",
+  login: "어서오세요! 🚀",
 } as const

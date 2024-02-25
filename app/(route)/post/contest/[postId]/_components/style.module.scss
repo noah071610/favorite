@@ -12,34 +12,43 @@
     .content {
       height: auto;
       min-height: calc(100vh - 100px - 60px);
+      background-color: white;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
     }
   }
 }
 
 .content {
   width: $content-width;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  height: calc(100vh - 100px - 80px);
   background-color: $gray-soft;
-  margin-bottom: 50px;
-
   position: relative;
+
+  padding-bottom: 50px;
 
   @include border();
   border-radius: 10px;
 
-  .left,
-  .right {
+  .candidates {
     width: 100%;
-  }
-  &.result {
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 100px - 80px);
+    .left,
+    .right {
+      height: 100%;
+      width: 100%;
+    }
+    margin-bottom: 30px;
   }
 }
 
-.contest-comment {
-  width: $content-width;
-  padding: 0 100px;
+.comment-section {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  @include section-title;
 }

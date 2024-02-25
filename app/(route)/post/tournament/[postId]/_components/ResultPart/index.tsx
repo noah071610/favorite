@@ -1,14 +1,18 @@
 "use client"
 
-import { chartBackgroundColors, chartBorderColors } from "@/_data/chart"
+import CommentPart from "@/_components/CommentPart"
+import { CommentType } from "@/_types/post/post"
 import { TournamentCandidateChartType, TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
 import { useMemo, useState } from "react"
-import CountUp from "react-countup"
+import ReactPaginate from "react-paginate"
+import Candidate from "./Candidate"
 import style from "./style.module.scss"
 
 const cx = classNames.bind(style)
+
+const itemsPerPage = 10
 
 const getTotals = (candidates: TournamentCandidateType[]) => {
   return candidates.reduce(
@@ -22,72 +26,72 @@ const getTotals = (candidates: TournamentCandidateType[]) => {
   )
 }
 
-const chartDataArr = [
+const dataArr = [
   { label: "우승 확률", value: "pick" },
+  { label: "종합 평가 순위", value: "rating" },
   { label: "매치 승리 확률", value: "win" },
-  { label: "매치 패배 확률", value: "lose" },
 ] as const
 
-const Candidate = ({ candidate }: { candidate: TournamentCandidateChartType }) => {
-  return (
-    <li className={cx(style.candidate)}>
-      <div className={cx(style.left)}>
-        <div style={{ backgroundImage: `url('${candidate.imageSrc}')` }} className={cx(style.image)} />
-      </div>
-      <div className={cx(style.right)}>
-        <div className={cx(style.chart)}>
-          {chartDataArr.map(({ value }, i) => (
-            <div key={`${candidate.listId}_${value}`} className={cx(style["gauge-outer"])}>
-              <div
-                style={{ width: `${candidate[value]}%`, background: chartBackgroundColors[2 - i] }}
-                className={cx(style["gauge-inner"])}
-              >
-                <div
-                  style={{ border: `1px solid ${chartBorderColors[2 - i]}`, background: chartBackgroundColors[2 - i] }}
-                  className={cx(style["gauge"])}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className={cx(style.info)}>
-          {chartDataArr.map(({ value, label }) => (
-            <div key={`${candidate.listId}_${value}`} className={cx(style.table)}>
-              <div className={cx(style["info-title"])}>
-                <h4>{label}</h4>
-              </div>
-              <div className={cx(style["info-percent"])}>
-                <CountUp
-                  suffix="%"
-                  duration={4}
-                  decimals={2}
-                  decimal=","
-                  separator=" "
-                  end={parseFloat(candidate[value])}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </li>
-  )
-}
+export default function ResultPart({
+  candidates: _candidates,
+  comments,
+}: {
+  candidates: TournamentCandidateType[]
+  comments: CommentType[]
+}) {
+  const candidates = _candidates.map((v) => {
+    const rating = v.win + v.lose * -0.5 + v.pick * 3
+    return {
+      ...v,
+      rating,
+    }
+  })
+  const [sortedStatus, setSortedStatus] = useState<{
+    value: "pick" | "rating" | "win"
+    desc: boolean
+  }>({ value: "pick", desc: true })
+  const [itemOffset, setItemOffset] = useState(0)
+  const [page, setPage] = useState(0)
 
-export default function ResultPart({ candidates }: { candidates: TournamentCandidateType[] }) {
-  const [sortedStatus, setSortedStatus] = useState<"pick" | "win" | "lose">("pick")
+  const endOffset = itemOffset + itemsPerPage
+  const pageCount = Math.ceil(candidates.length / itemsPerPage)
+
+  const handlePageClick = (event: any) => {
+    const newOffset = (event.selected * itemsPerPage) % candidates.length
+    setItemOffset(newOffset)
+    setPage(event.selected)
+    if (typeof window === "object") {
+      window.scrollTo({
+        top: 0,
+      })
+    }
+  }
+
   const total = getTotals(candidates)
   const sorted: TournamentCandidateChartType[] = useMemo(() => {
     const target = cloneDeep(candidates)
-    switch (sortedStatus) {
+    switch (sortedStatus.value) {
+      case "rating":
+        if (sortedStatus.desc) {
+          target.sort((a, b) => b.rating - a.rating)
+        } else {
+          target.sort((a, b) => a.rating - b.rating)
+        }
+        break
       case "pick":
-        target.sort((a, b) => b.pick - a.pick)
+        if (sortedStatus.desc) {
+          target.sort((a, b) => b.pick - a.pick)
+        } else {
+          target.sort((a, b) => a.pick - b.pick)
+        }
         break
       case "win":
-        target.sort((a, b) => b.win - a.win)
-        break
-      case "lose":
-        target.sort((a, b) => b.lose - a.lose)
+        if (sortedStatus.desc) {
+          target.sort((a, b) => b.win - a.win)
+        } else {
+          target.sort((a, b) => a.win - b.win)
+        }
+
         break
       default:
         target.sort((a, b) => b.number - a.number)
@@ -99,20 +103,73 @@ export default function ResultPart({ candidates }: { candidates: TournamentCandi
       return {
         ...v,
         win: ((v.win / total_match) * 100).toFixed(3),
-        lose: ((v.lose / total_match) * 100).toFixed(3),
         pick: ((v.pick / total.pick) * 100).toFixed(3),
+        lose: ((v.lose / total_match) * 100).toFixed(3),
       }
     })
   }, [sortedStatus])
+
+  const onClickSort = (value: "pick" | "win" | "rating") => {
+    setSortedStatus((obj) => ({ value, desc: obj.value === value ? !obj.desc : true }))
+    setItemOffset(0)
+    setPage(0)
+  }
+
   return (
     <div className={cx(style.result)}>
-      <section className={cx(style["tournament-chart"])}>
-        <div className={cx(style["tournament-chart-inner"])}>
-          {sorted.map((v, i) => (
-            <Candidate candidate={v} key={`${v.listId}_${i}`} />
+      <div className={cx(style["result-inner"])}>
+        <section className={cx(style["section"])}>
+          <div className={cx(style.title)}>
+            <div className={cx(style.icon)}>
+              <i className={cx("fa-solid", "fa-chart-simple")} />
+            </div>
+            <span>토너먼트 전체 순위</span>
+          </div>
+          <div className={cx(style.sort)}>
+            {dataArr.map(({ label, value }) => (
+              <button
+                key={`sort-btn-${value}`}
+                onClick={() => onClickSort(value)}
+                className={cx({ [style.active]: sortedStatus.value === value })}
+              >
+                <span className={cx(style.text)}>{label}</span>
+                <i
+                  className={cx("fa-solid", "fa-chevron-up", {
+                    [style.asc]: sortedStatus.value === value && !sortedStatus.desc,
+                  })}
+                ></i>
+              </button>
+            ))}
+          </div>
+          {sorted.slice(itemOffset, endOffset).map((v, i) => (
+            <Candidate index={i} candidate={v} key={`${v.listId}_${i}`} />
           ))}
-        </div>
-      </section>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel={">"}
+            onPageChange={handlePageClick}
+            forcePage={page}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            className={cx(style.paginate)}
+            activeClassName={cx(style.active)}
+            disabledClassName={cx(style.disabled)}
+          />
+        </section>
+        <section className={cx(style["section"])}>
+          <div className={cx(style.title)}>
+            <div className={cx(style.icon)}>
+              <i className={cx("fa-solid", "fa-comment")} />
+            </div>
+            <span>코멘트</span>
+          </div>
+          <div className={cx(style["tournament-comment"])}>
+            <CommentPart comments={comments} />
+          </div>
+        </section>
+      </div>
     </div>
   )
 }

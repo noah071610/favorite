@@ -172,6 +172,11 @@ main {
   min-height: calc(100vh - 60px);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important; /* 원하는 배경색으로 변경 */
+}
+
 .Toastify__toast--error {
   background: rgb(255, 255, 255) !important;
   background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%) !important;

@@ -68,23 +68,34 @@ export default function ContestPost({ post }: { post: ContestPostType }) {
       <div className={cx(style["contest-post"], { [style.result]: isResultPage })}>
         <div className={cx(["contest-post-inner"])}>
           <PostInfo title={post.title} description={post.description} user={post.user} />
-          <div className={cx(style.content, { [style.result]: isResultPage })}>
-            {(["left", "right"] as Array<"left" | "right">).map((dr) => (
-              <div key={dr} className={cx(style[dr])}>
-                {isResultPage ? (
-                  <ResultPart selected={selected} content={content} direction={dr} />
-                ) : (
-                  <Candidate candidate={content[dr]} swiped={swiped} direction={dr} />
-                )}
-              </div>
-            ))}
+          <div className={cx(style.content)}>
+            <section className={cx(style.candidates)}>
+              {(["left", "right"] as Array<"left" | "right">).map((dr) => (
+                <div key={dr} className={cx(style[dr])}>
+                  {isResultPage ? (
+                    <ResultPart selected={selected} content={content} direction={dr} />
+                  ) : (
+                    <Candidate candidate={content[dr]} swiped={swiped} direction={dr} />
+                  )}
+                </div>
+              ))}
+            </section>
+
+            {isResultPage && (
+              <section className={cx(style["comment-section"])}>
+                <div className={cx(style.title)}>
+                  <div className={cx(style.icon)}>
+                    <i className={cx("fa-solid", "fa-comment")} />
+                  </div>
+                  <span>코멘트</span>
+                </div>
+                <div className={cx(style["contest-comment"])}>
+                  <CommentPart comments={post.comments} />
+                </div>
+              </section>
+            )}
           </div>
         </div>
-        {isResultPage && (
-          <div className={cx(style["contest-comment"])}>
-            <CommentPart post={post} />
-          </div>
-        )}
       </div>
     </>
   ) : (

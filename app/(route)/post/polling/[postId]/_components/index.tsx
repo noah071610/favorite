@@ -102,7 +102,7 @@ const PollingPost = ({ post }: { post: PollingPostType }) => {
                   </div>
                   <span>코멘트</span>
                 </div>
-                <CommentPart post={post} />
+                <CommentPart comments={post.comments} />
               </div>
             ) : (
               <SelectPart selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />

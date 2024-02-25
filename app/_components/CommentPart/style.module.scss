@@ -1,19 +1,18 @@
 @import "@/_styles/variables.scss";
 
-$profile-width: 40px;
+$profile-width: 35px;
 
-.comments {
+.comment-list {
   padding: 20px 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.area-wrapper {
+.comment-area-wrapper {
   display: grid;
-  gap: 15px;
+  gap: 10px;
   grid-template-columns: $profile-width 1fr;
-  padding: 0 5px;
   padding-top: 5px;
 
   z-index: 10;
@@ -26,23 +25,18 @@ $profile-width: 40px;
       width: $profile-width;
       height: $profile-width;
       border-radius: 100%;
-      border: 3px solid rgba(255, 138, 138, 0.2);
-      transition: border 350ms;
-      &.focus {
-        border-color: $pink-soft;
-      }
     }
   }
 }
 
-.inner .commenting {
+.inner {
   .name-space {
     display: flex;
-    align-items: center;
     gap: 7px;
     .name {
+      padding-top: 1px;
       font-size: 14px;
-      line-height: 1.5;
+      color: $black-soft;
     }
   }
 
@@ -77,57 +71,40 @@ $profile-width: 40px;
       }
     }
   }
-  .btn {
-    justify-content: flex-end;
-    padding-top: 10px;
+}
 
-    &-inner {
-      display: flex;
-      gap: 8px;
-      button {
-        padding: 6px 12px;
-        font-size: 14px;
-        border-radius: 8px;
-      }
-      .cancel {
-        width: fit-content;
-        background-color: $gray-soft;
-      }
-      .submit {
-        width: fit-content;
-        background-color: $pink;
-        color: white;
-      }
+.commenting-btn {
+  justify-content: flex-end;
+  padding-top: 10px;
+
+  .inner {
+    display: flex;
+    gap: 8px;
+    button {
+      width: 150px;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 8px;
     }
-  }
-
-  button {
-    width: 150px;
+    .cancel {
+      width: fit-content;
+      background-color: $gray-soft;
+    }
+    .submit {
+      width: fit-content;
+      background-color: $pink;
+      color: white;
+    }
   }
 }
 
-.inner .comment {
+.content {
+  padding: 5px 0 1px 0;
+  margin-bottom: 1px;
   .text {
     line-height: 1.3;
-    font-size: 14px;
-    padding: 3px 0 1px 0;
+    font-size: 13px;
+    color: $black-soft;
     word-break: keep-all;
-    margin-bottom: 1px;
-  }
-
-  .like {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    .btn {
-      padding: 2px 2px 2px 0;
-      i {
-        font-size: 14px;
-        line-height: 1.5;
-      }
-    }
-    span {
-      font-size: 12px;
-    }
   }
 }

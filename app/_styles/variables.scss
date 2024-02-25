@@ -124,3 +124,28 @@ $z-index-map: (
     }
   }
 }
+
+@mixin section-title {
+  .title {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 8px;
+      width: 30px;
+      height: 30px;
+      background-color: $pink-soft;
+      border-radius: 100%;
+      @include flex();
+      i {
+        color: white;
+        font-size: 14px;
+      }
+    }
+    span {
+      font-size: 20px;
+      font-weight: 700;
+      padding-bottom: 1px;
+    }
+  }
+}

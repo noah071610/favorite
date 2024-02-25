@@ -36,9 +36,8 @@ const handleBeforeUnload = (event: any, newPost: NewPostType | null, content: an
 
 export default function NewPostPage() {
   const { data: user } = useQuery<UserType>({
-    queryKey: ["getUser", "edit"],
-    queryFn: () => getUser(1),
-    select: ({ userId, userName, userImage }) => ({ userId, userName, userImage }), // 여기서 data는 전체 데이터 객체입니다.
+    queryKey: ["user"],
+    queryFn: getUser,
   })
   const { newPost, newPostStatus, createNewPost, clearNewPost, setStatus } = useNewPostStore()
   const { clearPollingContent, loadPollingContent, pollingContent } = usePollingStore()

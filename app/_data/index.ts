@@ -5,6 +5,11 @@ export const _url = {
   server: process.env.NEXT_PUBLIC_SERVER_URL,
 }
 
-export const server = axios.create({
-  baseURL: _url.server, // Replace with your base URL
+export const API = axios.create({
+  withCredentials: true,
+  baseURL: _url.server,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
 })

@@ -1,13 +1,6 @@
 @import "@/_styles/variables.scss";
 
-@keyframes scale-up {
-  from {
-    transform: scale(0.3);
-  }
-  to {
-    transform: scale(1);
-  }
-}
+@include scale-up;
 
 .tournament-post {
   width: 100%;
@@ -115,10 +108,6 @@
       }
     }
   }
-}
-
-.tournament-chart {
-  width: 100%;
 }
 
 .tournament-comment {

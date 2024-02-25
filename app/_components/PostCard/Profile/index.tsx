@@ -1,4 +1,3 @@
-import { likeMutate } from "@/_queries/post"
 import { getUser } from "@/_queries/user"
 import { UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
@@ -17,17 +16,17 @@ export default function Profile({
   shareCount: number
   postId: string
 }) {
-  const { data: curUser } = useQuery<UserType>({
-    queryKey: ["getUser"],
-    queryFn: () => getUser(1),
+  const { data: user } = useQuery<UserType>({
+    queryKey: ["user"],
+    queryFn: getUser,
   })
 
   const { userId, userImage } = user
 
-  const { mutate } = likeMutate(postId, curUser?.userId, curUser?.userImage)
+  // const { mutate } = likeMutate(postId, curUser?.userId, curUser?.userImage)
 
   const onClickLike = () => {
-    mutate()
+    // mutate()
   }
 
   return (

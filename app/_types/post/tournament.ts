@@ -16,6 +16,7 @@ export interface TournamentCandidateChartType extends _TournamentCandidateType {
   win: string
   lose: string
   pick: string
+  rating: number
 }
 
 export interface TournamentContentType {

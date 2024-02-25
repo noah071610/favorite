@@ -1,5 +1,4 @@
 import "@/_styles/global.scss"
-// import "@/_styles/post.scss"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { ToastContainer } from "react-toastify"
@@ -34,7 +33,7 @@ export const metadata: Metadata = {
   description: "What is your Favorite?",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
