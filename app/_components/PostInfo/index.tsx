@@ -14,7 +14,7 @@ export default function PostInfo({
 }: {
   title: string
   description: string
-  user: UserType
+  user?: UserType
   isEdit?: boolean
 }) {
   return (
@@ -29,15 +29,17 @@ export default function PostInfo({
           </>
         )}
       </div>
-      <div className={cx(style.profile)}>
-        <button className={cx(style["user-image"])}>
-          <img src={user.userImage} alt={`user_image_${user.userId}`} />
-        </button>
-        <div className={cx(style["user-info"])}>
-          <span>{user.userName}</span>
-          <span>2024/01/13</span>
+      {!isEdit && user && (
+        <div className={cx(style.profile)}>
+          <button className={cx(style["user-image"])}>
+            <img src={user?.userImage} alt={`user_image`} />
+          </button>
+          <div className={cx(style["user-info"])}>
+            <span>{user?.userName}</span>
+            <span>2024/01/13</span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

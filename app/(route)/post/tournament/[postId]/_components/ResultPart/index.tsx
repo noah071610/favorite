@@ -34,8 +34,10 @@ const dataArr = [
 
 export default function ResultPart({
   candidates: _candidates,
+  pickedCandidate,
   comments,
 }: {
+  pickedCandidate: TournamentCandidateType
   candidates: TournamentCandidateType[]
   comments: CommentType[]
 }) {
@@ -142,7 +144,12 @@ export default function ResultPart({
             ))}
           </div>
           {sorted.slice(itemOffset, endOffset).map((v, i) => (
-            <Candidate index={i} candidate={v} key={`${v.listId}_${i}`} />
+            <Candidate
+              selected={pickedCandidate.listId === v.listId}
+              index={i}
+              candidate={v}
+              key={`${v.listId}_${i}`}
+            />
           ))}
           <ReactPaginate
             breakLabel="..."

@@ -1,13 +1,5 @@
 import { API } from "@/_data"
 
-function sliceArray(array: any[]) {
-  const result = []
-  for (let i = 0; i < array.length; i += 12) {
-    result.push(array.slice(i, i + 12))
-  }
-  return result
-}
-
 export async function getPosts({ pageParam = 0 }) {
   const response = await API.get(`/post/all?cursor=${pageParam}`)
 
@@ -26,16 +18,16 @@ export async function likePost(userId?: number, postId?: string) {
   return response.data
 }
 
-// export function likeMutate(postId: string, userId?: number, userImage?: string) {
+// export function create(postId: string, userId?: number, userImage?: string) {
 //   const queryClient = useQueryClient()
 //   return useMutation({
-//     mutationKey: ["getPosts"],
+//     mutationKey: ["homePosts"],
 //     mutationFn: () => likePost(userId, postId),
 
 //     onMutate: async () => {
-//       await queryClient.cancelQueries({ queryKey: ["getPosts"] })
+//       await queryClient.cancelQueries({ queryKey: ["homePosts"] })
 
-//       await queryClient.setQueryData(["getPosts"], (oldData: any) => {
+//       await queryClient.setQueryData(["homePosts"], (oldData: any) => {
 //         const pages = [...oldData.pages.flat()]
 
 //         return {

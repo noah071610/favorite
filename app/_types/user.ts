@@ -7,3 +7,8 @@ export interface UserType {
 export interface UserExpendType extends UserType {
   liked: string[]
 }
+
+export interface UserQueryType {
+  msg: "ok" | "no"
+  user: UserType | null
+}

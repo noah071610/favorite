@@ -1,4 +1,6 @@
 import { API } from "@/_data"
+import { PostCardType } from "@/_types/post/post"
+import { produce } from "immer"
 
 export async function uploadImage(file: FormData, dev?: number) {
   if (process.env.NODE_ENV !== "production") {
@@ -17,12 +19,21 @@ export async function uploadImage(file: FormData, dev?: number) {
   }
 }
 
-export async function createNewPost(newPost: { [key: string]: any }) {
-  const { user, ...rest } = newPost
-  try {
-    const response = await API.post(`/post`, { ...rest, userId: user.userId })
-    return { msg: "ok", data: response.data }
-  } catch (error) {
-    return error
-  }
+export async function posting(newPost: { [key: string]: any }) {
+  const response = await API.post(`/post`, newPost)
+  return { msg: "ok", data: response.data }
+}
+
+export const onMutatePosting = async (queryClient: any, post: PostCardType) => {
+  await queryClient.cancelQueries({ queryKey: ["homePosts"] })
+
+  await queryClient.setQueryData(["homePosts"], (oldData: any) =>
+    produce(oldData, (draft: any) => {
+      draft.pages[0].push(post)
+      return {
+        pageParams: oldData.pageParams,
+        pages: draft.pages,
+      }
+    })
+  )
 }

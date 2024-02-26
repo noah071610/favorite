@@ -1,0 +1,20 @@
+@import "@/_styles/variables.scss";
+
+.content {
+  width: $content-width;
+
+  @include border();
+  border-radius: 10px;
+  overflow: hidden;
+}
+.editor {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 100px - 80px);
+  .left,
+  .right {
+    height: 100%;
+    width: 100%;
+  }
+}

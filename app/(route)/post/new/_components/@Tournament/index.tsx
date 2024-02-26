@@ -4,7 +4,6 @@ import { useNewPostStore } from "@/_store/newPost"
 
 import PostInfo from "@/_components/PostInfo"
 import { useTournamentStore } from "@/_store/newPost/tournament"
-import { UserType } from "@/_types/user"
 import classNames from "classNames"
 import { nanoid } from "nanoid"
 import { useCallback, useRef, useState } from "react"
@@ -19,7 +18,7 @@ import Dropzone from "../@Contest/Dropzone"
 
 const cx = classNames.bind(style)
 
-export default function TournamentContent({ user }: { user: UserType }) {
+export default function TournamentContent() {
   const { newPost } = useNewPostStore()
   const {
     addCandidate,
@@ -62,7 +61,7 @@ export default function TournamentContent({ user }: { user: UserType }) {
       <>
         <div className={cx(style["tournament-post"])}>
           <div className={cx(style["tournament-post-inner"])}>
-            <PostInfo title={newPost.title} description={newPost.description} user={user} isEdit={true} />
+            <PostInfo title={newPost.title} description={newPost.description} isEdit={true} />
             <div className={cx(style.content)}>
               {candidates.length ? (
                 <Swiper

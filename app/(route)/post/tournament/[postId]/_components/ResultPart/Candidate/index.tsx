@@ -16,17 +16,34 @@ const dataArr = [
 
 const delay = 130
 
-export default function Candidate({ candidate, index }: { candidate: TournamentCandidateChartType; index: number }) {
+export default function Candidate({
+  selected,
+  candidate,
+  index,
+}: {
+  selected: boolean
+  candidate: TournamentCandidateChartType
+  index: number
+}) {
   return (
-    <li className={cx(style.candidate)}>
-      <div className={cx(style.left)}>
+    <li className={cx(style.candidate, { [style.selected]: selected })}>
+      <div
+        style={{
+          animation: `${style.rotate} 170ms ${index * delay}ms forwards`,
+        }}
+        className={cx(style.left)}
+      >
         <div
           style={{
             backgroundImage: `url('${candidate.imageSrc}')`,
-            animation: `${style.rotate} 170ms ${index * delay}ms forwards`,
           }}
           className={cx(style.image)}
         />
+        {selected && (
+          <div className={cx(style["like"])}>
+            <span>LIKE!</span>
+          </div>
+        )}
       </div>
       <div className={cx(style.right)}>
         <div className={cx(style.chart)}>

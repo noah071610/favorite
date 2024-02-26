@@ -6,10 +6,8 @@ import { useNewPostStore } from "@/_store/newPost"
 import { useContestStore } from "@/_store/newPost/contest"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { useTournamentStore } from "@/_store/newPost/tournament"
-import { PostContentType } from "@/_types/post/post"
-import { UserType } from "@/_types/user"
+import { NewPostType, PostContentType } from "@/_types/post/post"
 import classNames from "classNames"
-import { nanoid } from "nanoid"
 import { useCallback, useState } from "react"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
@@ -44,7 +42,26 @@ const typeSelectors = [
   },
 ]
 
-export default function InitSection({ user }: { user: UserType }) {
+const getCreatePost = (value: PostContentType) => {
+  return {
+    type: value,
+    thumbnail: "",
+    title: "",
+    description: "",
+    format: "default",
+    info: {
+      participateImages: [],
+      shareCount: 0,
+      like: 0,
+      participateCount: 0,
+      isNoComments: 0,
+      thumbnailType: "custom",
+    },
+    content: null,
+  } as NewPostType
+}
+
+export default function InitSection() {
   const { newPost, createNewPost, setStatus, error } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
   const { clearPollingContent } = usePollingStore()
@@ -53,55 +70,19 @@ export default function InitSection({ user }: { user: UserType }) {
   const [type, setType] = useState<PostContentType | null>(null)
 
   const onClickTypeSelect = (value: PostContentType) => {
-    if (user) {
-      if (newPost?.type) {
-        setType(value)
-        setModal("changePostType")
-      } else {
-        createNewPost({
-          postId: nanoid(10),
-          type: value,
-          thumbnail: "",
-          title: "",
-          description: "",
-          format: "default",
-          user,
-          info: {
-            participateImages: [],
-            shareCount: 0,
-            like: 0,
-            participateCount: 0,
-            isNoComments: 0,
-            thumbnailType: "custom",
-          },
-          content: null,
-        })
-        setStatus("edit")
-      }
+    if (newPost?.type) {
+      setType(value)
+      setModal("changePostType")
+    } else {
+      createNewPost(getCreatePost(value))
+      setStatus("edit")
     }
   }
 
   const onClickConfirm = useCallback(
     (isOk: boolean) => {
-      if (isOk) {
-        createNewPost({
-          postId: nanoid(10),
-          type,
-          thumbnail: "",
-          title: "",
-          description: "",
-          format: "default",
-          user,
-          info: {
-            participateImages: [],
-            shareCount: 0,
-            like: 0,
-            participateCount: 0,
-            isNoComments: 0,
-            thumbnailType: "custom",
-          },
-          content: null,
-        })
+      if (isOk && type) {
+        createNewPost(getCreatePost(type))
         clearContestContent()
         clearPollingContent()
         clearTournamentContent()
@@ -110,7 +91,7 @@ export default function InitSection({ user }: { user: UserType }) {
       setModal("none")
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [type, user]
+    [type]
   )
   return (
     <div className={cx(style.init)}>

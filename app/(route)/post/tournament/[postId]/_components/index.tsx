@@ -41,7 +41,7 @@ export default function TournamentPost({ post }: { post: TournamentPostType }) {
     if (isImagesLoaded) {
       setModal("roundSelect")
     }
-  }, [isImagesLoaded])
+  }, [isImagesLoaded, setModal])
 
   const onClickRound = (v: number) => {
     setRound(v)
@@ -53,8 +53,8 @@ export default function TournamentPost({ post }: { post: TournamentPostType }) {
       <div className={cx(["tournament-post-inner"])}>
         <PostInfo title={post.title} description={post.description} user={post.user} />
         <div className={cx(style.content, { [style.result]: isResultPage })}>
-          {isResultPage ? (
-            <ResultPart comments={post.comments} candidates={originCandidates} />
+          {isResultPage && pickedCandidate ? (
+            <ResultPart pickedCandidate={pickedCandidate} comments={post.comments} candidates={originCandidates} />
           ) : (
             <div className={cx(style.content, { [style.result]: isResultPage })}>
               {round && (

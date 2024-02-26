@@ -11,7 +11,6 @@ import style from "@/(route)/post/polling/[postId]/_components/style.module.scss
 import PostInfo from "@/_components/PostInfo"
 import { usePollingStore } from "@/_store/newPost/polling"
 import { PollingLayoutType } from "@/_types/post/polling"
-import { UserType } from "@/_types/user"
 import classNames from "classNames"
 import { useCallback } from "react"
 import Candidate from "./Candidate"
@@ -50,7 +49,7 @@ const ChartDescription = () => {
   )
 }
 
-export default function PollingContent({ user }: { user: UserType }) {
+export default function PollingContent() {
   const { newPost, newPostStatus } = useNewPostStore()
   const {
     setPollingContent,
@@ -113,7 +112,7 @@ export default function PollingContent({ user }: { user: UserType }) {
         </div>
         <div className={cx(style["polling-post"])}>
           <div className={cx(style["polling-post-inner"])}>
-            <PostInfo title={newPost.title} description={newPost.description} user={user} isEdit={true} />
+            <PostInfo title={newPost.title} description={newPost.description} isEdit={true} />
             <div className={cx(style.content)}>
               <div className={cx(style.left)}>
                 <ul className={cx(style["candidate-list"])}>

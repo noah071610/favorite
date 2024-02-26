@@ -14,7 +14,7 @@ export default function HomePage() {
   const [cursor, setCursor] = useState(0)
   const [hasNextPage, setHasNextPage] = useState(true)
   const { data, isFetchingNextPage, fetchNextPage, isSuccess } = useInfiniteQuery({
-    queryKey: ["getPosts"],
+    queryKey: ["homePosts"],
     queryFn: getPosts,
     initialPageParam: 0,
     getNextPageParam: () => {

@@ -4,6 +4,7 @@ import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
 import { login } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
+import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useState } from "react"
 import { toast } from "react-toastify"
@@ -26,7 +27,8 @@ const socials = [
 ]
 
 export default function LoginModal() {
-  const { setModal } = useMainStore()
+  const queryClient = useQueryClient()
+  const { setModal, modalStatus } = useMainStore()
   const [input, setInput] = useState({ email: "", password: "" })
   const [focus, setFocus] = useState<{ email: boolean; password: boolean }>({ email: false, password: false })
 
@@ -43,11 +45,17 @@ export default function LoginModal() {
   }
 
   const onClickLogin = async () => {
-    const { msg } = await login({ email: input.email, password: input.password })
+    const { msg, user } = await login({ email: input.email, password: input.password })
+    queryClient.setQueryData(["user"], { msg: "ok", user })
+
     switch (msg) {
       case "ok":
-        setModal("none")
-        toast.success(successMessage["login"], successToastOptions("login"))
+        if (modalStatus === "login") {
+          setModal("none")
+          toast.success(successMessage["login"], successToastOptions("login"))
+        } else {
+          setModal("newPostLoginSuccess")
+        }
         break
       default:
         break

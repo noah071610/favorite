@@ -1,10 +1,20 @@
 import { API } from "@/_data"
 import { UserType } from "@/_types/user"
+import { Cookies } from "react-cookie"
+
+const cookies = new Cookies()
 
 export async function getUser() {
-  const response = await API.get(`/auth/user`)
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
 
-  return response.data
+  if (cookie) {
+    const response = await API.get(`/auth/user`)
+    API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
+
+    return response.data
+  } else {
+    return { msg: "no", user: null }
+  }
 }
 
 export async function registerUser(user: UserType) {
@@ -13,30 +23,39 @@ export async function registerUser(user: UserType) {
 }
 
 export async function refreshUser() {
-  const response = await API.get(`/auth/user/refresh`)
-  API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+  if (cookie) {
+    const response = await API.get(`/auth/user/refresh`)
+    API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
 
-  return response.data
+    return response.data
+  } else {
+    return { msg: "no", user: null }
+  }
 }
 
 export async function login(user: { email: string; password: string }) {
-  const response = await API.post(`/auth/login`, user)
+  try {
+    const response = await API.post(`/auth/login`, user)
 
-  API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
+    API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
 
-  return response.data
+    return response.data
+  } catch {
+    return { msg: "no", user: null }
+  }
 }
 
 // export function likeMutate(postId: string, userId?: number, userImage?: string) {
 //   const queryClient = useQueryClient()
 //   return useMutation({
-//     mutationKey: ["getPosts"],
+//     mutationKey: ["homePosts"],
 //     mutationFn: () => registerUser(user),
 
 //     onMutate: async () => {
-//       await queryClient.cancelQueries({ queryKey: ["getPosts"] })
+//       await queryClient.cancelQueries({ queryKey: ["homePosts"] })
 
-//       await queryClient.setQueryData(["getPosts"], (oldData: any) => {
+//       await queryClient.setQueryData(["homePosts"], (oldData: any) => {
 //         const pages = [...oldData.pages.flat()]
 
 //         return {

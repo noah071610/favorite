@@ -10,17 +10,7 @@ import { NewPostType } from "@/_types/post/post"
 // })
 
 export function checkNewPostType(localObj: any): boolean {
-  const requiredKeys: (keyof NewPostType)[] = [
-    "postId",
-    "title",
-    "format",
-    "description",
-    "thumbnail",
-    "type",
-    "info",
-    "user",
-    "content",
-  ]
+  const requiredKeys: (keyof NewPostType)[] = ["title", "format", "description", "thumbnail", "type", "info", "content"]
 
   // 객체 a가 null 또는 undefined인지 확인
   if (!localObj) {

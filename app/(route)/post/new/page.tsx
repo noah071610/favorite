@@ -1,10 +1,6 @@
 "use client"
 
-import { getUser } from "@/_queries/user"
-import { useQuery } from "@tanstack/react-query"
-
 import { useNewPostStore } from "@/_store/newPost"
-import { UserType } from "@/_types/user"
 
 import ContestContent from "./_components/@Contest"
 import PollingContent from "./_components/@Polling"
@@ -35,10 +31,6 @@ const handleBeforeUnload = (event: any, newPost: NewPostType | null, content: an
 }
 
 export default function NewPostPage() {
-  const { data: user } = useQuery<UserType>({
-    queryKey: ["user"],
-    queryFn: getUser,
-  })
   const { newPost, newPostStatus, createNewPost, clearNewPost, setStatus } = useNewPostStore()
   const { clearPollingContent, loadPollingContent, pollingContent } = usePollingStore()
   const { clearContestContent, loadContestContent, contestContent } = useContestStore()
@@ -117,33 +109,31 @@ export default function NewPostPage() {
   )
 
   return (
-    user && (
-      <>
-        <div className={cx(style["new-post-page"])}>
-          {/* INIT SECTION */}
-          {newPostStatus === "init" && <InitSection user={user} />}
+    <>
+      <div className={cx(style["new-post-page"])}>
+        {/* INIT SECTION */}
+        {newPostStatus === "init" && <InitSection />}
 
-          {/* EDIT & RESULT SECTION */}
-          {newPostStatus === "edit" && (
-            <>
-              {newPost?.type === "polling" && <PollingContent user={user} />}
-              {newPost?.type === "contest" && <ContestContent user={user} />}
-              {newPost?.type === "tournament" && <TournamentContent user={user} />}
-            </>
-          )}
-
-          {/* RENDING SECTION */}
-          {newPostStatus === "rending" && <RendingSection />}
-        </div>
-
-        {modalStatus === "newPostLoad" && (
-          <Confirm
-            title="자동 저장된 데이터가 있어요! 🙂<br/>불러올까요?"
-            onClickConfirm={onClickConfirm}
-            customBtn={{ yes: "데이터 불러오기", no: "새로 만들래요" }}
-          />
+        {/* EDIT & RESULT SECTION */}
+        {newPostStatus === "edit" && (
+          <>
+            {newPost?.type === "polling" && <PollingContent />}
+            {newPost?.type === "contest" && <ContestContent />}
+            {newPost?.type === "tournament" && <TournamentContent />}
+          </>
         )}
-      </>
-    )
+
+        {/* RENDING SECTION */}
+        {newPostStatus === "rending" && <RendingSection />}
+      </div>
+
+      {modalStatus === "newPostLoad" && (
+        <Confirm
+          title="자동 저장된 데이터가 있어요! 🙂<br/>불러올까요?"
+          onClickConfirm={onClickConfirm}
+          customBtn={{ yes: "데이터 불러오기", no: "새로 만들래요" }}
+        />
+      )}
+    </>
   )
 }

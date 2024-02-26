@@ -2,6 +2,7 @@
 
 import { refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
+import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -14,13 +15,20 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function Header() {
+  const queryClient = useQueryClient()
   const { modalStatus, setModal } = useMainStore()
   const pathname = usePathname()
   const isNewPostPage = pathname.includes("new")
   const isPostPage = pathname.includes("/post/") && !isNewPostPage
 
   useEffect(() => {
-    refreshUser()
+    !(async function () {
+      const { msg, user } = await refreshUser()
+      if (user) {
+        queryClient.setQueryData(["user"], { msg, user })
+      }
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return isPostPage ? null : (
@@ -47,7 +55,9 @@ export default function Header() {
           <SearchModal />
         </div>
       )}
-      {modalStatus === "login" && <LoginModal />}
+      {(modalStatus === "login" || modalStatus === "loginNewPost" || modalStatus === "newPostLoginSuccess") && (
+        <LoginModal />
+      )}
     </>
   )
 }
