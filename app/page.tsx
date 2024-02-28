@@ -3,6 +3,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useEffect, useState } from "react"
+import FavoriteLoading from "./_components/Loading/FavoriteLoading"
 import PostCard from "./_components/PostCard"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
 import { getPosts } from "./_queries/post"
@@ -39,15 +40,20 @@ export default function HomePage() {
 
   return (
     <>
-      {data && (
-        <div className={cx(style["home-page"])}>
-          <div className={cx(style.content)}>
-            {data.pages.flat().map((v: PostCardType) => (
-              <PostCard key={v.postId} postCard={v} />
-            ))}
+      {data ? (
+        <>
+          <div className={cx(style["home-page"])}>
+            <div className={cx(style.content)}>
+              {data.pages.flat().map((v: PostCardType) => (
+                <PostCard key={v.postId} postCard={v} />
+              ))}
+            </div>
           </div>
-        </div>
+        </>
+      ) : (
+        <FavoriteLoading type="full" />
       )}
+
       <div
         style={{ display: hasNextPage && isSuccess && !isFetchingNextPage ? "block" : "none" }}
         ref={ref as any}

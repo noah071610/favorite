@@ -71,8 +71,10 @@ export default function InitSection() {
 
   const onClickTypeSelect = (value: PostContentType) => {
     if (newPost?.type) {
-      setType(value)
-      setModal("changePostType")
+      if (newPost?.type !== value) {
+        setType(value)
+        setModal("changePostType")
+      }
     } else {
       createNewPost(getCreatePost(value))
       setStatus("edit")

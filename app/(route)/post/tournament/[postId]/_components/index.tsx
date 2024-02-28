@@ -1,13 +1,16 @@
 "use client"
 
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 
-import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
-import { usePreloadImages } from "@/_hooks/usePreloadImages"
+import { successMessage } from "@/_data/message"
+import { successToastOptions } from "@/_data/toast"
+import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { useMainStore } from "@/_store/main"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
+import { toast } from "react-toastify"
 import ResultPart from "./ResultPart"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
@@ -25,48 +28,77 @@ const getRound = (totalParticipants: number | undefined) => {
   return { rounds: null }
 }
 
-export default function TournamentPost({ post }: { post: TournamentPostType }) {
+export default function TournamentPost({ initialPost }: { initialPost: TournamentPostType }) {
+  const { data: post } = useQuery<TournamentPostType>({
+    queryKey: ["post", initialPost.postId],
+    initialData: initialPost,
+  })
+
   const [round, setRound] = useState<number | null>(null)
   const { modalStatus, setModal } = useMainStore()
   const [pickedCandidate, setPickedCandidate] = useState<TournamentCandidateType | null>(null)
   const [originCandidates, setOriginCandidates] = useState<TournamentCandidateType[]>(post.content.candidates)
   const [status, setStatus] = useState<"init" | "result">("init")
   const isResultPage = status === "result"
+  const isPreview = post.format === "preview"
 
-  const { rounds } = useMemo(() => getRound(originCandidates.length), [])
-
-  const isImagesLoaded = usePreloadImages(originCandidates.map(({ imageSrc }) => imageSrc))
+  const isVoted = useCheckVoted({
+    disable: isPreview,
+    candidates: post.content.candidates,
+    postId: post.postId,
+    resolve: (target) => {
+      setStatus("result")
+      setPickedCandidate(target)
+      toast.success(successMessage["voted"], successToastOptions("voted"))
+    },
+  })
 
   useEffect(() => {
-    if (isImagesLoaded) {
+    if (isVoted === false) {
+      // null은 기본값임으로 제외
       setModal("roundSelect")
     }
-  }, [isImagesLoaded, setModal])
+  }, [isVoted, setModal])
+
+  const { rounds } = getRound(originCandidates.length)
 
   const onClickRound = (v: number) => {
     setRound(v)
     setModal("none")
   }
 
-  return isImagesLoaded ? (
+  return (
     <div className={cx(style["tournament-post"], { [style.result]: isResultPage })}>
       <div className={cx(["tournament-post-inner"])}>
         <PostInfo title={post.title} description={post.description} user={post.user} />
         <div className={cx(style.content, { [style.result]: isResultPage })}>
           {isResultPage && pickedCandidate ? (
-            <ResultPart pickedCandidate={pickedCandidate} comments={post.comments} candidates={originCandidates} />
+            <ResultPart
+              authorId={post.user.userId}
+              isPreview={isPreview}
+              pickedCandidate={pickedCandidate}
+              comments={post.comments}
+              candidates={originCandidates}
+            />
           ) : (
-            <div className={cx(style.content, { [style.result]: isResultPage })}>
-              {round && (
+            <>
+              {round ? (
                 <SelectPart
                   setOriginCandidates={setOriginCandidates}
                   setStatus={setStatus}
                   setPickedCandidate={setPickedCandidate}
                   round={round}
+                  isPreview={isPreview}
                   originCandidates={originCandidates}
                 />
+              ) : (
+                <div className={cx(style.loading)}>
+                  <i className={cx("fa-solid", "fa-gift")} />
+                  <i className={cx("fa-solid", "fa-heart")} />
+                  <i className={cx("fa-solid", "fa-rocket")} />
+                </div>
               )}
-            </div>
+            </>
           )}
         </div>
       </div>
@@ -89,7 +121,5 @@ export default function TournamentPost({ post }: { post: TournamentPostType }) {
         </div>
       )}
     </div>
-  ) : (
-    <FavoriteLoading type="full" text="Image Loading" />
   )
 }

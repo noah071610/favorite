@@ -12,41 +12,20 @@ export async function getPost(postId: string) {
   return response.data
 }
 
+export async function commenting(data: { userId: number; postId: string; text: string }) {
+  const response = await API.post(`/post/comment`, data)
+
+  return response.data
+}
+
+export async function finishTournament(postId: string, data: { win: number; lose: number; pick: number }[]) {
+  const response = await API.patch(`/post/tournament?postId=${postId}`, data)
+
+  return response.data
+}
+
 export async function likePost(userId?: number, postId?: string) {
   const response = await API.patch(`/post/like?postId=${postId}&userId=${userId}`)
 
   return response.data
 }
-
-// export function create(postId: string, userId?: number, userImage?: string) {
-//   const queryClient = useQueryClient()
-//   return useMutation({
-//     mutationKey: ["homePosts"],
-//     mutationFn: () => likePost(userId, postId),
-
-//     onMutate: async () => {
-//       await queryClient.cancelQueries({ queryKey: ["homePosts"] })
-
-//       await queryClient.setQueryData(["homePosts"], (oldData: any) => {
-//         const pages = [...oldData.pages.flat()]
-
-//         return {
-//           pageParams: oldData.pageParams,
-//           pages: sliceArray(
-//             pages.map((v: PostCardType) =>
-//               produce(v, (draft) => {
-//                 if (v.postId === postId) {
-//                   draft.info.like++
-//                   draft.info.participateCount++
-//                   if (draft.info.participateImages.length < 10 && userImage) {
-//                     draft.info.participateImages.push(userImage)
-//                   }
-//                 }
-//               })
-//             )
-//           ),
-//         }
-//       })
-//     },
-//   })
-// }

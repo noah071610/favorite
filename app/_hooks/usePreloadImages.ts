@@ -2,53 +2,34 @@ import { useEffect, useState } from "react"
 
 export const usePreloadImages = (content: string[]) => {
   const [isImagesLoaded, setIsImagesLoaded] = useState(false)
-  const [imageLoadedCount, setImageLoadedCount] = useState<number>(0)
+  const [imageLoadedCount, setImageLoadedCount] = useState(0)
 
   useEffect(() => {
-    if (!!content.length && imageLoadedCount === content.length) {
-      // memo: 모든 이미지가 로드된 경우에 수행할 동작
+    if (imageLoadedCount >= content.length) {
       setTimeout(() => {
         setIsImagesLoaded(true)
-      }, 1000)
+      }, 2000)
     }
   }, [content, imageLoadedCount])
 
   useEffect(() => {
     if (!!content.length) {
-      const handleImageLoad = (image: HTMLImageElement) => {
-        if (image.naturalHeight > 0) {
-          setImageLoadedCount((n) => n + 1)
+      content.forEach((imageSrc) => {
+        const image = new Image()
+        image.src = imageSrc
+        image.onload = () => {
+          setImageLoadedCount((prevCount) => prevCount + 1)
         }
-      }
-
-      const imageLoadHandlers = content.map((imageSrc) => {
-        if (imageSrc) {
-          const image = new Image()
-
-          image.src = imageSrc
-          image.onload = () => handleImageLoad(image)
-          image.onerror = () => {
-            setImageLoadedCount((n) => n + 1)
-          }
-          return image
-        } else {
-          setImageLoadedCount((n) => n + 1)
+        image.onerror = () => {
+          setImageLoadedCount((prevCount) => prevCount + 1)
         }
       })
-
-      return () => {
-        if (imageLoadHandlers) {
-          setImageLoadedCount(0)
-          imageLoadHandlers.forEach((image) => {
-            if (image) {
-              image.onload = null
-              image.onerror = null
-            }
-          })
-        }
-      }
     }
-  }, [content])
+
+    // 이미지 로드 카운트 초기화 또는 정리 작업은 필요하지 않으므로 반환되는 함수를 생략합니다.
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return isImagesLoaded
 }

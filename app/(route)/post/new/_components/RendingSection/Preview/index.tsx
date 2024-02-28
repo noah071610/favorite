@@ -26,9 +26,9 @@ export default function Preview({
           <i className={cx("fa-solid", "fa-close")}></i>
         </button>
       </div>
-      {previewPost.type === "polling" && <PollingPost post={previewPost as PollingPostType} />}
-      {previewPost.type === "contest" && <ContestPost post={previewPost as ContestPostType} />}
-      {previewPost.type === "tournament" && <TournamentPost post={previewPost as TournamentPostType} />}
+      {previewPost.type === "polling" && <PollingPost initialPost={previewPost as PollingPostType} />}
+      {previewPost.type === "contest" && <ContestPost initialPost={previewPost as ContestPostType} />}
+      {previewPost.type === "tournament" && <TournamentPost initialPost={previewPost as TournamentPostType} />}
 
       <div className={cx(style["preview-triangle"])}></div>
       <span className={cx(style["preview-label"])}>PREVIEW</span>

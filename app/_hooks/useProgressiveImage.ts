@@ -7,7 +7,7 @@ export const useProgressiveImage = (src: string) => {
     const img = new Image()
     img.src = src
     img.onload = () => {
-      setStatus("success")
+      if (img.naturalHeight > 0) setStatus("success")
     }
     img.onerror = () => {
       setStatus("error")

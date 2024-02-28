@@ -26,6 +26,18 @@ const getTotals = (candidates: TournamentCandidateType[]) => {
   )
 }
 
+const getSelectedCandidateData = (targetNum: number, candidates: TournamentCandidateChartType[]) => {
+  const pickRank = candidates.toSorted((a, b) => b.pick - a.pick).findIndex(({ number }) => number === targetNum) + 1
+  const winRank = candidates.toSorted((a, b) => b.win - a.win).findIndex(({ number }) => number === targetNum) + 1
+  const ratingRank =
+    candidates.toSorted((a, b) => b.rating - a.rating).findIndex(({ number }) => number === targetNum) + 1
+  return {
+    pickRank,
+    winRank,
+    ratingRank,
+  }
+}
+
 const dataArr = [
   { label: "우승 확률", value: "pick" },
   { label: "종합 평가 순위", value: "rating" },
@@ -36,18 +48,29 @@ export default function ResultPart({
   candidates: _candidates,
   pickedCandidate,
   comments,
+  isPreview,
+  authorId,
 }: {
   pickedCandidate: TournamentCandidateType
   candidates: TournamentCandidateType[]
   comments: CommentType[]
+  isPreview: boolean
+  authorId: number
 }) {
+  const total = getTotals(_candidates)
   const candidates = _candidates.map((v) => {
     const rating = v.win + v.lose * -0.5 + v.pick * 3
+    const total_match = v.win + v.lose
     return {
       ...v,
       rating,
+      winPercent: ((v.win / total_match) * 100).toFixed(3),
+      pickPercent: ((v.pick / total.pick) * 100).toFixed(3),
+      losePercent: ((v.lose / total_match) * 100).toFixed(3),
     }
-  })
+  }) // memo: total ,candidates uniqueData의 순서 변경을 하지 말아야 함
+  const uniqueData = getSelectedCandidateData(pickedCandidate.number, candidates)
+
   const [sortedStatus, setSortedStatus] = useState<{
     value: "pick" | "rating" | "win"
     desc: boolean
@@ -69,7 +92,6 @@ export default function ResultPart({
     }
   }
 
-  const total = getTotals(candidates)
   const sorted: TournamentCandidateChartType[] = useMemo(() => {
     const target = cloneDeep(candidates)
     switch (sortedStatus.value) {
@@ -100,16 +122,8 @@ export default function ResultPart({
         break
     }
 
-    return target.map((v) => {
-      const total_match = v.win + v.lose
-      return {
-        ...v,
-        win: ((v.win / total_match) * 100).toFixed(3),
-        pick: ((v.pick / total.pick) * 100).toFixed(3),
-        lose: ((v.lose / total_match) * 100).toFixed(3),
-      }
-    })
-  }, [sortedStatus])
+    return target
+  }, [candidates, sortedStatus])
 
   const onClickSort = (value: "pick" | "win" | "rating") => {
     setSortedStatus((obj) => ({ value, desc: obj.value === value ? !obj.desc : true }))
@@ -120,6 +134,21 @@ export default function ResultPart({
   return (
     <div className={cx(style.result)}>
       <div className={cx(style["result-inner"])}>
+        <section className={cx(style["section"])}>
+          <div className={cx(style.title)}>
+            <div className={cx(style.icon)}>
+              <i className={cx("fa-solid", "fa-chart-simple")} />
+            </div>
+            <span>내 선택</span>
+          </div>
+          <Candidate
+            selected={true}
+            uniqueData={uniqueData}
+            candidateLength={candidates.length}
+            index={0}
+            candidate={candidates.find(({ number }) => pickedCandidate.number === number)!} // memo: 이건 확실하다.. 정말로
+          />
+        </section>
         <section className={cx(style["section"])}>
           <div className={cx(style.title)}>
             <div className={cx(style.icon)}>
@@ -148,7 +177,7 @@ export default function ResultPart({
               selected={pickedCandidate.listId === v.listId}
               index={i}
               candidate={v}
-              key={`${v.listId}_${i}`}
+              key={`${v.listId}_${i}_${sortedStatus.value}`}
             />
           ))}
           <ReactPaginate
@@ -173,7 +202,7 @@ export default function ResultPart({
             <span>코멘트</span>
           </div>
           <div className={cx(style["tournament-comment"])}>
-            <CommentPart comments={comments} />
+            <CommentPart isPreview={isPreview} authorId={authorId} comments={comments} />
           </div>
         </section>
       </div>

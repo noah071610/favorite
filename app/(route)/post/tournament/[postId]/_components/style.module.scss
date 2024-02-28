@@ -20,11 +20,11 @@
 
 .content {
   width: $content-width;
-  height: 100%;
   display: flex;
   justify-content: center;
-  height: calc(100vh - 100px - 80px);
+  align-items: center;
   background-color: $gray-soft;
+  height: calc(100vh - 100px - 80px);
   margin-bottom: 50px;
 
   position: relative;
@@ -35,6 +35,15 @@
   &.result {
     overflow: hidden;
     background-color: white;
+  }
+
+  .loading {
+    display: flex;
+    gap: 10px;
+    i {
+      font-size: 30px;
+      color: $pink-soft;
+    }
   }
 }
 

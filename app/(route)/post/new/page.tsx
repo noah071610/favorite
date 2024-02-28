@@ -2,12 +2,11 @@
 
 import { useNewPostStore } from "@/_store/newPost"
 
-import ContestContent from "./_components/@Contest"
-import PollingContent from "./_components/@Polling"
 import InitSection from "./_components/InitSection"
 import RendingSection from "./_components/RendingSection"
 
 import Confirm from "@/_components/Confirm"
+import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import { useMainStore } from "@/_store/main"
 import { useContestStore } from "@/_store/newPost/contest"
 import { usePollingStore } from "@/_store/newPost/polling"
@@ -18,10 +17,23 @@ import { NewPostType } from "@/_types/post/post"
 import { TournamentContentType } from "@/_types/post/tournament"
 import { checkNewPostType } from "@/_utils/post"
 import classNames from "classNames"
+import dynamic from "next/dynamic"
 import { useCallback, useEffect } from "react"
-import TournamentContent from "./_components/@Tournament"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
+
+const PollingContent = dynamic(() => import("./_components/@Polling"), {
+  ssr: true,
+  loading: () => <FavoriteLoading type="full" />,
+})
+const ContestContent = dynamic(() => import("./_components/@Contest"), {
+  ssr: true,
+  loading: () => <FavoriteLoading type="full" />,
+})
+const TournamentContent = dynamic(() => import("./_components/@Tournament"), {
+  ssr: true,
+  loading: () => <FavoriteLoading type="full" />,
+})
 
 const handleBeforeUnload = (event: any, newPost: NewPostType | null, content: any) => {
   if (newPost) {

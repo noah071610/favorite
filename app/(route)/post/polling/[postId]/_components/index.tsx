@@ -5,10 +5,11 @@ import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
 import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
-import { checkVoted } from "@/_hooks/checkVoted"
 import { setParticipate } from "@/_hooks/setParticipate"
+import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "react-toastify"
@@ -18,23 +19,27 @@ import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-const PollingPost = ({ post }: { post: PollingPostType }) => {
+const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
+  const { data: post } = useQuery<PollingPostType>({
+    queryKey: ["post", initialPost.postId],
+    initialData: initialPost,
+  })
+
   const [status, setStatus] = useState<"init" | "result">("init")
   const [selectedCandidate, setSelectedCandidate] = useState<PollingCandidateType | null>(null)
 
   const isPreview = post.format === "preview"
   const isImagesLoaded = usePreloadImages(post.content.candidates.map(({ imageSrc }) => imageSrc))
   const isResultPage = status === "result"
-  const isVoted =
-    !isPreview &&
-    checkVoted({
-      candidates: post.content.candidates,
-      postId: post.postId,
-      resolve: (target) => {
-        setStatus("result")
-        setSelectedCandidate(target)
-      },
-    })
+  const isVoted = useCheckVoted({
+    disable: isPreview,
+    candidates: post.content.candidates,
+    postId: post.postId,
+    resolve: (target) => {
+      setStatus("result")
+      setSelectedCandidate(target)
+    },
+  })
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
@@ -45,7 +50,7 @@ const PollingPost = ({ post }: { post: PollingPostType }) => {
   const candidates = useMemo(() => {
     const target = post.content.candidates ?? []
     return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
-  }, [post, status])
+  }, [isResultPage, post.content.candidates])
 
   const onClickCandidate = (type: "submit" | "select", candidate?: PollingCandidateType) => {
     if (!isResultPage) {
@@ -102,7 +107,11 @@ const PollingPost = ({ post }: { post: PollingPostType }) => {
                   </div>
                   <span>코멘트</span>
                 </div>
-                <CommentPart comments={post.comments} />
+                <CommentPart
+                  isPreview={post.format === "preview"}
+                  authorId={post.user?.userId ?? 1}
+                  comments={post.comments}
+                />
               </div>
             ) : (
               <SelectPart selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />

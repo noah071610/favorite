@@ -9,11 +9,11 @@ export const getData = async (postId: string) => {
 }
 
 const TournamentPostPage = async ({ params: { postId } }: { params: { postId: string } }) => {
-  const post = await getData(postId)
+  const initialPost = await getData(postId)
 
   return (
     <Suspense fallback={<TournamentLoading />}>
-      <TournamentPost post={post} />
+      <TournamentPost initialPost={initialPost} />
     </Suspense>
   )
 }

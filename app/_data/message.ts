@@ -14,4 +14,5 @@ export const successMessage = {
   login: "어서오세요! 👋🏻",
   loginNewPost: "로그인만 하면 끝나요! 다 왔어요! 🚀",
   posting: "포스팅 완료! 🚀",
+  commenting: "댓글을 작성했어요! 🚀",
 } as const

@@ -9,10 +9,11 @@ import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
 import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
-import { checkVoted } from "@/_hooks/checkVoted"
 import { setParticipate } from "@/_hooks/setParticipate"
+import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { TournamentCandidateType } from "@/_types/post/tournament"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { produce } from "immer"
 import { toast } from "react-toastify"
@@ -20,7 +21,12 @@ import Candidate from "./Candidate"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function ContestPost({ post }: { post: ContestPostType }) {
+export default function ContestPost({ initialPost }: { initialPost: ContestPostType }) {
+  const { data: post } = useQuery<ContestPostType>({
+    queryKey: initialPost.format === "preview" ? [] : ["post", initialPost.postId],
+    initialData: initialPost,
+  })
+
   const [status, setStatus] = useState<"init" | "result">("init")
   const [content, setContent] = useState<ContestContentType>(post.content)
   const [selected, setSelected] = useState<string | null>(null)
@@ -28,16 +34,15 @@ export default function ContestPost({ post }: { post: ContestPostType }) {
   const isResultPage = status === "result"
   const isPreview = post.format === "preview"
 
-  const isVoted =
-    !isPreview &&
-    checkVoted({
-      candidates: [content.left, content.right],
-      postId: post.postId,
-      resolve: (target) => {
-        setStatus("result")
-        setSelected(target.listId)
-      },
-    })
+  const isVoted = useCheckVoted({
+    disable: isPreview,
+    candidates: [content.left, content.right],
+    postId: post.postId,
+    resolve: (target) => {
+      setStatus("result")
+      setSelected(target.listId)
+    },
+  })
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
@@ -90,7 +95,11 @@ export default function ContestPost({ post }: { post: ContestPostType }) {
                   <span>코멘트</span>
                 </div>
                 <div className={cx(style["contest-comment"])}>
-                  <CommentPart comments={post.comments} />
+                  <CommentPart
+                    isPreview={post.format === "preview"}
+                    authorId={post.user?.userId ?? 1}
+                    comments={post.comments}
+                  />
                 </div>
               </section>
             )}

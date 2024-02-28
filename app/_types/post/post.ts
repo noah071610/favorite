@@ -54,7 +54,6 @@ export interface PostType extends PostBaseType {
 
 export interface CommentType {
   commentId: number
-  user: UserType
+  user?: UserType
   text: string
-  like: number
 }

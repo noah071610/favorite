@@ -1,5 +1,6 @@
 "use client"
 
+import { chartBackgroundColors } from "@/_data/chart"
 import { UserType } from "@/_types/user"
 import classNames from "classNames"
 import { InfoInput } from "./Input"
@@ -31,8 +32,14 @@ export default function PostInfo({
       </div>
       {!isEdit && user && (
         <div className={cx(style.profile)}>
-          <button className={cx(style["user-image"])}>
-            <img src={user?.userImage} alt={`user_image`} />
+          <button className={cx(style["user-icon"])}>
+            {false ? (
+              <img src={user?.userImage} alt={`user_image`} />
+            ) : (
+              <div style={{ backgroundColor: chartBackgroundColors[1] }} className={cx(style.icon)}>
+                <span>{user?.userName.slice(0, 1)}</span>
+              </div>
+            )}
           </button>
           <div className={cx(style["user-info"])}>
             <span>{user?.userName}</span>

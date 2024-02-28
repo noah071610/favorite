@@ -3,11 +3,14 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 import Candidate from "@/(route)/post/contest/[postId]/_components/Candidate"
+import { setParticipate } from "@/_hooks/setParticipate"
+import { finishTournament } from "@/_queries/post"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import { shuffleArray } from "@/_utils/math"
 import classNames from "classNames"
 import { produce } from "immer"
+import { useParams } from "next/navigation"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -17,24 +20,33 @@ export default function SelectPart({
   setStatus,
   setOriginCandidates,
   round,
+  isPreview,
 }: {
   originCandidates: TournamentCandidateType[]
   setPickedCandidate: (target: TournamentCandidateType) => void
   setStatus: (type: "init" | "result") => void
   setOriginCandidates: Dispatch<SetStateAction<TournamentCandidateType[]>>
   round: number
+  isPreview: boolean
 }) {
+  const { postId } = useParams()
   const [candidates, setCandidates] = useState<TournamentCandidateType[]>(
     (shuffleArray(originCandidates) as TournamentCandidateType[]).slice(0, round)
   )
   const [out, setOut] = useState<boolean[]>(Array.from({ length: round }, () => false))
+  const [data, setData] = useState<{ win: number; lose: number; pick: number }[]>(
+    Array.from({ length: originCandidates.length }, () => ({ win: 0, lose: 0, pick: 0 }))
+  )
   const [curIndex, setCurIndex] = useState(0)
   const [curRound, setCurRound] = useState(round)
-  const [displayNextRound, setDisplayNextRound] = useState(false)
+  const [roundStatus, setRoundStatus] = useState({ pending: false, display: false })
 
-  const swiped = (direction: "left" | "right", target: TournamentCandidateType | ContestCandidateType) => {
+  const [imageLoadedCount, setImageLoadedCount] = useState(0)
+
+  const swiped = async (direction: "left" | "right", target: TournamentCandidateType | ContestCandidateType) => {
     const index = curIndex + direction === "left" ? 0 : 1
     const select = target as TournamentCandidateType
+
     if (curIndex + 2 >= curRound) {
       if (curRound === 2) {
         setOriginCandidates((arr) =>
@@ -43,7 +55,19 @@ export default function SelectPart({
             target.pick = target.pick + 1
           })
         )
+        setData((arr) =>
+          produce(arr, (draft) => {
+            const target = draft[select.number - 1]
+            target.pick = 1
+          })
+        )
         setPickedCandidate(select)
+
+        await finishTournament(postId as string, data)
+
+        if (!isPreview) {
+          setParticipate({ listId: select.listId, postId: postId as string })
+        }
         setTimeout(() => {
           setStatus("result")
         }, 500)
@@ -51,8 +75,9 @@ export default function SelectPart({
       }
 
       setTimeout(() => {
-        setDisplayNextRound(false)
-      }, 500)
+        setRoundStatus({ display: false, pending: false })
+      }, 500) // 토너먼트 라운드가 끝나고 요소 지움
+
       setTimeout(() => {
         setOut((arr) =>
           produce(arr, (draft) => {
@@ -70,11 +95,11 @@ export default function SelectPart({
             obj[v.number] = !out[i]
             return !out[i]
           })
-        )
+        ) // 여기서 요소 길이 변동! 이미지 로딩 시작
 
         setOriginCandidates((arr) =>
           produce(arr, (draft) => {
-            Object.entries(obj).forEach(([num, isWin]) => {
+            Object.entries(obj).forEach(([num, isWin], i) => {
               const target = draft[+num - 1]
               if (isWin) {
                 target.win = target.win + 1
@@ -84,10 +109,25 @@ export default function SelectPart({
             })
           })
         )
-      }, 600)
+        setData((arr) =>
+          produce(arr, (draft) => {
+            Object.entries(obj).forEach(([num, isWin], i) => {
+              const target = draft[+num - 1]
+              if (isWin) {
+                target.win = target.win + 1
+              } else {
+                target.lose = target.lose + 1
+              }
+            })
+          })
+        )
+      }, 600) // 후다닥 작업
+
       setTimeout(() => {
-        setDisplayNextRound(true)
+        setRoundStatus((v) => ({ ...v, pending: true }))
       }, 2500 + 500)
+      // 스와이프 낭비시간 + 애니메이션 시간 후 다음 라운드 ㄱㄱ
+      // ...하기전 잠시 이미지 때문에 펜딩!
     } else {
       setOut((arr) =>
         produce(arr, (draft) => {
@@ -103,12 +143,35 @@ export default function SelectPart({
   useEffect(() => {
     if (typeof round === "number") {
       setTimeout(() => {
-        setDisplayNextRound(true)
+        setRoundStatus((v) => ({ ...v, display: true }))
       }, 2500)
     }
-  }, [round])
+  }, [round]) // memo: 토너먼트 시작시 한 번만 적용
 
-  return displayNextRound ? (
+  useEffect(() => {
+    if (imageLoadedCount !== 0) {
+      if (imageLoadedCount >= candidates.length && roundStatus.pending) {
+        setRoundStatus({ pending: false, display: true })
+      }
+    }
+  }, [candidates.length, imageLoadedCount, roundStatus.pending])
+
+  useEffect(() => {
+    candidates.forEach(({ imageSrc }) => {
+      const image = new Image()
+      image.src = imageSrc
+      image.onload = () => {
+        setImageLoadedCount((prevCount) => prevCount + 1)
+      }
+      image.onerror = () => {
+        setImageLoadedCount((prevCount) => prevCount + 1)
+      }
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candidates]) // memo: 라운드 변경시 이미지 로드
+
+  return roundStatus.display ? (
     candidates.slice(curIndex, curIndex + 2).map((v, cardIndex) => (
       <div key={v.listId} className={cx(style[cardIndex === 0 ? "left" : "right"])}>
         <Candidate candidate={v} swiped={swiped} direction={cardIndex === 0 ? "left" : "right"} />

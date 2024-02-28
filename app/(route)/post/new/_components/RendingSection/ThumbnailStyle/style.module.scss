@@ -13,6 +13,7 @@
   overflow: hidden;
   &.layout {
     display: flex;
+    border: 1px solid $border;
     & > div {
       width: 100%;
       height: 100%;

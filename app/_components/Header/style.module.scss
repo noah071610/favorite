@@ -42,7 +42,9 @@ $side-width: 300px;
       }
     }
     .login {
+      width: 80px;
       background-color: $pink;
+      @include flex();
       &:hover {
         background-color: $pink-hard;
       }

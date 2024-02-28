@@ -9,11 +9,11 @@ export const getData = async (postId: string) => {
 }
 
 const PollingPostPage = async ({ params: { postId } }: { params: { postId: string } }) => {
-  const post = await getData(postId)
+  const initialPost = await getData(postId)
 
   return (
     <Suspense fallback={<PollingLoading />}>
-      <PollingPost post={post} />
+      <PollingPost initialPost={initialPost} />
     </Suspense>
   )
 }

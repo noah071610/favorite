@@ -1,22 +1,20 @@
 import { PostType } from "./post"
 
-interface _TournamentCandidateType {
+export interface TournamentCandidateType {
   listId: string
   imageSrc: string
   title: string
   number: number
-}
-
-export interface TournamentCandidateType extends _TournamentCandidateType {
   win: number
   lose: number
   pick: number
 }
-export interface TournamentCandidateChartType extends _TournamentCandidateType {
-  win: string
-  lose: string
-  pick: string
+
+export interface TournamentCandidateChartType extends TournamentCandidateType {
   rating: number
+  winPercent: string
+  pickPercent: string
+  losePercent: string
 }
 
 export interface TournamentContentType {
