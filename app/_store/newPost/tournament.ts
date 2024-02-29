@@ -21,13 +21,6 @@ type Actions = {
 export const useTournamentStore = create<States & Actions>((set) => ({
   tournamentContent: {
     candidates: [],
-    // listId: string
-    // imageSrc: string
-    // title: string
-    // number: number
-    // win: number
-    // lose: number
-    // pick: number
   },
   addCandidate: (payload) =>
     set((origin) =>

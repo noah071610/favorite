@@ -11,6 +11,8 @@ const cx = classNames.bind(style)
 
 const participateShowNumber = 8
 
+// todo: 이미지 어레이 그거 타입 지우기
+
 export default function PostCard({
   postCard: {
     description,
@@ -50,6 +52,7 @@ export default function PostCard({
             )}
           </div>
         </Link>
+        <div></div>
         {participateImages.length > 0 && (
           <div className={cx(style.participate)}>
             {participateImages.map((image, i) => (

@@ -24,6 +24,18 @@ export async function finishTournament(postId: string, data: { win: number; lose
   return response.data
 }
 
+export async function finishContest(postId: string, direction: "left" | "right") {
+  const response = await API.patch(`/post/contest?postId=${postId}&direction=${direction}`)
+
+  return response.data
+}
+
+export async function finishPolling(postId: string, listId: string) {
+  const response = await API.patch(`/post/polling?postId=${postId}&listId=${listId}`)
+
+  return response.data
+}
+
 export async function likePost(userId?: number, postId?: string) {
   const response = await API.patch(`/post/like?postId=${postId}&userId=${userId}`)
 

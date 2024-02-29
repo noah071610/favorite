@@ -8,7 +8,6 @@ import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { useMainStore } from "@/_store/main"
-import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { toast } from "react-toastify"
 import ResultPart from "./ResultPart"
@@ -29,15 +28,13 @@ const getRound = (totalParticipants: number | undefined) => {
 }
 
 export default function TournamentPost({ initialPost }: { initialPost: TournamentPostType }) {
-  const { data: post } = useQuery<TournamentPostType>({
-    queryKey: ["post", initialPost.postId],
-    initialData: initialPost,
-  })
+  const [post, setPost] = useState<TournamentPostType>(initialPost)
+  const originCandidates: TournamentCandidateType[] = post.content.candidates
 
   const [round, setRound] = useState<number | null>(null)
   const { modalStatus, setModal } = useMainStore()
   const [pickedCandidate, setPickedCandidate] = useState<TournamentCandidateType | null>(null)
-  const [originCandidates, setOriginCandidates] = useState<TournamentCandidateType[]>(post.content.candidates)
+
   const [status, setStatus] = useState<"init" | "result">("init")
   const isResultPage = status === "result"
   const isPreview = post.format === "preview"
@@ -78,13 +75,14 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
               isPreview={isPreview}
               pickedCandidate={pickedCandidate}
               comments={post.comments}
+              setPost={setPost}
               candidates={originCandidates}
             />
           ) : (
             <>
               {round ? (
                 <SelectPart
-                  setOriginCandidates={setOriginCandidates}
+                  setPost={setPost}
                   setStatus={setStatus}
                   setPickedCandidate={setPickedCandidate}
                   round={round}

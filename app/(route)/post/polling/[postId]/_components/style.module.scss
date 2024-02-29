@@ -76,30 +76,34 @@
       }
     }
   }
-}
 
-.polling-post.result {
-  padding: 30px 0 100px 0;
-
-  .polling-post-inner {
-    height: 100%;
+  .comment-wrapper {
+    padding: 0 7px;
   }
 
-  .left {
-    overflow: visible;
-  }
+  &.result {
+    padding: 30px 0 100px 0;
 
-  .content {
-    height: 100%;
-    min-height: calc(100vh - 80px - 60px);
-    &.layout-text {
-      .left {
-        width: 400px;
-        padding-right: 12px;
-        border-right: 1px solid $border;
-      }
-      .right {
-        display: block;
+    .polling-post-inner {
+      height: 100%;
+    }
+
+    .left {
+      overflow: visible;
+    }
+
+    .content {
+      height: 100%;
+      min-height: calc(100vh - 80px - 60px);
+      &.layout-text {
+        .left {
+          width: 400px;
+          padding-right: 12px;
+          border-right: 1px solid $border;
+        }
+        .right {
+          display: block;
+        }
       }
     }
   }

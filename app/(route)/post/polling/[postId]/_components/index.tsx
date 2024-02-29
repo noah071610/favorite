@@ -5,11 +5,11 @@ import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
 import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
-import { setParticipate } from "@/_hooks/setParticipate"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
+import { setParticipate } from "@/_hooks/useSetParticipate"
+import { finishPolling } from "@/_queries/post"
 import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
-import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "react-toastify"
@@ -20,10 +20,7 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
-  const { data: post } = useQuery<PollingPostType>({
-    queryKey: ["post", initialPost.postId],
-    initialData: initialPost,
-  })
+  const [post, setPost] = useState<PollingPostType>(initialPost)
 
   const [status, setStatus] = useState<"init" | "result">("init")
   const [selectedCandidate, setSelectedCandidate] = useState<PollingCandidateType | null>(null)
@@ -48,14 +45,15 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
   }, [isVoted, isImagesLoaded])
 
   const candidates = useMemo(() => {
-    const target = post.content.candidates ?? []
+    const target = post.content.candidates
     return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
-  }, [isResultPage, post.content.candidates])
+  }, [isResultPage, post])
 
-  const onClickCandidate = (type: "submit" | "select", candidate?: PollingCandidateType) => {
+  const onClickCandidate = async (type: "submit" | "select", candidate?: PollingCandidateType) => {
     if (!isResultPage) {
       if (type === "submit" && selectedCandidate) {
         if (!isPreview) {
+          await finishPolling(post.postId, selectedCandidate.listId)
           setParticipate({ listId: selectedCandidate.listId, postId: post.postId })
         }
         setStatus("result")
@@ -107,11 +105,14 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
                   </div>
                   <span>코멘트</span>
                 </div>
-                <CommentPart
-                  isPreview={post.format === "preview"}
-                  authorId={post.user?.userId ?? 1}
-                  comments={post.comments}
-                />
+                <div className={cx(style["comment-wrapper"])}>
+                  <CommentPart
+                    setPost={setPost}
+                    isPreview={post.format === "preview"}
+                    authorId={post.user?.userId ?? 1}
+                    comments={post.comments}
+                  />
+                </div>
               </div>
             ) : (
               <SelectPart selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />

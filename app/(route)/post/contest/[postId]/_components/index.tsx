@@ -9,11 +9,11 @@ import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
 import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
-import { setParticipate } from "@/_hooks/setParticipate"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
+import { setParticipate } from "@/_hooks/useSetParticipate"
+import { finishContest } from "@/_queries/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
-import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { produce } from "immer"
 import { toast } from "react-toastify"
@@ -22,13 +22,10 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function ContestPost({ initialPost }: { initialPost: ContestPostType }) {
-  const { data: post } = useQuery<ContestPostType>({
-    queryKey: initialPost.format === "preview" ? [] : ["post", initialPost.postId],
-    initialData: initialPost,
-  })
+  const [post, setPost] = useState<ContestPostType>(initialPost)
+  const content: ContestContentType = post.content
 
   const [status, setStatus] = useState<"init" | "result">("init")
-  const [content, setContent] = useState<ContestContentType>(post.content)
   const [selected, setSelected] = useState<string | null>(null)
   const isImagesLoaded = usePreloadImages(content ? [content.left.imageSrc, content.right.imageSrc] : [])
   const isResultPage = status === "result"
@@ -50,16 +47,15 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
     }
   }, [isVoted, isImagesLoaded])
 
-  const swiped = (direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
-    setContent((content) => {
+  const swiped = async (direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
+    setPost((content) => {
       return produce(content, (draft) => {
-        if (draft) {
-          // todo: api 요청시 옵티미스틱 유아이로
-          draft[direction].count += 1
-        }
+        draft.content[direction].count += 1
       })
     })
+
     if (!isPreview) {
+      await finishContest(post.postId, direction)
       setParticipate({ listId: content[direction].listId, postId: post.postId })
     }
     setSelected(target.listId)
@@ -96,6 +92,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
                 </div>
                 <div className={cx(style["contest-comment"])}>
                   <CommentPart
+                    setPost={setPost}
                     isPreview={post.format === "preview"}
                     authorId={post.user?.userId ?? 1}
                     comments={post.comments}

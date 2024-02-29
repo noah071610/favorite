@@ -4,15 +4,15 @@ import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
 import { commenting } from "@/_queries/post"
 import { getUser } from "@/_queries/user"
-import { CommentType, PostType } from "@/_types/post/post"
+import { CommentType } from "@/_types/post/post"
 import { UserQueryType, UserType } from "@/_types/user"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import dayjs from "dayjs"
 import "dayjs/locale/ko" // 한국어 로케일 설정
 import { produce } from "immer"
 import { useParams } from "next/navigation"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 import { toast } from "react-toastify"
 import style from "./style.module.scss"
@@ -38,53 +38,50 @@ function Comment({ user, text, authorId }: { user?: UserType; text: string; auth
   )
 }
 
-function Commenting({ authorId, isPreview }: { authorId: number; isPreview: boolean }) {
-  const queryClient = useQueryClient()
+function Commenting({
+  authorId,
+  isPreview,
+  setPost,
+}: {
+  authorId: number
+  isPreview: boolean
+  setPost: Dispatch<SetStateAction<{ [key: string]: any; comments: CommentType[] }>>
+}) {
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: ["user"],
     queryFn: getUser,
   })
   const user = userData?.user
   const { postId } = useParams()
-  const { mutate } = useMutation({
-    mutationKey: ["post", postId],
-    mutationFn: ({ userId, postId, text }: { userId: number; postId: string; text: string }) =>
-      commenting({ userId, postId, text }),
-    onMutate: async (comment) => {
-      await queryClient.cancelQueries({ queryKey: ["post", postId] })
-
-      await queryClient.setQueryData(["post", postId], (oldData: PostType) =>
-        produce(oldData, (draft) => {
-          draft.comments.unshift({
-            user: {
-              userId: 1,
-              userName: "temp",
-              userImage: "??",
-            },
-            commentId: oldData.comments.length,
-            text: comment.text,
-          })
-        })
-      )
-    },
-    onSuccess: () => {
-      toast.success(successMessage["commenting"], successToastOptions("commenting"))
-    },
-  })
 
   const [isFocused, setIsFocused] = useState(false)
   const [displayBtn, setDisplayBtn] = useState(false)
   const [text, setText] = useState("")
   const handleChange = (event: any) => {
-    setText(event.target.value) // 입력된 값을 상태 변수에 업데이트합니다.
+    setText(event.target.value)
   }
 
-  const onClickCommenting = () => {
+  const onClickCommenting = async () => {
     if (!!text.trim() && !isPreview) {
-      mutate({ userId: user?.userId ?? 1, postId: postId as string, text })
-      setText("")
-      setIsFocused(false)
-      setDisplayBtn(false)
+      await commenting({ userId: user?.userId ? user.userId : 1, postId: postId as string, text }).then(() => {
+        setPost((oldData) =>
+          produce(oldData, (draft) => {
+            draft.comments.unshift({
+              user: {
+                userId: user?.userId ?? 1,
+                userName: user?.userName ?? "익명",
+                userImage: user?.userImage ?? "",
+              },
+              commentId: oldData.comments.length,
+              text,
+            })
+          })
+        )
+        toast.success(successMessage["commenting"], successToastOptions("commenting"))
+        setText("")
+        setIsFocused(false)
+        setDisplayBtn(false)
+      })
     }
   }
 
@@ -135,14 +132,16 @@ export default function CommentPart({
   authorId,
   comments,
   isPreview,
+  setPost,
 }: {
   authorId: number
   comments: CommentType[]
   isPreview: boolean
+  setPost: Dispatch<SetStateAction<any>>
 }) {
   return (
     <div className={cx(style["comment-part"])}>
-      <Commenting authorId={authorId} isPreview={isPreview} />
+      <Commenting setPost={setPost} authorId={authorId} isPreview={isPreview} />
       <section className={cx(style["comment-list"])}>
         {comments.map(({ text, user: commentUser }, index) => (
           <Comment authorId={authorId} text={text} key={`comment_${index}`} user={commentUser} />

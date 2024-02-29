@@ -3,10 +3,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 import Candidate from "@/(route)/post/contest/[postId]/_components/Candidate"
-import { setParticipate } from "@/_hooks/setParticipate"
+import { setParticipate } from "@/_hooks/useSetParticipate"
 import { finishTournament } from "@/_queries/post"
 import { ContestCandidateType } from "@/_types/post/contest"
-import { TournamentCandidateType } from "@/_types/post/tournament"
+import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { shuffleArray } from "@/_utils/math"
 import classNames from "classNames"
 import { produce } from "immer"
@@ -18,14 +18,14 @@ export default function SelectPart({
   originCandidates,
   setPickedCandidate,
   setStatus,
-  setOriginCandidates,
+  setPost,
   round,
   isPreview,
 }: {
   originCandidates: TournamentCandidateType[]
   setPickedCandidate: (target: TournamentCandidateType) => void
   setStatus: (type: "init" | "result") => void
-  setOriginCandidates: Dispatch<SetStateAction<TournamentCandidateType[]>>
+  setPost: Dispatch<SetStateAction<TournamentPostType>>
   round: number
   isPreview: boolean
 }) {
@@ -49,9 +49,9 @@ export default function SelectPart({
 
     if (curIndex + 2 >= curRound) {
       if (curRound === 2) {
-        setOriginCandidates((arr) =>
-          produce(arr, (draft) => {
-            const target = draft[select.number - 1]
+        setPost((post) =>
+          produce(post, (draft) => {
+            const target = draft.content.candidates[select.number - 1]
             target.pick = target.pick + 1
           })
         )
@@ -63,9 +63,8 @@ export default function SelectPart({
         )
         setPickedCandidate(select)
 
-        await finishTournament(postId as string, data)
-
         if (!isPreview) {
+          await finishTournament(postId as string, data)
           setParticipate({ listId: select.listId, postId: postId as string })
         }
         setTimeout(() => {
@@ -97,10 +96,10 @@ export default function SelectPart({
           })
         ) // 여기서 요소 길이 변동! 이미지 로딩 시작
 
-        setOriginCandidates((arr) =>
-          produce(arr, (draft) => {
-            Object.entries(obj).forEach(([num, isWin], i) => {
-              const target = draft[+num - 1]
+        setPost((post) =>
+          produce(post, (draft) => {
+            Object.entries(obj).forEach(([num, isWin]) => {
+              const target = draft.content.candidates[+num - 1]
               if (isWin) {
                 target.win = target.win + 1
               } else {
