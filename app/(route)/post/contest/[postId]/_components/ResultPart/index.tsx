@@ -1,6 +1,6 @@
 "use client"
 
-import { ContestContentType } from "@/_types/post/contest"
+import { ContestCandidateType } from "@/_types/post/contest"
 import { calculateVoteRatio } from "@/_utils/math"
 import CountUp from "react-countup"
 
@@ -9,16 +9,16 @@ import style from "../candidate.module.scss"
 const cx = classNames.bind(style)
 
 export default function ResultPart({
-  content,
+  candidates,
   direction,
   selected,
 }: {
-  content: ContestContentType
+  candidates: ContestCandidateType[]
   direction: "left" | "right"
   selected: string | null
 }) {
-  const candidate = content[direction]
-  const ratio = calculateVoteRatio(content.left.count, content.right.count)[direction]
+  const candidate = candidates[direction === "left" ? 0 : 1]
+  const ratio = calculateVoteRatio(candidates[0].pick, candidates[1].pick)[direction]
 
   return (
     <div
@@ -56,7 +56,7 @@ export default function ResultPart({
             <h1 className={cx(style.title)}>{candidate?.title}</h1>
             <p className={cx(style.count)}>
               <span>
-                <CountUp prefix="(" suffix="표)" duration={4} end={candidate.count} />
+                <CountUp prefix="(" suffix="표)" duration={4} end={candidate.pick} />
               </span>
               {" / "}
               <span>

@@ -5,12 +5,12 @@ import { scaleUpAnimation } from "@/_styles/animation"
 import TextareaAutosize from "react-textarea-autosize"
 
 import { uploadImage } from "@/_queries/newPost"
-import { usePollingStore } from "@/_store/newPost/polling"
 import React, { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import Resizer from "react-image-file-resizer"
 
 import style from "@/(route)/post/polling/[postId]/_components/SelectPart/style.module.scss"
+import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import _style from "./style.module.scss"
 const cx = classNames.bind(style, selectPartStyle)
@@ -21,16 +21,12 @@ const resizeFile = (file: File) =>
   })
 
 const CandidateInput = React.memo(() => {
-  const {
-    selectedCandidateIndex,
-    setPollingCandidate,
-    pollingContent: { candidates },
-  } = usePollingStore()
+  const { selectedCandidateIndex, setCandidate, candidates, content } = useNewPostStore()
 
   const onChangeInput = (e: any, type: "title" | "description") => {
     if (selectedCandidateIndex > -1) {
       if (type === "title" && e.target.value.length >= 30) return
-      setPollingCandidate({ index: selectedCandidateIndex, payload: e.target.value, type })
+      setCandidate({ index: selectedCandidateIndex, payload: e.target.value, type })
     }
   }
 
@@ -59,11 +55,7 @@ const CandidateInput = React.memo(() => {
 CandidateInput.displayName = "CandidateInput"
 
 export default function SelectPart() {
-  const {
-    selectedCandidateIndex,
-    setPollingCandidate,
-    pollingContent: { layout, candidates },
-  } = usePollingStore()
+  const { selectedCandidateIndex, candidates, setCandidate, content } = useNewPostStore()
   const candidate = candidates[selectedCandidateIndex]
 
   const onDrop = useCallback(
@@ -76,12 +68,12 @@ export default function SelectPart() {
 
           const { msg, imageSrc } = await uploadImage(formData)
           if (msg === "ok") {
-            setPollingCandidate({ index: selectedCandidateIndex, payload: imageSrc, type: "imageSrc" })
+            setCandidate({ index: selectedCandidateIndex, payload: imageSrc, type: "imageSrc" })
           }
         })
       }
     },
-    [selectedCandidateIndex, setPollingCandidate]
+    [selectedCandidateIndex, setCandidate]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -96,7 +88,7 @@ export default function SelectPart() {
     <>
       {candidate ? (
         <div key={candidate.listId} className={cx(style["select-part"])}>
-          {layout !== "text" && (
+          {content.layout !== "text" && (
             <div
               style={{
                 background: `url('${candidate.imageSrc}') center / cover`,

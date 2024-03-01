@@ -9,8 +9,7 @@ import { nanoid } from "nanoid"
 
 import style from "@/(route)/post/polling/[postId]/_components/style.module.scss"
 import PostInfo from "@/_components/PostInfo"
-import { usePollingStore } from "@/_store/newPost/polling"
-import { PollingLayoutType } from "@/_types/post/polling"
+import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
 import classNames from "classNames"
 import { useCallback } from "react"
 import Candidate from "./Candidate"
@@ -27,11 +26,11 @@ const cx = classNames.bind(style)
 
 const ChartDescription = () => {
   const {
-    setPollingContent,
-    pollingContent: { chartDescription },
-  } = usePollingStore()
+    content: { resultDescription },
+    setContent,
+  } = useNewPostStore()
   const onChangeDescription = (e: any) => {
-    setPollingContent({ type: "chartDescription", payload: e.target.value })
+    setContent({ type: "resultDescription", payload: e.target.value })
   }
   return (
     <div className={cx(_style.styler)}>
@@ -40,7 +39,7 @@ const ChartDescription = () => {
         <TextareaAutosize
           placeholder="투표 결과 설명 입력"
           className={cx(style["description-input"])}
-          value={chartDescription ?? ""}
+          value={resultDescription ?? ""}
           onChange={onChangeDescription}
           maxLength={180}
         />
@@ -50,13 +49,7 @@ const ChartDescription = () => {
 }
 
 export default function PollingContent() {
-  const { newPost, newPostStatus } = useNewPostStore()
-  const {
-    setPollingContent,
-    pollingContent: { candidates, layout },
-    moveCandidate,
-    addCandidate,
-  } = usePollingStore()
+  const { newPost, content, candidates, moveCandidate, setContent, newPostStatus, addCandidate } = useNewPostStore()
 
   const createPollingCandidate = useCallback(() => {
     addCandidate({
@@ -66,9 +59,9 @@ export default function PollingContent() {
         title: "",
         imageSrc: "",
         description: "",
-        count: 0,
+        pick: 0,
         number: candidates.length + 1,
-      },
+      } as PollingCandidateType,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidates.length])
@@ -82,90 +75,87 @@ export default function PollingContent() {
   }
 
   const onChangeCandidateLayout = (style: PollingLayoutType) => {
-    setPollingContent({ type: "layout", payload: style })
+    setContent({ type: "layout", payload: style })
   }
 
   return (
-    newPost && (
-      <>
-        {/* CANDIDATE LAYOUT FOR EDIT SECTION */}
-        <div className={cx(_style.styler)}>
-          <section className={cx(_style["styler-section"])}>
-            <h1>후보 스타일 변경</h1>
-            <div className={cx(_style.list)}>
-              {selectorTypes.map(({ value, icons, label }) => (
-                <button
-                  key={value}
-                  onClick={() => onChangeCandidateLayout(value as PollingLayoutType)}
-                  className={cx(_style.card, { [_style.active]: layout === value })}
+    <>
+      {/* CANDIDATE LAYOUT FOR EDIT SECTION */}
+      <div className={cx(_style.styler)}>
+        <section className={cx(_style["styler-section"])}>
+          <h1>후보 스타일 변경</h1>
+          <div className={cx(_style.list)}>
+            {selectorTypes.map(({ value, icons, label }) => (
+              <button
+                key={value}
+                onClick={() => onChangeCandidateLayout(value as PollingLayoutType)}
+                className={cx(_style.card, { [_style.active]: content.layout === value })}
+              >
+                <div className={cx(_style["icon-wrapper"])}>
+                  {icons.map((icon, index) => (
+                    <i key={index} className={cx("fa-solid", icon, _style[icon])} />
+                  ))}
+                </div>
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+      <div className={cx(style["polling-post"])}>
+        <div className={cx(style["polling-post-inner"])}>
+          <PostInfo title={newPost.title} description={newPost.description} isEdit={true} />
+          <div className={cx(style.content)}>
+            <div className={cx(style.left)}>
+              <ul className={cx(style["candidate-list"])}>
+                <div
+                  style={{
+                    animation: candidates.length === 0 ? "none" : _style["no-candidate-disappear"] + " 500ms forwards",
+                  }}
+                  className={cx(_style["no-candidate"])}
                 >
-                  <div className={cx(_style["icon-wrapper"])}>
-                    {icons.map((icon, index) => (
-                      <i key={index} className={cx("fa-solid", icon, _style[icon])} />
-                    ))}
+                  <span>후보가 없어요</span>
+                </div>
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="candidate-drop-zone">
+                    {(provided) => (
+                      <div className={cx("candidate-drop-zone")} {...provided.droppableProps} ref={provided.innerRef}>
+                        <ul className={cx(style["candidate-list"])}>
+                          {candidates.map((candidate, i) => (
+                            <Draggable index={i} key={candidate.listId} draggableId={candidate.listId}>
+                              {(draggableProvided) => (
+                                <div
+                                  ref={draggableProvided.innerRef}
+                                  {...draggableProvided.dragHandleProps}
+                                  {...draggableProvided.draggableProps}
+                                >
+                                  <Candidate targetIndex={i} candidate={candidate} />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </ul>
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+                {newPostStatus === "edit" && (
+                  <div className={cx(_style["add-candidate-btn"])}>
+                    <button onClick={createPollingCandidate}>
+                      <i className={cx("fa-solid", "fa-plus")} />
+                    </button>
                   </div>
-                  <span>{label}</span>
-                </button>
-              ))}
+                )}
+              </ul>
             </div>
-          </section>
-        </div>
-        <div className={cx(style["polling-post"])}>
-          <div className={cx(style["polling-post-inner"])}>
-            <PostInfo title={newPost.title} description={newPost.description} isEdit={true} />
-            <div className={cx(style.content)}>
-              <div className={cx(style.left)}>
-                <ul className={cx(style["candidate-list"])}>
-                  <div
-                    style={{
-                      animation:
-                        candidates.length === 0 ? "none" : _style["no-candidate-disappear"] + " 500ms forwards",
-                    }}
-                    className={cx(_style["no-candidate"])}
-                  >
-                    <span>후보가 없어요</span>
-                  </div>
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="candidate-drop-zone">
-                      {(provided) => (
-                        <div className={cx("candidate-drop-zone")} {...provided.droppableProps} ref={provided.innerRef}>
-                          <ul className={cx(style["candidate-list"])}>
-                            {candidates.map((candidate, i) => (
-                              <Draggable index={i} key={candidate.listId} draggableId={candidate.listId}>
-                                {(draggableProvided) => (
-                                  <div
-                                    ref={draggableProvided.innerRef}
-                                    {...draggableProvided.dragHandleProps}
-                                    {...draggableProvided.draggableProps}
-                                  >
-                                    <Candidate targetIndex={i} candidate={candidate} />
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))}
-                            {provided.placeholder}
-                          </ul>
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
-                  {newPostStatus === "edit" && (
-                    <div className={cx(_style["add-candidate-btn"])}>
-                      <button onClick={createPollingCandidate}>
-                        <i className={cx("fa-solid", "fa-plus")} />
-                      </button>
-                    </div>
-                  )}
-                </ul>
-              </div>
-              <div className={cx(style.right)}>
-                <SelectPart />
-              </div>
+            <div className={cx(style.right)}>
+              <SelectPart />
             </div>
           </div>
         </div>
-        <ChartDescription />
-      </>
-    )
+      </div>
+      <ChartDescription />
+    </>
   )
 }

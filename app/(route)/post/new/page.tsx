@@ -1,6 +1,6 @@
 "use client"
 
-import { useNewPostStore } from "@/_store/newPost"
+import { ThumbnailSettingType, useNewPostStore } from "@/_store/newPost"
 
 import InitSection from "./_components/InitSection"
 import RendingSection from "./_components/RendingSection"
@@ -8,14 +8,7 @@ import RendingSection from "./_components/RendingSection"
 import Confirm from "@/_components/Confirm"
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import { useMainStore } from "@/_store/main"
-import { useContestStore } from "@/_store/newPost/contest"
-import { usePollingStore } from "@/_store/newPost/polling"
-import { useTournamentStore } from "@/_store/newPost/tournament"
-import { ContestContentType } from "@/_types/post/contest"
-import { PollingContentType } from "@/_types/post/polling"
 import { NewPostType } from "@/_types/post/post"
-import { TournamentContentType } from "@/_types/post/tournament"
-import { checkNewPostType } from "@/_utils/post"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect } from "react"
@@ -35,84 +28,70 @@ const TournamentContent = dynamic(() => import("./_components/@Tournament"), {
   loading: () => <FavoriteLoading type="full" />,
 })
 
-const handleBeforeUnload = (event: any, newPost: NewPostType | null, content: any) => {
-  if (newPost) {
-    localStorage.setItem("favorite_save_data", JSON.stringify({ ...newPost, content }))
-    event.returnValue = "Are you sure you want to leave?"
-  }
+const handleBeforeUnload = (
+  event: any,
+  newPost: NewPostType,
+  content: {
+    [key: string]: any
+  },
+  candidates: {
+    [key: string]: any
+  },
+  thumbnail: ThumbnailSettingType
+) => {
+  localStorage.setItem("favorite_save_data", JSON.stringify({ newPost, content, candidates, thumbnail }))
+  event.returnValue = "Are you sure you want to leave?"
 }
 
 export default function NewPostPage() {
-  const { newPost, newPostStatus, createNewPost, clearNewPost, setStatus } = useNewPostStore()
-  const { clearPollingContent, loadPollingContent, pollingContent } = usePollingStore()
-  const { clearContestContent, loadContestContent, contestContent } = useContestStore()
-  const { clearTournamentContent, loadTournamentContent, tournamentContent } = useTournamentStore()
+  const {
+    newPost,
+    newPostStatus,
+    content,
+    isEditOn,
+    setIsEditOn,
+    candidates,
+    thumbnail,
+    loadNewPost,
+    clearNewPost,
+    setStatus,
+  } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
 
   useEffect(() => {
-    const content = () => {
-      switch (newPost?.type) {
-        case "polling":
-          return pollingContent
-        case "contest":
-          return contestContent
-        case "tournament":
-          return tournamentContent
-        default:
-          return "{}"
-      }
-    }
-    window.addEventListener("popstate", (e) => handleBeforeUnload(e, newPost, content()))
-    window.addEventListener("beforeunload", (e) => handleBeforeUnload(e, newPost, content()))
+    window.addEventListener("popstate", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
+    window.addEventListener("beforeunload", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
 
     return () => {
-      window.removeEventListener("beforeunload", (e) => handleBeforeUnload(e, newPost, content()))
-      window.removeEventListener("popstate", (e) => handleBeforeUnload(e, newPost, content()))
+      window.removeEventListener("beforeunload", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
+      window.removeEventListener("popstate", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
     }
-  }, [contestContent, newPost, pollingContent, tournamentContent])
+  }, [newPost, content, candidates, thumbnail])
 
   useEffect(() => {
-    if (!newPost) {
+    if (!isEditOn) {
       const _item = localStorage.getItem("favorite_save_data")
       if (_item) {
         const item = JSON.parse(_item)
+        if (!["newPost", "content", "candidates", "thumbnail"].every((v) => item[v]))
+          return localStorage.removeItem("favorite_save_data")
 
-        if (checkNewPostType(item)) {
-          setModal("newPostLoad")
-        } else {
-          localStorage.removeItem("favorite_save_data")
-        }
+        setModal("newPostLoad")
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isEditOn])
 
   const onClickConfirm = useCallback(
     (isOk: boolean) => {
       if (isOk) {
         const item = localStorage.getItem("favorite_save_data")
-        const { content, ..._newPost } = JSON.parse(item ?? "")
-        createNewPost({ ..._newPost })
-        switch (_newPost?.type) {
-          case "polling":
-            loadPollingContent(content as PollingContentType)
-            break
-          case "contest":
-            loadContestContent(content as ContestContentType)
-            break
-          case "tournament":
-            loadTournamentContent(content as TournamentContentType)
-            break
-          default:
-            break
-        }
+        const newPostFromLocalStorage = JSON.parse(item ?? "")
+        loadNewPost(newPostFromLocalStorage)
+        setIsEditOn(true)
         setStatus("edit")
       } else {
         localStorage.removeItem("favorite_save_data")
-        clearNewPost()
-        clearContestContent()
-        clearPollingContent()
-        clearTournamentContent()
+        clearNewPost("all")
       }
       setModal("none")
     },

@@ -9,6 +9,16 @@ export interface TournamentCandidateType {
   lose: number
   pick: number
 }
+export type TournamentCandidateKeyType = keyof TournamentCandidateType
+export const tournamentCandidateKeys: TournamentCandidateKeyType[] = [
+  "listId",
+  "imageSrc",
+  "title",
+  "pick",
+  "win",
+  "lose",
+  "number",
+]
 
 export interface TournamentCandidateChartType extends TournamentCandidateType {
   rating: number

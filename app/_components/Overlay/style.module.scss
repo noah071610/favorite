@@ -3,22 +3,74 @@
 @keyframes overlay_animation {
   from {
     opacity: 0;
-    z-index: 100;
+    @include z-index(overlay);
   }
 
   to {
     opacity: 1;
-    z-index: 100;
+    @include z-index(overlay);
   }
 }
 @keyframes overlay_animation_rollback {
   from {
     opacity: 1;
-    z-index: 100;
+    @include z-index(overlay);
   }
 
   99% {
-    z-index: 100;
+    @include z-index(overlay);
+  }
+  to {
+    z-index: -1;
+    opacity: 0;
+  }
+}
+
+@keyframes search_overlay_animation {
+  from {
+    opacity: 0;
+    @include z-index(overlay-search);
+  }
+
+  to {
+    opacity: 1;
+    @include z-index(overlay-search);
+  }
+}
+@keyframes search_overlay_animation_rollback {
+  from {
+    opacity: 1;
+    @include z-index(overlay-search);
+  }
+
+  99% {
+    @include z-index(overlay-search);
+  }
+  to {
+    z-index: -1;
+    opacity: 0;
+  }
+}
+
+@keyframes aside_overlay_animation {
+  from {
+    opacity: 0;
+    @include z-index(overlay-aside);
+  }
+
+  to {
+    opacity: 1;
+    @include z-index(overlay-aside);
+  }
+}
+@keyframes aside_overlay_animation_rollback {
+  from {
+    opacity: 1;
+    @include z-index(overlay-aside);
+  }
+
+  99% {
+    @include z-index(overlay-aside);
   }
   to {
     z-index: -1;
@@ -33,5 +85,4 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
-  z-index: -1;
 }

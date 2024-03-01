@@ -12,7 +12,7 @@
 .confirm {
   @include center();
   width: 400px;
-  z-index: 1000;
+  @include z-index(modal);
   .inner {
     background: rgb(255, 255, 255);
     background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%);

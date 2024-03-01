@@ -1,22 +1,22 @@
 "use client"
 
 import style from "@/(route)/post/polling/[postId]/_components/Candidate/style.module.scss"
-import { usePollingStore } from "@/_store/newPost/polling"
-import { PollingCandidateType } from "@/_types/post/polling"
+import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
 import _style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-function Candidate({ candidate, targetIndex }: { candidate: PollingCandidateType; targetIndex: number }) {
+function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any }; targetIndex: number }) {
   const { description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const {
     selectedCandidateIndex,
     setSelectedCandidateIndex,
-    setPollingCandidate,
-    pollingContent: { layout },
-  } = usePollingStore()
+    deleteCandidate,
+    setContent,
+    content: { layout },
+  } = useNewPostStore()
 
   const onClickSelect = (e: any) => {
     if (!e.target.className.includes("delete-")) {
@@ -29,10 +29,10 @@ function Candidate({ candidate, targetIndex }: { candidate: PollingCandidateType
   useEffect(() => {
     if (candidateStatus === "delete") {
       setTimeout(() => {
-        setPollingCandidate({ index: targetIndex, payload: "delete", type: "delete" })
+        deleteCandidate({ index: targetIndex })
       }, 480)
     }
-  }, [candidateStatus, listId, setPollingCandidate, targetIndex])
+  }, [candidateStatus, listId, setContent, targetIndex])
 
   useEffect(() => {
     setTimeout(() => {

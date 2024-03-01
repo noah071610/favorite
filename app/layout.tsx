@@ -7,6 +7,7 @@ import OverlayInjector from "./_hooks/OverlayInjector"
 import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
 
 import "react-toastify/dist/ReactToastify.css"
+import Aside from "./_components/Aside"
 
 const pretendard = localFont({
   src: [
@@ -53,6 +54,7 @@ export default async function RootLayout({
         <body>
           <ReactQueryProvider>
             <Header />
+            <Aside />
             <main>{children}</main>
             <OverlayInjector />
             <ToastContainer />

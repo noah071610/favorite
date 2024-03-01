@@ -6,6 +6,18 @@
   gap: 20px;
 }
 
+.no-layout {
+  height: 150px;
+  border-radius: 15px;
+  border: 1px solid $border;
+  @include flex;
+  background-color: $gray-soft;
+  span {
+    color: $pink;
+    font-size: 13px;
+  }
+}
+
 .thumbnail {
   height: 150px;
   position: relative;
@@ -53,7 +65,7 @@
 .thumbnail-selector {
   display: flex;
   gap: 15px;
-  button {
+  .btn {
     .preview-icon {
       width: 120px;
       height: 120px;
@@ -77,6 +89,56 @@
       i,
       span {
         color: $pink-hard;
+      }
+    }
+  }
+}
+
+.layout-customize {
+  margin-top: 15px;
+  .slice {
+    @include flex;
+    gap: 15px;
+    button {
+      display: inline-block;
+      @include border();
+      border-radius: 5px;
+      padding: 5px 8px;
+      font-size: 11px;
+      color: $black-soft;
+      &:hover {
+        border-color: $pink-hard;
+        color: $pink-hard;
+      }
+      &:disabled {
+        border-color: $gray-hard;
+        color: $gray-hard;
+        background-color: $border;
+        cursor: default;
+      }
+    }
+    span {
+      font-size: 14px;
+      color: $black-soft;
+    }
+  }
+  .shuffle {
+    margin-top: 10px;
+    @include flex;
+    button {
+      display: block;
+      padding: 8px 18px;
+      @include border();
+      border-radius: 5px;
+      span {
+        font-size: 14px;
+        color: $black-soft;
+      }
+      &:hover {
+        border-color: $pink-hard;
+        span {
+          color: $pink-hard;
+        }
       }
     }
   }

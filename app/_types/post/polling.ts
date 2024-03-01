@@ -7,9 +7,18 @@ export interface PollingCandidateType {
   imageSrc: string
   title: string
   description: string
-  count: number
+  pick: number
   number: number
 }
+export type PollingCandidateKeyType = keyof PollingCandidateType
+export const pollingCandidateKeys: PollingCandidateKeyType[] = [
+  "listId",
+  "imageSrc",
+  "title",
+  "description",
+  "pick",
+  "number",
+]
 
 export interface PollingContentType {
   chartDescription: string

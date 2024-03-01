@@ -22,7 +22,7 @@ export default function ChartPart({
   const ranking_data = useMemo(
     () => ({
       labels: candidates.map(({ title }) => title),
-      data: candidates.map(({ count }) => count),
+      data: candidates.map(({ pick }) => pick),
     }),
     [candidates]
   )

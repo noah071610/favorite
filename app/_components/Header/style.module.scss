@@ -4,28 +4,45 @@ $side-width: 300px;
 
 .header {
   width: 100%;
-  height: 60px;
+  min-height: 60px;
   padding: 10px 20px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
-
-  display: flex;
-  justify-content: space-between;
+  @include z-index(header);
 
   border-bottom: 1px solid rgba(214, 214, 214, 0.7);
   background-color: white;
 
+  .inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   .left {
     width: $side-width;
-    height: 100%;
     display: flex;
     align-items: center;
     img {
       width: 40px;
     }
+    button {
+      width: 42px; // memo: aside는 52
+      height: 100%;
+      .icon {
+        @include flex;
+        i {
+          font-size: 17px;
+        }
+      }
+    }
   }
+
+  // .center {
+
+  // }
+
   .right {
     width: $side-width;
     display: flex;
@@ -61,10 +78,15 @@ $side-width: 300px;
 .ghost {
   height: calc(40px + 20px);
 }
+
 .search {
-  position: fixed;
-  top: 10px; // memo: 패딩값
-  left: 50%;
-  z-index: 30;
-  transform: translateX(-50%);
+  width: 100%;
+  height: 0;
+  max-height: 0;
+  transition: height 300ms, max-height 300ms;
+  &.open {
+    padding-top: 20px;
+    height: 300px;
+    max-height: 300px;
+  }
 }

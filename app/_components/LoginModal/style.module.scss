@@ -5,7 +5,7 @@
 .modal {
   @include center();
   width: 400px;
-  z-index: 1000;
+  @include z-index(modal);
   .inner {
     width: 100%;
     background: rgb(255, 255, 255);

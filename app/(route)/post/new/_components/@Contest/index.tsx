@@ -10,18 +10,18 @@ import _style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function ContestContent() {
-  const { newPost } = useNewPostStore()
+  const { newPost, candidates } = useNewPostStore()
 
   return (
-    newPost && (
+    candidates.length > 0 && (
       <div className={cx(style["contest-post"])}>
         <div className={cx(["contest-post-inner"])}>
           <PostInfo title={newPost.title} description={newPost.description} isEdit={true} />
           <div className={cx(_style.content)}>
             <section className={cx(_style.editor)}>
-              {(["left", "right"] as Array<"left" | "right">).map((dr) => (
+              {(["left", "right"] as Array<"left" | "right">).map((dr, i) => (
                 <div key={dr} className={cx(_style[dr])}>
-                  <Dropzone direction={dr} />
+                  <Dropzone index={i} />
                 </div>
               ))}
             </section>

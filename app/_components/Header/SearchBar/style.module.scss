@@ -2,10 +2,10 @@
 
 $bar-height: 36px;
 
+@include shine;
+
 .search-bar {
   width: 400px;
-  height: 100%;
-  @include flex();
   position: relative;
 
   input {
@@ -15,8 +15,8 @@ $bar-height: 36px;
     border-radius: 42px;
     padding: 5px 25px;
     font-size: 0.875rem;
-    z-index: 1;
     position: inherit;
+    z-index: 10;
   }
 
   .border {

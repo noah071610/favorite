@@ -4,13 +4,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 import Candidate from "@/(route)/post/contest/[postId]/_components/Candidate"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { finishTournament } from "@/_queries/post"
+import { finishPlay } from "@/_queries/post"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { shuffleArray } from "@/_utils/math"
 import classNames from "classNames"
 import { produce } from "immer"
-import { useParams } from "next/navigation"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -19,6 +18,7 @@ export default function SelectPart({
   setPickedCandidate,
   setStatus,
   setPost,
+  post,
   round,
   isPreview,
 }: {
@@ -27,16 +27,13 @@ export default function SelectPart({
   setStatus: (type: "init" | "result") => void
   setPost: Dispatch<SetStateAction<TournamentPostType>>
   round: number
+  post: TournamentPostType
   isPreview: boolean
 }) {
-  const { postId } = useParams()
   const [candidates, setCandidates] = useState<TournamentCandidateType[]>(
     (shuffleArray(originCandidates) as TournamentCandidateType[]).slice(0, round)
   )
   const [out, setOut] = useState<boolean[]>(Array.from({ length: round }, () => false))
-  const [data, setData] = useState<{ win: number; lose: number; pick: number }[]>(
-    Array.from({ length: originCandidates.length }, () => ({ win: 0, lose: 0, pick: 0 }))
-  )
   const [curIndex, setCurIndex] = useState(0)
   const [curRound, setCurRound] = useState(round)
   const [roundStatus, setRoundStatus] = useState({ pending: false, display: false })
@@ -49,24 +46,25 @@ export default function SelectPart({
 
     if (curIndex + 2 >= curRound) {
       if (curRound === 2) {
+        if (!isPreview) {
+          await finishPlay(
+            post.postId as string,
+            produce(post, (draft) => {
+              const target = draft.content.candidates[select.number - 1]
+              target.pick = target.pick + 1
+            })
+          )
+          setParticipate({ listId: select.listId, postId: post.postId })
+        }
+
         setPost((post) =>
           produce(post, (draft) => {
             const target = draft.content.candidates[select.number - 1]
             target.pick = target.pick + 1
           })
         )
-        setData((arr) =>
-          produce(arr, (draft) => {
-            const target = draft[select.number - 1]
-            target.pick = 1
-          })
-        )
         setPickedCandidate(select)
 
-        if (!isPreview) {
-          await finishTournament(postId as string, data)
-          setParticipate({ listId: select.listId, postId: postId as string })
-        }
         setTimeout(() => {
           setStatus("result")
         }, 500)
@@ -100,18 +98,6 @@ export default function SelectPart({
           produce(post, (draft) => {
             Object.entries(obj).forEach(([num, isWin]) => {
               const target = draft.content.candidates[+num - 1]
-              if (isWin) {
-                target.win = target.win + 1
-              } else {
-                target.lose = target.lose + 1
-              }
-            })
-          })
-        )
-        setData((arr) =>
-          produce(arr, (draft) => {
-            Object.entries(obj).forEach(([num, isWin], i) => {
-              const target = draft[+num - 1]
               if (isWin) {
                 target.win = target.win + 1
               } else {

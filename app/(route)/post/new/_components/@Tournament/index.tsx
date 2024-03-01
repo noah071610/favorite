@@ -3,7 +3,6 @@
 import { useNewPostStore } from "@/_store/newPost"
 
 import PostInfo from "@/_components/PostInfo"
-import { useTournamentStore } from "@/_store/newPost/tournament"
 import classNames from "classNames"
 import { nanoid } from "nanoid"
 import { useCallback, useRef, useState } from "react"
@@ -12,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import style from "./style.module.scss"
 
 // Import Swiper styles
+import { TournamentCandidateType } from "@/_types/post/tournament"
 import "swiper/css"
 import "swiper/css/free-mode"
 import Dropzone from "../@Contest/Dropzone"
@@ -20,28 +20,27 @@ const cx = classNames.bind(style)
 
 export default function TournamentContent() {
   const { newPost } = useNewPostStore()
-  const {
-    addCandidate,
-    setTournamentCandidate,
-    tournamentContent: { candidates },
-  } = useTournamentStore()
+  const { addCandidate, deleteCandidate, candidates } = useNewPostStore()
   const swiperRef = useRef<any | null>(null)
 
   const createPollingCandidate = useCallback(() => {
     addCandidate({
-      listId: nanoid(10),
-      title: "",
-      imageSrc: "",
-      win: 0,
-      lose: 0,
-      pick: 0,
-      number: candidates.length + 1,
+      index: candidates.length,
+      payload: {
+        listId: nanoid(10),
+        title: "",
+        imageSrc: "",
+        win: 0,
+        lose: 0,
+        pick: 0,
+        number: candidates.length + 1,
+      } as TournamentCandidateType,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidates.length])
 
   const deleteCandidateList = (index: number) => {
-    setTournamentCandidate({ index, payload: "delete", type: "delete" })
+    deleteCandidate({ index })
   }
 
   const clickCandidate = (index: number) => {
@@ -74,7 +73,7 @@ export default function TournamentContent() {
                 >
                   {candidates.map(({ listId }, index) => (
                     <SwiperSlide key={`tournament_candidate_${listId}`}>
-                      <Dropzone direction={index} />
+                      <Dropzone index={index} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

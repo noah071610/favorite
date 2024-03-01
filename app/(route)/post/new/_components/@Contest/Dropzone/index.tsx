@@ -1,83 +1,51 @@
 "use client"
 
 import { uploadImage } from "@/_queries/newPost"
-import { useContestStore } from "@/_store/newPost/contest"
 import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
 import style from "@/(route)/post/contest/[postId]/_components/candidate.module.scss"
-import { useTournamentStore } from "@/_store/newPost/tournament"
+import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import _style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function Dropzone({ direction }: { direction: "left" | "right" | number }) {
-  const { contestContent, setContestCandidate } = useContestStore()
-  const {
-    setTournamentCandidate,
-    tournamentContent: { candidates: tournamentCandidates },
-  } = useTournamentStore()
-  const candidate = typeof direction === "string" ? contestContent[direction] : tournamentCandidates[direction]
+export default function Dropzone({ index }: { index: number }) {
+  const { setCandidate, candidates } = useNewPostStore()
+  const candidate = candidates[index]
 
   const onChangeInput = (e: any) => {
     if (e.target.value.length >= 40) return
-    if (direction === "left" || direction === "right") {
-      setContestCandidate({
-        direction,
-        payload: e.target.value,
-        type: "title",
-      })
-    } else {
-      setTournamentCandidate({
-        index: direction,
-        payload: e.target.value,
-        type: "title",
-      })
-    }
+    setCandidate({
+      index,
+      payload: e.target.value,
+      type: "title",
+    })
   }
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      acceptedFiles.forEach(async (file: any) => {
-        const formData = new FormData()
-        formData.append("image", file)
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    acceptedFiles.forEach(async (file: any) => {
+      const formData = new FormData()
+      formData.append("image", file)
 
-        const { msg, imageSrc } = await uploadImage(formData)
-        if (msg === "ok") {
-          if (direction === "left" || direction === "right") {
-            setContestCandidate({
-              direction,
-              payload: imageSrc,
-              type: "imageSrc",
-            })
-          } else {
-            setTournamentCandidate({
-              index: direction,
-              payload: imageSrc,
-              type: "imageSrc",
-            })
-          }
-        }
-      })
-    },
-    [direction, setContestCandidate, setTournamentCandidate]
-  )
+      const { msg, imageSrc } = await uploadImage(formData)
+      if (msg === "ok") {
+        setCandidate({
+          index,
+          payload: imageSrc,
+          type: "imageSrc",
+        })
+      }
+    })
+  }, [])
 
   const onClickDeleteImage = () => {
-    if (direction === "left" || direction === "right") {
-      setContestCandidate({
-        direction,
-        payload: "",
-        type: "imageSrc",
-      })
-    } else {
-      setTournamentCandidate({
-        index: direction,
-        payload: "",
-        type: "imageSrc",
-      })
-    }
+    setCandidate({
+      index,
+      payload: "",
+      type: "imageSrc",
+    })
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -87,9 +55,10 @@ export default function Dropzone({ direction }: { direction: "left" | "right" | 
       "image/*": [],
     },
   })
+  // todo: lef right 클래스 네임 없어짐. 뭐가 달라졌을까
   return (
     <>
-      <div className={cx(style.candidate, style[direction])}>
+      <div className={cx(style.candidate)}>
         <div className={cx(style["candidate-inner"])}>
           {candidate.imageSrc ? (
             <>

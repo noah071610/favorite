@@ -84,6 +84,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
                 <SelectPart
                   setPost={setPost}
                   setStatus={setStatus}
+                  post={post}
                   setPickedCandidate={setPickedCandidate}
                   round={round}
                   isPreview={isPreview}

@@ -6,6 +6,7 @@ export const errorMessage = {
   candidateLength: "콘텐츠 후보는 적어도 2개 이상 필요해요 🙀",
   noCandidateTitle: "제목이 없는 후보가 있어요 ✍🏻",
   noCandidateImage: "이미지가 없는 후보가 있어요! 이미지는 필수로 넣어주세요 🏞️",
+  candidateError: "후보에 문제가 있어요. 잠시 후 다시 시도해주세요",
   clear: "",
 } as const
 

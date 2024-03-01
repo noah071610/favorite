@@ -1,5 +1,6 @@
 import { API } from "@/_data"
 import { PostCardType } from "@/_types/post/post"
+import { randomNum } from "@/_utils/math"
 import { produce } from "immer"
 
 export async function uploadImage(file: FormData, dev?: number) {
@@ -7,7 +8,7 @@ export async function uploadImage(file: FormData, dev?: number) {
     dev = dev ?? 0
     return {
       msg: "ok",
-      imageSrc: "https://upload.wikimedia.org/wikipedia/ko/b/b8/1917%EC%98%81%ED%99%94_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg",
+      imageSrc: `https://picsum.photos/id/${randomNum(100, 500)}/500/300`,
     }
   } else {
     const response = await API.post(`/upload`, file, {

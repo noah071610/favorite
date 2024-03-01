@@ -43,8 +43,14 @@ $image-candidate-height: 154px;
 }
 
 $z-index-map: (
-  overlay: 1000,
-  modal: 1100,
+  overlay-search: 50,
+  header: 150,
+  overlay-aside: 180,
+  aside: 200,
+  overlay: 230,
+  modal: 250,
+  preview: 300,
+  preview-content: 350,
 );
 
 @mixin z-index($id) {

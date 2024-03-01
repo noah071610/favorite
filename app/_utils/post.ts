@@ -1,6 +1,13 @@
 // import { PostCardDataType, PostDataType } from "@/_types/post"
 
-import { NewPostType } from "@/_types/post/post"
+import { ThumbnailSettingType } from "@/_store/newPost"
+import { contestCandidateKeys } from "@/_types/post/contest"
+import { pollingCandidateKeys } from "@/_types/post/polling"
+import { PostContentType } from "@/_types/post/post"
+import { tournamentCandidateKeys } from "@/_types/post/tournament"
+import { UserType } from "@/_types/user"
+import { cloneDeep } from "lodash"
+import { nanoid } from "nanoid"
 
 // export const abstractPostsInfo = (posts: PostCardDataType[]) => posts.map((v) => ({ ...v, info: JSON.parse(v.info) }))
 
@@ -9,26 +16,72 @@ import { NewPostType } from "@/_types/post/post"
 //   content: JSON.parse(post.content),
 // })
 
-export function checkNewPostType(localObj: any): boolean {
-  const requiredKeys: (keyof NewPostType)[] = ["title", "format", "description", "thumbnail", "type", "info", "content"]
+const keys = {
+  polling: pollingCandidateKeys,
+  contest: contestCandidateKeys,
+  tournament: tournamentCandidateKeys,
+}
 
-  // 객체 a가 null 또는 undefined인지 확인
-  if (!localObj) {
-    return false
+export function checkNewPost(newPost: any, content: any, candidates: { [key: string]: any }[], thumbnail: any) {
+  if (!newPost) return "unknown"
+  if (!newPost.type) return "unknown"
+  if (newPost.title.trim().length < 3) return "postTitle"
+
+  if (candidates.length < 2) return "candidateLength"
+  if (!candidates.every(({ title }) => !!title.trim())) return "noCandidateTitle"
+
+  if (candidates.length < 2) return "candidateLength"
+  if (!candidates.every(({ title }) => !!title.trim())) return "noCandidateTitle"
+  if (
+    newPost.type === "contest" ||
+    newPost.type === "tournament" ||
+    (newPost.type === "polling" && (content.layout === "image" || content.layout === "textImage"))
+  ) {
+    if (!candidates.every(({ imageSrc }) => !!imageSrc.trim())) return "noCandidateImage"
   }
 
-  // 객체 a의 속성 개수와 필요한 속성 개수가 일치하는지 확인
-  if (Object.keys(localObj).length !== requiredKeys.length) {
-    return false
-  }
+  const type = newPost.type as PostContentType
+  for (let i = 0; i < candidates.length; i++) {
+    const target = candidates[i]
 
-  // 객체 a의 각 속성이 Type 인터페이스에 정의된 속성과 일치하는지 확인
-  for (const key of requiredKeys) {
-    if (typeof localObj[key] === "undefined") {
-      return false
+    if (Object.keys(target).length !== keys[type].length) {
+      return "candidateError"
+    }
+    for (const key of keys[type]) {
+      if (typeof candidates[i][key] === "undefined") {
+        return "candidateError"
+      }
     }
   }
 
-  // 모든 속성이 일치하면 true 반환
-  return true
+  if (thumbnail.type === "layout" && thumbnail.layout.length < 2) {
+    return "unknown"
+  }
+
+  return null
+}
+
+export function generatePostData({
+  newPost,
+  content,
+  candidates,
+  thumbnail,
+  user,
+}: {
+  newPost: any
+  content: any
+  candidates: { [key: string]: any }[]
+  thumbnail: ThumbnailSettingType
+  user: UserType
+}) {
+  const thumbnailCreate =
+    thumbnail.type === "layout" ? thumbnail.layout.join("${}$") : thumbnail.type === "none" ? "" : thumbnail.imageSrc
+  const target = cloneDeep({
+    ...newPost,
+    thumbnail: thumbnailCreate,
+    postId: nanoid(10),
+    user,
+    content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
+  })
+  return target
 }

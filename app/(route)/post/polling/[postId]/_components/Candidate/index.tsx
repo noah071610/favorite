@@ -23,14 +23,14 @@ function Candidate({
   isSelected: boolean
   index: number
 }) {
-  const { count, description, listId, title, imageSrc } = candidate
+  const { pick, description, title, imageSrc } = candidate
 
   const titleComponent = () => (
     <div className={cx(style.title)}>
       <h3>{title}</h3>
       {isResultPage && (
         <span className={cx(style.count)}>
-          <CountUp prefix="(" suffix="표)" duration={4} end={count} />
+          <CountUp prefix="(" suffix="표)" duration={4} end={pick} />
         </span>
       )}
     </div>

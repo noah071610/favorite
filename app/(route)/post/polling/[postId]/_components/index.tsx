@@ -8,9 +8,10 @@ import { successToastOptions } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { finishPolling } from "@/_queries/post"
+import { finishPlay } from "@/_queries/post"
 import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
 import classNames from "classNames"
+import { produce } from "immer"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "react-toastify"
 import Candidate from "./Candidate"
@@ -46,14 +47,22 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
 
   const candidates = useMemo(() => {
     const target = post.content.candidates
-    return isResultPage ? [...target].sort((a, b) => b.count - a.count) : target
+    return isResultPage ? [...target].sort((a, b) => b.pick - a.pick) : target
   }, [isResultPage, post])
 
   const onClickCandidate = async (type: "submit" | "select", candidate?: PollingCandidateType) => {
     if (!isResultPage) {
       if (type === "submit" && selectedCandidate) {
         if (!isPreview) {
-          await finishPolling(post.postId, selectedCandidate.listId)
+          await finishPlay(
+            post.postId,
+            produce(post.content, (draft) => {
+              const target = draft.candidates.find((v) => v.listId === selectedCandidate.listId)
+              if (target) {
+                target.pick = target.pick + 1
+              }
+            })
+          )
           setParticipate({ listId: selectedCandidate.listId, postId: post.postId })
         }
         setStatus("result")

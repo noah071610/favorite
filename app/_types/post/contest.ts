@@ -4,12 +4,14 @@ export interface ContestCandidateType {
   listId: "left" | "right"
   title: string
   imageSrc: string
-  count: number
+  number: number
+  pick: number
 }
+export type ContestCandidateKeyType = keyof ContestCandidateType
+export const contestCandidateKeys: ContestCandidateKeyType[] = ["listId", "imageSrc", "title", "pick", "number"]
 
 export interface ContestContentType {
-  left: ContestCandidateType
-  right: ContestCandidateType
+  candidates: ContestCandidateType[]
 }
 
 export interface ContestPostType extends PostType {

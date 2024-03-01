@@ -3,16 +3,16 @@
 import Confirm from "@/_components/Confirm"
 import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
-import { useContestStore } from "@/_store/newPost/contest"
-import { usePollingStore } from "@/_store/newPost/polling"
-import { useTournamentStore } from "@/_store/newPost/tournament"
-import { NewPostType, PostContentType } from "@/_types/post/post"
+import { PostContentType } from "@/_types/post/post"
+import { UserQueryType } from "@/_types/user"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useCallback, useState } from "react"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const typeSelectors = [
+  //todo:
   {
     value: "polling",
     label: "투표",
@@ -33,7 +33,7 @@ const typeSelectors = [
   },
   {
     value: "tournament",
-    label: "월드컵",
+    label: "토너먼트",
     children: (
       <>
         <i className={cx("fa-solid", "fa-trophy")} />
@@ -42,58 +42,41 @@ const typeSelectors = [
   },
 ]
 
-const getCreatePost = (value: PostContentType) => {
-  return {
-    type: value,
-    thumbnail: "",
-    title: "",
-    description: "",
-    format: "default",
-    info: {
-      participateImages: [],
-      shareCount: 0,
-      like: 0,
-      participateCount: 0,
-      isNoComments: 0,
-      thumbnailType: "custom",
-    },
-    content: null,
-  } as NewPostType
-}
-
 export default function InitSection() {
-  const { newPost, createNewPost, setStatus, error } = useNewPostStore()
+  const { data: userData } = useQuery<UserQueryType>({
+    queryKey: ["user"],
+  })
+
+  const { newPost, clearNewPost, setNewPost, setIsEditOn, setStatus, error } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
-  const { clearPollingContent } = usePollingStore()
-  const { clearContestContent } = useContestStore()
-  const { clearTournamentContent } = useTournamentStore()
-  const [type, setType] = useState<PostContentType | null>(null)
+  const [typeSave, setTypeSave] = useState<PostContentType | null>(null)
 
   const onClickTypeSelect = (value: PostContentType) => {
     if (newPost?.type) {
       if (newPost?.type !== value) {
-        setType(value)
+        setTypeSave(value)
         setModal("changePostType")
       }
     } else {
-      createNewPost(getCreatePost(value))
+      setIsEditOn(true)
+      clearNewPost(value)
+      setNewPost({ type: "type", payload: value })
       setStatus("edit")
     }
   }
 
   const onClickConfirm = useCallback(
     (isOk: boolean) => {
-      if (isOk && type) {
-        createNewPost(getCreatePost(type))
-        clearContestContent()
-        clearPollingContent()
-        clearTournamentContent()
+      if (isOk && typeSave) {
+        setIsEditOn(true)
+        clearNewPost(typeSave)
+        setNewPost({ type: "type", payload: typeSave })
         setStatus("edit")
       }
       setModal("none")
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [type]
+    [typeSave, userData?.user?.userId]
   )
   return (
     <div className={cx(style.init)}>

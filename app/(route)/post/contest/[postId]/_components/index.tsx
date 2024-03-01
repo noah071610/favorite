@@ -1,6 +1,6 @@
 "use client"
 
-import { ContestCandidateType, ContestContentType, ContestPostType } from "@/_types/post/contest"
+import { ContestCandidateType, ContestPostType } from "@/_types/post/contest"
 import { useEffect, useState } from "react"
 import ResultPart from "./ResultPart"
 
@@ -12,7 +12,7 @@ import { successToastOptions } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { finishContest } from "@/_queries/post"
+import { finishPlay } from "@/_queries/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
 import { produce } from "immer"
@@ -23,17 +23,17 @@ const cx = classNames.bind(style)
 
 export default function ContestPost({ initialPost }: { initialPost: ContestPostType }) {
   const [post, setPost] = useState<ContestPostType>(initialPost)
-  const content: ContestContentType = post.content
+  const candidates: ContestCandidateType[] = post.content.candidates
 
   const [status, setStatus] = useState<"init" | "result">("init")
   const [selected, setSelected] = useState<string | null>(null)
-  const isImagesLoaded = usePreloadImages(content ? [content.left.imageSrc, content.right.imageSrc] : [])
+  const isImagesLoaded = usePreloadImages(candidates.map((v) => v.imageSrc))
   const isResultPage = status === "result"
   const isPreview = post.format === "preview"
 
   const isVoted = useCheckVoted({
     disable: isPreview,
-    candidates: [content.left, content.right],
+    candidates,
     postId: post.postId,
     resolve: (target) => {
       setStatus("result")
@@ -47,16 +47,22 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
     }
   }, [isVoted, isImagesLoaded])
 
-  const swiped = async (direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
-    setPost((content) => {
-      return produce(content, (draft) => {
-        draft.content[direction].count += 1
+  const swiped = async (_direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
+    const direction = _direction === "left" ? 0 : 1
+    setPost((post) => {
+      return produce(post, (draft) => {
+        draft.content.candidates[direction].pick += 1
       })
     })
 
     if (!isPreview) {
-      await finishContest(post.postId, direction)
-      setParticipate({ listId: content[direction].listId, postId: post.postId })
+      await finishPlay(
+        post.postId,
+        produce(candidates, (draft) => {
+          draft[direction].pick = draft[direction].pick + 1
+        })
+      )
+      setParticipate({ listId: candidates[direction].listId, postId: post.postId })
     }
     setSelected(target.listId)
     setTimeout(() => {
@@ -71,12 +77,12 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
           <PostInfo title={post.title} description={post.description} user={post.user} />
           <div className={cx(style.content)}>
             <section className={cx(style.candidates)}>
-              {(["left", "right"] as Array<"left" | "right">).map((dr) => (
+              {(["left", "right"] as Array<"left" | "right">).map((dr, i) => (
                 <div key={dr} className={cx(style[dr])}>
                   {isResultPage ? (
-                    <ResultPart selected={selected} content={content} direction={dr} />
+                    <ResultPart selected={selected} candidates={candidates} direction={dr} />
                   ) : (
-                    <Candidate candidate={content[dr]} swiped={swiped} direction={dr} />
+                    <Candidate candidate={candidates[i]} swiped={swiped} direction={dr} />
                   )}
                 </div>
               ))}

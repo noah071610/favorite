@@ -16,7 +16,7 @@ export default function Preview({
   previewPost,
   setIsOnPreview,
 }: {
-  previewPost: PollingPostType | ContestPostType | TournamentPostType
+  previewPost: any
   setIsOnPreview: (b: boolean) => void
 }) {
   return (
