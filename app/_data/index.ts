@@ -13,3 +13,16 @@ export const API = axios.create({
     "Content-Type": "application/json",
   },
 })
+
+export const queryKey = {
+  home: {
+    all: ["home", "all"],
+    tournament: ["home", "tournament"],
+    polling: ["home", "polling"],
+    contest: ["home", "contest"],
+  },
+  new: {
+    create: ["new", "create"],
+  },
+  user: ["user"],
+} as const

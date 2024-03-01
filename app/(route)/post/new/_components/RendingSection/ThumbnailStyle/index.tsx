@@ -23,7 +23,7 @@ const selectorTypes = [
 ]
 
 export default function ThumbnailStyle() {
-  const { newPost, setNewPost, thumbnail, candidates, setThumbnail, setThumbnailLayout } = useNewPostStore()
+  const { setNewPost, thumbnail, content, candidates, setThumbnail, setThumbnailLayout } = useNewPostStore()
 
   const onChangeThumbnailStyle = (type: ThumbnailType) => {
     setThumbnail({ type: "type", payload: type })
@@ -59,11 +59,18 @@ export default function ThumbnailStyle() {
   })
 
   useEffect(() => {
-    if (candidates.length > 1) {
-      setThumbnailLayout({ slice: thumbnail.slice })
-    } else {
-      setThumbnailLayout({ slice: 0 })
+    const reject = () => {
+      setThumbnail({ type: "isPossibleLayout", payload: false })
+      if (thumbnail.type === "layout") {
+        setThumbnail({ type: "type", payload: "custom" })
+      }
     }
+    if (candidates.length < 2) return reject()
+    if (content.layout === "text") return reject()
+    if (!candidates.every(({ imageSrc }) => !!imageSrc?.trim())) return reject()
+
+    setThumbnailLayout({ slice: thumbnail.slice })
+    setThumbnail({ type: "isPossibleLayout", payload: true })
   }, [candidates])
 
   return (
@@ -108,13 +115,14 @@ export default function ThumbnailStyle() {
         {selectorTypes.map(({ type, children, label }) => (
           <div key={type}>
             <button
+              disabled={type === "layout" ? !thumbnail.isPossibleLayout : false}
               onClick={() => onChangeThumbnailStyle(type as ThumbnailType)}
               className={cx(style.btn, { [style.active]: thumbnail.type === type })}
             >
               <div className={cx(style["preview-icon"])}>{children}</div>
               <span>{label}</span>
             </button>
-            {thumbnail.slice > 1 && type === thumbnail.type && thumbnail.type === "layout" && (
+            {thumbnail.isPossibleLayout && type === thumbnail.type && thumbnail.type === "layout" && (
               <div className={cx(style["layout-customize"])}>
                 <div className={cx(style.slice)}>
                   <button onClick={() => sliceThumbnailLayout(-1)} disabled={thumbnail.slice <= 2}>

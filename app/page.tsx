@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import FavoriteLoading from "./_components/Loading/FavoriteLoading"
 import PostCard from "./_components/PostCard"
+import { queryKey } from "./_data"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
 import { getPosts } from "./_queries/post"
 import { PostCardType, PostFindQuery } from "./_types/post/post"
@@ -19,7 +20,7 @@ export default function HomePage() {
   const [cursor, setCursor] = useState(0)
   const [hasNextPage, setHasNextPage] = useState(true)
   const { data, isFetchingNextPage, fetchNextPage, isSuccess, refetch } = useInfiniteQuery({
-    queryKey: ["mainPosts", query],
+    queryKey: [queryKey.home[query ?? "all"]],
     queryFn: ({ pageParam }) => getPosts({ pageParam, query: query ?? "all" }),
     initialPageParam: 0,
     getNextPageParam: () => {
@@ -45,14 +46,6 @@ export default function HomePage() {
       setHasNextPage(false)
     }
   }, [data?.pages])
-
-  const [number, setNumber] = useState(1)
-  useEffect(() => {
-    setNumber((n) => n + 1)
-    console.log(number)
-  }, [])
-
-  console.log(number)
 
   return (
     <>

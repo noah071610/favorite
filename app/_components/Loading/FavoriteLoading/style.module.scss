@@ -64,6 +64,20 @@
     &.full {
       @include center();
     }
+    &.overlay {
+      @include full();
+      background-color: rgba(0, 0, 0, 0.2);
+      @include z-index(overlay);
+      .loading {
+        height: 100%;
+        &-icon {
+          color: white;
+        }
+        span {
+          color: white;
+        }
+      }
+    }
     &.component {
       width: 100%;
       height: 100%;

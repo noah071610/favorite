@@ -1,6 +1,7 @@
 "use client"
 
 import Confirm from "@/_components/Confirm"
+import { queryKey } from "@/_data"
 import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
 import { PostContentType } from "@/_types/post/post"
@@ -44,10 +45,10 @@ const typeSelectors = [
 
 export default function InitSection() {
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: ["user"],
+    queryKey: queryKey.user,
   })
-
-  const { newPost, clearNewPost, setNewPost, setIsEditOn, setStatus, error } = useNewPostStore()
+  const { error } = useMainStore()
+  const { newPost, clearNewPost, setNewPost, setIsEditOn, setStatus, setIsSavedDataForPathChange } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
   const [typeSave, setTypeSave] = useState<PostContentType | null>(null)
 
@@ -59,6 +60,7 @@ export default function InitSection() {
       }
     } else {
       setIsEditOn(true)
+      setIsSavedDataForPathChange(false)
       clearNewPost(value)
       setNewPost({ type: "type", payload: value })
       setStatus("edit")
@@ -69,6 +71,7 @@ export default function InitSection() {
     (isOk: boolean) => {
       if (isOk && typeSave) {
         setIsEditOn(true)
+        setIsSavedDataForPathChange(false)
         clearNewPost(typeSave)
         setNewPost({ type: "type", payload: typeSave })
         setStatus("edit")

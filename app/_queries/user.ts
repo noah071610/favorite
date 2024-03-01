@@ -1,5 +1,4 @@
 import { API } from "@/_data"
-import { UserType } from "@/_types/user"
 import { Cookies } from "react-cookie"
 
 const cookies = new Cookies()
@@ -17,8 +16,13 @@ export async function getUser() {
   }
 }
 
-export async function registerUser(user: UserType) {
-  const response = await API.post(`/auth/user`, user)
+export async function registerUser(data: { email: string; password: string; userName: string }) {
+  const response = await API.post(`/auth/user`, data)
+  return response.data
+}
+
+export async function hasEmail(email: string) {
+  const response = await API.post(`/auth/find-email`, { email })
   return response.data
 }
 
@@ -38,7 +42,9 @@ export async function login(user: { email: string; password: string }) {
   try {
     const response = await API.post(`/auth/login`, user)
 
-    API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
+    if (response.data.msg === "ok") {
+      API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
+    }
 
     return response.data
   } catch {

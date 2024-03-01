@@ -1,3 +1,4 @@
+import { queryKey } from "@/_data"
 import { getUser } from "@/_queries/user"
 import { UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
@@ -17,7 +18,7 @@ export default function Profile({
   postId: string
 }) {
   const { data: user } = useQuery<UserType>({
-    queryKey: ["user"],
+    queryKey: queryKey.user,
     queryFn: getUser,
   })
 

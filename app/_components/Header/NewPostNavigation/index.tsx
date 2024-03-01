@@ -2,6 +2,7 @@
 
 import { errorMessage } from "@/_data/message"
 import { errorToastOptions } from "@/_data/toast"
+import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
 import { PostingStatus } from "@/_types/post/post"
 import classNames from "classNames"
@@ -17,7 +18,8 @@ const navList = {
 }
 
 export default function NewPostNavigation() {
-  const { newPostStatus, setStatus, newPost, setError } = useNewPostStore()
+  const { setError } = useMainStore()
+  const { newPostStatus, setStatus, newPost } = useNewPostStore()
 
   const onClickNav = useCallback(
     (status: PostingStatus) => {

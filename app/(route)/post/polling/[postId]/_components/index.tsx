@@ -53,18 +53,17 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
   const onClickCandidate = async (type: "submit" | "select", candidate?: PollingCandidateType) => {
     if (!isResultPage) {
       if (type === "submit" && selectedCandidate) {
+        const postAfterSelected = produce(post, (draft) => {
+          const target = draft.content.candidates.find((v) => v.listId === selectedCandidate.listId)
+          if (target) {
+            target.pick = target.pick + 1
+          }
+        })
         if (!isPreview) {
-          await finishPlay(
-            post.postId,
-            produce(post.content, (draft) => {
-              const target = draft.candidates.find((v) => v.listId === selectedCandidate.listId)
-              if (target) {
-                target.pick = target.pick + 1
-              }
-            })
-          )
+          await finishPlay(post.postId, postAfterSelected.content)
           setParticipate({ listId: selectedCandidate.listId, postId: post.postId })
         }
+        setPost(postAfterSelected)
         setStatus("result")
       }
       if (type === "select" && candidate) {

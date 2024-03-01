@@ -3,6 +3,7 @@
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { useEffect, useState } from "react"
 
+import Overlay from "@/_components/Overlay"
 import PostInfo from "@/_components/PostInfo"
 import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
@@ -51,7 +52,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
   })
 
   useEffect(() => {
-    if (isVoted === false) {
+    if (isPreview || isVoted === false) {
       // null은 기본값임으로 제외
       setModal("roundSelect")
     }
@@ -119,6 +120,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
           </div>
         </div>
       )}
+      {isPreview && modalStatus === "roundSelect" && <Overlay />}
     </div>
   )
 }

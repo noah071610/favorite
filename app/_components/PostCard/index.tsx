@@ -1,7 +1,8 @@
 "use client"
 
-import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
+import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { PostCardType } from "@/_types/post/post"
+import { formatNumber } from "@/_utils/math"
 import classNames from "classNames"
 import Link from "next/link"
 import CountUp from "react-countup"
@@ -17,8 +18,10 @@ export default function PostCard({
 }: {
   postCard: PostCardType
 }) {
-  const imageStatus = useProgressiveImage(thumbnail)
+  const thumbnailArr = !!thumbnail ? thumbnail.split("${}$") : []
+  const isImagesLoaded = usePreloadImages(thumbnailArr)
 
+  const { num, suffix } = formatNumber(count)
   return (
     <article className={cx(style.card)}>
       <div className={cx(style["card-main"])}>
@@ -30,27 +33,42 @@ export default function PostCard({
 
           <div className={cx(style.thumbnail, { isFull: !description.trim() })}>
             <div className={cx(style["thumbnail"])}>
-              {imageStatus === "success" && (
-                <div
-                  className={cx(style.image)}
-                  style={{
-                    background: `url('${thumbnail}') center / cover`,
-                  }}
-                />
+              {!thumbnail ? (
+                <NoThumbnail type="post-card" />
+              ) : isImagesLoaded ? (
+                thumbnailArr.length > 0 && (
+                  <div className={cx(style["thumbnail-inner"])}>
+                    {thumbnailArr.map((v, i) => (
+                      <div
+                        key={`thumb_${postId}_${i}`}
+                        className={cx(style.image)}
+                        style={{
+                          background: `url('${v}') center / cover`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )
+              ) : (
+                <div className={cx(style.loading)}>
+                  <LoadingBar />
+                </div>
               )}
-              {imageStatus === "error" && <NoThumbnail type="post-card" />}
             </div>
-            {imageStatus === "loading" && (
-              <div className={cx(style.loading)}>
-                <LoadingBar />
-              </div>
-            )}
           </div>
         </Link>
 
         <div className={cx(style.info)}>
           <div className={cx(style.left)}>
-            <CountUp className={cx(style.count)} duration={4} end={count} />
+            <CountUp
+              className={cx(style.count)}
+              suffix={suffix}
+              duration={4}
+              decimals={!suffix ? 0 : 1}
+              decimal="."
+              separator=" "
+              end={parseFloat(num)}
+            />
             <span className={cx(style.suffix)}>명 참여</span>
           </div>
           <div className={cx(style.right)}>

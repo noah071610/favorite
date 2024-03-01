@@ -13,7 +13,7 @@ export async function getPost(postId: string) {
   return response.data
 }
 
-export async function commenting(data: { userId: number; postId: string; text: string; userName: string }) {
+export async function commenting(data: { userId: number; postId: string; text: string }) {
   const response = await API.post(`/post/comment`, data)
 
   return response.data

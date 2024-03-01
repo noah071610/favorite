@@ -11,6 +11,7 @@ import { PostType } from "@/_types/post/post"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
+import { queryKey } from "@/_data"
 import { errorMessage, successMessage } from "@/_data/message"
 import { errorToastOptions, successToastOptions } from "@/_data/toast"
 import { useMainStore } from "@/_store/main"
@@ -26,28 +27,33 @@ const cx = classNames.bind(style)
 
 export default function RendingSection() {
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: ["user"],
+    queryKey: queryKey.user,
     queryFn: getUser,
   })
 
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { setModal, modalStatus } = useMainStore()
-  const { newPost, candidates, content, setNewPost, clearNewPost, setStatus, thumbnail, setError } = useNewPostStore()
+  const { setModal, modalStatus, setError } = useMainStore()
+  const { newPost, candidates, content, setNewPost, clearNewPost, setStatus, setIsEditOn, thumbnail } =
+    useNewPostStore()
   const [previewPost, setPreviewPost] = useState<PostType | null>(null)
   const [isOnPreview, setIsOnPreview] = useState(false)
 
   const { mutate } = useMutation({
-    mutationKey: ["mainPosts"],
+    mutationKey: queryKey.new.create,
     mutationFn: (newPost: { [key: string]: any }) => posting(newPost),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mainPosts"] }) // 캐시를 지우고
-      queryClient.refetchQueries({ queryKey: ["mainPosts"] }) // 다시 호출
+      queryClient.invalidateQueries({ queryKey: queryKey.home.all }) // 캐시를 지우고
+      queryClient.refetchQueries({ queryKey: queryKey.home.all }) // 다시 호출
+      localStorage.removeItem("favorite_save_data")
+      setIsEditOn(false)
+
+      setStatus("init")
+      setModal("none")
+      clearNewPost("all")
+
       router.push("/") // todo
       toast.success(successMessage["posting"], successToastOptions("posting"))
-      clearNewPost("all")
-      setModal("none")
-      localStorage.removeItem("favorite_save_data")
     },
   })
 
@@ -66,47 +72,54 @@ export default function RendingSection() {
   }
 
   const preview = () => {
-    const createPost = generatePostData({
-      newPost,
-      content,
-      candidates,
-      thumbnail,
-      user: {
-        userId: 1,
-        userImage: "noah",
-        userName: "익명",
-      },
-    })
-    const obj = {
-      ...createPost,
+    const user = userData?.user
+      ? userData.user
+      : {
+          userId: 1,
+          userImage: "noah",
+          userName: "익명",
+        }
+    const createPost = {
+      ...generatePostData({
+        newPost,
+        content,
+        candidates,
+        thumbnail,
+        user,
+      }),
       format: "preview",
       count: randomNum(40, 200),
       comments: [],
+      user,
       createdAt: new Date(),
     }
     switch (createPost.type) {
       case "polling":
-        obj.content.candidates = obj.content.candidates.map((v: any) => ({
+        createPost.content.candidates = createPost.content.candidates.map((v: any) => ({
           ...v,
           pick: randomNum(20, 100),
         }))
-        setPreviewPost(obj)
+        setPreviewPost(createPost)
         break
 
       case "contest":
-        obj.content.candidates[0].pick = randomNum(20, 100)
-        obj.content.candidates[1].pick = randomNum(20, 100)
-        setPreviewPost(obj)
+        createPost.content.candidates[0].pick = randomNum(20, 100)
+        createPost.content.candidates[1].pick = randomNum(20, 100)
+        setPreviewPost(createPost)
         break
 
       case "tournament":
-        obj.content.candidates = obj.content.candidates.map((v: any) => ({
-          ...v,
-          pick: randomNum(0, 20),
-          win: randomNum(20, 100),
-          lose: randomNum(20, 100),
-        }))
-        setPreviewPost(obj)
+        createPost.content.candidates = createPost.content.candidates.map((v: any) => {
+          // total : 100 기준
+          const random = randomNum(10, 100)
+          return {
+            ...v,
+            pick: randomNum(0, 50),
+            win: random,
+            lose: 100 - random,
+          }
+        })
+        setPreviewPost(createPost)
         break
 
       default:
@@ -140,7 +153,7 @@ export default function RendingSection() {
       mutate(createPost)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalStatus, userData])
+  }, [modalStatus, userData, newPost, content, candidates, thumbnail])
 
   return (
     <>

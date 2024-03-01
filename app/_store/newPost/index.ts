@@ -1,15 +1,14 @@
-import { ErrorTypes } from "@/_types"
-import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
-import { NewPostType, PostContentType, PostingStatus, ThumbnailType } from "@/_types/post/post"
+import { PollingCandidateType } from "@/_types/post/polling"
+import {
+  ContentLayoutType,
+  NewPostType,
+  PostContentType,
+  PostingStatus,
+  ThumbnailSettingType,
+  ThumbnailType,
+} from "@/_types/post/post"
 import { produce } from "immer"
 import { create } from "zustand"
-
-export interface ThumbnailSettingType {
-  imageSrc: string
-  type: ThumbnailType
-  layout: string[]
-  slice: number
-}
 
 const newPostInit: NewPostType = {
   postId: "newPost",
@@ -29,10 +28,7 @@ interface States {
   selectedCandidateIndex: number
   thumbnail: ThumbnailSettingType
   isEditOn: boolean
-  error: {
-    type: ErrorTypes | null
-    text?: string
-  }
+  isSavedDataForPathChange: boolean
 }
 
 type SetNewPostAction =
@@ -41,14 +37,17 @@ type SetNewPostAction =
   | { type: "description"; payload: string }
   | { type: "format"; payload: string }
 
-type SetThumbnailAction = { type: "type"; payload: ThumbnailType } | { type: "imageSrc"; payload: string }
+type SetThumbnailAction =
+  | { type: "type"; payload: ThumbnailType }
+  | { type: "imageSrc"; payload: string }
+  | { type: "isPossibleLayout"; payload: boolean }
 
 type SetCandidateAction =
   | { index: number; type: "imageSrc"; payload: string }
   | { index: number; type: "title"; payload: string }
   | { index: number; type: "description"; payload: string }
 
-type SetContentAction = { type: "resultDescription"; payload: string } | { type: "layout"; payload: PollingLayoutType }
+type SetContentAction = { type: "resultDescription"; payload: string } | { type: "layout"; payload: ContentLayoutType }
 
 type Actions = {
   setCandidate: (action: SetCandidateAction) => void
@@ -67,13 +66,14 @@ type Actions = {
   setContent: (action: SetContentAction) => void
   setThumbnail: (action: SetThumbnailAction) => void
   setIsEditOn: (b: boolean) => void
+  setIsSavedDataForPathChange: (b: boolean) => void
   setThumbnailLayout: ({ slice, isShuffle }: { slice: number; isShuffle?: boolean }) => void
-  setError: ({ type, text }: { type: ErrorTypes; text?: string }) => void
   clearNewPost: (type: PostContentType | "all") => void
 }
 
 export const useNewPostStore = create<States & Actions>()((set) => ({
   newPost: newPostInit,
+  isSavedDataForPathChange: false,
   isEditOn: false,
   content: {},
   candidates: [],
@@ -83,10 +83,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
     type: "custom",
     layout: [],
     slice: 0,
-  },
-  error: {
-    type: null,
-    text: "",
+    isPossibleLayout: false,
   },
   selectedCandidateIndex: -1,
 
@@ -188,7 +185,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
             content.resultDescription = payload as string
           },
           layout: () => {
-            content.layout = payload as PollingLayoutType
+            content.layout = payload as ContentLayoutType
           },
         }
         const handler = actionHandlers[type]
@@ -207,6 +204,9 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
           },
           type: () => {
             draft.thumbnail.type = action.payload as ThumbnailType
+          },
+          isPossibleLayout: () => {
+            draft.thumbnail.isPossibleLayout = action.payload as boolean
           },
         }
 
@@ -273,6 +273,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
           type: "custom",
           layout: [],
           slice: type === "contest" ? 2 : 0,
+          isPossibleLayout: false,
         },
       }
     }),
@@ -284,12 +285,8 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
     set(() => ({
       isEditOn: state,
     })),
-  setError: ({ type, text }) =>
-    set(() => {
-      if (type === "clear") {
-        return { error: { type: null, text: "" } }
-      } else {
-        return { error: { type, text } }
-      }
-    }),
+  setIsSavedDataForPathChange: (state) =>
+    set(() => ({
+      isSavedDataForPathChange: state,
+    })),
 }))

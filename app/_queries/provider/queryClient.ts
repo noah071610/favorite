@@ -17,7 +17,6 @@ export const queryClientConfig = {
     mutations: {
       onError: (error: Error) => {
         /** You can use toast or notification here */
-        console.error(error.message)
       },
     },
   },

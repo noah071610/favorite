@@ -1,5 +1,6 @@
 "use client"
 
+import { useMainStore } from "@/_store/main"
 import { ContestPostType } from "@/_types/post/contest"
 import { PollingPostType } from "@/_types/post/polling"
 import { TournamentPostType } from "@/_types/post/tournament"
@@ -19,10 +20,15 @@ export default function Preview({
   previewPost: any
   setIsOnPreview: (b: boolean) => void
 }) {
+  const { setModal } = useMainStore()
+  const onClickClosePreview = () => {
+    setIsOnPreview(false)
+    setModal("none")
+  }
   return (
     <div className={cx(style.preview, { [style.visible]: setIsOnPreview })}>
       <div className={cx(style["preview-back"])}>
-        <button onClick={() => setIsOnPreview(false)}>
+        <button onClick={onClickClosePreview}>
           <i className={cx("fa-solid", "fa-close")}></i>
         </button>
       </div>

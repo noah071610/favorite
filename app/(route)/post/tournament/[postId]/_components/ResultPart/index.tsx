@@ -4,7 +4,6 @@ import CommentPart from "@/_components/CommentPart"
 import { CommentType } from "@/_types/post/post"
 import { TournamentCandidateChartType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import classNames from "classNames"
-import { cloneDeep } from "lodash"
 import { Dispatch, SetStateAction, useMemo, useState } from "react"
 import ReactPaginate from "react-paginate"
 import Candidate from "./Candidate"
@@ -17,9 +16,9 @@ const itemsPerPage = 10
 const getTotals = (candidates: TournamentCandidateType[]) => {
   return candidates.reduce(
     (acc, { win, lose, pick }) => {
-      acc.win = acc.win + win
-      acc.lose = acc.lose + lose
-      acc.pick = acc.pick + pick
+      acc.win += win
+      acc.lose += lose
+      acc.pick += pick
       return acc
     },
     { win: 0, lose: 0, pick: 0 }
@@ -95,32 +94,32 @@ export default function ResultPart({
   }
 
   const sorted: TournamentCandidateChartType[] = useMemo(() => {
-    const target = cloneDeep(candidates)
+    let target
     switch (sortedStatus.value) {
       case "rating":
         if (sortedStatus.desc) {
-          target.sort((a, b) => b.rating - a.rating)
+          target = candidates.toSorted((a, b) => b.rating - a.rating)
         } else {
-          target.sort((a, b) => a.rating - b.rating)
+          target = candidates.toSorted((a, b) => a.rating - b.rating)
         }
         break
       case "pick":
         if (sortedStatus.desc) {
-          target.sort((a, b) => b.pick - a.pick)
+          target = candidates.toSorted((a, b) => b.pick - a.pick)
         } else {
-          target.sort((a, b) => a.pick - b.pick)
+          target = candidates.toSorted((a, b) => a.pick - b.pick)
         }
         break
       case "win":
         if (sortedStatus.desc) {
-          target.sort((a, b) => b.win - a.win)
+          target = candidates.toSorted((a, b) => b.win - a.win)
         } else {
-          target.sort((a, b) => a.win - b.win)
+          target = candidates.toSorted((a, b) => b.lose - a.lose)
         }
 
         break
       default:
-        target.sort((a, b) => b.number - a.number)
+        target = candidates.toSorted((a, b) => b.number - a.number)
         break
     }
 

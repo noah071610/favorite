@@ -91,6 +91,16 @@
         color: $pink-hard;
       }
     }
+    &:disabled {
+      .preview-icon {
+        border-color: $gray;
+        background-color: $border;
+      }
+      span {
+        color: $gray;
+      }
+      cursor: default;
+    }
   }
 }
 
@@ -120,26 +130,6 @@
     span {
       font-size: 14px;
       color: $black-soft;
-    }
-  }
-  .shuffle {
-    margin-top: 10px;
-    @include flex;
-    button {
-      display: block;
-      padding: 8px 18px;
-      @include border();
-      border-radius: 5px;
-      span {
-        font-size: 14px;
-        color: $black-soft;
-      }
-      &:hover {
-        border-color: $pink-hard;
-        span {
-          color: $pink-hard;
-        }
-      }
     }
   }
 }

@@ -9,6 +9,9 @@ export interface TournamentCandidateType {
   lose: number
   pick: number
 }
+export interface TournamentCandidateOnGameType extends TournamentCandidateType {
+  out?: boolean
+}
 export type TournamentCandidateKeyType = keyof TournamentCandidateType
 export const tournamentCandidateKeys: TournamentCandidateKeyType[] = [
   "listId",

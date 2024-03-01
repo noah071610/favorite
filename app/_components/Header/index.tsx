@@ -1,8 +1,11 @@
 "use client"
 
+import { queryKey } from "@/_data"
 import { refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
+import { useNewPostStore } from "@/_store/newPost"
 import { UserQueryType } from "@/_types/user"
+import { handleBeforeUnload } from "@/_utils/post"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Link from "next/link"
@@ -17,8 +20,10 @@ const cx = classNames.bind(style)
 export default function Header() {
   const queryClient = useQueryClient()
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: ["user"],
+    queryKey: queryKey.user,
   })
+  const { candidates, content, newPost, thumbnail, isEditOn, setIsSavedDataForPathChange, isSavedDataForPathChange } =
+    useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
   const pathname = usePathname()
   const isNewPostPage = pathname.includes("new")
@@ -33,6 +38,20 @@ export default function Header() {
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!isSavedDataForPathChange && isEditOn && pathname !== "/post/new") {
+      console.log(1)
+
+      handleBeforeUnload({}, newPost, content, candidates, thumbnail, isEditOn)
+      setIsSavedDataForPathChange(true)
+    }
+    if (pathname === "/post/new" && isSavedDataForPathChange && isEditOn) {
+      console.log(2)
+
+      setIsSavedDataForPathChange(false)
+    }
+  }, [pathname, isEditOn, isSavedDataForPathChange])
 
   const onClickOpenAside = () => {
     setModal("aside")

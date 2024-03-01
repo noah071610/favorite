@@ -7,12 +7,23 @@ export const errorMessage = {
   noCandidateTitle: "제목이 없는 후보가 있어요 ✍🏻",
   noCandidateImage: "이미지가 없는 후보가 있어요! 이미지는 필수로 넣어주세요 🏞️",
   candidateError: "후보에 문제가 있어요. 잠시 후 다시 시도해주세요",
+  tournamentCandidateLength: "토너먼트는 최소 4개 이상의 후보가 필요해요",
+  overTenUserName: "닉네임을 15글자 이하로 입력해주세요",
+  noUserName: "닉네임을 입력해주세요",
+  noPassword: "패스워드를 입력해주세요",
+  notSamePassword: "패스워드가 일치하지 않아요",
+  noEmail: "이메일을 입력해주세요",
+  existEmail: "이미 누가 사용하고 있는 이메일이에요",
+  invalidEmail: "올바른 이메일 형식이 아니에요",
+  safePassword: "영문, 숫자, 특수문자를 포함한 8자리 이상 15자리 이하로 입력해주세요",
+  loginFailBadRequest: "이메일 혹은 비밀번호가 올바르지 않아요",
   clear: "",
 } as const
 
 export const successMessage = {
   voted: "이미 투표 하셨어요 😎",
   login: "어서오세요! 👋🏻",
+  register: "이제 즐겨볼까요? 👋🏻",
   loginNewPost: "로그인만 하면 끝나요! 다 왔어요! 🚀",
   posting: "포스팅 완료! 🚀",
   commenting: "댓글을 작성했어요! 🚀",

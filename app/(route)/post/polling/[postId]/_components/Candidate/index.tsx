@@ -1,7 +1,8 @@
 "use client"
 
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
+import { PollingCandidateType } from "@/_types/post/polling"
+import { ContentLayoutType } from "@/_types/post/post"
 import classNames from "classNames"
 import React from "react"
 import CountUp from "react-countup"
@@ -19,7 +20,7 @@ function Candidate({
   candidate: PollingCandidateType
   onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
   isResultPage: boolean
-  layout: PollingLayoutType
+  layout: ContentLayoutType
   isSelected: boolean
   index: number
 }) {

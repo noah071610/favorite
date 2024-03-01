@@ -1,10 +1,17 @@
 import { UserType } from "../user"
 
-//todo: export type PostFindQuery = "all" | "popular" | "like" | "participate"
+export type ContentLayoutType = "text" | "image" | "textImage"
 export type PostFormatType = "default" | "secret" | "preview"
 export type PostingStatus = "init" | "edit" | "rending"
 export type PostContentType = "polling" | "contest" | "tournament"
 export type ThumbnailType = "custom" | "layout" | "none"
+export interface ThumbnailSettingType {
+  imageSrc: string
+  type: ThumbnailType
+  layout: string[]
+  slice: number
+  isPossibleLayout: boolean
+}
 export type PostFindQuery = "all" | PostContentType
 
 export type VoteIdType = {

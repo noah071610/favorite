@@ -9,7 +9,8 @@ import { nanoid } from "nanoid"
 
 import style from "@/(route)/post/polling/[postId]/_components/style.module.scss"
 import PostInfo from "@/_components/PostInfo"
-import { PollingCandidateType, PollingLayoutType } from "@/_types/post/polling"
+import { PollingCandidateType } from "@/_types/post/polling"
+import { ContentLayoutType } from "@/_types/post/post"
 import classNames from "classNames"
 import { useCallback } from "react"
 import Candidate from "./Candidate"
@@ -74,7 +75,7 @@ export default function PollingContent() {
     moveCandidate({ from: source.index, to: destination.index })
   }
 
-  const onChangeCandidateLayout = (style: PollingLayoutType) => {
+  const onChangeCandidateLayout = (style: ContentLayoutType) => {
     setContent({ type: "layout", payload: style })
   }
 
@@ -88,7 +89,7 @@ export default function PollingContent() {
             {selectorTypes.map(({ value, icons, label }) => (
               <button
                 key={value}
-                onClick={() => onChangeCandidateLayout(value as PollingLayoutType)}
+                onClick={() => onChangeCandidateLayout(value as ContentLayoutType)}
                 className={cx(_style.card, { [_style.active]: content.layout === value })}
               >
                 <div className={cx(_style["icon-wrapper"])}>

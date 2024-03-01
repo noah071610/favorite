@@ -1,6 +1,7 @@
 @import "@/_styles/variables.scss";
 
 @include scale-up;
+@include shakeX;
 
 .modal {
   @include center();
@@ -8,6 +9,7 @@
   @include z-index(modal);
   .inner {
     width: 100%;
+    overflow: hidden;
     background: rgb(255, 255, 255);
     border: 1px solid $pink-soft;
     box-shadow: 0 15px 25px rgba(55, 34, 0, 0.1);
@@ -29,115 +31,139 @@
     background-color: $gray-soft;
     border-radius: 12px;
   }
+}
 
-  .title {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    span {
+.input-container {
+  width: 100%;
+  margin-top: 10px;
+  .input {
+    position: relative;
+    margin: 10px 0;
+    input {
+      width: 100%;
       position: relative;
-      padding-right: 10px;
-      color: $black-soft;
+      z-index: 10;
+      @include border;
+      border-radius: 8px;
+      padding: 15px 13px;
       font-size: 14px;
+      color: $black-soft;
+      &.active {
+        border-color: $purple;
+      }
     }
-    i {
-      font-size: 17px;
-      color: $pink;
+    label {
+      position: absolute;
+      color: $gray;
+      font-size: 14px;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      transform: translate(14px, 18px);
+      transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 350ms;
+      &.active {
+        z-index: 20;
+        background-color: white;
+        transform: scale(0.85) translate(10px, -6px);
+        color: $purple-hover;
+      }
     }
-  }
 
-  .input-container {
-    width: 100%;
-    margin-top: 10px;
-    .input {
-      position: relative;
+    &.error {
+      animation: 600ms shakeX;
       input {
-        width: 100%;
-        position: relative;
-        z-index: 10;
-        @include border;
-        border-radius: 8px;
-        padding: 15px 13px;
-        margin: 7px 0;
-        font-size: 14px;
-        color: $black-soft;
-        &.active {
-          border-color: $purple;
-        }
+        border-color: $red;
       }
       label {
-        position: absolute;
-        color: $gray;
-        font-size: 14px;
-        top: 0;
-        left: 0;
-        z-index: 0;
-        transform: translate(14px, 24px);
-        transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 350ms;
-        &.active {
-          z-index: 20;
-          background-color: white;
-          transform: scale(0.85) translate(10px, 0px);
-          color: $purple-hover;
-        }
+        color: $red;
       }
     }
   }
+}
 
-  .login {
-    margin-top: 5px;
-    button {
-      border-radius: 8px;
-      background-color: $purple;
-      padding: 15px 13px;
-      width: 100%;
-      &:hover {
-        background-color: $purple-hover;
-      }
-    }
-    span {
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
-    }
+.error-message {
+  padding-left: 2px;
+  span {
+    color: $red;
+    font-size: 11px;
   }
+}
 
-  .register {
-    margin-top: 5px;
-    margin-bottom: 30px;
-    @include flex();
-    gap: 10px;
-    span {
-      color: $gray;
-      font-size: 13px;
-      &:hover {
-        color: $gray-hard;
-      }
-    }
-  }
-
-  .sns {
+.submit-btn {
+  margin-top: 5px;
+  button {
+    border-radius: 8px;
+    background-color: $purple;
+    padding: 15px 13px;
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 20px 0;
-
-    .btn {
-      width: 100%;
-      height: 70px;
-      border-radius: 10px;
-      background-color: $gray-soft;
-      &:hover {
-        background-color: $border;
-      }
+    &:hover {
+      background-color: $purple-hover;
     }
+  }
+  .btn-text {
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  &.error {
+    animation: 600ms shakeX;
+    button {
+      background-color: $red;
+    }
+  }
+}
 
-    .image {
-      img {
-        width: 28px;
-        height: 28px;
-      }
+.title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  span {
+    position: relative;
+    padding-right: 10px;
+    color: $black-soft;
+    font-size: 14px;
+  }
+  i {
+    font-size: 17px;
+    color: $pink;
+  }
+}
+
+.sub-btn {
+  margin-top: 5px;
+  margin-bottom: 30px;
+  @include flex();
+  gap: 10px;
+  span {
+    color: $gray;
+    font-size: 13px;
+    &:hover {
+      color: $gray-hard;
+    }
+  }
+}
+
+.sns {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 20px 0;
+
+  .btn {
+    width: 100%;
+    height: 70px;
+    border-radius: 10px;
+    background-color: $gray-soft;
+    &:hover {
+      background-color: $border;
+    }
+  }
+
+  .image {
+    img {
+      width: 28px;
+      height: 28px;
     }
   }
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import { queryKey } from "@/_data"
 import { successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
 import { commenting } from "@/_queries/post"
@@ -48,7 +49,7 @@ function Commenting({
   setPost: Dispatch<SetStateAction<{ [key: string]: any; comments: CommentType[] }>>
 }) {
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: ["user"],
+    queryKey: queryKey.user,
     queryFn: getUser,
   })
   const user = userData?.user
@@ -63,7 +64,11 @@ function Commenting({
 
   const onClickCommenting = async () => {
     if (!!text.trim() && !isPreview) {
-      await commenting({ userId: user?.userId ? user.userId : 1, postId: postId as string, text }).then(() => {
+      await commenting({
+        userId: typeof user?.userId === "number" ? user.userId : 1,
+        postId: postId as string,
+        text,
+      }).then(() => {
         setPost((oldData) =>
           produce(oldData, (draft) => {
             draft.comments.unshift({

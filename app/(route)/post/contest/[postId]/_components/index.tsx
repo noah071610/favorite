@@ -49,19 +49,13 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
 
   const swiped = async (_direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
     const direction = _direction === "left" ? 0 : 1
-    setPost((post) => {
-      return produce(post, (draft) => {
-        draft.content.candidates[direction].pick += 1
-      })
+    const finishedPost = produce(post, (draft) => {
+      draft.content.candidates[direction].pick += 1
     })
+    setPost(finishedPost)
 
     if (!isPreview) {
-      await finishPlay(
-        post.postId,
-        produce(candidates, (draft) => {
-          draft[direction].pick = draft[direction].pick + 1
-        })
-      )
+      await finishPlay(post.postId, finishedPost.content)
       setParticipate({ listId: candidates[direction].listId, postId: post.postId })
     }
     setSelected(target.listId)

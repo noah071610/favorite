@@ -1,6 +1,6 @@
 "use client"
 
-import { ThumbnailSettingType, useNewPostStore } from "@/_store/newPost"
+import { useNewPostStore } from "@/_store/newPost"
 
 import InitSection from "./_components/InitSection"
 import RendingSection from "./_components/RendingSection"
@@ -8,7 +8,7 @@ import RendingSection from "./_components/RendingSection"
 import Confirm from "@/_components/Confirm"
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import { useMainStore } from "@/_store/main"
-import { NewPostType } from "@/_types/post/post"
+import { handleBeforeUnload } from "@/_utils/post"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect } from "react"
@@ -28,21 +28,6 @@ const TournamentContent = dynamic(() => import("./_components/@Tournament"), {
   loading: () => <FavoriteLoading type="full" />,
 })
 
-const handleBeforeUnload = (
-  event: any,
-  newPost: NewPostType,
-  content: {
-    [key: string]: any
-  },
-  candidates: {
-    [key: string]: any
-  },
-  thumbnail: ThumbnailSettingType
-) => {
-  localStorage.setItem("favorite_save_data", JSON.stringify({ newPost, content, candidates, thumbnail }))
-  event.returnValue = "Are you sure you want to leave?"
-}
-
 export default function NewPostPage() {
   const {
     newPost,
@@ -55,18 +40,20 @@ export default function NewPostPage() {
     loadNewPost,
     clearNewPost,
     setStatus,
+    setIsSavedDataForPathChange,
   } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
 
   useEffect(() => {
-    window.addEventListener("popstate", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
-    window.addEventListener("beforeunload", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
+    const handleBeforeUnloadCallback = (e: any) => {
+      handleBeforeUnload(e, newPost, content, candidates, thumbnail, isEditOn)
+    }
+    window.addEventListener("beforeunload", handleBeforeUnloadCallback)
 
     return () => {
-      window.removeEventListener("beforeunload", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
-      window.removeEventListener("popstate", (e) => handleBeforeUnload(e, newPost, content, candidates, thumbnail))
+      window.removeEventListener("popstate", handleBeforeUnloadCallback)
     }
-  }, [newPost, content, candidates, thumbnail])
+  }, [newPost, content, candidates, thumbnail, isEditOn])
 
   useEffect(() => {
     if (!isEditOn) {
@@ -88,6 +75,7 @@ export default function NewPostPage() {
         const newPostFromLocalStorage = JSON.parse(item ?? "")
         loadNewPost(newPostFromLocalStorage)
         setIsEditOn(true)
+        setIsSavedDataForPathChange(false)
         setStatus("edit")
       } else {
         localStorage.removeItem("favorite_save_data")

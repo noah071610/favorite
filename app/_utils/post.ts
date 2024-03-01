@@ -1,9 +1,8 @@
 // import { PostCardDataType, PostDataType } from "@/_types/post"
 
-import { ThumbnailSettingType } from "@/_store/newPost"
 import { contestCandidateKeys } from "@/_types/post/contest"
 import { pollingCandidateKeys } from "@/_types/post/polling"
-import { PostContentType } from "@/_types/post/post"
+import { NewPostType, PostContentType, ThumbnailSettingType } from "@/_types/post/post"
 import { tournamentCandidateKeys } from "@/_types/post/tournament"
 import { UserType } from "@/_types/user"
 import { cloneDeep } from "lodash"
@@ -27,11 +26,15 @@ export function checkNewPost(newPost: any, content: any, candidates: { [key: str
   if (!newPost.type) return "unknown"
   if (newPost.title.trim().length < 3) return "postTitle"
 
+  if (newPost.type === "tournament") {
+    if (candidates.length < 4) return "tournamentCandidateLength"
+  }
   if (candidates.length < 2) return "candidateLength"
   if (!candidates.every(({ title }) => !!title.trim())) return "noCandidateTitle"
 
   if (candidates.length < 2) return "candidateLength"
   if (!candidates.every(({ title }) => !!title.trim())) return "noCandidateTitle"
+
   if (
     newPost.type === "contest" ||
     newPost.type === "tournament" ||
@@ -80,8 +83,26 @@ export function generatePostData({
     ...newPost,
     thumbnail: thumbnailCreate,
     postId: nanoid(10),
-    user,
+    userId: user.userId,
     content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
   })
   return target
+}
+
+export const handleBeforeUnload = (
+  event: any,
+  newPost: NewPostType,
+  content: {
+    [key: string]: any
+  },
+  candidates: {
+    [key: string]: any
+  },
+  thumbnail: ThumbnailSettingType,
+  isEditOn: boolean
+) => {
+  if (isEditOn) {
+    localStorage.setItem("favorite_save_data", JSON.stringify({ newPost, content, candidates, thumbnail }))
+  }
+  event.returnValue = "Are you sure you want to leave?"
 }

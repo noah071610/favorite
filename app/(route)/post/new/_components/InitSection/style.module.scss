@@ -4,14 +4,13 @@
 
 .init {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 60px - 100px);
   @include flex();
   flex-direction: column;
 
   .type {
     &-wrapper {
       width: 700px;
-      padding-bottom: 80px;
 
       h1 {
         text-align: center;

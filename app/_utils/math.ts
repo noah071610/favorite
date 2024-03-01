@@ -22,3 +22,22 @@ export function shuffleArray(_arr: any[]) {
   }
   return arr
 }
+
+export function formatNumber(num: number): { num: string; suffix: string } {
+  const absNum = Math.abs(num)
+  if (absNum < 1000) {
+    return { num: String(num), suffix: "" }
+  } else if (absNum < 1000000) {
+    const result = (num / 1000).toFixed(1)
+    return { num: result, suffix: "K" }
+  } else if (absNum < 1000000000) {
+    const result = (num / 1000000).toFixed(1)
+    return { num: result, suffix: "M" }
+  } else if (absNum < 1000000000000) {
+    const result = (num / 1000000000).toFixed(1)
+    return { num: result, suffix: "B" }
+  } else {
+    const result = (num / 1000000000000).toFixed(1)
+    return { num: result, suffix: "T" }
+  }
+}

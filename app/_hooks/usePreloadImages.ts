@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
 
-export const usePreloadImages = (content: string[]) => {
+export const usePreloadImages = (content: string[], noDelay?: boolean) => {
   const [isImagesLoaded, setIsImagesLoaded] = useState(false)
   const [imageLoadedCount, setImageLoadedCount] = useState(0)
 
   useEffect(() => {
     if (imageLoadedCount >= content.length) {
-      setTimeout(() => {
-        setIsImagesLoaded(true)
-      }, 2000)
+      setTimeout(
+        () => {
+          setIsImagesLoaded(true)
+        },
+        noDelay ? 0 : 1200
+      )
     }
   }, [content, imageLoadedCount])
 

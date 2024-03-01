@@ -94,9 +94,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: all 240ms;
       span {
-        transition: all 240ms;
         color: $black-soft;
         font-size: 14px;
       }
@@ -105,14 +103,13 @@
         color: $gray-hard;
       }
       &:hover {
-        background-color: $pink-soft;
         border-color: $pink-hard;
         i {
           color: $pink-hard;
           transform: translateX(5px);
         }
         span {
-          color: white;
+          color: $pink-hard;
         }
       }
     }

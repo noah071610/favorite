@@ -5,7 +5,7 @@ import { ModalStatus } from "@/_types"
 import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from "body-scroll-lock"
 import classNames from "classNames"
 import { usePathname } from "next/navigation"
-import { MouseEvent, useEffect, useMemo, useState } from "react"
+import { MouseEvent, useEffect, useState } from "react"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -47,7 +47,7 @@ export default function Overlay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, curPathname])
 
-  const animation = useMemo(() => {
+  useEffect(() => {
     if (modalStatus === "aside" || modalStatus === "search") {
       setOverlayAnimation(`${modalStatus}_overlay_animation`)
     } else {

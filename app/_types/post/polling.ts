@@ -1,6 +1,4 @@
-import { PostType } from "./post"
-
-export type PollingLayoutType = "text" | "image" | "textImage"
+import { ContentLayoutType, PostType } from "./post"
 
 export interface PollingCandidateType {
   listId: string
@@ -22,7 +20,7 @@ export const pollingCandidateKeys: PollingCandidateKeyType[] = [
 
 export interface PollingContentType {
   chartDescription: string
-  layout: PollingLayoutType
+  layout: ContentLayoutType
   candidates: PollingCandidateType[]
 }
 
