@@ -59,14 +59,8 @@
   @include z-index(modal);
   .inner {
     width: 100%;
-    background: rgb(255, 255, 255);
-    background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%);
-    border: 1px solid $pink-soft;
-    box-shadow: 0 15px 25px rgba(55, 34, 0, 0.1);
+    @include modal-inner;
     padding: 20px;
-    border-radius: 10px;
-    transform-origin: center;
-    animation: scale-up 300ms cubic-bezier(0.32, 0.9, 0.5, 1.01) forwards;
   }
 
   h3 {

@@ -1,6 +1,8 @@
 "use client"
 
 import style from "@/(route)/post/polling/[postId]/_components/Candidate/style.module.scss"
+import { getImageUrl } from "@/_data"
+import { noImageUrl } from "@/_data/post"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
@@ -73,7 +75,7 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
         <div className={cx(style["image-wrapper"])}>
           <div
             style={{
-              backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
+              backgroundImage: !!imageSrc ? getImageUrl({ url: imageSrc }) : noImageUrl,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

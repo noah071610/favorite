@@ -8,6 +8,7 @@ import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
 
 import "react-toastify/dist/ReactToastify.css"
 import Aside from "./_components/Aside"
+import Init from "./_components/Init"
 
 const pretendard = localFont({
   src: [
@@ -50,9 +51,11 @@ export default async function RootLayout({
             crossOrigin="anonymous"
             referrerPolicy="no-referrer"
           />
+          <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
         </head>
         <body>
           <ReactQueryProvider>
+            <Init />
             <Header />
             <Aside />
             <main>{children}</main>

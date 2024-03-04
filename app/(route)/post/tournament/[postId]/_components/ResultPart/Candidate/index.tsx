@@ -1,6 +1,7 @@
 "use client"
 
 import LoadingBar from "@/_components/Loading/LoadingBar"
+import { getImageUrl } from "@/_data"
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { TournamentCandidateChartType } from "@/_types/post/tournament"
@@ -49,7 +50,7 @@ export default function Candidate({
         {imageStatus === "success" && (
           <div
             style={{
-              backgroundImage: `url('${candidate.imageSrc}')`,
+              backgroundImage: getImageUrl({ url: candidate.imageSrc }),
             }}
             className={cx(style.image)}
           />

@@ -32,15 +32,11 @@ export default function PostInfo({
       </div>
       {!isEdit && user && (
         <div className={cx(style.profile)}>
-          <button className={cx(style["user-icon"])}>
-            {false ? (
-              <img src={user?.userImage} alt={`user_image`} />
-            ) : (
-              <div style={{ backgroundColor: chartBackgroundColors[1] }} className={cx(style.icon)}>
-                <span>{user?.userName.slice(0, 1)}</span>
-              </div>
-            )}
-          </button>
+          <div className={cx(style["user-icon"])}>
+            <div style={{ backgroundColor: chartBackgroundColors[1] }} className={cx(style.icon)}>
+              <span>{user?.userName.slice(0, 1)}</span>
+            </div>
+          </div>
           <div className={cx(style["user-info"])}>
             <span>{user?.userName}</span>
             <span>2024/01/13</span>

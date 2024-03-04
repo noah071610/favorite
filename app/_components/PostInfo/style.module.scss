@@ -7,7 +7,6 @@
   border-bottom-left-radius: 10px;
   padding-left: 20px;
   margin-bottom: 20px;
-  max-height: 80px;
   display: flex;
   align-items: center;
   gap: 50px;
@@ -29,12 +28,22 @@
     width: 100%;
     h1 {
       font-size: 20px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     h2 {
       padding-top: 7px;
       font-size: 15px;
       font-weight: 400;
       line-height: 1.2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     input {
@@ -84,13 +93,6 @@
       color: white;
       font-weight: 700;
       font-size: 20px;
-    }
-
-    &:active {
-      img,
-      .icon {
-        transform: scale(0.9);
-      }
     }
   }
 

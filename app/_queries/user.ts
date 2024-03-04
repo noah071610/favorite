@@ -17,7 +17,7 @@ export async function getUser() {
 }
 
 export async function registerUser(data: { email: string; password: string; userName: string }) {
-  const response = await API.post(`/auth/user`, data)
+  const response = await API.post(`/auth/user`, { ...data, provider: "local" })
   return response.data
 }
 
@@ -40,7 +40,7 @@ export async function refreshUser() {
 
 export async function login(user: { email: string; password: string }) {
   try {
-    const response = await API.post(`/auth/login`, user)
+    const response = await API.post(`/auth/login`, { ...user, provider: "local" })
 
     if (response.data.msg === "ok") {
       API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken

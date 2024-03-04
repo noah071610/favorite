@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import TinderCard from "react-tinder-card"
 
+import { getImageUrl } from "@/_data"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
@@ -52,14 +53,14 @@ export default function Candidate({
       >
         <div
           style={{
-            backgroundImage: `url('${candidate.imageSrc}')`,
+            backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
           className={cx(style.thumbnail)}
         ></div>
         <div
           className={cx(style["thumbnail-overlay"])}
           style={{
-            backgroundImage: `url('${candidate.imageSrc}')`,
+            backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
         ></div>
         <div className={cx(style.description)}>

@@ -11,6 +11,8 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import style from "./style.module.scss"
 
 // Import Swiper styles
+import { getImageUrl } from "@/_data"
+import { noImageUrl } from "@/_data/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import "swiper/css"
 import "swiper/css/free-mode"
@@ -98,7 +100,7 @@ export default function TournamentContent() {
                     >
                       <div
                         style={{
-                          backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
+                          backgroundImage: !!imageSrc ? getImageUrl({ url: imageSrc }) : noImageUrl,
                         }}
                         className={cx(style.image)}
                       ></div>

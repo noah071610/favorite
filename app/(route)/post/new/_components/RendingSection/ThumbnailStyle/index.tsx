@@ -8,6 +8,7 @@ import { ThumbnailType } from "@/_types/post/post"
 import { useCallback, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
 
+import { getImageUrl } from "@/_data"
 import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
@@ -78,7 +79,7 @@ export default function ThumbnailStyle() {
       {thumbnail.type === "custom" && (
         <div
           style={{
-            background: `url('${thumbnail.imageSrc}') center / cover`,
+            background: getImageUrl({ url: thumbnail.imageSrc, isCenter: true }),
           }}
           className={cx(style.thumbnail, style.custom, { [style.active]: isDragActive })}
           {...getRootProps()}
@@ -94,7 +95,7 @@ export default function ThumbnailStyle() {
               <div
                 key={`thumb_layout_${i}`}
                 style={{
-                  backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
+                  backgroundImage: getImageUrl({ url: imageSrc }),
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}

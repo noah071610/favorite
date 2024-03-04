@@ -2,6 +2,7 @@
 
 import Confirm from "@/_components/Confirm"
 import { queryKey } from "@/_data"
+import { contentTypesArr } from "@/_data/post"
 import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
 import { PostContentType } from "@/_types/post/post"
@@ -11,37 +12,6 @@ import classNames from "classNames"
 import { useCallback, useState } from "react"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
-
-const typeSelectors = [
-  //todo:
-  {
-    value: "polling",
-    label: "투표",
-    children: (
-      <>
-        <i className={cx("fa-solid", "fa-chart-simple", style.symbol)} />
-      </>
-    ),
-  },
-  {
-    value: "contest",
-    label: "1:1 대결",
-    children: (
-      <>
-        <span className={cx(style.symbol, style.contest)}>VS</span>
-      </>
-    ),
-  },
-  {
-    value: "tournament",
-    label: "토너먼트",
-    children: (
-      <>
-        <i className={cx("fa-solid", "fa-trophy")} />
-      </>
-    ),
-  },
-]
 
 export default function InitSection() {
   const { data: userData } = useQuery<UserQueryType>({
@@ -86,13 +56,13 @@ export default function InitSection() {
       <div className={cx(style["type-wrapper"])}>
         <h1 className={cx({ [style.error]: error.type === "selectType" })}>콘텐츠 타입을 선택해주세요</h1>
         <div className={cx(style["type-list"])}>
-          {typeSelectors.map(({ value, children, label }) => (
+          {contentTypesArr.map(({ value, icon, label }) => (
             <button
               onClick={() => onClickTypeSelect(value as PostContentType)}
               key={`type_selector_${value}`}
               className={cx(`type-${value}`, { [style.active]: newPost?.type === value })}
             >
-              <div>{children}</div>
+              <div>{icon(style)}</div>
               <span>{label}</span>
             </button>
           ))}

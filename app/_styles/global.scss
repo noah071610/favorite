@@ -188,13 +188,8 @@ input:-webkit-autofill:focus {
   line-height: 1.4 !important;
 }
 
-@keyframes shine {
-  to {
-    background-position: -200% 0;
-  }
-}
-
 @keyframes fade-move-up {
+  // memo: 자바스크립트 용
   from {
     opacity: 0;
     transform: translateY(100%);
@@ -210,6 +205,7 @@ input:-webkit-autofill:focus {
 }
 
 @keyframes scale-up {
+  // memo: 자바스크립트 용
   from {
     transform: scale(0.3);
   }

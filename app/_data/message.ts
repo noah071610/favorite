@@ -17,6 +17,10 @@ export const errorMessage = {
   invalidEmail: "올바른 이메일 형식이 아니에요",
   safePassword: "영문, 숫자, 특수문자를 포함한 8자리 이상 15자리 이하로 입력해주세요",
   loginFailBadRequest: "이메일 혹은 비밀번호가 올바르지 않아요",
+  alreadySignup_google: "이미 구글로 회원가입을 하셨어요. 구글을 이용해 로그인 해주세요.",
+  alreadySignup_facebook: "이미 페이스북으로 회원가입을 하셨어요. 페이스북을 이용해 로그인 해주세요.",
+  alreadySignup_instagram: "이미 인스타그램으로 회원가입을 하셨어요. 인스타그램으을 이용해 로그인 해주세요.",
+  alreadySignup_twitter: "이미 트위터로 회원가입을 하셨어요. 트위터를 이용해 로그인 해주세요.",
   clear: "",
 } as const
 
@@ -27,4 +31,5 @@ export const successMessage = {
   loginNewPost: "로그인만 하면 끝나요! 다 왔어요! 🚀",
   posting: "포스팅 완료! 🚀",
   commenting: "댓글을 작성했어요! 🚀",
+  copyLink: "링크를 복사했어요! 🎉",
 } as const

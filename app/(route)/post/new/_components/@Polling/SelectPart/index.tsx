@@ -10,6 +10,7 @@ import { useDropzone } from "react-dropzone"
 import Resizer from "react-image-file-resizer"
 
 import style from "@/(route)/post/polling/[postId]/_components/SelectPart/style.module.scss"
+import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import _style from "./style.module.scss"
@@ -91,7 +92,7 @@ export default function SelectPart() {
           {content.layout !== "text" && (
             <div
               style={{
-                background: `url('${candidate.imageSrc}') center / cover`,
+                background: getImageUrl({ url: candidate.imageSrc, isCenter: true }),
                 ...scaleUpAnimation(250),
               }}
               className={cx(style.image, _style["drop-zone"], { [_style.active]: isDragActive })}

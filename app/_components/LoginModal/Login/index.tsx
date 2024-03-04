@@ -1,30 +1,39 @@
 "use client"
 
 import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
+import { _url } from "@/_data"
 import { errorMessage, successMessage } from "@/_data/message"
 import { successToastOptions } from "@/_data/toast"
-import { login } from "@/_queries/user"
+import { login, refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
+import { Providers, UserQueryType } from "@/_types/user"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useRef, useState } from "react"
 import { toast } from "react-toastify"
 import style from "../style.module.scss"
+
 const cx = classNames.bind(style)
 
 const socials = [
   {
     value: "google",
+    disable: false,
+    share: "https://www.facebook.com/sharer/sharer.php",
+  },
+  {
+    value: "kakaoTalk",
+    disable: true,
   },
   {
     value: "instagram",
-  },
-  {
-    value: "twitter",
+    disable: true,
   },
   {
     value: "facebook",
+    disable: true,
+    share: "https://www.facebook.com/sharer/sharer.php",
   },
 ]
 
@@ -76,6 +85,27 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
     setInputStatus((obj) => ({ ...obj, errorMessage: { ...obj.errorMessage, [target]: errorMessage[type] } }))
   }
 
+  const finishLogin = ({ msg, user }: UserQueryType) => {
+    if (msg === "ok") {
+      queryClient.setQueryData(["user"], { msg: "ok", user })
+    } else {
+      setTimeout(() => {
+        setIsLoading(false)
+        sendNewPostError("loginBtn", "loginFailBadRequest")
+      }, 2000)
+      return
+    }
+
+    if (modalStatus === "login") {
+      setTimeout(() => {
+        setModal("none")
+        toast.success(successMessage["login"], successToastOptions("login"))
+      }, 2000)
+    } else {
+      setModal("newPostLoginSuccess")
+    }
+  }
+
   const onSubmitLogin = async () => {
     let isValidated = true
     const { email, password } = input
@@ -98,27 +128,29 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
 
     setIsLoading(true)
 
-    const { msg, user } = await login({ email: input.email, password: input.password })
+    const data = await login({ email: input.email, password: input.password })
+    finishLogin(data)
+  }
 
-    if (msg === "ok") {
-      queryClient.setQueryData(["user"], { msg: "ok", user })
-    } else {
-      setTimeout(() => {
-        setIsLoading(false)
-        sendNewPostError("loginBtn", "loginFailBadRequest")
-      }, 2000)
-      return
-    }
+  const onClickSocialLogin = (provider: Providers) => {
+    const newWindow = window.open(`${_url.server}/auth/${provider}`, "_blank")
 
-    if (modalStatus === "login") {
-      setTimeout(() => {
-        setModal("none")
-        toast.success(successMessage["login"], successToastOptions("login"))
-        return
-      }, 2000)
-    } else {
-      setModal("newPostLoginSuccess")
-    }
+    setIsLoading(true)
+    window.addEventListener("message", async (event) => {
+      // 받은 메시지가 B페이지에서 보낸 것인지 확인합니다.
+      if (event.source === newWindow) {
+        // B페이지에서 전달받은 정보를 처리하는 함수를 호출합니다.
+        if (event.data.msg === "ok") {
+          if (newWindow) {
+            newWindow.close()
+          }
+
+          // const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+          const data = await refreshUser()
+          finishLogin(data)
+        }
+      }
+    })
   }
 
   return (
@@ -202,8 +234,13 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
         <i className={cx("fa-solid", "fa-rocket")}></i>
       </div>
       <div className={cx(style.sns)}>
-        {socials.map(({ value }) => (
-          <button key={value} className={cx(style.btn, style[value])}>
+        {socials.map(({ value, disable }) => (
+          <button
+            disabled={disable}
+            onClick={() => onClickSocialLogin(value as Providers)}
+            key={value}
+            className={cx(style.btn, style[value])}
+          >
             <div className={cx(style.image)}>
               <img src={`/images/icon/${value}.png`} alt={value} />
             </div>

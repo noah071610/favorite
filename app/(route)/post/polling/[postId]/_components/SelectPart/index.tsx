@@ -1,5 +1,6 @@
 "use client"
 
+import { getImageUrl } from "@/_data"
 import { fadeMoveUpAnimation, scaleUpAnimation } from "@/_styles/animation"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
@@ -19,7 +20,7 @@ export default function SelectPart({
         <div key={selectedCandidate.listId} className={cx(style["select-part"])}>
           <div
             style={{
-              background: `url('${selectedCandidate.imageSrc}') center / cover`,
+              background: getImageUrl({ url: selectedCandidate.imageSrc, isCenter: true }),
               ...scaleUpAnimation(250),
             }}
             className={cx(style["image"])}

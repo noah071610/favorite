@@ -1,6 +1,10 @@
 "use client"
 
+import { queryKey } from "@/_data"
+import { contentTypesArr } from "@/_data/post"
 import { useMainStore } from "@/_store/main"
+import { UserQueryType } from "@/_types/user"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
@@ -9,46 +13,22 @@ const cx = classNames.bind(style)
 
 const typeSelectors = [
   {
-    value: "/?query=all",
+    value: "all",
+    link: "/?query=all",
     label: "모두 보기",
-    children: (
+    icon: (style: any) => (
       <>
-        <i className={cx("fa-solid", "fa-list", style.symbol)} />
+        <i className={cx("fa-solid", "fa-list", style["type-icon"])} />
       </>
     ),
   },
-  {
-    value: "/?query=polling",
-    label: "투표",
-    children: (
-      <>
-        <i className={cx("fa-solid", "fa-chart-simple", style.symbol)} />
-      </>
-    ),
-  },
-  {
-    value: "/?query=contest",
-    label: "1:1 대결",
-    children: (
-      <>
-        <span className={cx(style.symbol, style.contest)}>VS</span>
-      </>
-    ),
-  },
-  {
-    value: "/?query=tournament",
-    label: "토너먼트",
-    children: (
-      <>
-        <i className={cx("fa-solid", "fa-trophy")} />
-      </>
-    ),
-  },
+  ...contentTypesArr,
 ]
 
 const asideSelectors = [
   {
-    value: "/template",
+    value: "template",
+    link: "/template",
     label: "템플릿",
     children: (
       <>
@@ -57,7 +37,8 @@ const asideSelectors = [
     ),
   },
   {
-    value: "/post/new",
+    value: "new",
+    link: "/post/new",
     label: "만들러가기",
     children: (
       <>
@@ -66,7 +47,8 @@ const asideSelectors = [
     ),
   },
   {
-    value: "/login",
+    value: "login",
+    link: "/login",
     label: "로그인",
     children: (
       <>
@@ -77,11 +59,15 @@ const asideSelectors = [
 ]
 
 export default function Aside() {
+  const { data: userData } = useQuery<UserQueryType>({
+    queryKey: queryKey.user,
+  })
   const pathname = usePathname()
   const { get } = useSearchParams()
   const query = get("query")
   const asPath = pathname + (query ? `?query=${query}` : "")
   const { modalStatus, setModal } = useMainStore()
+  const user = userData?.user
 
   const closeModal = () => {
     setModal("none")
@@ -103,12 +89,12 @@ export default function Aside() {
         {typeSelectors.map((v, i) => {
           return (
             <Link
-              className={cx({ [style.active]: asPath === v.value || (i === 0 && asPath === "/") })}
+              className={cx({ [style.active]: asPath === v.link || (i === 0 && asPath === "/") })}
               onClick={closeModal}
-              href={v.value}
+              href={v.link}
               key={v.value}
             >
-              <div className={cx(style.icon)}>{v.children}</div>
+              <div className={cx(style.icon)}>{v.icon(style)}</div>
               <span className={cx(style.label)}>{v.label}</span>
             </Link>
           )
@@ -117,16 +103,28 @@ export default function Aside() {
           <div></div>
         </div>
         {asideSelectors.map((v) => {
-          return v.value === "/login" ? (
-            <button className={cx({ [style.active]: asPath === v.value })} onClick={onClickLogin} key={v.value}>
-              <div className={cx(style.icon)}>{v.children}</div>
-              <span className={cx(style.label)}>{v.label}</span>
-            </button>
+          return v.value === "login" ? (
+            user ? (
+              <Link
+                className={cx({ [style.active]: asPath === v.link })}
+                onClick={closeModal}
+                href={"/dash"}
+                key={"dash"}
+              >
+                <div className={cx(style.icon)}>{v.children}</div>
+                <span className={cx(style.label)}>대시보드</span>
+              </Link>
+            ) : (
+              <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
+                <div className={cx(style.icon)}>{v.children}</div>
+                <span className={cx(style.label)}>{v.label}</span>
+              </button>
+            )
           ) : (
             <Link
-              className={cx({ [style.active]: asPath === v.value })}
+              className={cx({ [style.active]: asPath === v.link })}
               onClick={closeModal}
-              href={v.value}
+              href={v.link}
               key={v.value}
             >
               <div className={cx(style.icon)}>{v.children}</div>

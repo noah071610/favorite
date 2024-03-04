@@ -12,6 +12,7 @@ export type ModalStatus =
   | "loginNewPost"
   | "newPostLoginSuccess"
   | "aside"
+  | "share"
 
 export interface PostCardListType {
   pageParams: number[]

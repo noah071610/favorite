@@ -65,7 +65,7 @@ function Commenting({
   const onClickCommenting = async () => {
     if (!!text.trim() && !isPreview) {
       await commenting({
-        userId: typeof user?.userId === "number" ? user.userId : 1,
+        userId: user?.userId ?? 1,
         postId: postId as string,
         text,
       }).then(() => {

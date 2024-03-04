@@ -13,6 +13,12 @@ export async function getPost(postId: string) {
   return response.data
 }
 
+export async function getSearchPosts(searchQuery: string) {
+  const response = await API.get(`/post/search?searchQuery=${searchQuery}`)
+
+  return response.data
+}
+
 export async function commenting(data: { userId: number; postId: string; text: string }) {
   const response = await API.post(`/post/comment`, data)
 

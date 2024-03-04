@@ -1,5 +1,7 @@
 "use client"
 
+import { getImageUrl } from "@/_data"
+import { noImageUrl } from "@/_data/post"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { PollingCandidateType } from "@/_types/post/polling"
 import { ContentLayoutType } from "@/_types/post/post"
@@ -54,7 +56,7 @@ function Candidate({
         <div className={cx(style["image-wrapper"])}>
           <div
             style={{
-              backgroundImage: `url('${imageSrc}'), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU')`,
+              backgroundImage: !!imageSrc ? getImageUrl({ url: imageSrc }) : noImageUrl,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

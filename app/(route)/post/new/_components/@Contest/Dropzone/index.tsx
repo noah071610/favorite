@@ -6,6 +6,7 @@ import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
 import style from "@/(route)/post/contest/[postId]/_components/candidate.module.scss"
+import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import _style from "./style.module.scss"
@@ -67,21 +68,21 @@ export default function Dropzone({ index }: { index: number }) {
               </button>
               <div
                 style={{
-                  backgroundImage: `url('${candidate.imageSrc}')`,
+                  backgroundImage: getImageUrl({ url: candidate.imageSrc }),
                 }}
                 className={cx(style.thumbnail)}
               ></div>
               <div
                 className={cx(style["thumbnail-overlay"])}
                 style={{
-                  backgroundImage: `url('${candidate.imageSrc}')`,
+                  backgroundImage: getImageUrl({ url: candidate.imageSrc }),
                 }}
               ></div>
             </>
           ) : (
             <div
               style={{
-                background: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDEOaqDXtUswwG_M29-z0hIYG-YQqUPBUidpFBHv6g60GgpYq2VQesjbpmVVu8kfd-pw&usqp=CAU') center / cover`,
+                background: getImageUrl({ url: "/images/post/no-image.png", isCenter: true }),
               }}
               className={cx(_style["thumbnail-drop-zone"])}
               {...getRootProps()}

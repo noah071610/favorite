@@ -12,3 +12,5 @@ export interface UserQueryType {
   msg: "ok" | "no"
   user: UserType | null
 }
+
+export type Providers = "google" | "facebook" | "instagram" | "twitter" | "local"

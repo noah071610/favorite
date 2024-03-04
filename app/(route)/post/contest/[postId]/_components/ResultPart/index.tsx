@@ -4,6 +4,7 @@ import { ContestCandidateType } from "@/_types/post/contest"
 import { calculateVoteRatio } from "@/_utils/math"
 import CountUp from "react-countup"
 
+import { getImageUrl } from "@/_data"
 import classNames from "classNames"
 import style from "../candidate.module.scss"
 const cx = classNames.bind(style)
@@ -38,14 +39,14 @@ export default function ResultPart({
       <div className={cx(style["candidate-inner"])}>
         <div
           style={{
-            backgroundImage: `url('${candidate.imageSrc}')`,
+            backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
           className={cx(style.thumbnail)}
         ></div>
         <div
           className={cx(style["thumbnail-overlay"])}
           style={{
-            backgroundImage: `url('${candidate.imageSrc}')`,
+            backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
         ></div>
         <div className={cx(style.description)}>

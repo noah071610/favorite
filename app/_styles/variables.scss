@@ -11,6 +11,9 @@ $border: rgba(214, 214, 214, 0.7);
 $purple: rgba(217, 171, 255, 0.875);
 $purple-hover: rgba(190, 111, 255, 0.903);
 
+$orange: rgba(255, 182, 126, 0.875);
+$orange-hover: rgba(255, 148, 34, 0.903);
+
 $black-soft: rgb(80, 80, 86);
 
 $bg-color: rgba(249, 249, 249, 0.8);
@@ -75,6 +78,17 @@ $z-index-map: (
   }
 }
 
+@mixin modal-inner {
+  background: rgb(255, 255, 255);
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%);
+  border: 1px solid $pink-soft;
+  box-shadow: 0 15px 25px rgba(55, 34, 0, 0.1);
+  padding: 22px 30px;
+  border-radius: 10px;
+  transform-origin: center;
+  animation: scale-up 300ms cubic-bezier(0.32, 0.9, 0.5, 1.01) forwards;
+}
+
 @mixin fade-move-up {
   @keyframes fade-move-up {
     from {
@@ -131,6 +145,32 @@ $z-index-map: (
   }
 }
 
+@mixin twinkle-btn {
+  &::before {
+    @include full;
+    content: "";
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0.7) 80%,
+      rgba(255, 255, 255, 0) 90%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 200%;
+    transition: none;
+  }
+
+  &:hover {
+    background-color: rgba(255, 154, 154, 0.2);
+    &::before {
+      z-index: 1;
+      animation: shine 1000ms 150ms infinite;
+    }
+  }
+}
+
 @mixin section-title {
   .title {
     margin: 10px 0;
@@ -152,6 +192,36 @@ $z-index-map: (
       font-size: 20px;
       font-weight: 700;
       padding-bottom: 1px;
+    }
+  }
+}
+
+@mixin badge-main {
+  border-radius: 3px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: white;
+  .label {
+    margin-left: 5px;
+  }
+  &.polling {
+    background-color: $pink;
+    &:hover {
+      background-color: $pink-hard;
+    }
+  }
+  &.contest {
+    background-color: $purple;
+    &:hover {
+      background-color: $purple-hover;
+    }
+  }
+  &.tournament {
+    background-color: $orange;
+    &:hover {
+      background-color: $orange-hover;
     }
   }
 }
