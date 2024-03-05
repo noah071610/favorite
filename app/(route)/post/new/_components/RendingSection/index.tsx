@@ -12,14 +12,13 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 import { queryKey } from "@/_data"
-import { errorMessage, successMessage } from "@/_data/message"
-import { errorToastOptions, successToastOptions } from "@/_data/toast"
+import { errorMessage } from "@/_data/message"
+import { toastError, toastSuccess } from "@/_data/toast"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
 import { randomNum } from "@/_utils/math"
 import { checkNewPost, generatePostData } from "@/_utils/post"
 import classNames from "classNames"
-import { toast } from "react-toastify"
 import Preview from "./Preview"
 import ThumbnailStyle from "./ThumbnailStyle"
 import style from "./style.module.scss"
@@ -53,14 +52,14 @@ export default function RendingSection() {
       clearNewPost("all")
 
       router.push("/") // todo
-      toast.success(successMessage["posting"], successToastOptions("posting"))
+      toastSuccess("posting")
     },
   })
 
   const sendNewPostError = (type: ErrorTypes | null) => {
     if (!type) return
     setError({ type, text: errorMessage[type] })
-    toast.error(errorMessage[type], errorToastOptions)
+    toastError(type)
     setTimeout(() => {
       setError({ type: "clear" })
     }, 3000)
@@ -138,7 +137,7 @@ export default function RendingSection() {
     } else {
       if (userData) {
         if (!userData.user) {
-          toast.success(successMessage["loginNewPost"], successToastOptions("loginNewPost"))
+          toastSuccess("loginNewPost")
           setModal("loginNewPost")
         } else {
           const createPost = generatePostData({ newPost, content, candidates, thumbnail, user: userData.user })

@@ -1,3 +1,5 @@
+$white: white;
+
 $pink-soft: rgba(255, 176, 176, 0.7);
 $pink: rgba(255, 138, 138, 0.8);
 $pink-hard: rgba(229, 106, 106, 0.9);
@@ -37,6 +39,13 @@ $image-candidate-height: 154px;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@mixin center_fix() {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 @mixin full() {
   position: absolute;
   top: 0;
@@ -54,18 +63,19 @@ $z-index-map: (
   modal: 250,
   preview: 300,
   preview-content: 350,
+  dark-mode-toggle: 400,
 );
 
 @mixin z-index($id) {
   z-index: map-get($z-index-map, $id);
 }
 
-@mixin border($color: $border) {
+@mixin border($color: var(--border)) {
   border: 1px solid $color;
 }
 
 @mixin bg-shine() {
-  background: linear-gradient(45deg, $pink, #f5ff62, $pink);
+  background: linear-gradient(45deg, var(--pink), #f5ff62, var(--pink));
   background-size: 200% 200%;
   animation: shine 2s linear infinite;
 }
@@ -80,8 +90,8 @@ $z-index-map: (
 
 @mixin modal-inner {
   background: rgb(255, 255, 255);
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%);
-  border: 1px solid $pink-soft;
+  background: var(--radial-bg);
+  border: 1px solid var(--pink-soft);
   box-shadow: 0 15px 25px rgba(55, 34, 0, 0.1);
   padding: 22px 30px;
   border-radius: 10px;
@@ -180,11 +190,11 @@ $z-index-map: (
       margin-right: 8px;
       width: 30px;
       height: 30px;
-      background-color: $pink-soft;
+      background-color: var(--pink-soft);
       border-radius: 100%;
       @include flex();
       i {
-        color: white;
+        color: var(--text-white);
         font-size: 14px;
       }
     }
@@ -202,26 +212,26 @@ $z-index-map: (
   display: flex;
   align-items: center;
   font-size: 11px;
-  color: white;
+  color: var(--text-white);
   .label {
     margin-left: 5px;
   }
   &.polling {
-    background-color: $pink;
+    background-color: var(--pink);
     &:hover {
-      background-color: $pink-hard;
+      background-color: var(--pink-hard);
     }
   }
   &.contest {
-    background-color: $purple;
+    background-color: var(--purple);
     &:hover {
-      background-color: $purple-hover;
+      background-color: var(--purple-hover);
     }
   }
   &.tournament {
-    background-color: $orange;
+    background-color: var(--orange);
     &:hover {
-      background-color: $orange-hover;
+      background-color: var(--orange-hover);
     }
   }
 }

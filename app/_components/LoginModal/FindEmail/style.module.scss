@@ -17,14 +17,14 @@
         padding: 15px 13px;
         margin: 7px 0;
         font-size: 14px;
-        color: $black-soft;
+        color: var(--black-soft);
         &.active {
-          border-color: $purple;
+          border-color: var(--purple);
         }
       }
       label {
         position: absolute;
-        color: $gray;
+        color: var(--gray);
         font-size: 14px;
         top: 0;
         left: 0;
@@ -33,9 +33,9 @@
         transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 350ms;
         &.active {
           z-index: 20;
-          background-color: white;
+          background-color: var(--white);
           transform: scale(0.85) translate(10px, 0px);
-          color: $purple-hover;
+          color: var(--purple-hover);
         }
       }
     }
@@ -45,15 +45,15 @@
     margin-top: 5px;
     button {
       border-radius: 8px;
-      background-color: $purple;
+      background-color: var(--purple);
       padding: 15px 13px;
       width: 100%;
       &:hover {
-        background-color: $purple-hover;
+        background-color: var(--purple-hover);
       }
     }
     span {
-      color: white;
+      color: var(--text-white);
       font-weight: 700;
       font-size: 14px;
     }

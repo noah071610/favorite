@@ -94,17 +94,17 @@
   @include flex();
   width: 26px;
   height: 26px;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: var(--white);
   border-radius: 100%;
   z-index: 20;
   .delete-icon {
     font-size: 10px;
-    color: $gray-hard;
+    color: var(--gray-hard);
   }
   &:hover {
-    background-color: $pink-soft;
+    background-color: var(--pink-soft);
     .delete-icon {
-      color: white;
+      color: var(--text-white);
     }
   }
 }

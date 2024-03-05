@@ -1,9 +1,5 @@
 "use client"
 
-import classNames from "classNames"
-import style from "./style.module.scss"
-const cx = classNames.bind(style)
-
 export default function Confirm({
   title,
   description,
@@ -19,11 +15,11 @@ export default function Confirm({
   }
 }) {
   return (
-    <div className={cx(style.confirm)}>
-      <div className={cx(style.inner)}>
+    <div className={"global-confirm"}>
+      <div className={"inner"}>
         <h3 dangerouslySetInnerHTML={{ __html: title }}></h3>
         {description && <p>{description}</p>}
-        <div className={cx(style.btn)}>
+        <div className={"btn"}>
           <button onClick={() => onClickConfirm(true)}>
             <span>{customBtn && customBtn?.yes ? customBtn.yes : "네"}</span>
           </button>

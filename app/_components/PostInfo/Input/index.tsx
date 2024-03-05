@@ -1,9 +1,6 @@
 import { useNewPostStore } from "@/_store/newPost"
 
-import classNames from "classNames"
 import React from "react"
-import style from "../style.module.scss"
-const cx = classNames.bind(style)
 
 export const InfoInput = React.memo(() => {
   const { newPost, setNewPost } = useNewPostStore()
@@ -17,13 +14,13 @@ export const InfoInput = React.memo(() => {
     newPost && (
       <>
         <input
-          className={cx(style["title-input"])}
+          className={"title-input"}
           placeholder="제목 입력"
           value={newPost.title ?? ""}
           onChange={(e) => onChangeInput(e, "title")}
         />
         <input
-          className={cx(style["description-input"])}
+          className={"description-input"}
           placeholder="설명 입력"
           value={newPost.description ?? ""}
           onChange={(e) => onChangeInput(e, "description")}

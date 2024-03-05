@@ -10,12 +10,12 @@
     font-weight: 700;
     margin-bottom: 10px;
     text-align: center;
-    background-color: $gray-soft;
+    background-color: var(--gray-soft);
     padding: 7px 15px;
   }
   textarea {
     width: 100%;
-    background-color: $gray-soft;
+    background-color: var(--gray-soft);
     font-size: 15px;
     line-height: 1.2;
     text-align: center;
@@ -28,17 +28,17 @@
   @include flex();
   &:hover,
   &.active {
-    background-color: $gray-soft;
+    background-color: var(--gray-soft);
     &::before {
-      border-color: $pink;
+      border-color: var(--pink);
       opacity: 0.3;
     }
     i {
-      color: $pink-hard;
+      color: var(--pink-hard);
     }
   }
   i {
-    color: $gray-hard;
+    color: var(--gray-hard);
     font-size: 40px;
   }
 }

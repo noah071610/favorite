@@ -28,6 +28,20 @@ export const contentTypesArr = [
   },
 ]
 
+export const typeSelectors = [
+  {
+    value: "all",
+    link: "/?query=all",
+    label: "모두 보기",
+    icon: (style: any = {}) => (
+      <>
+        <i className={"fa-solid fa-list " + style["type-icon"]} />
+      </>
+    ),
+  },
+  ...contentTypesArr,
+]
+
 type ContentItem = {
   link: string
   label: string

@@ -1,7 +1,7 @@
 import { UserType } from "../user"
 
 export type ContentLayoutType = "text" | "image" | "textImage"
-export type PostFormatType = "default" | "secret" | "preview"
+export type PostFormatType = "default" | "secret" | "preview" | "template"
 export type PostingStatus = "init" | "edit" | "rending"
 export type PostContentType = "polling" | "contest" | "tournament"
 export type ThumbnailType = "custom" | "layout" | "none"
@@ -34,7 +34,15 @@ export interface NewPostType extends PostBaseType {
 
 export interface PostCardType extends PostBaseType {
   type: PostContentType
+  createdAt: Date
+}
+
+export interface TemplatePostCardType extends PostBaseType {
+  type: PostContentType
   user: UserType
+  content: {
+    candidates: { imageSrc: string; title: string; description: string }[] // memo: 대충 두개만 쓸거라.. 두개만 넣음
+  }
   createdAt: Date
 }
 
@@ -43,6 +51,7 @@ export interface PostType extends PostBaseType {
   user: UserType
   comments: CommentType[]
   createdAt: Date
+  // memo: 세부적인 content 타입은 따로 Extend해서 작성해 두었다. 헷갈려...
 }
 
 export interface CommentType {

@@ -1,14 +1,19 @@
+import "@/_styles/global-components.scss"
 import "@/_styles/global.scss"
+import "swiper/css"
+import "swiper/css/free-mode"
+
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { ToastContainer } from "react-toastify"
-import Header from "./_components/Header"
+import Header from "./_components/@Global/Header"
 import OverlayInjector from "./_hooks/OverlayInjector"
 import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
 
 import "react-toastify/dist/ReactToastify.css"
-import Aside from "./_components/Aside"
-import Init from "./_components/Init"
+import Aside from "./_components/@Global/Aside"
+import Init from "./_components/@Global/Init"
+import { ScriptTag } from "./_utils/darkmode"
 
 const pretendard = localFont({
   src: [
@@ -53,7 +58,8 @@ export default async function RootLayout({
           />
           <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
         </head>
-        <body>
+        <body suppressHydrationWarning={true}>
+          <ScriptTag />
           <ReactQueryProvider>
             <Init />
             <Header />

@@ -1,9 +1,9 @@
 "use client"
 
-import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
+import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import { _url } from "@/_data"
-import { errorMessage, successMessage } from "@/_data/message"
-import { successToastOptions } from "@/_data/toast"
+import { errorMessage } from "@/_data/message"
+import { toastSuccess } from "@/_data/toast"
 import { login, refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
@@ -11,7 +11,6 @@ import { Providers, UserQueryType } from "@/_types/user"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useRef, useState } from "react"
-import { toast } from "react-toastify"
 import style from "../style.module.scss"
 
 const cx = classNames.bind(style)
@@ -99,7 +98,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
     if (modalStatus === "login") {
       setTimeout(() => {
         setModal("none")
-        toast.success(successMessage["login"], successToastOptions("login"))
+        toastSuccess("login")
       }, 2000)
     } else {
       setModal("newPostLoginSuccess")

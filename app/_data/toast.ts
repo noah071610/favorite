@@ -1,4 +1,5 @@
-import { Bounce, ToastOptions } from "react-toastify"
+import { Bounce, ToastOptions, toast } from "react-toastify"
+import { errorMessage, successMessage } from "./message"
 
 export const errorToastOptions = {
   position: "top-right",
@@ -11,6 +12,7 @@ export const errorToastOptions = {
   theme: "light",
   transition: Bounce,
 } as ToastOptions<unknown>
+export const toastError = (key: keyof typeof errorMessage) => toast.success(errorMessage[key], errorToastOptions)
 
 export const successToastOptions = (id: string) =>
   ({
@@ -25,3 +27,5 @@ export const successToastOptions = (id: string) =>
     transition: Bounce,
     toastId: id,
   } as ToastOptions<unknown>)
+export const toastSuccess = (key: keyof typeof successMessage) =>
+  toast.success(successMessage[key], successToastOptions(key))

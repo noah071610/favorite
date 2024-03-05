@@ -1,0 +1,18 @@
+@import "@/_styles/variables.scss";
+
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  @include z-index(dark-mode-toggle);
+  svg {
+    width: 25px;
+    height: 25px;
+    padding: 10px;
+  }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+}

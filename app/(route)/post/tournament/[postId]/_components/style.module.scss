@@ -23,7 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $gray-soft;
+  background-color: var(--gray-soft);
   height: calc(100vh - 100px - 80px);
   margin-bottom: 50px;
 
@@ -34,7 +34,7 @@
 
   &.result {
     overflow: hidden;
-    background-color: white;
+    background-color: var(--white);
   }
 
   .loading {
@@ -42,7 +42,7 @@
     gap: 10px;
     i {
       font-size: 30px;
-      color: $pink-soft;
+      color: var(--pink-soft);
     }
   }
 }
@@ -66,7 +66,7 @@
   h3 {
     font-size: 16px;
     line-height: 1.4;
-    color: $black-soft;
+    color: var(--black-soft);
     margin-bottom: 20px;
   }
 
@@ -79,7 +79,7 @@
       display: block;
     }
     button {
-      background-color: white;
+      background-color: var(--white);
       width: 100%;
       display: block;
       padding: 10px 15px;
@@ -89,21 +89,21 @@
       align-items: center;
       justify-content: space-between;
       span {
-        color: $black-soft;
+        color: var(--black-soft);
         font-size: 14px;
       }
       i {
         transition: all 240ms;
-        color: $gray-hard;
+        color: var(--gray-hard);
       }
       &:hover {
-        border-color: $pink-hard;
+        border-color: var(--pink-hard);
         i {
-          color: $pink-hard;
+          color: var(--pink-hard);
           transform: translateX(5px);
         }
         span {
-          color: $pink-hard;
+          color: var(--pink-hard);
         }
       }
     }

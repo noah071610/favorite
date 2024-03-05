@@ -1,4 +1,4 @@
-import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
+import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 
 const ContestLoading = () => {
   return <FavoriteLoading type="full" />

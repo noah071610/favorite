@@ -1,6 +1,6 @@
 "use client"
 
-import LoadingBar from "@/_components/Loading/LoadingBar"
+import LoadingBar from "@/_components/@Global/Loading/LoadingBar"
 import { getImageUrl } from "@/_data"
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { fadeMoveUpAnimation } from "@/_styles/animation"

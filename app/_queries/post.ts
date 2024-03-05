@@ -7,6 +7,18 @@ export async function getPosts({ pageParam = 0, query }: { pageParam?: number; q
   return response.data
 }
 
+export async function getPopularPosts() {
+  const response = await API.get(`/post/popular`)
+
+  return response.data
+}
+
+export async function getTemplatePosts() {
+  const response = await API.get(`/post/template`)
+
+  return response.data
+}
+
 export async function getPost(postId: string) {
   const response = await API.get(`/post?postId=${postId}`)
 

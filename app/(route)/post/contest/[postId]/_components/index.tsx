@@ -4,11 +4,10 @@ import { ContestCandidateType, ContestPostType } from "@/_types/post/contest"
 import { useEffect, useState } from "react"
 import ResultPart from "./ResultPart"
 
+import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import CommentPart from "@/_components/CommentPart"
-import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
-import { successMessage } from "@/_data/message"
-import { successToastOptions } from "@/_data/toast"
+import { toastSuccess } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
@@ -16,7 +15,6 @@ import { finishPlay } from "@/_queries/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
 import { produce } from "immer"
-import { toast } from "react-toastify"
 import Candidate from "./Candidate"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
@@ -43,7 +41,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
-      toast.success(successMessage["voted"], successToastOptions("voted"))
+      toastSuccess("voted")
     }
   }, [isVoted, isImagesLoaded])
 

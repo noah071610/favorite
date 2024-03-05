@@ -1,0 +1,80 @@
+@import "@/_styles/variables.scss";
+
+$side-width: 300px;
+
+.header {
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  @include z-index(header);
+
+  border-bottom: 1px solid rgba(214, 214, 214, 0.7);
+  background-color: var(--white);
+
+  .inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .left {
+    width: $side-width;
+    display: flex;
+    align-items: center;
+    img {
+      width: 40px;
+    }
+    button {
+      width: 42px; // memo: aside는 52
+      height: 100%;
+      .icon {
+        @include flex;
+        i {
+          font-size: 17px;
+        }
+      }
+    }
+  }
+
+  // .center {
+
+  // }
+
+  .right {
+    width: $side-width;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    a {
+      padding: 9px 15px;
+      border-radius: 6px;
+      span {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-white);
+      }
+    }
+    .login {
+      width: 80px;
+      background-color: var(--pink);
+      @include flex();
+      &:hover {
+        background-color: var(--pink-hard);
+      }
+    }
+    .new-post {
+      background-color: var(--purple);
+      &:hover {
+        background-color: var(--purple-hover);
+      }
+    }
+  }
+}
+
+.ghost {
+  height: calc(40px + 20px);
+}

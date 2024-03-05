@@ -20,8 +20,8 @@
     @include flex();
     font-weight: 700;
     border-radius: 100%;
-    background-color: $pink-soft;
-    color: white;
+    background-color: var(--pink-soft);
+    color: var(--text-white);
     padding: 4px;
     font-size: 20px;
     width: 30px;
@@ -32,7 +32,7 @@
   .inner {
     display: grid;
     grid-template-columns: 80px 1fr;
-    background-color: white;
+    background-color: var(--white);
     gap: 10px;
     padding: 8px;
     cursor: pointer;
@@ -40,10 +40,10 @@
     border-radius: 10px;
 
     &:hover {
-      background-color: $gray-soft;
+      background-color: var(--gray-soft);
       .content {
         h3 {
-          color: $pink-hard;
+          color: var(--pink-hard);
         }
       }
     }
@@ -110,7 +110,7 @@
     .select {
       font-size: 15px;
       font-weight: 700;
-      color: white;
+      color: var(--text-white);
     }
     &:hover {
       background: rgba(229, 106, 106, 1);
@@ -120,9 +120,9 @@
   &.selected {
     .inner {
       background: rgb(255, 255, 255);
-      background: radial-gradient(circle, rgba(255, 255, 255, 1) 23%, rgba(255, 241, 244, 1) 100%);
+      background: var(--radial-bg);
       h3 {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
     }
     .select-btn {
@@ -215,7 +215,7 @@
         margin-bottom: 0px;
         padding: 10px;
         padding-top: 30px;
-        color: white;
+        color: var(--text-white);
         background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, rgba(0, 0, 0, 0.6) 100%);
         z-index: 20;
       }

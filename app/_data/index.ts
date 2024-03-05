@@ -28,6 +28,8 @@ export const queryKey = {
     tournament: ["home", "tournament"],
     polling: ["home", "polling"],
     contest: ["home", "contest"],
+    popular: ["home", "popular"],
+    template: ["home", "template"],
   },
   new: {
     create: ["new", "create"],

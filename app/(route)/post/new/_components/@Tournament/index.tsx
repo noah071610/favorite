@@ -14,8 +14,7 @@ import style from "./style.module.scss"
 import { getImageUrl } from "@/_data"
 import { noImageUrl } from "@/_data/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
-import "swiper/css"
-import "swiper/css/free-mode"
+
 import Dropzone from "../@Contest/Dropzone"
 
 const cx = classNames.bind(style)

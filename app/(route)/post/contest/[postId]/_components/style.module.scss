@@ -12,21 +12,23 @@
     .content {
       height: auto;
       min-height: calc(100vh - 100px - 60px);
-      background-color: white;
+      background-color: var(--white);
       display: flex;
       align-items: center;
       flex-direction: column;
       overflow: hidden;
+      padding-bottom: 50px;
+      .candidates {
+        margin-bottom: 30px;
+      }
     }
   }
 }
 
 .content {
   width: $content-width;
-  background-color: $gray-soft;
+  background-color: var(--gray-soft);
   position: relative;
-
-  padding-bottom: 50px;
 
   @include border();
   border-radius: 10px;
@@ -41,7 +43,6 @@
       height: 100%;
       width: 100%;
     }
-    margin-bottom: 30px;
   }
 }
 

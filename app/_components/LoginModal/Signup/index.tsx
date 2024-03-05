@@ -1,13 +1,12 @@
-import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
-import { errorMessage, successMessage } from "@/_data/message"
-import { errorToastOptions, successToastOptions } from "@/_data/toast"
+import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
+import { errorMessage } from "@/_data/message"
+import { toastError, toastSuccess } from "@/_data/toast"
 import { hasEmail, registerUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useRef, useState } from "react"
-import { toast } from "react-toastify"
 import style from "../style.module.scss"
 
 const cx = classNames.bind(style)
@@ -127,12 +126,12 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
       .then(({ user }) => {
         setTimeout(() => {
           queryClient.setQueryData(["user"], { msg: "ok", user })
-          toast.success(successMessage["register"], successToastOptions("register"))
+          toastSuccess("register")
           setModal("none")
         }, 2000)
       })
       .catch(() => {
-        toast.error(errorMessage["unknown"], errorToastOptions)
+        toastError("unknown")
       })
   }
 

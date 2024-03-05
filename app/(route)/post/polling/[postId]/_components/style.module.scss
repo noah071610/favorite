@@ -39,7 +39,7 @@
   .left {
     width: 400px;
     padding-right: 12px;
-    border-right: 1px solid $border;
+    border-right: 1px solid var(--border);
     overflow: scroll; //memo: 투표 페이지에서만
   }
 
@@ -57,11 +57,11 @@
           margin-right: 8px;
           width: 30px;
           height: 30px;
-          background-color: $pink-soft;
+          background-color: var(--pink-soft);
           border-radius: 100%;
           @include flex();
           i {
-            color: white;
+            color: var(--text-white);
             font-size: 14px;
           }
         }
@@ -99,7 +99,7 @@
         .left {
           width: 400px;
           padding-right: 12px;
-          border-right: 1px solid $border;
+          border-right: 1px solid var(--border);
         }
         .right {
           display: block;

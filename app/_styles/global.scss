@@ -1,3 +1,5 @@
+@import "@/_styles/variables.scss";
+
 html,
 body,
 div,
@@ -177,9 +179,9 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px white inset !important; /* 원하는 배경색으로 변경 */
 }
 
-.Toastify__toast--error {
-  background: rgb(255, 255, 255) !important;
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%) !important;
+.Toastify__toast {
+  background: var(--white) !important;
+  background: var(--radial-bg) !important;
   border: 1px solid rgba(235, 235, 235, 0.45) !important;
 }
 .Toastify__toast-body > div:last-child {
@@ -212,4 +214,92 @@ input:-webkit-autofill:focus {
   to {
     transform: scale(1);
   }
+}
+
+:root {
+  body {
+    color: black;
+    background-color: white;
+  }
+  --white: white;
+  --text-white: white;
+  --black: black;
+
+  --pink-soft: rgba(255, 176, 176, 0.7);
+  --pink: rgba(255, 138, 138, 0.8);
+  --pink-hard: rgba(229, 106, 106, 0.9);
+
+  --gray-soft: rgba(235, 235, 235, 0.45);
+  --gray: rgba(161, 161, 161, 0.6);
+  --gray-hard: rgb(158, 158, 158);
+
+  --border: rgba(214, 214, 214, 0.7);
+
+  --purple: rgba(217, 171, 255, 0.875);
+  --purple-hover: rgba(190, 111, 255, 0.9);
+  --purple-hard: rgba(170, 68, 254, 0.9);
+
+  --orange: rgba(255, 182, 126, 0.875);
+  --orange-hover: rgba(255, 148, 34, 0.903);
+
+  --black-soft: rgb(80, 80, 86);
+
+  --bg-color: rgba(249, 249, 249, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.08);
+
+  --red: rgba(255, 82, 79, 0.8);
+
+  --input-color: rgba(234, 234, 234, 0.4);
+  --radial-bg: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%);
+  --black-transparent: rgba(0, 0, 0, 0.1);
+  --overlay: rgba(0, 0, 0, 0.3);
+
+  --green: rgba(94, 255, 94, 0.8);
+  --green-hard: rgba(81, 255, 81, 0.9);
+}
+
+body.dark {
+  color: white;
+  background-color: black;
+  i {
+    color: white;
+  }
+  .Toastify__toast {
+    border-color: transparent !important;
+  }
+  background-color: rgb(15, 15, 15);
+  --white: rgb(15, 15, 15);
+  --text-white: white;
+  --black: white;
+
+  --pink-soft: rgba(229, 106, 106, 1);
+  --pink: rgba(255, 138, 138, 1);
+  --pink-hard: rgba(255, 176, 176, 1);
+
+  --gray-soft: rgba(68, 68, 68, 0.45);
+  --gray: rgba(104, 104, 104, 0.6);
+  --gray-hard: rgb(125, 125, 125);
+
+  --border: rgb(63, 63, 63);
+
+  --purple: rgba(217, 171, 255, 1);
+  --purple-hover: rgba(190, 111, 255, 1);
+
+  --orange: rgba(255, 182, 126, 1);
+  --orange-hover: rgba(255, 148, 34, 1);
+
+  --black-soft: rgb(255, 255, 255);
+
+  --bg-color: black;
+  --shadow-color: rgba(255, 255, 255, 0.08);
+
+  --red: rgba(242, 60, 60, 0.8);
+
+  --input-color: rgba(255, 255, 255, 0.1);
+  --radial-bg: rgb(15, 15, 15);
+  --black-transparent: rgba(255, 255, 255, 0.3);
+  --overlay: rgba(0, 0, 0, 0.5);
+
+  --green: rgba(105, 246, 105, 0.8);
+  --green-hard: rgba(81, 255, 81, 0.9);
 }

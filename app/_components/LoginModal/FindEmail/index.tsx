@@ -1,13 +1,11 @@
 "use client"
 
-import { successMessage } from "@/_data/message"
-import { successToastOptions } from "@/_data/toast"
+import { toastSuccess } from "@/_data/toast"
 import { login } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useRef, useState } from "react"
-import { toast } from "react-toastify"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -47,7 +45,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
       case "ok":
         if (modalStatus === "login") {
           setModal("none")
-          toast.success(successMessage["login"], successToastOptions("login"))
+          toastSuccess("login")
         } else {
           setModal("newPostLoginSuccess")
         }

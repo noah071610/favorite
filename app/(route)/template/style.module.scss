@@ -1,0 +1,33 @@
+.grid {
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .template-card {
+    display: grid;
+    grid-template-columns: 530px 1fr;
+    gap: 30px;
+  }
+
+  .candidates {
+    padding: 15px;
+    overflow: hidden;
+    border-radius: 15px;
+    background-color: var(--white);
+    h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    &-inner {
+      overflow: scroll;
+      height: 330px;
+      h4 {
+        font-weight: normal;
+      }
+      ul {
+        height: 100%;
+      }
+    }
+  }
+}

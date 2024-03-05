@@ -30,25 +30,25 @@
     border-radius: 5px;
     padding: 7px 10px;
     .text {
-      color: $black-soft;
+      color: var(--black-soft);
       font-size: 13px;
       margin-right: 7px;
     }
     i {
       font-size: 11px;
-      color: $black-soft;
+      color: var(--black-soft);
       transition: 300ms all;
       &.asc {
         transform: rotate(180deg);
       }
     }
     &.active {
-      border-color: $pink-hard;
+      border-color: var(--pink-hard);
       .text {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
       i {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
     }
   }
@@ -66,18 +66,18 @@
     & > a {
       padding: 7px 10px;
       font-size: 13px;
-      color: $black-soft;
+      color: var(--black-soft);
     }
     &.active {
-      border-color: $pink-hard;
+      border-color: var(--pink-hard);
       & > a {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
     }
     &.disabled {
-      background-color: $border;
+      background-color: var(--border);
       & > a {
-        color: $gray-hard;
+        color: var(--gray-hard);
       }
     }
   }

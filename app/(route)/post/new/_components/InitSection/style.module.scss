@@ -20,7 +20,7 @@
         transition: color 300ms;
         &.error {
           animation: shakeX 450ms 100ms;
-          color: $red;
+          color: var(--red);
         }
       }
     }
@@ -39,7 +39,7 @@
           margin-bottom: 10px;
         }
         i {
-          color: $gray-hard;
+          color: var(--gray-hard);
           font-size: 30px;
           transition: all 300ms;
         }
@@ -48,25 +48,25 @@
           font-size: 30px;
         }
         span {
-          color: $gray-hard;
+          color: var(--gray-hard);
           transition: all 300ms;
         }
         box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.08);
 
         &:hover {
           transform: translateY(-10px);
-          border-color: $pink-hard;
+          border-color: var(--pink-hard);
           box-shadow: 0px 11px 12px rgba(0, 0, 0, 0.08);
           i,
           span {
-            color: $pink-hard;
+            color: var(--pink-hard);
           }
         }
         &.active {
-          border-color: $pink-hard;
+          border-color: var(--pink-hard);
           i,
           span {
-            color: $pink-hard;
+            color: var(--pink-hard);
           }
           &:hover {
             transform: translateY(0);

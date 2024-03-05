@@ -6,7 +6,7 @@
   display: flex;
   position: relative;
   border-radius: 12px;
-  background-color: white;
+  background-color: var(--white);
   overflow: hidden;
   padding: 15px;
 
@@ -29,7 +29,7 @@
         }
       }
       h1 {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
     }
 
@@ -56,7 +56,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         word-wrap: break-word;
-        color: $black-soft;
+        color: var(--black-soft);
         height: 50px;
       }
     }
@@ -84,7 +84,7 @@
       height: 150px;
       border-radius: 8px;
       position: relative;
-      background-color: $gray-soft;
+      background-color: var(--gray-soft);
       &::before {
         @include full;
         content: "";
@@ -130,7 +130,7 @@
       .suffix {
         margin-left: 5px;
         font-size: 13px;
-        color: $black-soft;
+        color: var(--black-soft);
       }
     }
     .right {
@@ -140,21 +140,35 @@
       a {
         padding: 10px 12px;
         border-radius: 8px;
-        background-color: $gray-soft;
+        background-color: var(--gray-soft);
         @include flex();
         i,
         span {
-          color: $black-soft;
+          color: var(--black-soft);
           font-size: 14px;
         }
         span {
           margin-left: 8px;
         }
         &:hover {
-          background-color: $pink;
+          background-color: var(--pink);
           i,
           span {
-            color: white;
+            color: var(--text-white);
+          }
+        }
+      }
+      .template {
+        background-color: var(--purple-hover);
+        i,
+        span {
+          color: var(--text-white);
+        }
+        &:hover {
+          background-color: var(--purple-hard);
+          i,
+          span {
+            color: var(--text-white);
           }
         }
       }

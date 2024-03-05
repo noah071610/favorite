@@ -20,14 +20,14 @@
 .no-candidate {
   border-radius: 11px;
   position: relative;
-  background-color: white;
+  background-color: var(--white);
   height: calc($candidate-height + 5px);
-  border: 1px dashed $border;
-  background-color: $gray-soft;
+  border: 1px dashed var(--border);
+  background-color: var(--gray-soft);
   @include flex();
   span {
     font-size: 15px;
-    color: $gray-hard;
+    color: var(--gray-hard);
   }
 }
 .add-candidate-btn {
@@ -43,12 +43,12 @@
     @include flex();
     i {
       font-size: 12px;
-      color: $border;
+      color: var(--border);
     }
     &:hover {
-      border-color: $pink;
+      border-color: var(--pink);
       i {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
     }
   }
@@ -87,7 +87,7 @@
       padding: 15px;
       i {
         font-size: 25px;
-        color: $gray-hard;
+        color: var(--gray-hard);
       }
       .fa-plus {
         font-size: 14px;
@@ -97,19 +97,19 @@
     }
     span {
       font-size: 14px;
-      color: $gray-hard;
+      color: var(--gray-hard);
     }
 
     &:hover,
     &.active {
       .icon-wrapper {
-        border-color: $pink-hard;
+        border-color: var(--pink-hard);
         i {
-          color: $pink-hard;
+          color: var(--pink-hard);
         }
       }
       span {
-        color: $pink-hard;
+        color: var(--pink-hard);
       }
     }
   }
@@ -124,7 +124,7 @@
   textarea {
     width: 100%;
     display: block;
-    background-color: rgba(234, 234, 234, 0.4);
+    background-color: var(--input-color);
     padding: 10px;
     font-size: 15px;
     word-break: keep-all;

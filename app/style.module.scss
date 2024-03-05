@@ -1,35 +1,10 @@
-@import "@/_styles/variables.scss";
-
-.home-page {
-  background-color: $bg-color;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  padding-bottom: 180px;
-  .content {
-    padding: 30px 0;
-    min-height: calc(100vh - 60px);
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 20px;
-      width: 1000px;
-    }
-  }
-  .loading {
-    padding-top: 180px;
-  }
-}
-
 .observer {
   height: 50px;
 }
 
-.search {
-  width: 100%;
-  padding: 25px 15px;
-  background-color: white;
-  border-radius: 10px;
-  margin-bottom: 20px;
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  width: 1000px;
 }

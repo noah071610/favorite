@@ -3,14 +3,12 @@
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { useEffect, useState } from "react"
 
-import Overlay from "@/_components/Overlay"
+import Overlay from "@/_components/@Global/Overlay"
 import PostInfo from "@/_components/PostInfo"
-import { successMessage } from "@/_data/message"
-import { successToastOptions } from "@/_data/toast"
+import { toastSuccess } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { useMainStore } from "@/_store/main"
 import classNames from "classNames"
-import { toast } from "react-toastify"
 import ResultPart from "./ResultPart"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
@@ -47,7 +45,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
     resolve: (target) => {
       setStatus("result")
       setPickedCandidate(target)
-      toast.success(successMessage["voted"], successToastOptions("voted"))
+      toastSuccess("voted")
     },
   })
 

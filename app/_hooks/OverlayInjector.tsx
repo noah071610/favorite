@@ -1,6 +1,6 @@
 "use client"
 
-import Overlay from "@/_components/Overlay"
+import Overlay from "@/_components/@Global/Overlay"
 import { useMainStore } from "@/_store/main"
 import "@/_styles/global.scss"
 

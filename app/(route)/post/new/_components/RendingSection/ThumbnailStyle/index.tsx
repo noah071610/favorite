@@ -2,7 +2,7 @@
 
 import { useNewPostStore } from "@/_store/newPost"
 
-import NoThumbnail from "@/_components/Loading/NoThumbnail"
+import NoThumbnail from "@/_components/@Global/Loading/NoThumbnail"
 import { uploadImage } from "@/_queries/newPost"
 import { ThumbnailType } from "@/_types/post/post"
 import { useCallback, useEffect } from "react"

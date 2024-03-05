@@ -9,14 +9,14 @@ import classNames from "classNames"
 import Link from "next/link"
 import { useState } from "react"
 import CountUp from "react-countup"
-import NoThumbnail from "../Loading/NoThumbnail"
+import NoThumbnail from "../@Global/Loading/NoThumbnail"
 import ShareModal from "./ShareModal"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 // todo: 이미지 어레이 그거 타입 지우기
 
-export default function PostCard({ postCard }: { postCard: PostCardType }) {
+export default function PostCard({ postCard, isTemplate }: { postCard: PostCardType; isTemplate?: boolean }) {
   const { description, type, postId, thumbnail, title, count } = postCard
   const [onShareModal, setOnShareModal] = useState(false)
   const thumbnailArr = getThumbnail(thumbnail)
@@ -26,8 +26,11 @@ export default function PostCard({ postCard }: { postCard: PostCardType }) {
 
   const typeData = contentTypesArr.find((v) => v.value === type)
 
-  const onClickShare = () => {
-    setOnShareModal(true)
+  const onClickPrimaryBtn = () => {
+    if (isTemplate) {
+    } else {
+      setOnShareModal(true)
+    }
   }
 
   return (
@@ -91,17 +94,17 @@ export default function PostCard({ postCard }: { postCard: PostCardType }) {
             <div className={cx(style.right)}>
               <Link href={`/post/${type}/${postId}`}>
                 <i className={cx("fa-solid", "fa-play")}></i>
-                <span>플레이</span>
+                <span>{isTemplate ? "플레이 해보기" : "플레이"}</span>
               </Link>
-              <button onClick={onClickShare}>
+              <button className={cx({ [style.template]: isTemplate })} onClick={onClickPrimaryBtn}>
                 <i className={cx("fa-solid", "fa-arrow-up-from-bracket")}></i>
-                <span>공유하기</span>
+                <span>{isTemplate ? "템플릿 사용하기" : "공유하기"}</span>
               </button>
             </div>
           </div>
         </div>
       </div>
-      {onShareModal && <ShareModal postCard={postCard} setOnShareModal={setOnShareModal} />}
+      {onShareModal && !isTemplate && <ShareModal postCard={postCard} setOnShareModal={setOnShareModal} />}
     </article>
   )
 }

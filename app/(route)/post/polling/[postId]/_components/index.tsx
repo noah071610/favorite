@@ -1,10 +1,9 @@
 "use client"
 
+import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import CommentPart from "@/_components/CommentPart"
-import FavoriteLoading from "@/_components/Loading/FavoriteLoading"
 import PostInfo from "@/_components/PostInfo"
-import { successMessage } from "@/_data/message"
-import { successToastOptions } from "@/_data/toast"
+import { toastSuccess } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
@@ -13,7 +12,6 @@ import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
 import classNames from "classNames"
 import { produce } from "immer"
 import { useEffect, useMemo, useState } from "react"
-import { toast } from "react-toastify"
 import Candidate from "./Candidate"
 import ChartPart from "./ChartPart"
 import SelectPart from "./SelectPart"
@@ -41,7 +39,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
-      toast.success(successMessage["voted"], successToastOptions("voted"))
+      toastSuccess("voted")
     }
   }, [isVoted, isImagesLoaded])
 

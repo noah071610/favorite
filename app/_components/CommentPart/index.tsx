@@ -1,38 +1,32 @@
 "use client"
 
 import { queryKey } from "@/_data"
-import { successMessage } from "@/_data/message"
-import { successToastOptions } from "@/_data/toast"
+import { toastSuccess } from "@/_data/toast"
 import { commenting } from "@/_queries/post"
 import { getUser } from "@/_queries/user"
 import { CommentType } from "@/_types/post/post"
 import { UserQueryType, UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
-import classNames from "classNames"
 import dayjs from "dayjs"
 import "dayjs/locale/ko" // 한국어 로케일 설정
 import { produce } from "immer"
 import { useParams } from "next/navigation"
 import { Dispatch, SetStateAction, useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
-import { toast } from "react-toastify"
-import style from "./style.module.scss"
 
 const formattedDate = (date: any) => dayjs(date).locale("ko").format("YYYY년MM월DD일")
 
-const cx = classNames.bind(style)
-
 function Comment({ user, text, authorId }: { user?: UserType; text: string; authorId: number }) {
   return (
-    <div className={cx(style["comment-area-wrapper"])}>
-      <div className={cx(style["inner"])}>
-        <div className={cx(style["name-space"])}>
-          <span className={cx(style.name)}>{user?.userName ?? "익명"}</span>
-          <span className={cx(style.date)}>{formattedDate(new Date())}</span>
-          {user?.userId === authorId && <span className={cx(style.author)}>작성자</span>}
+    <div className={"comment-area-wrapper"}>
+      <div className={"inner"}>
+        <div className={"name-space"}>
+          <span className={"name"}>{user?.userName ?? "익명"}</span>
+          <span className={"date"}>{formattedDate(new Date())}</span>
+          {user?.userId === authorId && <span className={"author"}>작성자</span>}
         </div>
-        <div className={cx(style.content)}>
-          <p className={cx(style["text"])}>{text}</p>
+        <div className={"content"}>
+          <p className={"text"}>{text}</p>
         </div>
       </div>
     </div>
@@ -82,7 +76,7 @@ function Commenting({
             })
           })
         )
-        toast.success(successMessage["commenting"], successToastOptions("commenting"))
+        toastSuccess("commenting")
         setText("")
         setIsFocused(false)
         setDisplayBtn(false)
@@ -91,15 +85,15 @@ function Commenting({
   }
 
   return (
-    <div className={cx(style["comment-area-wrapper"])}>
-      <div className={cx(style["inner"], { [style.preview]: isPreview })}>
-        <div className={cx(style["name-space"])}>
-          <span className={cx(style.name)}>{user?.userName ?? "익명"}</span>
-          <span className={cx(style.date)}>{formattedDate(new Date())}</span>
-          {user?.userId === authorId && <span className={cx(style.author)}>작성자</span>}
+    <div className={"comment-area-wrapper"}>
+      <div className={`inner ${isPreview ? "preview" : ""}`}>
+        <div className={"name-space"}>
+          <span className={"name"}>{user?.userName ?? "익명"}</span>
+          <span className={"date"}>{formattedDate(new Date())}</span>
+          {user?.userId === authorId && <span className={"author"}>작성자</span>}
         </div>
-        <div className={cx(style["commenting"])}>
-          <div className={cx(style.input, { [style.focus]: isFocused })}>
+        <div className={"commenting"}>
+          <div className={`input ${isFocused ? "focus" : ""}`}>
             <TextareaAutosize
               value={text}
               onChange={handleChange}
@@ -109,20 +103,20 @@ function Commenting({
               }}
               onBlur={() => setIsFocused(false)}
             />
-            <div className={cx(style.border)} />
+            <div className={"border"} />
           </div>
-          <div className={cx(style["commenting-btn"], { [style.focus]: displayBtn })}>
-            <div className={cx(style["inner"])}>
+          <div className={`commenting-btn ${displayBtn ? "focus" : ""}`}>
+            <div className={"inner"}>
               <button
                 onClick={() => {
                   setIsFocused(false)
                   setDisplayBtn(false)
                 }}
-                className={cx(style.cancel)}
+                className={"cancel"}
               >
                 취소
               </button>
-              <button onClick={onClickCommenting} className={cx(style.submit)}>
+              <button onClick={onClickCommenting} className={"submit"}>
                 코멘트
               </button>
             </div>
@@ -145,9 +139,9 @@ export default function CommentPart({
   setPost: Dispatch<SetStateAction<any>>
 }) {
   return (
-    <div className={cx(style["comment-part"])}>
+    <div className={"global-comment-part"}>
       <Commenting setPost={setPost} authorId={authorId} isPreview={isPreview} />
-      <section className={cx(style["comment-list"])}>
+      <section className={"comment-list"}>
         {comments.map(({ text, user: commentUser }, index) => (
           <Comment authorId={authorId} text={text} key={`comment_${index}`} user={commentUser} />
         ))}
