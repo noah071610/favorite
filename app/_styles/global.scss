@@ -216,6 +216,34 @@ input:-webkit-autofill:focus {
   }
 }
 
+@keyframes shine {
+  // memo: 자바스크립트 용
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.global-pc-visible {
+  display: block;
+  @include mobile {
+    display: none;
+  }
+}
+
+.global-mobile-visible {
+  display: none;
+  @include mobile {
+    display: block;
+  }
+}
+
+.global-medium-visible {
+  display: none;
+  @include medium {
+    display: block;
+  }
+}
+
 :root {
   body {
     color: black;

@@ -71,18 +71,18 @@ export default function HomePage() {
   return (
     <>
       <div className={"global-page"}>
-        <div className={"content"}>
+        <div className={"global-page-content"}>
           {posts && popularPosts ? (
             <>
               {(query === "all" || !query) && (
                 <>
-                  <div className={"title"}>
+                  <div className={"global-page-title"}>
                     <h1>
                       <img src="/images/emoji/fire.png" />
                       <span>지금 인기에요!</span>
                     </h1>
 
-                    <div className={"arrows"}>
+                    <div className={"global-page-arrows"}>
                       <button className={"arrow prev"} onClick={handlePrev}>
                         <i className="fa-solid fa-chevron-left"></i>
                       </button>
@@ -91,7 +91,7 @@ export default function HomePage() {
                       </button>
                     </div>
                   </div>
-                  <div className={"popular"}>
+                  <div className={"global-page-popular"}>
                     <Swiper
                       spaceBetween={20}
                       slidesPerView={3}
@@ -99,6 +99,18 @@ export default function HomePage() {
                       navigation={true}
                       className={"slider"}
                       ref={sliderRef}
+                      breakpoints={{
+                        // when window width is >= 0px
+                        0: {
+                          slidesPerView: 2,
+                          spaceBetween: 5,
+                        },
+                        // when window width is >=450px
+                        450: {
+                          slidesPerView: 3,
+                          spaceBetween: 20,
+                        },
+                      }}
                     >
                       {popularPosts.map((v: PostCardType) => (
                         <SwiperSlide className={"slide"} key={`popular_${v.postId}`}>
@@ -109,7 +121,7 @@ export default function HomePage() {
                   </div>
                 </>
               )}
-              <div className={"title"}>
+              <div className={"global-page-title"}>
                 <h1>
                   <img src="/images/emoji/rocket.png" />
                   <span>{titleLabel ? (query === "all" ? "모두 보기" : titleLabel + " 콘텐츠") : "모두 보기"}</span>

@@ -94,8 +94,8 @@ export default function Aside() {
               <Link
                 className={cx({ [style.active]: asPath === v.link })}
                 onClick={closeModal}
-                href={"/dash"}
-                key={"dash"}
+                href={`/user/${user.userId}`}
+                key={"user"}
               >
                 <div className={cx(style.icon)}>{v.children}</div>
                 <span className={cx(style.label)}>대시보드</span>

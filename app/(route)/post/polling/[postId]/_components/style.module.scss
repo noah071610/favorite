@@ -6,17 +6,61 @@
   justify-content: center;
   padding: 30px 0;
 
+  @include medium {
+    padding-top: 50px;
+    padding-bottom: 0;
+    height: calc(100vh);
+  }
+
+  &.result {
+    padding: 30px 0 100px 0;
+    .polling-post-inner {
+      height: 100%;
+    }
+    .left {
+      overflow: visible;
+    }
+    @include medium {
+      padding: 50px 0;
+      height: 100%;
+    }
+  }
+
+  &-inner {
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    @include medium {
+      height: 100%;
+      justify-content: center;
+      padding: 10px;
+    }
+  }
+
   .content {
     width: $content-width;
     display: flex;
     justify-content: center;
-    height: calc(100vh - 100px - 60px);
+    height: calc(100vh - 60px - 20px - (30px * 2));
     padding: 12px;
 
     position: relative;
 
     @include border();
     border-radius: 10px;
+
+    @include large {
+      width: 100%;
+    }
+    @include medium {
+      height: 100%;
+      padding: 0;
+      border: none;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
 
     &.layout-text {
       .left {
@@ -28,6 +72,24 @@
         display: none;
       }
     }
+
+    &.result {
+      height: 100%;
+      min-height: calc(100vh - 80px - 60px);
+      &.layout-text {
+        .left {
+          width: 400px;
+          padding-right: 12px;
+          border-right: 1px solid var(--border);
+        }
+        .right {
+          display: block;
+        }
+      }
+      @include medium {
+        min-height: auto;
+      }
+    }
   }
 
   .candidate-list {
@@ -37,14 +99,19 @@
   }
 
   .left {
-    width: 400px;
+    width: 40%;
     padding-right: 12px;
     border-right: 1px solid var(--border);
-    overflow: scroll; //memo: 투표 페이지에서만
+    overflow: scroll;
+    @include medium {
+      width: 100%;
+      padding: 0;
+      border-right: none;
+    }
   }
 
   .right {
-    width: 600px;
+    width: 60%;
     padding-left: 12px;
     &-inner {
       width: 100%;
@@ -75,36 +142,17 @@
         margin-bottom: 20px;
       }
     }
+    @include medium {
+      display: none;
+      &.result {
+        display: block;
+        width: 100%;
+        padding-left: 0;
+      }
+    }
   }
 
   .comment-wrapper {
     padding: 0 7px;
-  }
-
-  &.result {
-    padding: 30px 0 100px 0;
-
-    .polling-post-inner {
-      height: 100%;
-    }
-
-    .left {
-      overflow: visible;
-    }
-
-    .content {
-      height: 100%;
-      min-height: calc(100vh - 80px - 60px);
-      &.layout-text {
-        .left {
-          width: 400px;
-          padding-right: 12px;
-          border-right: 1px solid var(--border);
-        }
-        .right {
-          display: block;
-        }
-      }
-    }
   }
 }

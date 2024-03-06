@@ -2,11 +2,20 @@
 
 .result {
   width: 100%;
-  padding: 20px;
+  padding-top: 20px;
   display: flex;
   justify-content: center;
   &-inner {
     width: 600px;
+  }
+
+  @include medium {
+    padding: 0;
+  }
+  @include mobile {
+    &-inner {
+      width: 100%;
+    }
   }
 }
 
@@ -16,6 +25,10 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
+
+  @include mobile {
+    margin-bottom: 15px;
+  }
 
   @include section-title;
 }

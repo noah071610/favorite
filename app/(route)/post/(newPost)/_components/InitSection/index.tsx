@@ -18,7 +18,7 @@ export default function InitSection() {
     queryKey: queryKey.user,
   })
   const { error } = useMainStore()
-  const { newPost, clearNewPost, setNewPost, setIsEditOn, setStatus, setIsSavedDataForPathChange } = useNewPostStore()
+  const { newPost, clearNewPost, setNewPost, setStatus } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
   const [typeSave, setTypeSave] = useState<PostContentType | null>(null)
 
@@ -29,8 +29,6 @@ export default function InitSection() {
         setModal("changePostType")
       }
     } else {
-      setIsEditOn(true)
-      setIsSavedDataForPathChange(false)
       clearNewPost(value)
       setNewPost({ type: "type", payload: value })
       setStatus("edit")
@@ -40,8 +38,6 @@ export default function InitSection() {
   const onClickConfirm = useCallback(
     (isOk: boolean) => {
       if (isOk && typeSave) {
-        setIsEditOn(true)
-        setIsSavedDataForPathChange(false)
         clearNewPost(typeSave)
         setNewPost({ type: "type", payload: typeSave })
         setStatus("edit")

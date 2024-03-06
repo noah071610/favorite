@@ -21,13 +21,22 @@
 @include shine;
 
 .candidate {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 10px;
+  .top {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 10px;
+    @include mobile {
+      grid-template-columns: 120px 1fr;
+    }
+  }
   .left {
     width: 100%;
     height: 120px;
     @include flex();
+
+    @include mobile {
+      height: 100px;
+    }
     .image {
       z-index: 10;
       width: calc(100% - 8px);
@@ -35,6 +44,11 @@
       border-radius: 10px;
       background-size: cover;
       background-position: center;
+      @include mobile {
+        border-radius: 6px;
+        width: calc(100% - 4px);
+        height: calc(100% - 4px);
+      }
     }
 
     .loading {
@@ -44,6 +58,9 @@
       background-color: var(--white);
       border-radius: 10px;
       @include flex();
+      @include mobile {
+        border-radius: 6px;
+      }
     }
   }
   .chart {
@@ -59,57 +76,6 @@
     h1 {
       color: var(--black-soft);
       font-size: 16px;
-    }
-  }
-
-  .info {
-    border-top: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    .table {
-      padding: 10px 0;
-      opacity: 0;
-      transform: translateY(100%);
-    }
-    &-label {
-      margin-bottom: 5px;
-      @include flex();
-      .mark {
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        margin-right: 7px;
-        &.pickPercent {
-          background-color: rgba(255, 206, 86, 1);
-        }
-        &.winPercent {
-          background-color: rgba(54, 162, 235, 1);
-        }
-        &.losePercent {
-          background-color: rgba(255, 99, 132, 1);
-        }
-      }
-      .icon {
-        margin-right: 7px;
-        padding-bottom: 2px;
-        i {
-          font-size: 13px;
-          color: var(--pink-soft);
-        }
-      }
-      label {
-        font-size: 14px;
-        color: var(--black-soft);
-        font-weight: 400;
-        text-align: center;
-      }
-    }
-    &-percent {
-      @include flex();
-      span {
-        font-size: 12px;
-        color: var(--gray-hard);
-      }
     }
   }
 
@@ -171,10 +137,12 @@
       &::before {
         content: "";
         @include full();
-        background: linear-gradient(90deg, var(--pink), #f5ff62, var(--pink));
-        background-size: 200% 200%;
+        @include bg-shine;
         border-radius: 13px;
-        animation: shine 2s linear infinite;
+
+        @include mobile {
+          border-radius: 8px;
+        }
       }
       &::after {
         //memo: 이미지 로딩시 shine이 보이면 이상해서 커버
@@ -186,6 +154,14 @@
         height: calc(100% - 8px);
         background-color: var(--white);
         border-radius: 13px;
+
+        @include mobile {
+          border-radius: 8px;
+          width: calc(100% - 4px);
+          height: calc(100% - 4px);
+          top: 2px;
+          left: 2px;
+        }
       }
     }
   }

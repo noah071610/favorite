@@ -64,7 +64,7 @@
 
 .styler-section {
   padding-top: 30px;
-  width: 1000px;
+  width: $content-width;
 
   .list {
     display: flex;
@@ -116,7 +116,7 @@
 }
 
 .chart-description {
-  width: 1000px;
+  width: $content-width;
   h1 {
     font-size: 20px;
     margin-bottom: 20px;

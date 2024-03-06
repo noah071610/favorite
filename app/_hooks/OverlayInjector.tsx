@@ -2,7 +2,6 @@
 
 import Overlay from "@/_components/@Global/Overlay"
 import { useMainStore } from "@/_store/main"
-import "@/_styles/global.scss"
 
 import { useEffect, useState } from "react"
 

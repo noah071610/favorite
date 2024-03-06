@@ -6,7 +6,7 @@ import { UserQueryType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import LoginModal from "../../LoginModal"
 import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
@@ -20,6 +20,8 @@ export default function Header() {
   })
   const { modalStatus, setModal } = useMainStore()
   const pathname = usePathname()
+  const { get } = useSearchParams()
+  const from = get("from")
   const isNewPostPage = pathname.includes("new")
   const isHideHeader = (pathname.includes("/post/") && !isNewPostPage) || pathname.includes("loginSuccess")
 
@@ -27,6 +29,9 @@ export default function Header() {
 
   const onClickOpenAside = () => {
     setModal("aside")
+  }
+  const onClickSearch = (isOpen: boolean) => {
+    setModal(isOpen ? "search" : "none")
   }
 
   return isHideHeader ? null : (
@@ -47,18 +52,33 @@ export default function Header() {
           <div className={cx(style.center)}>{isNewPostPage ? <NewPostNavigation /> : <SearchBar />}</div>
 
           <div className={cx(style.right)}>
-            <Link href={isNewPostPage ? "/" : "/post/new"} className={cx(style["new-post"])}>
-              <span>{isNewPostPage ? "메인 페이지로" : "만들러가기"}</span>
-            </Link>
-            {user ? (
-              <Link href="/user" className={cx(style["login"])}>
-                <span>대시보드</span>
+            <div className={cx(style.pc)}>
+              <Link href={isNewPostPage ? `/${from ?? ""}` : "/post/new"} className={cx(style["new-post"])}>
+                <span>
+                  {isNewPostPage ? (from === "template" ? "템플릿 페이지로" : "메인 페이지로") : "만들러가기"}
+                </span>
               </Link>
-            ) : (
-              <a onClick={() => setModal("login")} className={cx(style["login"])}>
-                <span>로그인</span>
-              </a>
-            )}
+              {user ? (
+                <Link href={`/user/${user.userId}`} className={cx(style["login"])}>
+                  <span>대시보드</span>
+                </Link>
+              ) : (
+                <a onClick={() => setModal("login")} className={cx(style["login"])}>
+                  <span>로그인</span>
+                </a>
+              )}
+            </div>
+            <div className={cx(style.mobile)}>
+              {modalStatus === "search" ? (
+                <button onClick={() => onClickSearch(false)} className={cx(style["search-btn"])}>
+                  <i className="fa-solid fa-close"></i>
+                </button>
+              ) : (
+                <button onClick={() => onClickSearch(true)} className={cx(style["search-btn"])}>
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </header>

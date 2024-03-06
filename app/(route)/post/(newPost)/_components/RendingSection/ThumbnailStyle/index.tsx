@@ -48,7 +48,7 @@ export default function ThumbnailStyle() {
         }
       })
     },
-    [setNewPost]
+    [setThumbnail]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -66,13 +66,14 @@ export default function ThumbnailStyle() {
         setThumbnail({ type: "type", payload: "custom" })
       }
     }
+
     if (candidates.length < 2) return reject()
     if (content.layout === "text") return reject()
     if (!candidates.every(({ imageSrc }) => !!imageSrc?.trim())) return reject()
 
     setThumbnailLayout({ slice: thumbnail.slice })
     setThumbnail({ type: "isPossibleLayout", payload: true })
-  }, [candidates])
+  }, [candidates, content.layout, setThumbnail, setThumbnailLayout, thumbnail.slice, thumbnail.type])
 
   return (
     <div className={cx(style["thumbnail-styler"])}>

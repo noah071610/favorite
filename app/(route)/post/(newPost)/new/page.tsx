@@ -2,8 +2,8 @@
 
 import { useNewPostStore } from "@/_store/newPost"
 
-import InitSection from "./_components/InitSection"
-import RendingSection from "./_components/RendingSection"
+import InitSection from "../_components/InitSection"
+import RendingSection from "../_components/RendingSection"
 
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import Confirm from "@/_components/Confirm"
@@ -11,62 +11,53 @@ import { useMainStore } from "@/_store/main"
 import { handleBeforeUnload } from "@/_utils/post"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-const PollingContent = dynamic(() => import("./_components/@Polling"), {
+const PollingContent = dynamic(() => import("../_components/@Polling"), {
   ssr: true,
   loading: () => <FavoriteLoading type="full" />,
 })
-const ContestContent = dynamic(() => import("./_components/@Contest"), {
+const ContestContent = dynamic(() => import("../_components/@Contest"), {
   ssr: true,
   loading: () => <FavoriteLoading type="full" />,
 })
-const TournamentContent = dynamic(() => import("./_components/@Tournament"), {
+const TournamentContent = dynamic(() => import("../_components/@Tournament"), {
   ssr: true,
   loading: () => <FavoriteLoading type="full" />,
 })
 
 export default function NewPostPage() {
-  const {
-    newPost,
-    newPostStatus,
-    content,
-    isEditOn,
-    setIsEditOn,
-    candidates,
-    thumbnail,
-    loadNewPost,
-    clearNewPost,
-    setStatus,
-    setIsSavedDataForPathChange,
-  } = useNewPostStore()
+  const { newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex, loadNewPost, clearNewPost } =
+    useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
+
+  const saveData = useMemo(
+    () => ({ newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex }),
+    [newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex]
+  )
 
   useEffect(() => {
     const handleBeforeUnloadCallback = (e: any) => {
-      handleBeforeUnload(e, newPost, content, candidates, thumbnail, isEditOn)
+      handleBeforeUnload(e, saveData)
     }
     window.addEventListener("beforeunload", handleBeforeUnloadCallback)
 
     return () => {
-      window.removeEventListener("popstate", handleBeforeUnloadCallback)
+      window.removeEventListener("beforeunload", handleBeforeUnloadCallback)
     }
-  }, [newPost, content, candidates, thumbnail, isEditOn])
+  }, [saveData])
 
   useEffect(() => {
-    if (!isEditOn) {
-      const _item = localStorage.getItem("favorite_save_data")
-      if (_item) {
-        const item = JSON.parse(_item)
-        if (!["newPost", "content", "candidates", "thumbnail"].every((v) => item[v]))
-          return localStorage.removeItem("favorite_save_data")
-
-        setModal("newPostLoad")
-      }
+    const _item = localStorage.getItem("favorite_save_data")
+    if (_item) {
+      const item = JSON.parse(_item)
+      if (!Object.keys(saveData).every((v) => item[v])) return localStorage.removeItem("favorite_save_data")
+      setModal("newPostLoad")
     }
-  }, [isEditOn])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onClickConfirm = useCallback(
     (isOk: boolean) => {
@@ -74,9 +65,6 @@ export default function NewPostPage() {
         const item = localStorage.getItem("favorite_save_data")
         const newPostFromLocalStorage = JSON.parse(item ?? "")
         loadNewPost(newPostFromLocalStorage)
-        setIsEditOn(true)
-        setIsSavedDataForPathChange(false)
-        setStatus("edit")
       } else {
         localStorage.removeItem("favorite_save_data")
         clearNewPost("all")

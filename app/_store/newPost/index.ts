@@ -27,8 +27,6 @@ interface States {
   newPostStatus: PostingStatus
   selectedCandidateIndex: number
   thumbnail: ThumbnailSettingType
-  isEditOn: boolean
-  isSavedDataForPathChange: boolean
 }
 
 type SetNewPostAction =
@@ -55,26 +53,17 @@ type Actions = {
   moveCandidate: ({ from, to }: { from: number; to: number }) => void
   addCandidate: ({ payload, index }: { payload: any; index: number }) => void
   deleteCandidate: ({ index }: { index: number }) => void
-  loadNewPost: (state: {
-    newPost: NewPostType
-    content: { [key: string]: any }
-    candidates: { [key: string]: any }[]
-    thumbnail: ThumbnailSettingType
-  }) => void
+  loadNewPost: (state: any) => void
   setStatus: (state: States["newPostStatus"]) => void
   setNewPost: (action: SetNewPostAction) => void
   setContent: (action: SetContentAction) => void
   setThumbnail: (action: SetThumbnailAction) => void
-  setIsEditOn: (b: boolean) => void
-  setIsSavedDataForPathChange: (b: boolean) => void
   setThumbnailLayout: ({ slice, isShuffle }: { slice: number; isShuffle?: boolean }) => void
   clearNewPost: (type: PostContentType | "all") => void
 }
 
 export const useNewPostStore = create<States & Actions>()((set) => ({
   newPost: newPostInit,
-  isSavedDataForPathChange: false,
-  isEditOn: false,
   content: {},
   candidates: [],
   newPostStatus: "init",
@@ -228,10 +217,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
   setStatus: (state) => set(() => ({ newPostStatus: state })),
   loadNewPost: (state) =>
     set(() => ({
-      newPost: state.newPost,
-      content: state.content,
-      candidates: state.candidates,
-      thumbnail: state.thumbnail,
+      ...state,
     })),
   clearNewPost: (type) =>
     set(() => {
@@ -280,13 +266,5 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
   setSelectedCandidateIndex: (state) =>
     set(() => ({
       selectedCandidateIndex: state,
-    })),
-  setIsEditOn: (state) =>
-    set(() => ({
-      isEditOn: state,
-    })),
-  setIsSavedDataForPathChange: (state) =>
-    set(() => ({
-      isSavedDataForPathChange: state,
     })),
 }))

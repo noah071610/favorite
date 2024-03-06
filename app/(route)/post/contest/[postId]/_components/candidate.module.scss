@@ -43,6 +43,7 @@
     height: 100%;
     position: relative;
     overflow: hidden;
+    will-change: contents;
 
     &.swipe-inner {
       z-index: 10;
@@ -55,6 +56,14 @@
       &.right {
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
+      }
+      @include mobile {
+        &.left {
+          border-radius: 0;
+        }
+        &.right {
+          border-radius: 0;
+        }
       }
       &:hover {
         .thumbnail-overlay {
@@ -79,6 +88,14 @@
     &.right {
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
+    }
+    @include mobile {
+      &.left {
+        border-radius: 0;
+      }
+      &.right {
+        border-radius: 0;
+      }
     }
     span {
       padding: 15px 20px;
@@ -223,9 +240,7 @@
   }
   &.selected {
     .border {
-      background: linear-gradient(90deg, var(--pink), #f5ff62, var(--pink));
-      background-size: 200% 200%;
-      animation: shine 2s linear infinite;
+      @include bg-shine;
     }
   }
   &.unselected {

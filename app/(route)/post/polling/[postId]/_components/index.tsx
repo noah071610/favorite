@@ -1,25 +1,32 @@
 "use client"
 
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
+import Candidate from "@/_components/Candidate"
 import CommentPart from "@/_components/CommentPart"
 import PostInfo from "@/_components/PostInfo"
+import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
+import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { finishPlay } from "@/_queries/post"
+import { useMainStore } from "@/_store/main"
 import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
-import { produce } from "immer"
+import { cloneDeep } from "lodash"
 import { useEffect, useMemo, useState } from "react"
-import Candidate from "./Candidate"
-import ChartPart from "./ChartPart"
+import ChartPart from "./Chartpart"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
-  const [post, setPost] = useState<PollingPostType>(initialPost)
+  const { data: post } = useQuery<PollingPostType>({
+    queryKey: queryKey.post(initialPost.postId),
+    initialData: initialPost,
+  })
+  const { windowSize, setModal } = useMainStore()
 
   const [status, setStatus] = useState<"init" | "result">("init")
   const [selectedCandidate, setSelectedCandidate] = useState<PollingCandidateType | null>(null)
@@ -36,6 +43,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
       setSelectedCandidate(target)
     },
   })
+  const { mutate } = usePlayMutation(post.postId)
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
@@ -51,21 +59,26 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
   const onClickCandidate = async (type: "submit" | "select", candidate?: PollingCandidateType) => {
     if (!isResultPage) {
       if (type === "submit" && selectedCandidate) {
-        const postAfterSelected = produce(post, (draft) => {
-          const target = draft.content.candidates.find((v) => v.listId === selectedCandidate.listId)
-          if (target) {
-            target.pick = target.pick + 1
-          }
+        const finishedPost = cloneDeep({
+          ...post,
+          count: post.count + 1,
+          content: {
+            ...post.content,
+            candidates: candidates.map((v) => (selectedCandidate.listId === v.listId ? { ...v, pick: v.pick + 1 } : v)),
+          },
         })
         if (!isPreview) {
-          await finishPlay(post.postId, postAfterSelected.content)
+          mutate(finishedPost)
           setParticipate({ listId: selectedCandidate.listId, postId: post.postId })
         }
-        setPost(postAfterSelected)
         setStatus("result")
+        setModal("none")
       }
       if (type === "select" && candidate) {
         setSelectedCandidate(candidate)
+        if (windowSize === "mobile" || windowSize === "medium") {
+          setModal("mobileSelectCandidate")
+        }
       }
     }
   }
@@ -77,6 +90,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
         <div
           className={cx(style.content, {
             [style[`layout-${post.content.layout}`]]: post.content.layout,
+            [style["result"]]: isResultPage,
           })}
         >
           <div className={cx(style.left)}>
@@ -94,7 +108,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
               ))}
             </ul>
           </div>
-          <div className={cx(style.right)}>
+          <div className={cx(style.right, { [style["result"]]: isResultPage })}>
             {isResultPage ? (
               <div className={cx(style["right-inner"])}>
                 <div className={cx(style.title)}>
@@ -113,7 +127,6 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
                 </div>
                 <div className={cx(style["comment-wrapper"])}>
                   <CommentPart
-                    setPost={setPost}
                     isPreview={post.format === "preview"}
                     authorId={post.user?.userId ?? 1}
                     comments={post.comments}
@@ -125,6 +138,9 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
             )}
           </div>
         </div>
+      </div>
+      <div className="global-medium-visible">
+        <SelectPart isMobile={true} selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />
       </div>
     </div>
   ) : (

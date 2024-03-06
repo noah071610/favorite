@@ -37,9 +37,8 @@ export async function commenting(data: { userId: number; postId: string; text: s
   return response.data
 }
 
-export async function finishPlay(postId: string, content: any) {
-  const response = await API.put(`/post/finish?postId=${postId}`, content)
-
+export async function finishPlay(postId: string, finishedPost: any) {
+  const response = await API.put(`/post/finish?postId=${postId}`, finishedPost)
   return response.data
 }
 

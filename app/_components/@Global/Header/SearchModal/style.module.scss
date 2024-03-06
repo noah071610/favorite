@@ -6,8 +6,6 @@
     z-index: 100;
     transform: translateY(-400px);
   }
-  99% {
-  }
   to {
     height: 400px;
     z-index: 100;
@@ -15,20 +13,16 @@
   }
 }
 
-@keyframes close {
+@keyframes open-mobile {
   from {
-    height: 400px;
+    height: 0;
     z-index: 100;
-    transform: translateY(60px);
-  }
-  99% {
-    height: 400px;
-    z-index: 100;
+    transform: translateY(-400px);
   }
   to {
-    height: 0;
-    z-index: -1;
-    transform: translateY(-400px);
+    height: 400px;
+    z-index: 100;
+    transform: translateY(50px);
   }
 }
 
@@ -47,10 +41,16 @@
   &.open {
     animation: open 300ms forwards;
     padding: 10px 0 20px 0;
+    @include medium {
+      animation: open-mobile 300ms forwards;
+    }
   }
   &-inner {
     width: 500px;
     height: 100%;
+    @include medium {
+      width: 100%;
+    }
   }
   .no-content {
     @include flex;
@@ -88,6 +88,10 @@
       display: block;
       padding: 15px;
       border-radius: 5px;
+
+      @include medium {
+        padding: 10px;
+      }
       h1,
       h2 {
         padding-left: 2px;

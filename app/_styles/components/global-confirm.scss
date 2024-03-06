@@ -1,0 +1,54 @@
+@import "@/_styles/variables.scss";
+
+@include scale-up;
+
+.global-confirm {
+  @include center_fix();
+  width: 400px;
+  @include z-index(modal);
+  .inner {
+    @include modal-inner;
+  }
+  h3 {
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--black-soft);
+  }
+  p {
+    font-size: 14px;
+    margin: 10px 0 20px 0;
+  }
+  .btn {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      span {
+        font-size: 14px;
+      }
+      &:first-of-type {
+        background-color: var(--pink);
+        span {
+          color: var(--text-white);
+        }
+        &:hover {
+          background-color: var(--pink-hard);
+        }
+      }
+      &:last-of-type {
+        background-color: var(--gray);
+        span {
+          color: var(--text-white);
+        }
+        &:hover {
+          background-color: var(--gray-hard);
+        }
+      }
+    }
+  }
+}

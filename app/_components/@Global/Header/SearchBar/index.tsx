@@ -3,12 +3,13 @@ import { useMainStore } from "@/_store/main"
 import { usePostStore } from "@/_store/post"
 import classNames from "classNames"
 import { debounce } from "lodash"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function SearchBar() {
-  const { setModal } = useMainStore()
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const { setModal, modalStatus } = useMainStore()
   const { setSearchPosts, setIsSearching, setSearchQuery, searchQuery } = usePostStore()
   const [isFocused, setIsFocused] = useState(false) // 포커스 상태를 저장하는 상태 변수
 
@@ -43,10 +44,24 @@ export default function SearchBar() {
     setIsFocused(false) // 포커스가 해제되면 isFocused 상태를 false로 변경합니다.
   }
 
+  useEffect(() => {
+    if (inputRef?.current && modalStatus === "search") {
+      inputRef?.current.focus()
+    }
+  }, [inputRef, modalStatus])
+
   return (
-    <div className={cx(style["search-bar"])}>
-      <input value={searchQuery} onChange={handleSearchInput} onFocus={handleFocus} onBlur={handleBlur} />
-      <div className={cx(style.border, { [style.active]: isFocused })} />
+    <div className={cx(style["search-bar"], { [style["open-mobile"]]: modalStatus === "search" })}>
+      <input
+        ref={inputRef}
+        value={searchQuery}
+        onChange={handleSearchInput}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+      <div
+        className={cx(style.border, { [style.active]: isFocused, [style["open-mobile"]]: modalStatus === "search" })}
+      />
     </div>
   )
 }

@@ -3,11 +3,14 @@
 import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { useEffect, useState } from "react"
 
+import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import Overlay from "@/_components/@Global/Overlay"
 import PostInfo from "@/_components/PostInfo"
+import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { useMainStore } from "@/_store/main"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import ResultPart from "./ResultPart"
 import SelectPart from "./SelectPart"
@@ -27,7 +30,10 @@ const getRound = (totalParticipants: number | undefined) => {
 }
 
 export default function TournamentPost({ initialPost }: { initialPost: TournamentPostType }) {
-  const [post, setPost] = useState<TournamentPostType>(initialPost)
+  const { data: post } = useQuery<TournamentPostType>({
+    queryKey: queryKey.post(initialPost.postId),
+    initialData: initialPost,
+  })
   const originCandidates: TournamentCandidateType[] = post.content.candidates
 
   const [round, setRound] = useState<number | null>(null)
@@ -54,7 +60,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
       // null은 기본값임으로 제외
       setModal("roundSelect")
     }
-  }, [isVoted, setModal])
+  }, [isPreview, isVoted, setModal])
 
   const { rounds } = getRound(originCandidates.length)
 
@@ -65,7 +71,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
 
   return (
     <div className={cx(style["tournament-post"], { [style.result]: isResultPage })}>
-      <div className={cx(["tournament-post-inner"])}>
+      <div className={cx(style["tournament-post-inner"])}>
         <PostInfo title={post.title} description={post.description} user={post.user} />
         <div className={cx(style.content, { [style.result]: isResultPage })}>
           {isResultPage && pickedCandidate ? (
@@ -74,14 +80,12 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
               isPreview={isPreview}
               pickedCandidate={pickedCandidate}
               comments={post.comments}
-              setPost={setPost}
               candidates={originCandidates}
             />
           ) : (
             <>
               {round ? (
                 <SelectPart
-                  setPost={setPost}
                   setStatus={setStatus}
                   post={post}
                   setPickedCandidate={setPickedCandidate}
@@ -90,11 +94,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
                   originCandidates={originCandidates}
                 />
               ) : (
-                <div className={cx(style.loading)}>
-                  <i className={cx("fa-solid", "fa-gift")} />
-                  <i className={cx("fa-solid", "fa-heart")} />
-                  <i className={cx("fa-solid", "fa-rocket")} />
-                </div>
+                <FavoriteLoading type="full" />
               )}
             </>
           )}

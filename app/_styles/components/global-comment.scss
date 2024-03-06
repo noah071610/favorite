@@ -1,0 +1,123 @@
+@import "@/_styles/variables.scss";
+
+$profile-width: 35px;
+.global-comment-part {
+  .comment-list {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .comment-area-wrapper {
+    padding-top: 5px;
+
+    z-index: 10;
+  }
+
+  .inner {
+    .name-space {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      span {
+        font-size: 15px;
+        color: var(--black-soft);
+      }
+      .author {
+        padding: 2px 5px;
+        border-radius: 5px;
+        border: 1px solid var(--pink-hard);
+        color: var(--pink-hard);
+        font-size: 12px;
+      }
+      .date {
+        font-size: 12px;
+        color: rgb(176, 176, 176);
+      }
+    }
+
+    .input {
+      width: 100%;
+      position: relative;
+      border-bottom: 2px solid var(--border);
+      transition: border 800ms;
+      textarea {
+        width: 100%;
+        padding: 7px 0 1px 1px;
+        line-height: 1.4;
+        font-size: 14px;
+        position: relative;
+      }
+
+      .border {
+        position: absolute;
+        left: 50%;
+        bottom: -2px;
+        height: 2px;
+        background: var(--pink-soft);
+        transform: translateX(-50%);
+        transition: width 340ms ease-in-out;
+        width: 0px;
+      }
+
+      &.focus {
+        border-color: var(--white);
+        .border {
+          width: 100%;
+        }
+      }
+    }
+
+    &.preview {
+      position: relative;
+      cursor: default;
+      &::before {
+        @include full();
+        z-index: 10;
+        content: "";
+      }
+    }
+  }
+
+  .commenting-btn {
+    display: none;
+    justify-content: flex-end;
+    padding-top: 10px;
+
+    &.focus {
+      display: flex;
+    }
+
+    .inner {
+      display: flex;
+      gap: 8px;
+      button {
+        width: 150px;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+      .cancel {
+        width: fit-content;
+        background-color: var(--gray-soft);
+      }
+      .submit {
+        width: fit-content;
+        background-color: var(--pink);
+        color: var(--text-white);
+      }
+    }
+  }
+
+  .content {
+    padding: 7px 0 1px 0;
+    margin-bottom: 1px;
+    .text {
+      line-height: 1.3;
+      font-size: 15px;
+      color: var(--black-soft);
+      word-break: keep-all;
+    }
+  }
+}

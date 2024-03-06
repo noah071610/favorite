@@ -1,3 +1,5 @@
+@import "@/_styles/variables.scss";
+
 .observer {
   height: 50px;
 }
@@ -6,5 +8,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
-  width: 1000px;
+  width: 100%;
+  @include medium {
+    grid-template-columns: 1fr 1fr;
+  }
+  @include mobile {
+    gap: 5px;
+  }
 }

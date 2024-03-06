@@ -10,18 +10,26 @@
   overflow: hidden;
   padding: 15px;
 
+  @include mobile {
+    padding: 5px;
+  }
+
   &-main {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
+    &.template {
+      cursor: auto;
+    }
   }
 
   &-inner {
     display: block;
 
-    &:hover {
+    &.notTemplate:hover {
       .thumbnail {
         opacity: 0.85;
         &-inner {
@@ -35,6 +43,9 @@
 
     .text {
       margin-top: 15px;
+      @include mobile {
+        margin-top: 10px;
+      }
       h1 {
         font-size: 16px;
         font-weight: 600;
@@ -45,6 +56,9 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
         text-overflow: ellipsis;
+        @include mobile {
+          font-size: 14px;
+        }
       }
       h2 {
         font-size: 13px;
@@ -58,6 +72,11 @@
         word-wrap: break-word;
         color: var(--black-soft);
         height: 50px;
+        @include mobile {
+          font-size: 11px;
+          height: 30px; //todo:
+          -webkit-line-clamp: 2;
+        }
       }
     }
   }
@@ -70,8 +89,11 @@
     &-inner {
       display: flex;
       width: 100%;
-      height: 150px;
+      height: $post-card-thumbnail-height;
       transition: all 250ms;
+      @include mobile {
+        height: $post-card-thumbnail-height-mobile;
+      }
 
       .image {
         width: 100%;
@@ -81,10 +103,14 @@
 
     .loading {
       width: 100%;
-      height: 150px;
+      height: $post-card-thumbnail-height;
       border-radius: 8px;
       position: relative;
       background-color: var(--gray-soft);
+
+      @include mobile {
+        height: $post-card-thumbnail-height-mobile;
+      }
       &::before {
         @include full;
         content: "";
@@ -112,34 +138,82 @@
       &-main {
         @include badge-main;
       }
+      @include mobile {
+        display: none;
+      }
     }
+    .template-badge {
+      color: var(--text-white);
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 2px;
+      &.polling {
+        background-color: var(--pink);
+      }
+      &.contest {
+        background-color: var(--purple);
+      }
+      &.tournament {
+        background-color: var(--orange);
+      }
+    }
+    .mobile-badge {
+      display: none;
+      @include mobile {
+        display: block;
+      }
+    }
+
     &-main {
       margin-top: 2px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      @include mobile {
+        margin-top: 12px;
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: 5px;
+      }
     }
     .left {
       padding: 0 0 0 3px;
       display: flex;
       align-items: center;
+      @include mobile {
+        width: 100%;
+        padding: 0;
+        justify-content: space-between;
+      }
       .count {
         font-size: 18px;
         font-weight: 700;
+        @include mobile {
+          font-size: 16px;
+        }
       }
       .suffix {
         margin-left: 5px;
         font-size: 13px;
         color: var(--black-soft);
+        @include mobile {
+          font-size: 11px;
+        }
       }
     }
     .right {
       display: flex;
       gap: 7px;
+      @include mobile {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        width: 100%;
+      }
       & > button,
       a {
         padding: 10px 12px;
-        border-radius: 8px;
+        border-radius: 6px;
         background-color: var(--gray-soft);
         @include flex();
         i,
@@ -157,18 +231,28 @@
             color: var(--text-white);
           }
         }
-      }
-      .template {
-        background-color: var(--purple-hover);
-        i,
-        span {
-          color: var(--text-white);
+        @include mobile {
+          padding: 10px 0;
+          border-radius: 3px;
+          i,
+          span {
+            font-size: 12px;
+          }
         }
-        &:hover {
-          background-color: var(--purple-hard);
+      }
+      &.template {
+        & > button {
+          background-color: var(--purple-hover);
           i,
           span {
             color: var(--text-white);
+          }
+          &:hover {
+            background-color: var(--purple-hard);
+            i,
+            span {
+              color: var(--text-white);
+            }
           }
         }
       }

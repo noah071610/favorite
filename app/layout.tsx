@@ -1,5 +1,10 @@
+import "@/_styles/components/global-candidate.scss"
+import "@/_styles/components/global-comment.scss"
+import "@/_styles/components/global-confirm.scss"
+import "@/_styles/components/global-post-info.scss"
 import "@/_styles/global-components.scss"
 import "@/_styles/global.scss"
+import "react-toastify/dist/ReactToastify.css"
 import "swiper/css"
 import "swiper/css/free-mode"
 
@@ -10,7 +15,6 @@ import Header from "./_components/@Global/Header"
 import OverlayInjector from "./_hooks/OverlayInjector"
 import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
 
-import "react-toastify/dist/ReactToastify.css"
 import Aside from "./_components/@Global/Aside"
 import Init from "./_components/@Global/Init"
 import { ScriptTag } from "./_utils/darkmode"
@@ -56,6 +60,7 @@ export default async function RootLayout({
             crossOrigin="anonymous"
             referrerPolicy="no-referrer"
           />
+          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
         </head>
         <body suppressHydrationWarning={true}>

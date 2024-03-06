@@ -8,8 +8,6 @@ import { ContentLayoutType } from "@/_types/post/post"
 import classNames from "classNames"
 import React from "react"
 import CountUp from "react-countup"
-import style from "./style.module.scss"
-const cx = classNames.bind(style)
 
 function Candidate({
   candidate,
@@ -29,10 +27,10 @@ function Candidate({
   const { pick, description, title, imageSrc } = candidate
 
   const titleComponent = () => (
-    <div className={cx(style.title)}>
+    <div className={classNames("title")}>
       <h3>{title}</h3>
       {isResultPage && (
-        <span className={cx(style.count)}>
+        <span className={classNames("count")}>
           <CountUp prefix="(" suffix="표)" duration={4} end={pick} />
         </span>
       )}
@@ -41,33 +39,33 @@ function Candidate({
 
   return (
     <li
-      className={cx(style.candidate, {
-        [style.selected]: isSelected,
-        [style.result]: isResultPage,
-        [style[`layout-${layout}`]]: layout,
+      className={classNames("global-candidate", {
+        ["selected"]: isSelected,
+        ["result"]: isResultPage,
+        [`layout-${layout}`]: layout,
       })}
       onClick={() => onClickCandidate("select", candidate)}
       style={fadeMoveUpAnimation(1100 + index * 20, index * 100)}
     >
-      <div className={cx(style.border)} />
-      {isResultPage && <div className={cx(style.number)}>{index + 1}</div>}
+      <div className={classNames("border")} />
+      {isResultPage && <div className={classNames("number")}>{index + 1}</div>}
 
-      <div className={cx(style.inner)}>
-        <div className={cx(style["image-wrapper"])}>
+      <div className={classNames("inner")}>
+        <div className={classNames("image-wrapper")}>
           <div
             style={{
               backgroundImage: !!imageSrc ? getImageUrl({ url: imageSrc }) : noImageUrl,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            className={cx(style.image)}
+            className={classNames("image")}
           />
           {layout === "image" && titleComponent()}
-          {layout === "image" && <div className={cx(style.overlay)} />}
+          {layout === "image" && <div className={classNames("overlay")} />}
         </div>
         <div
-          className={cx(style.content, {
-            [style.text]: !isResultPage && layout === "text",
+          className={classNames("content", {
+            ["text"]: !isResultPage && layout === "text",
           })}
         >
           {titleComponent()}
@@ -75,8 +73,8 @@ function Candidate({
         </div>
       </div>
       {layout === "text" && !isResultPage && (
-        <button onClick={() => onClickCandidate("submit")} className={cx(style["select-btn"])}>
-          <span className={cx(style.select)}>{title} 선택</span>
+        <button onClick={() => onClickCandidate("submit")} className={classNames("select-btn")}>
+          <span className={classNames("select")}>{title} 선택</span>
         </button>
       )}
     </li>

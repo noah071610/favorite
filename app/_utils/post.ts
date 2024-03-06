@@ -2,7 +2,7 @@
 
 import { contestCandidateKeys } from "@/_types/post/contest"
 import { pollingCandidateKeys } from "@/_types/post/polling"
-import { NewPostType, PostContentType, ThumbnailSettingType } from "@/_types/post/post"
+import { PostContentType, ThumbnailSettingType } from "@/_types/post/post"
 import { tournamentCandidateKeys } from "@/_types/post/tournament"
 import { UserType } from "@/_types/user"
 import { cloneDeep } from "lodash"
@@ -83,26 +83,14 @@ export function generatePostData({
     ...newPost,
     thumbnail: thumbnailCreate,
     postId: nanoid(10),
+    count: 0,
     userId: user.userId,
     content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
   })
   return target
 }
 
-export const handleBeforeUnload = (
-  event: any,
-  newPost: NewPostType,
-  content: {
-    [key: string]: any
-  },
-  candidates: {
-    [key: string]: any
-  },
-  thumbnail: ThumbnailSettingType,
-  isEditOn: boolean
-) => {
-  if (isEditOn) {
-    localStorage.setItem("favorite_save_data", JSON.stringify({ newPost, content, candidates, thumbnail }))
-  }
+export const handleBeforeUnload = (event: any, data: any) => {
+  localStorage.setItem("favorite_save_data", JSON.stringify(data))
   event.returnValue = "Are you sure you want to leave?"
 }

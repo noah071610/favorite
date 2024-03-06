@@ -1,13 +1,11 @@
 "use client"
 
-import style from "@/(route)/post/polling/[postId]/_components/Candidate/style.module.scss"
 import { getImageUrl } from "@/_data"
 import { noImageUrl } from "@/_data/post"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
-import _style from "./style.module.scss"
-const cx = classNames.bind(style)
+import style from "./style.module.scss"
 
 function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any }; targetIndex: number }) {
   const { description, listId, title, imageSrc } = candidate
@@ -34,7 +32,7 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
         deleteCandidate({ index: targetIndex })
       }, 480)
     }
-  }, [candidateStatus, listId, setContent, targetIndex])
+  }, [candidateStatus, deleteCandidate, listId, setContent, targetIndex])
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,48 +43,48 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
   const isSelected = selectedCandidateIndex === targetIndex
 
   const titleComponent = () => (
-    <div className={cx(style.title)}>
+    <div className={classNames("title")}>
       <h3>{title.trim() ? title : "후보명 입력 (필수)"}</h3>
     </div>
   )
 
   return (
     <li
-      className={cx(style.candidate, style[`layout-${layout}`], {
-        [style.selected]: isSelected,
+      className={classNames("global-candidate", `layout-${layout}`, {
+        ["selected"]: isSelected,
       })}
       onClick={onClickSelect}
       style={{
         animation:
           candidateStatus === "delete"
-            ? _style[(layout === "image" ? "image-" : "") + "candidate-delete"] + " 500ms forwards"
+            ? style[(layout === "image" ? "image-" : "") + "candidate-delete"] + " 500ms forwards"
             : candidateStatus === "add"
-            ? _style[(layout === "image" ? "image-" : "") + "candidate-add"] + " 500ms forwards"
+            ? style[(layout === "image" ? "image-" : "") + "candidate-add"] + " 500ms forwards"
             : "none",
         opacity: 1,
       }}
     >
-      <div className={cx(style.border)} />
-      <button className={cx(_style["delete-candidate"])}>
-        <i className={cx("fa-solid", "fa-x", _style["delete-icon"])} />
+      <div className={classNames("border")} />
+      <button className={classNames(style["delete-candidate"])}>
+        <i className={classNames("fa-solid", "fa-x", style["delete-icon"])} />
       </button>
 
-      <div className={cx(style.inner)}>
-        <div className={cx(style["image-wrapper"])}>
+      <div className={classNames("inner")}>
+        <div className={classNames("image-wrapper")}>
           <div
             style={{
               backgroundImage: !!imageSrc ? getImageUrl({ url: imageSrc }) : noImageUrl,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            className={cx(style.image)}
+            className={classNames("image")}
           />
           {layout === "image" && titleComponent()}
-          {layout === "image" && <div className={cx(style.overlay)} />}
+          {layout === "image" && <div className={classNames("overlay")} />}
         </div>
-        <div className={cx(style.content)}>
+        <div className={classNames("content")}>
           {titleComponent()}
-          {description ? <p>{description}</p> : <p className={cx(style["place-holder"])}>후보 설명 입력 (옵션)</p>}
+          {description ? <p>{description}</p> : <p className={classNames("place-holder")}>후보 설명 입력 (옵션)</p>}
         </div>
       </div>
     </li>

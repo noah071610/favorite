@@ -1,12 +1,16 @@
 @import "@/_styles/variables.scss";
 
-.candidate {
+.global-candidate {
   padding: 1px;
   border-radius: 11px;
   position: relative;
   opacity: 0;
   margin-bottom: 5px;
   min-height: $candidate-height;
+
+  @include mobile {
+    min-height: $candidate-height-mobile;
+  }
 
   .border {
     @include full();
@@ -27,6 +31,11 @@
     width: 30px;
     height: 30px;
     z-index: 20;
+    @include mobile {
+      font-size: 18px;
+      width: 26px;
+      height: 26px;
+    }
   }
 
   .inner {
@@ -38,6 +47,10 @@
     cursor: pointer;
     position: relative;
     border-radius: 10px;
+    @include mobile {
+      padding: 6px;
+      grid-template-columns: 75px 1fr;
+    }
 
     &:hover {
       background-color: var(--gray-soft);
@@ -54,6 +67,9 @@
       height: 80px;
       border-radius: 10px;
       overflow: hidden;
+      @include mobile {
+        height: 75px;
+      }
     }
     transition: 200ms all;
     width: 100%;
@@ -84,6 +100,12 @@
       font-size: 12px;
       font-weight: 600;
     }
+
+    @include mobile {
+      h3 {
+        font-size: 14px;
+      }
+    }
   }
 
   p {
@@ -94,6 +116,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2;
+    @include mobile {
+      font-size: 12px;
+    }
   }
 
   .select-btn {
@@ -143,7 +168,7 @@
 }
 
 // TEXT TYPE
-.candidate.layout-text {
+.global-candidate.layout-text {
   @include border();
   .inner {
     display: flex;
@@ -186,7 +211,7 @@
 }
 
 // IMAGE TYPE
-.candidate.layout-image {
+.global-candidate.layout-image {
   .number {
     top: 8px;
     left: 8px;

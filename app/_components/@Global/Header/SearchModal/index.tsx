@@ -1,6 +1,5 @@
 "use client"
 
-import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import { contentTypesObj } from "@/_data/post"
 import { useMainStore } from "@/_store/main"
 import { usePostStore } from "@/_store/post"
@@ -58,9 +57,9 @@ export default function SearchModal() {
             </div>
           )
         ) : (
-          // 검색중
-          <div className={cx(style["searching"])}>
-            <FavoriteLoading type="full" text="Searching..." />
+          <div className={cx(style["no-content"])}>
+            <span>{"¯\\_(ツ)_/¯"}</span>
+            <span>검색 결과 없음</span>
           </div>
         )}
       </div>

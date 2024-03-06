@@ -34,7 +34,10 @@ export const queryKey = {
   new: {
     create: ["new", "create"],
   },
+  comment: (postId: string) => ["comment", postId],
   user: ["user"],
+  play: ["play"],
+  post: (postId: string) => ["post", postId],
 } as const
 
 export const shares = [

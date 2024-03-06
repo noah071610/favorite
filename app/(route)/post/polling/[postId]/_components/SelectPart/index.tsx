@@ -1,27 +1,35 @@
 "use client"
 
 import { getImageUrl } from "@/_data"
-import { fadeMoveUpAnimation, scaleUpAnimation } from "@/_styles/animation"
+import { useMainStore } from "@/_store/main"
+import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function SelectPart({
+  isMobile,
   selectedCandidate,
   onClickCandidate,
 }: {
+  isMobile?: boolean
   selectedCandidate: PollingCandidateType | null
   onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
 }) {
+  const { modalStatus } = useMainStore()
   return (
-    <>
+    <div
+      className={cx(style["wrapper"], {
+        [style.mobile]: isMobile,
+        [style.open]: modalStatus === "mobileSelectCandidate",
+      })}
+    >
       {selectedCandidate ? (
         <div key={selectedCandidate.listId} className={cx(style["select-part"])}>
           <div
             style={{
               background: getImageUrl({ url: selectedCandidate.imageSrc, isCenter: true }),
-              ...scaleUpAnimation(250),
             }}
             className={cx(style["image"])}
           />
@@ -44,6 +52,6 @@ export default function SelectPart({
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

@@ -7,20 +7,24 @@ import ResultPart from "./ResultPart"
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import CommentPart from "@/_components/CommentPart"
 import PostInfo from "@/_components/PostInfo"
+import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
+import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
-import { setParticipate } from "@/_hooks/useSetParticipate"
-import { finishPlay } from "@/_queries/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
+import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
-import { produce } from "immer"
+import { cloneDeep } from "lodash"
 import Candidate from "./Candidate"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function ContestPost({ initialPost }: { initialPost: ContestPostType }) {
-  const [post, setPost] = useState<ContestPostType>(initialPost)
+  const { data: post } = useQuery<ContestPostType>({
+    queryKey: queryKey.post(initialPost.postId),
+    initialData: initialPost,
+  })
   const candidates: ContestCandidateType[] = post.content.candidates
 
   const [status, setStatus] = useState<"init" | "result">("init")
@@ -28,6 +32,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
   const isImagesLoaded = usePreloadImages(candidates.map((v) => v.imageSrc))
   const isResultPage = status === "result"
   const isPreview = post.format === "preview"
+  const { mutate } = usePlayMutation(post.postId)
 
   const isVoted = useCheckVoted({
     disable: isPreview,
@@ -47,14 +52,18 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
 
   const swiped = async (_direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
     const direction = _direction === "left" ? 0 : 1
-    const finishedPost = produce(post, (draft) => {
-      draft.content.candidates[direction].pick += 1
+    const finishedPost = cloneDeep({
+      ...post,
+      count: post.count + 1,
+      content: {
+        ...post.content,
+        candidates: candidates.map((v, i) => (direction === i ? { ...v, pick: v.pick + 1 } : v)),
+      },
     })
-    setPost(finishedPost)
 
     if (!isPreview) {
-      await finishPlay(post.postId, finishedPost.content)
-      setParticipate({ listId: candidates[direction].listId, postId: post.postId })
+      mutate(finishedPost)
+      // setParticipate({ listId: candidates[direction].listId, postId: post.postId })
     }
     setSelected(target.listId)
     setTimeout(() => {
@@ -90,7 +99,6 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
                 </div>
                 <div className={cx(style["contest-comment"])}>
                   <CommentPart
-                    setPost={setPost}
                     isPreview={post.format === "preview"}
                     authorId={post.user?.userId ?? 1}
                     comments={post.comments}

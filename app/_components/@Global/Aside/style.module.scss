@@ -29,6 +29,23 @@
         }
       }
     }
+    @include mobile {
+      height: 50px;
+      padding: 5px 0;
+      button {
+        width: 40px;
+        padding: 0 5px;
+        border-radius: 100%;
+        .icon {
+          i {
+            font-size: 15px;
+          }
+        }
+        &:active {
+          background-color: var(--border);
+        }
+      }
+    }
   }
 }
 

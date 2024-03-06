@@ -7,50 +7,63 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  padding-top: 30px;
+  padding: 30px 0;
+  overflow: hidden;
+
+  @include medium {
+    padding-top: 50px;
+    padding-bottom: 0;
+    height: calc(100vh);
+  }
+
   &.result {
     padding-bottom: 100px;
+    height: 100%;
     .content {
       height: auto;
-      min-height: calc(100vh - 100px - 60px);
+    }
+  }
+
+  &-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 10px;
+    @include medium {
+      padding: 0;
     }
   }
 }
 
 .content {
   width: $content-width;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex;
+  height: calc(100vh - 60px - 20px - (30px * 2));
   background-color: var(--gray-soft);
-  height: calc(100vh - 100px - 80px);
-  margin-bottom: 50px;
-
-  position: relative;
 
   @include border();
   border-radius: 10px;
 
+  position: relative;
+
+  @include large {
+    width: 100%;
+  }
+  @include medium {
+    height: 100%;
+    border: none;
+  }
+  @include mobile {
+    flex-direction: column;
+  }
+
   &.result {
-    overflow: hidden;
+    border: none;
+    height: auto;
     background-color: var(--white);
   }
-
-  .loading {
-    display: flex;
-    gap: 10px;
-    i {
-      font-size: 30px;
-      color: var(--pink-soft);
-    }
-  }
-}
-
-.tournament-post-inner {
-  width: 100%;
-  height: 100%;
-  @include flex();
 }
 
 .round-select {

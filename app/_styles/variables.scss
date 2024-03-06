@@ -23,9 +23,30 @@ $shadow-color: rgba(0, 0, 0, 0.08);
 
 $red: rgb(255, 82, 79, 0.8);
 
-$content-width: 1000px;
+$content-width: 950px;
 $candidate-height: 96px;
+$candidate-height-mobile: 80px;
 $image-candidate-height: 154px;
+$post-card-thumbnail-height: 150px;
+$post-card-thumbnail-height-mobile: 100px;
+
+@mixin large {
+  @media (max-width: 950px) {
+    @content;
+  }
+}
+
+@mixin medium {
+  @media (max-width: 800px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 450px) {
+    @content;
+  }
+}
 
 @mixin flex() {
   display: flex;
@@ -57,6 +78,7 @@ $image-candidate-height: 154px;
 $z-index-map: (
   overlay-search: 50,
   header: 150,
+  swipe-card: 160,
   overlay-aside: 180,
   aside: 200,
   overlay: 230,
@@ -75,9 +97,7 @@ $z-index-map: (
 }
 
 @mixin bg-shine() {
-  background: linear-gradient(45deg, var(--pink), #f5ff62, var(--pink));
-  background-size: 200% 200%;
-  animation: shine 2s linear infinite;
+  @include bg-shine;
 }
 
 @mixin shine {
@@ -179,6 +199,15 @@ $z-index-map: (
       animation: shine 1000ms 150ms infinite;
     }
   }
+  @include mobile {
+    &.active {
+      background-color: rgba(255, 154, 154, 0.2);
+      &::before {
+        z-index: 1;
+        animation: shine 1000ms 150ms infinite;
+      }
+    }
+  }
 }
 
 @mixin section-title {
@@ -203,11 +232,18 @@ $z-index-map: (
       font-weight: 700;
       padding-bottom: 1px;
     }
+    @include mobile {
+      margin: 7px 0;
+
+      span {
+        font-size: 17px;
+      }
+    }
   }
 }
 
 @mixin badge-main {
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 4px 8px;
   display: flex;
   align-items: center;

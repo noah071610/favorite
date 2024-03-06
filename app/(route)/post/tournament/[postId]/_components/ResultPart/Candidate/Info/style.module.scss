@@ -1,0 +1,70 @@
+@import "@/_styles/variables.scss";
+
+.info {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @include mobile {
+    border-top: none;
+    padding-top: 5px;
+  }
+
+  .table {
+    padding: 10px 0;
+    opacity: 0;
+    transform: translateY(100%);
+
+    @include mobile {
+      padding: 5px 0;
+    }
+  }
+  &-label {
+    margin-bottom: 5px;
+    @include flex();
+    .mark {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      margin-right: 7px;
+      &.pickPercent {
+        background-color: rgba(255, 206, 86, 1);
+      }
+      &.winPercent {
+        background-color: rgba(54, 162, 235, 1);
+      }
+      &.losePercent {
+        background-color: rgba(255, 99, 132, 1);
+      }
+    }
+    .icon {
+      margin-right: 7px;
+      padding-bottom: 2px;
+      i {
+        font-size: 13px;
+        color: var(--pink-soft);
+      }
+    }
+    label {
+      font-size: 14px;
+      color: var(--black-soft);
+      font-weight: 400;
+      text-align: center;
+
+      @include mobile {
+        font-size: 12px;
+      }
+    }
+  }
+  &-percent {
+    @include flex();
+    span {
+      font-size: 12px;
+      color: var(--gray-hard);
+    }
+
+    @include mobile {
+      font-size: 10px;
+    }
+  }
+}

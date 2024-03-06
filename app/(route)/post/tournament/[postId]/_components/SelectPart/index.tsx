@@ -1,10 +1,10 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 import Candidate from "@/(route)/post/contest/[postId]/_components/Candidate"
+import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { finishPlay } from "@/_queries/post"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { TournamentCandidateOnGameType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { shuffleArray } from "@/_utils/math"
@@ -18,7 +18,6 @@ export default function SelectPart({
   originCandidates,
   setPickedCandidate,
   setStatus,
-  setPost,
   post,
   round,
   isPreview,
@@ -26,7 +25,6 @@ export default function SelectPart({
   originCandidates: TournamentCandidateType[]
   setPickedCandidate: (target: TournamentCandidateType) => void
   setStatus: (type: "init" | "result") => void
-  setPost: Dispatch<SetStateAction<TournamentPostType>>
   round: number
   post: TournamentPostType
   isPreview: boolean
@@ -34,35 +32,67 @@ export default function SelectPart({
   const [candidates, setCandidates] = useState<TournamentCandidateOnGameType[]>(
     shuffleArray(originCandidates.map((v) => ({ ...v, out: false }))).slice(0, round)
   )
+  const [dataMap, setDataMap] = useState(
+    originCandidates.reduce((acc: { [key: string]: { win: number; lose: number } }, cur) => {
+      acc[cur.listId] = {
+        win: 0,
+        lose: 0,
+      }
+      return acc
+    }, {})
+  )
   const [curIndex, setCurIndex] = useState(0)
   const [curRound, setCurRound] = useState(round)
   const [roundStatus, setRoundStatus] = useState({ pending: false, display: false })
 
   const [imageLoadedCount, setImageLoadedCount] = useState(0)
 
+  const { mutate } = usePlayMutation(post.postId)
+
+  const displayCandidates = candidates.slice(curIndex, curIndex + 2)
+
   const swiped = async (direction: "left" | "right", target: TournamentCandidateOnGameType | ContestCandidateType) => {
-    const targetIndex = direction === "left" ? 1 : 0
+    const winIndex = direction === "left" ? 0 : 1
+    const loseIndex = winIndex === 1 ? 0 : 1
     const select = target as TournamentCandidateOnGameType
+
+    if (curRound > 2) {
+      setDataMap((obj) =>
+        produce(obj, (draft) => {
+          draft[displayCandidates[winIndex].listId].win += 1
+          draft[displayCandidates[loseIndex].listId].lose += 1
+        })
+      )
+    }
 
     if (curIndex + 2 >= curRound) {
       if (curRound === 2) {
+        const finishedPost = cloneDeep({
+          ...post,
+          count: post.count + 1,
+          content: {
+            ...post.content,
+            candidates: post.content.candidates.map((v) => {
+              if (v.listId === target.listId) {
+                return {
+                  ...v,
+                  pick: v.pick + 1,
+                  win: v.win + dataMap[v.listId].win + 1,
+                  lose: v.lose + dataMap[v.listId].lose,
+                }
+              }
+              return {
+                ...v,
+                win: v.win + dataMap[v.listId].win,
+                lose: v.lose + dataMap[v.listId].lose + (displayCandidates[loseIndex].listId === v.listId ? 1 : 0),
+              }
+            }),
+          },
+        })
         if (!isPreview) {
-          await finishPlay(
-            post.postId as string,
-            produce(post.content, (draft) => {
-              const target = draft.candidates[select.number - 1]
-              target.pick = target.pick + 1
-            })
-          )
+          mutate(finishedPost)
           setParticipate({ listId: select.listId, postId: post.postId })
         }
-
-        setPost((post) =>
-          produce(post, (draft) => {
-            const target = draft.content.candidates[select.number - 1]
-            target.pick = target.pick + 1
-          })
-        )
 
         delete select.out
         setPickedCandidate(select)
@@ -82,30 +112,13 @@ export default function SelectPart({
 
         setCandidates((arr) => {
           let _arr = cloneDeep(arr)
-          _arr[curIndex + targetIndex].out = true
+          _arr[curIndex + loseIndex].out = true
           _arr = shuffleArray(_arr.filter(({ out }) => !out))
           return _arr
         })
 
         setCurRound((num) => num / 2)
         setCurIndex(0)
-
-        setPost((post) =>
-          produce(post, (draft) => {
-            let _arr = cloneDeep(candidates) // candidates는 비동기이기 때문에 수정되기 전
-            _arr[curIndex + targetIndex].out = true
-            _arr.forEach(({ out, number }) => {
-              const target = draft.content.candidates[+number - 1]
-              // find보다 단순 인덱스가 더 쉽기 때문에 인덱스로 찾음
-              // number는 index + 1으로 이미 posting할때 셋팅해놓음
-              if (out) {
-                target.lose += 1
-              } else {
-                target.win += 1
-              }
-            })
-          })
-        )
       }, 600) // 후다닥 작업
 
       setTimeout(() => {
@@ -116,7 +129,7 @@ export default function SelectPart({
     } else {
       setCandidates((arr) =>
         produce(arr, (draft) => {
-          draft[curIndex + targetIndex].out = true
+          draft[curIndex + loseIndex].out = true
         })
       )
       setTimeout(() => {
@@ -157,11 +170,13 @@ export default function SelectPart({
   }, [candidates]) // memo: 라운드 변경시 이미지 로드
 
   return roundStatus.display ? (
-    candidates.slice(curIndex, curIndex + 2).map((v, cardIndex) => (
-      <div key={v.listId} className={cx(style[cardIndex === 0 ? "left" : "right"])}>
-        <Candidate candidate={v} swiped={swiped} direction={cardIndex === 0 ? "left" : "right"} />
-      </div>
-    ))
+    <>
+      {displayCandidates.map((v, cardIndex) => (
+        <div key={v.listId} className={cx(style[cardIndex === 0 ? "left" : "right"])}>
+          <Candidate candidate={v} swiped={swiped} direction={cardIndex === 0 ? "left" : "right"} />
+        </div>
+      ))}
+    </>
   ) : (
     <div className={cx(style["next-round"])}>
       <div className={cx(style.inner)}>

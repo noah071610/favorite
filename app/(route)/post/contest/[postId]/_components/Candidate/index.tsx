@@ -32,6 +32,8 @@ export default function Candidate({
     }
 
     if (cardRef.current) {
+      cardRef.current.addEventListener("touchstart", mouseDown)
+      cardRef.current.addEventListener("touchend", mouseUp)
       cardRef.current.addEventListener("mousedown", mouseDown)
       cardRef.current.addEventListener("mouseup", mouseUp)
     }
@@ -39,7 +41,10 @@ export default function Candidate({
     // 컴포넌트가 언마운트되면 이벤트 핸들러를 제거
     return () => {
       if (cardRef.current) {
+        cardRef.current.addEventListener("touchstart", mouseDown)
+        cardRef.current.addEventListener("touchend", mouseUp)
         cardRef.current.removeEventListener("mousedown", mouseDown)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         cardRef.current.removeEventListener("mouseup", mouseUp)
       }
     }

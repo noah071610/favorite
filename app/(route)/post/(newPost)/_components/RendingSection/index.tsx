@@ -33,19 +33,31 @@ export default function RendingSection() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { setModal, modalStatus, setError } = useMainStore()
-  const { newPost, candidates, content, setNewPost, clearNewPost, setStatus, setIsEditOn, thumbnail } =
-    useNewPostStore()
+  const { newPost, candidates, content, setNewPost, clearNewPost, setStatus, thumbnail } = useNewPostStore()
   const [previewPost, setPreviewPost] = useState<PostType | null>(null)
   const [isOnPreview, setIsOnPreview] = useState(false)
 
   const { mutate } = useMutation({
     mutationKey: queryKey.new.create,
     mutationFn: (newPost: { [key: string]: any }) => posting(newPost),
+    onMutate: async (createNewPost) => {
+      await queryClient.cancelQueries({ queryKey: queryKey.home.all })
+
+      // Snapshot the previous value
+      const previous = queryClient.getQueryData(queryKey.home.all)
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(queryKey.home.all, (old: any) => {
+        if (!old) return undefined
+        old.pages[0].unshift(createNewPost)
+        return old
+      })
+
+      // Return a context object with the snapshotted value
+      return { previous }
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKey.home.all }) // 캐시를 지우고
-      queryClient.refetchQueries({ queryKey: queryKey.home.all }) // 다시 호출
       localStorage.removeItem("favorite_save_data")
-      setIsEditOn(false)
 
       setStatus("init")
       setModal("none")
@@ -53,6 +65,9 @@ export default function RendingSection() {
 
       router.push("/") // todo
       toastSuccess("posting")
+    },
+    onError: () => {
+      toastError("unknown")
     },
   })
 
@@ -141,6 +156,7 @@ export default function RendingSection() {
           setModal("loginNewPost")
         } else {
           const createPost = generatePostData({ newPost, content, candidates, thumbnail, user: userData.user })
+
           mutate(createPost)
         }
       }

@@ -14,41 +14,57 @@ $side-width: 300px;
   border-bottom: 1px solid rgba(214, 214, 214, 0.7);
   background-color: var(--white);
 
+  @include medium {
+    .center {
+      flex-grow: 1;
+      padding: 0 10px;
+    }
+    padding: 5px 8px;
+    min-height: 50px;
+  }
+
   .inner {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    min-height: calc(60px - 20px);
   }
 
   .left {
     width: $side-width;
     display: flex;
     align-items: center;
-    img {
-      width: 40px;
-    }
     button {
-      width: 42px; // memo: aside는 52
+      width: 42px;
       height: 100%;
+      border-radius: 100%;
       .icon {
         @include flex;
         i {
           font-size: 17px;
         }
       }
+      &:active {
+        background-color: var(--border);
+      }
+    }
+    @include medium {
+      width: auto;
+      button {
+        padding: 0 5px;
+
+        .icon i {
+          font-size: 15px;
+        }
+      }
     }
   }
-
-  // .center {
-
-  // }
+  .center {
+    @include flex;
+  }
 
   .right {
     width: $side-width;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
     a {
       padding: 9px 15px;
       border-radius: 6px;
@@ -58,18 +74,52 @@ $side-width: 300px;
         color: var(--text-white);
       }
     }
-    .login {
-      width: 80px;
-      background-color: var(--pink);
-      @include flex();
-      &:hover {
-        background-color: var(--pink-hard);
+    .pc {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+      gap: 10px;
+      .login {
+        width: 80px;
+        background-color: var(--pink);
+        @include flex();
+        &:hover {
+          background-color: var(--pink-hard);
+        }
+      }
+      .new-post {
+        background-color: var(--purple);
+        &:hover {
+          background-color: var(--purple-hover);
+        }
       }
     }
-    .new-post {
-      background-color: var(--purple);
-      &:hover {
-        background-color: var(--purple-hover);
+    .mobile {
+      display: none;
+    }
+
+    @include medium {
+      width: auto;
+      .pc {
+        display: none;
+      }
+      .mobile {
+        @include flex;
+        height: 100%;
+        button {
+          width: 42px;
+          display: block;
+          height: 100%;
+          padding: 0 5px;
+          border-radius: 100%;
+          i {
+            font-size: 15px;
+          }
+          &:active {
+            background-color: var(--border);
+          }
+        }
       }
     }
   }
@@ -77,4 +127,7 @@ $side-width: 300px;
 
 .ghost {
   height: calc(40px + 20px);
+  @include mobile {
+    height: calc(50px);
+  }
 }

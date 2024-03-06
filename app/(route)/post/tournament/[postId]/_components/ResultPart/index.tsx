@@ -2,9 +2,9 @@
 
 import CommentPart from "@/_components/CommentPart"
 import { CommentType } from "@/_types/post/post"
-import { TournamentCandidateChartType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
+import { TournamentCandidateChartType, TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
-import { Dispatch, SetStateAction, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import ReactPaginate from "react-paginate"
 import Candidate from "./Candidate"
 import style from "./style.module.scss"
@@ -49,14 +49,12 @@ export default function ResultPart({
   comments,
   isPreview,
   authorId,
-  setPost,
 }: {
   pickedCandidate: TournamentCandidateType
   candidates: TournamentCandidateType[]
   comments: CommentType[]
   isPreview: boolean
   authorId: number
-  setPost: Dispatch<SetStateAction<TournamentPostType>>
 }) {
   const total = getTotals(_candidates)
   const candidates = _candidates.map((v) => {
@@ -203,7 +201,7 @@ export default function ResultPart({
             <span>코멘트</span>
           </div>
           <div className={cx(style["tournament-comment"])}>
-            <CommentPart setPost={setPost} isPreview={isPreview} authorId={authorId} comments={comments} />
+            <CommentPart isPreview={isPreview} authorId={authorId} comments={comments} />
           </div>
         </section>
       </div>

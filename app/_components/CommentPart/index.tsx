@@ -2,16 +2,15 @@
 
 import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
-import { commenting } from "@/_queries/post"
+import { useCommentMutation } from "@/_hooks/mutations/useCommentMutation"
 import { getUser } from "@/_queries/user"
 import { CommentType } from "@/_types/post/post"
 import { UserQueryType, UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import "dayjs/locale/ko" // 한국어 로케일 설정
-import { produce } from "immer"
 import { useParams } from "next/navigation"
-import { Dispatch, SetStateAction, useState } from "react"
+import { useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 
 const formattedDate = (date: any) => dayjs(date).locale("ko").format("YYYY년MM월DD일")
@@ -33,15 +32,7 @@ function Comment({ user, text, authorId }: { user?: UserType; text: string; auth
   )
 }
 
-function Commenting({
-  authorId,
-  isPreview,
-  setPost,
-}: {
-  authorId: number
-  isPreview: boolean
-  setPost: Dispatch<SetStateAction<{ [key: string]: any; comments: CommentType[] }>>
-}) {
+function Commenting({ authorId, isPreview }: { authorId: number; isPreview: boolean }) {
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
     queryFn: getUser,
@@ -55,31 +46,22 @@ function Commenting({
   const handleChange = (event: any) => {
     setText(event.target.value)
   }
+  const commented = () => {
+    toastSuccess("commenting")
+    setText("")
+    setIsFocused(false)
+    setDisplayBtn(false)
+  }
+
+  const { mutate } = useCommentMutation(postId as string, commented)
 
   const onClickCommenting = async () => {
     if (!!text.trim() && !isPreview) {
-      await commenting({
+      mutate({
         userId: user?.userId ?? 1,
         postId: postId as string,
+        userName: user?.userName ?? "익명",
         text,
-      }).then(() => {
-        setPost((oldData) =>
-          produce(oldData, (draft) => {
-            draft.comments.unshift({
-              user: {
-                userId: user?.userId ?? 1,
-                userName: user?.userName ?? "익명",
-                userImage: user?.userImage ?? "",
-              },
-              commentId: oldData.comments.length,
-              text,
-            })
-          })
-        )
-        toastSuccess("commenting")
-        setText("")
-        setIsFocused(false)
-        setDisplayBtn(false)
       })
     }
   }
@@ -131,16 +113,14 @@ export default function CommentPart({
   authorId,
   comments,
   isPreview,
-  setPost,
 }: {
   authorId: number
   comments: CommentType[]
   isPreview: boolean
-  setPost: Dispatch<SetStateAction<any>>
 }) {
   return (
     <div className={"global-comment-part"}>
-      <Commenting setPost={setPost} authorId={authorId} isPreview={isPreview} />
+      <Commenting authorId={authorId} isPreview={isPreview} />
       <section className={"comment-list"}>
         {comments.map(({ text, user: commentUser }, index) => (
           <Comment authorId={authorId} text={text} key={`comment_${index}`} user={commentUser} />

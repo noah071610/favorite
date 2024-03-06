@@ -14,6 +14,11 @@ export interface ThumbnailSettingType {
 }
 export type PostFindQuery = "all" | PostContentType
 
+export interface PostPaginationType {
+  pageParams: number[]
+  pages: PostCardType[][]
+}
+
 export type VoteIdType = {
   postId: string
   listId: string
@@ -35,15 +40,14 @@ export interface NewPostType extends PostBaseType {
 export interface PostCardType extends PostBaseType {
   type: PostContentType
   createdAt: Date
+  lastPlayedAt: Date
+  popular: number
 }
 
-export interface TemplatePostCardType extends PostBaseType {
-  type: PostContentType
-  user: UserType
+export interface TemplatePostCardType extends PostCardType {
   content: {
-    candidates: { imageSrc: string; title: string; description: string }[] // memo: 대충 두개만 쓸거라.. 두개만 넣음
+    candidates: { imageSrc: string; title: string; description: string; listId: string; pick: number }[] // memo: 대충 두개만 쓸거라.. 두개만 넣음 이러면 안됨 수정 예정
   }
-  createdAt: Date
 }
 
 export interface PostType extends PostBaseType {
