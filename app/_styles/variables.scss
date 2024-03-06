@@ -7,6 +7,7 @@ $pink-hard: rgba(229, 106, 106, 0.9);
 $gray-soft: rgba(235, 235, 235, 0.45);
 $gray: rgba(161, 161, 161, 0.6);
 $gray-hard: rgb(158, 158, 158);
+$gray-softest: rgba(225, 225, 225, 0.15);
 
 $border: rgba(214, 214, 214, 0.7);
 
@@ -97,7 +98,9 @@ $z-index-map: (
 }
 
 @mixin bg-shine() {
-  @include bg-shine;
+  background: linear-gradient(90deg, $pink, #f5ff62, $pink);
+  background-size: 200% 200%;
+  animation: shine 2s linear infinite;
 }
 
 @mixin shine {
@@ -236,7 +239,7 @@ $z-index-map: (
       margin: 7px 0;
 
       span {
-        font-size: 17px;
+        font-size: 16px;
       }
     }
   }

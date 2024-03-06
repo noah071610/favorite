@@ -76,7 +76,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
       }
       if (type === "select" && candidate) {
         setSelectedCandidate(candidate)
-        if (windowSize === "mobile" || windowSize === "medium") {
+        if ((windowSize === "mobile" || windowSize === "medium") && post.content.layout !== "text") {
           setModal("mobileSelectCandidate")
         }
       }
@@ -139,9 +139,11 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
           </div>
         </div>
       </div>
-      <div className="global-medium-visible">
-        <SelectPart isMobile={true} selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />
-      </div>
+      {post.content.layout !== "text" && (
+        <div className="global-medium-visible">
+          <SelectPart isMobile={true} selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />
+        </div>
+      )}
     </div>
   ) : (
     <FavoriteLoading type="full" text="Image Loading" />

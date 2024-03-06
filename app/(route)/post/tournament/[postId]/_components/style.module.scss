@@ -7,12 +7,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px 0;
+  padding: 30px 10px;
   overflow: hidden;
 
   @include medium {
+    padding: 0;
     padding-top: 50px;
-    padding-bottom: 0;
     height: calc(100vh);
   }
 
@@ -30,7 +30,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 0 10px;
     @include medium {
       padding: 0;
     }
@@ -43,7 +42,6 @@
   height: calc(100vh - 60px - 20px - (30px * 2));
   background-color: var(--gray-soft);
 
-  @include border();
   border-radius: 10px;
 
   position: relative;
@@ -53,16 +51,20 @@
   }
   @include medium {
     height: 100%;
-    border: none;
   }
   @include mobile {
     flex-direction: column;
+    border-radius: 0;
   }
 
   &.result {
     border: none;
     height: auto;
-    background-color: var(--white);
+    padding: 20px;
+    background-color: var(--gray-softest);
+    @include mobile {
+      padding: 10px;
+    }
   }
 }
 

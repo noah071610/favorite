@@ -5,51 +5,80 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  padding-top: 30px;
+  padding: 30px 10px;
+  overflow: hidden;
+
+  @include medium {
+    padding: 0;
+    padding-top: 50px;
+  }
+
   &.result {
     padding-bottom: 100px;
-    .content {
-      height: auto;
-      min-height: calc(100vh - 100px - 60px);
-      background-color: var(--white);
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      overflow: hidden;
-      padding-bottom: 50px;
-      .candidates {
-        margin-bottom: 30px;
-      }
+  }
+
+  &-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    @include medium {
+      padding: 0;
     }
   }
 }
 
 .content {
   width: $content-width;
+  @include flex;
   background-color: var(--gray-soft);
+
+  border-radius: 10px;
+
   position: relative;
 
-  @include border();
-  border-radius: 10px;
+  @include large {
+    width: 100%;
+  }
+  @include medium {
+    border-radius: 0px;
+  }
 
   .candidates {
     width: 100%;
     display: flex;
     justify-content: center;
-    height: calc(100vh - 100px - 80px);
+    height: calc(100vh - 60px - 20px - (30px * 2));
     .left,
     .right {
       height: 100%;
       width: 100%;
     }
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+  &.result {
+    background-color: var(--gray-softest);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 50px;
   }
 }
 
 .comment-section {
+  padding: 30px 10px;
   width: 600px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   @include section-title;
+  @include medium {
+    width: 100%;
+  }
+  @include mobile {
+    margin-top: 15px;
+  }
 }

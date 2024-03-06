@@ -2,16 +2,12 @@
 
 .result {
   width: 100%;
-  padding-top: 20px;
   display: flex;
   justify-content: center;
   &-inner {
     width: 600px;
   }
 
-  @include medium {
-    padding: 0;
-  }
   @include mobile {
     &-inner {
       width: 100%;

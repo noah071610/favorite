@@ -257,6 +257,7 @@ input:-webkit-autofill:focus {
   --pink: rgba(255, 138, 138, 0.8);
   --pink-hard: rgba(229, 106, 106, 0.9);
 
+  --gray-softest: rgba(225, 225, 225, 0.15);
   --gray-soft: rgba(235, 235, 235, 0.45);
   --gray: rgba(161, 161, 161, 0.6);
   --gray-hard: rgb(158, 158, 158);
@@ -304,6 +305,7 @@ body.dark {
   --pink: rgba(255, 138, 138, 1);
   --pink-hard: rgba(255, 176, 176, 1);
 
+  --gray-softest: rgba(68, 68, 68, 0.15);
   --gray-soft: rgba(68, 68, 68, 0.45);
   --gray: rgba(104, 104, 104, 0.6);
   --gray-hard: rgb(125, 125, 125);

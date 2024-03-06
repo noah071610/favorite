@@ -74,9 +74,9 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
   return isImagesLoaded ? (
     <>
       <div className={cx(style["contest-post"], { [style.result]: isResultPage })}>
-        <div className={cx(["contest-post-inner"])}>
+        <div className={cx(style["contest-post-inner"])}>
           <PostInfo title={post.title} description={post.description} user={post.user} />
-          <div className={cx(style.content)}>
+          <div className={cx(style.content, { [style.result]: isResultPage })}>
             <section className={cx(style.candidates)}>
               {(["left", "right"] as Array<"left" | "right">).map((dr, i) => (
                 <div key={dr} className={cx(style[dr])}>
