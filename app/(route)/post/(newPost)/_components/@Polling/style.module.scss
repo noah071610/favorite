@@ -2,7 +2,7 @@
 
 @keyframes no-candidate-disappear {
   from {
-    height: $candidate-height;
+    height: var(--candidate-height);
     opacity: 0;
   }
 
@@ -21,7 +21,7 @@
   border-radius: 11px;
   position: relative;
   background-color: var(--white);
-  height: calc($candidate-height + 5px);
+  height: calc(var(--candidate-height) t + 5px);
   border: 1px dashed var(--border);
   background-color: var(--gray-soft);
   @include flex();
@@ -54,31 +54,64 @@
   }
 }
 
-.styler {
-  width: 100%;
+.main {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  @include mobile {
+    padding: 0 10px;
+  }
+}
+
+.editor {
+  width: 600px;
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .styler-section {
   padding-top: 30px;
-  width: $content-width;
-
-  .list {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
+  width: 100%;
 
   h1 {
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 
+  .title-input,
+  .description-input {
+    width: 100%;
+    display: block;
+    background-color: var(--input-color);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+  @include mobile {
+    padding-top: 20px;
+
+    h1 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.layout-list {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  @include mobile {
+    gap: 10px;
+  }
   .card {
     width: 200px;
+
+    @include mobile {
+      width: 100%;
+    }
 
     .icon-wrapper {
       @include flex();
@@ -94,10 +127,21 @@
         margin: 0 5px;
       }
       margin-bottom: 10px;
+      @include mobile {
+        border-radius: 5px;
+        margin-bottom: 5px;
+
+        i {
+          font-size: 15px;
+        }
+      }
     }
     span {
       font-size: 14px;
       color: var(--gray-hard);
+      @include mobile {
+        font-size: 12px;
+      }
     }
 
     &:hover,
@@ -121,14 +165,8 @@
     font-size: 20px;
     margin-bottom: 20px;
   }
-  textarea {
-    width: 100%;
-    display: block;
-    background-color: var(--input-color);
-    padding: 10px;
-    font-size: 15px;
-    word-break: keep-all;
-    line-height: 1.5;
-    min-height: 80px;
-  }
+}
+
+.list {
+  padding-bottom: 5px;
 }

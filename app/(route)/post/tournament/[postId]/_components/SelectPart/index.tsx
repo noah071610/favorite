@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-import Candidate from "@/(route)/post/contest/[postId]/_components/Candidate"
+import Candidate from "@/_components/Select"
 import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { setParticipate } from "@/_hooks/useSetParticipate"
 import { ContestCandidateType } from "@/_types/post/contest"

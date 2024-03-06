@@ -285,6 +285,18 @@ input:-webkit-autofill:focus {
 
   --green: rgba(94, 255, 94, 0.8);
   --green-hard: rgba(81, 255, 81, 0.9);
+
+  --candidate-height: 94px;
+  --image-candidate-height: 154px;
+  --post-card-thumbnail-height: 150px;
+}
+
+@include mobile {
+  body {
+    --candidate-height: 80px;
+    --image-candidate-height: 154px;
+    --post-card-thumbnail-height: 100px;
+  }
 }
 
 body.dark {

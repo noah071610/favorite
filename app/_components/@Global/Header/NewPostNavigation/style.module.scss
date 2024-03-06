@@ -1,6 +1,7 @@
 @import "@/_styles/variables.scss";
 
 $nav-width: 100px;
+$nav-width-mobile: 80px;
 
 .nav {
   display: flex;
@@ -15,6 +16,12 @@ $nav-width: 100px;
     @include flex();
     span {
       font-size: 15px;
+    }
+    @include mobile {
+      width: $nav-width-mobile;
+      span {
+        font-size: 13px;
+      }
     }
     &.active {
       span {
@@ -42,5 +49,14 @@ $nav-width: 100px;
   }
   &.rending {
     transform: translateX(calc(($nav-width) * 2));
+  }
+  @include mobile {
+    width: $nav-width-mobile;
+    &.edit {
+      transform: translateX(calc($nav-width-mobile));
+    }
+    &.rending {
+      transform: translateX(calc(($nav-width-mobile) * 2));
+    }
   }
 }

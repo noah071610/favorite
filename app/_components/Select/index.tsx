@@ -7,8 +7,6 @@ import { getImageUrl } from "@/_data"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
-import style from "../candidate.module.scss"
-const cx = classNames.bind(style)
 
 export default function Candidate({
   candidate,
@@ -23,11 +21,11 @@ export default function Candidate({
 
   useEffect(() => {
     const mouseDown = () => {
-      cardRef.current?.classList.add(style.active)
+      cardRef.current?.classList.add("active")
     }
     const mouseUp = () => {
       setTimeout(() => {
-        cardRef.current?.classList.remove(style.active)
+        cardRef.current?.classList.remove("active")
       }, 150)
     }
 
@@ -51,30 +49,30 @@ export default function Candidate({
   }, [cardRef])
 
   return (
-    <div ref={cardRef} className={cx(style.candidate, style["select-part"], style[direction])}>
+    <div ref={cardRef} className={classNames("global-select", "select-part", direction)}>
       <TinderCard
-        className={cx(style["candidate-inner"], style["swipe-inner"], style[direction])}
+        className={classNames("global-select-inner", "swipe-inner", direction)}
         onSwipe={() => swiped(direction, candidate)}
       >
         <div
           style={{
             backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
-          className={cx(style.thumbnail)}
+          className={classNames("thumbnail")}
         ></div>
         <div
-          className={cx(style["thumbnail-overlay"])}
+          className={classNames("thumbnail-overlay")}
           style={{
             backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
         ></div>
-        <div className={cx(style.description)}>
-          <div className={cx(style["title-wrapper"])}>
-            <h1 className={cx(style.title)}>{candidate?.title}</h1>
+        <div className={classNames("description")}>
+          <div className={classNames("title-wrapper")}>
+            <h1 className={classNames("title")}>{candidate?.title}</h1>
           </div>
         </div>
       </TinderCard>
-      <div className={cx(style["candidate-background"], style[direction])}>
+      <div className={classNames("global-select-background", direction)}>
         <span>LIKE!</span>
       </div>
     </div>

@@ -33,22 +33,21 @@
   }
 }
 
-.candidate {
+.global-select {
   width: 100%;
   height: 100%;
   position: relative;
-
   &-inner {
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: hidden;
     will-change: contents;
 
     &.swipe-inner {
       z-index: 10;
       cursor: pointer;
       transition: border 300ms;
+      overflow: hidden;
       &.left {
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
@@ -59,15 +58,12 @@
       }
       @include medium {
         &.left {
-          border-radius: 0;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
         &.right {
-          border-radius: 0;
-        }
-      }
-      &:hover {
-        .thumbnail-overlay {
-          background-size: 280%;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
       }
     }
@@ -79,7 +75,6 @@
 
   &-background {
     @include full();
-    background-color: var(--gray-soft);
     @include flex();
     &.left {
       border-top-left-radius: 10px;
@@ -91,10 +86,12 @@
     }
     @include medium {
       &.left {
-        border-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
       &.right {
-        border-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
     }
     span {
@@ -119,7 +116,6 @@
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: hidden;
     z-index: 10;
     transition: all 300ms;
     @include flex();
@@ -139,7 +135,7 @@
       &::before {
         content: "";
         @include full();
-        backdrop-filter: brightness(50%) blur(3px);
+        backdrop-filter: brightness(30%) blur(3px);
       }
     }
   }
@@ -221,7 +217,7 @@
 }
 
 // 이벤트
-.candidate {
+.global-select {
   &.select-part {
     transform: scaleX(0.005);
     &.left {

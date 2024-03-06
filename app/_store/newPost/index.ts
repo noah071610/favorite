@@ -83,14 +83,13 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const _target = { ...candidates[from] }
         candidates.splice(from, 1)
         candidates.splice(to, 0, _target)
-        draft.selectedCandidateIndex = to
+        draft.selectedCandidateIndex = -1
       })
     ),
   addCandidate: ({ payload, index }) =>
     set((origin) =>
       produce(origin, (draft) => {
         draft.candidates.push(payload as PollingCandidateType)
-        draft.selectedCandidateIndex = index
         draft.thumbnail.slice = draft.candidates.length > 5 ? 5 : draft.candidates.length
       })
     ),
@@ -101,12 +100,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
 
         draft.candidates = candidates.filter((_: any, i: number) => i !== index)
 
-        if (draft.selectedCandidateIndex === index || candidates.length === 0) {
-          draft.selectedCandidateIndex = -1
-        }
-        if (draft.selectedCandidateIndex > index) {
-          draft.selectedCandidateIndex = draft.selectedCandidateIndex - 1
-        }
+        draft.selectedCandidateIndex = -1
 
         draft.thumbnail.slice = draft.candidates.length
       })

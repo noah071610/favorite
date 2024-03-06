@@ -5,11 +5,10 @@
   border-radius: 11px;
   position: relative;
   opacity: 0;
-  margin-bottom: 5px;
-  min-height: $candidate-height;
+  min-height: var(--candidate-height);
 
   @include mobile {
-    min-height: $candidate-height-mobile;
+    min-height: var(--candidate-height);
   }
 
   .border {

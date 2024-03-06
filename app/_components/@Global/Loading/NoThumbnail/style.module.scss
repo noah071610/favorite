@@ -3,11 +3,11 @@
 .no-thumbnail {
   &.post-card {
     width: 100%;
-    height: $post-card-thumbnail-height;
+    height: var(--post-card-thumbnail-height);
     border-radius: 15px;
     background: var(--gray-soft);
     @include mobile {
-      height: $post-card-thumbnail-height-mobile;
+      height: var(--post-card-thumbnail-height)-mobile;
     }
   }
 

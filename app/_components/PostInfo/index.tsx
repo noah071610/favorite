@@ -2,32 +2,23 @@
 
 import { chartBackgroundColors } from "@/_data/chart"
 import { UserType } from "@/_types/user"
-import { InfoInput } from "./Input"
 
 export default function PostInfo({
   title,
   description,
   user,
-  isEdit,
 }: {
   title: string
   description: string
   user?: UserType
-  isEdit?: boolean
 }) {
   return (
     <div className={"global-post-info"}>
       <div className={"title"}>
-        {isEdit ? (
-          <InfoInput />
-        ) : (
-          <>
-            <h1>{title}</h1>
-            {description.trim() && <h2>{description}</h2>}
-          </>
-        )}
+        <h1>{title}</h1>
+        {description.trim() && <h2>{description}</h2>}
       </div>
-      {!isEdit && user && (
+      {user && (
         <div className={"profile"}>
           <div className={"user-icon"}>
             <div style={{ backgroundColor: chartBackgroundColors[1] }} className={"icon"}>

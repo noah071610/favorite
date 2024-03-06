@@ -89,10 +89,10 @@
     &-inner {
       display: flex;
       width: 100%;
-      height: $post-card-thumbnail-height;
+      height: var(--post-card-thumbnail-height);
       transition: all 250ms;
       @include mobile {
-        height: $post-card-thumbnail-height-mobile;
+        height: var(--post-card-thumbnail-height)-mobile;
       }
 
       .image {
@@ -103,13 +103,13 @@
 
     .loading {
       width: 100%;
-      height: $post-card-thumbnail-height;
+      height: var(--post-card-thumbnail-height);
       border-radius: 8px;
       position: relative;
       background-color: var(--gray-soft);
 
       @include mobile {
-        height: $post-card-thumbnail-height-mobile;
+        height: var(--post-card-thumbnail-height)-mobile;
       }
       &::before {
         @include full;

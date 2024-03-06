@@ -1,9 +1,6 @@
 @import "@/_styles/variables.scss";
 
 .thumbnail-styler {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 20px;
 }
 
 .no-layout {
@@ -63,9 +60,16 @@
 }
 
 .thumbnail-selector {
-  display: flex;
+  display: grid;
+  margin-top: 15px;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
+  width: 100%;
+  @include mobile {
+    gap: 10px;
+  }
   .btn {
+    width: 100%;
     .preview-icon {
       width: 120px;
       height: 120px;
@@ -76,6 +80,10 @@
       i {
         font-size: 25px;
         color: var(--gray-hard);
+      }
+
+      @include mobile {
+        width: 100%;
       }
     }
     span {

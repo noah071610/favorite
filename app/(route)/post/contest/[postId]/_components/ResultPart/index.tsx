@@ -1,13 +1,8 @@
-"use client"
-
+import { getImageUrl } from "@/_data"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { calculateVoteRatio } from "@/_utils/math"
-import CountUp from "react-countup"
-
-import { getImageUrl } from "@/_data"
 import classNames from "classNames"
-import style from "../candidate.module.scss"
-const cx = classNames.bind(style)
+import CountUp from "react-countup"
 
 export default function ResultPart({
   candidates,
@@ -23,39 +18,39 @@ export default function ResultPart({
 
   return (
     <div
-      className={cx(style.candidate, style.result, {
-        [style.selected]: selected === candidate.listId,
-        [style.unselected]: selected !== candidate.listId,
+      className={classNames("global-select", "result", {
+        selected: selected === candidate.listId,
+        unselected: selected !== candidate.listId,
       })}
     >
-      <div className={cx(style.border)}></div>
+      <div className={classNames("border")}></div>
 
       {selected === candidate.listId && (
-        <div className={cx(style["candidate-background"], style[direction])}>
+        <div className={classNames("global-select-background", direction)}>
           <span>LIKE!</span>
         </div>
       )}
 
-      <div className={cx(style["candidate-inner"])}>
+      <div className={classNames("global-select-inner")}>
         <div
           style={{
             backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
-          className={cx(style.thumbnail)}
+          className={classNames("thumbnail")}
         ></div>
         <div
-          className={cx(style["thumbnail-overlay"])}
+          className={classNames("thumbnail-overlay")}
           style={{
             backgroundImage: getImageUrl({ url: candidate.imageSrc }),
           }}
         ></div>
-        <div className={cx(style.description)}>
-          <div className={cx(style["title-wrapper"])}>
-            <div style={{ width: `calc(${ratio}%)` }} className={cx(style.graph, style[`graph-${direction}`])}>
-              <div className={cx(style.gauge)}></div>
+        <div className={classNames("description")}>
+          <div className={classNames("title-wrapper")}>
+            <div style={{ width: `calc(${ratio}%)` }} className={classNames("graph", `graph-${direction}`)}>
+              <div className={classNames("gauge")}></div>
             </div>
-            <h1 className={cx(style.title)}>{candidate?.title}</h1>
-            <p className={cx(style.count)}>
+            <h1 className={classNames("title")}>{candidate?.title}</h1>
+            <p className={classNames("count")}>
               <span>
                 <CountUp prefix="(" suffix="표)" duration={4} end={candidate.pick} />
               </span>

@@ -12,12 +12,12 @@
     transform: scale(0);
     height: 0;
     opacity: 0;
-    min-height: $candidate-height;
+    min-height: var(--candidate-height);
   }
   100% {
     transform: scale(1);
     height: auto;
-    min-height: $candidate-height;
+    min-height: var(--candidate-height);
     opacity: 1;
   }
 }
@@ -33,12 +33,12 @@
     transform: scale(0);
     height: 0;
     opacity: 0;
-    min-height: $image-candidate-height;
+    min-height: var(--image-candidate-height);
   }
   100% {
     transform: scale(1);
     height: auto;
-    min-height: $image-candidate-height;
+    min-height: var(--image-candidate-height);
     opacity: 1;
   }
 }
@@ -46,14 +46,12 @@
 @keyframes candidate-delete {
   0% {
     transform: scale(1);
-    min-height: $candidate-height;
+    min-height: var(--candidate-height);
     opacity: 1;
-    margin-bottom: 5px;
   }
   50% {
     transform: scale(0);
-    min-height: $candidate-height;
-    margin-bottom: 5px;
+    min-height: var(--candidate-height);
   }
 
   100% {
@@ -68,20 +66,17 @@
 @keyframes image-candidate-delete {
   0% {
     transform: scale(1);
-    min-height: $image-candidate-height;
+    min-height: var(--image-candidate-height);
     opacity: 1;
-    margin-bottom: 5px;
   }
   50% {
     transform: scale(0);
-    min-height: $image-candidate-height;
-    margin-bottom: 5px;
+    min-height: var(--image-candidate-height);
   }
 
   100% {
     transform: scale(0);
     margin-bottom: 0;
-    height: 0;
     min-height: 0;
     opacity: 0;
   }

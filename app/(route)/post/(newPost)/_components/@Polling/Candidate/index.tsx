@@ -19,10 +19,10 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
   } = useNewPostStore()
 
   const onClickSelect = (e: any) => {
-    if (!e.target.className.includes("delete-")) {
-      setSelectedCandidateIndex(targetIndex)
-    } else {
+    if (e.target.className.includes("delete-")) {
       setCandidateStatus("delete")
+    } else {
+      setSelectedCandidateIndex(targetIndex === selectedCandidateIndex ? -1 : targetIndex)
     }
   }
 

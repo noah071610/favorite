@@ -1,37 +1,27 @@
 "use client"
 
-import selectPartStyle from "@/(route)/post/polling/[postId]/_components/SelectPart/style.module.scss"
-import { scaleUpAnimation } from "@/_styles/animation"
 import TextareaAutosize from "react-textarea-autosize"
 
 import { uploadImage } from "@/_queries/newPost"
 import React, { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
-import Resizer from "react-image-file-resizer"
 
-import style from "@/(route)/post/polling/[postId]/_components/SelectPart/style.module.scss"
 import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
+import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
-import _style from "./style.module.scss"
-const cx = classNames.bind(style, selectPartStyle)
+import style from "./style.module.scss"
+const cx = classNames.bind(style)
 
-const resizeFile = (file: File) =>
-  new Promise((res) => {
-    Resizer.imageFileResizer(file, 1500, 1500, "JPEG", 60, 0, (uri) => res(uri), "base64")
-  })
-
-const CandidateInput = React.memo(() => {
-  const { selectedCandidateIndex, setCandidate, candidates, content } = useNewPostStore()
+const CandidateInput = React.memo(({ index }: { index: number }) => {
+  const { setCandidate, candidates } = useNewPostStore()
 
   const onChangeInput = (e: any, type: "title" | "description") => {
-    if (selectedCandidateIndex > -1) {
-      if (type === "title" && e.target.value.length >= 30) return
-      setCandidate({ index: selectedCandidateIndex, payload: e.target.value, type })
-    }
+    if (type === "title" && e.target.value.length >= 30) return
+    setCandidate({ index, payload: e.target.value, type })
   }
 
-  const targetCandidate = candidates[selectedCandidateIndex]
+  const targetCandidate = candidates[index]
 
   return (
     targetCandidate && (
@@ -55,26 +45,22 @@ const CandidateInput = React.memo(() => {
 })
 CandidateInput.displayName = "CandidateInput"
 
-export default function SelectPart() {
-  const { selectedCandidateIndex, candidates, setCandidate, content } = useNewPostStore()
-  const candidate = candidates[selectedCandidateIndex]
+export default function SelectPart({ index, candidate }: { index: number; candidate: PollingCandidateType }) {
+  const { setCandidate, content, selectedCandidateIndex } = useNewPostStore()
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (selectedCandidateIndex > -1) {
-        acceptedFiles.forEach(async (file: File) => {
-          const compressFile = (await resizeFile(file)) as File
-          const formData = new FormData()
-          formData.append("image", compressFile)
+      acceptedFiles.forEach(async (file: File) => {
+        const formData = new FormData()
+        formData.append("image", file)
 
-          const { msg, imageSrc } = await uploadImage(formData)
-          if (msg === "ok") {
-            setCandidate({ index: selectedCandidateIndex, payload: imageSrc, type: "imageSrc" })
-          }
-        })
-      }
+        const { msg, imageSrc } = await uploadImage(formData)
+        if (msg === "ok") {
+          setCandidate({ index, payload: imageSrc, type: "imageSrc" })
+        }
+      })
     },
-    [selectedCandidateIndex, setCandidate]
+    [setCandidate]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -87,35 +73,26 @@ export default function SelectPart() {
 
   return (
     <>
-      {candidate ? (
-        <div key={candidate.listId} className={cx(style["select-part"])}>
-          {content.layout !== "text" && (
-            <div
-              style={{
-                background: getImageUrl({ url: candidate.imageSrc, isCenter: true }),
-                ...scaleUpAnimation(250),
-              }}
-              className={cx(style.image, _style["drop-zone"], { [_style.active]: isDragActive })}
-              {...getRootProps()}
-            >
-              <input {...getInputProps()} />
-              <i className={cx("fa-solid", "fa-plus", { [_style.active]: isDragActive })} />
-            </div>
-          )}
-          <div className={cx(_style["description-input"])}>
-            <CandidateInput />
+      <div
+        key={candidate.listId}
+        className={cx(style["select-part"], { [style.selected]: index === selectedCandidateIndex })}
+      >
+        {content.layout !== "text" && (
+          <div
+            style={{
+              background: getImageUrl({ url: candidate.imageSrc, isCenter: true }),
+            }}
+            className={cx(style.image, style["drop-zone"], { [style.active]: isDragActive })}
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} />
+            <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
           </div>
+        )}
+        <div className={cx(style["description-input"])}>
+          <CandidateInput index={index} />
         </div>
-      ) : (
-        <div className={cx(style.unselected)}>
-          <div>
-            <span>
-              후보 편집창 입니다
-              <br /> 후보를 선택해주세요
-            </span>
-          </div>
-        </div>
-      )}
+      </div>
     </>
   )
 }

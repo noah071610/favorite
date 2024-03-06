@@ -9,25 +9,40 @@
   .inner {
     @include modal-inner;
   }
+  @include mobile {
+    width: 300px;
+  }
   h3 {
     font-size: 16px;
     line-height: 1.4;
     color: var(--black-soft);
+    @include mobile {
+      font-size: 14px;
+    }
   }
   p {
     font-size: 14px;
     margin: 10px 0 20px 0;
+    @include mobile {
+      font-size: 13px;
+    }
   }
   .btn {
     margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    @include mobile {
+      gap: 5px;
+    }
     button {
       display: block;
       width: 100%;
       padding: 10px;
       border-radius: 10px;
+      @include mobile {
+        border-radius: 5px;
+      }
       span {
         font-size: 14px;
       }

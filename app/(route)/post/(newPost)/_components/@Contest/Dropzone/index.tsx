@@ -5,7 +5,6 @@ import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
-import style from "@/(route)/post/contest/[postId]/_components/candidate.module.scss"
 import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"

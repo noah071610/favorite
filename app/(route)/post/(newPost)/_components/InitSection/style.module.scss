@@ -7,10 +7,18 @@
   height: calc(100vh - 60px - 100px);
   @include flex();
   flex-direction: column;
+  @include mobile {
+    padding: 0 10px;
+    height: calc(100vh - 50px - 100px);
+  }
 
   .type {
     &-wrapper {
       width: 700px;
+
+      @include mobile {
+        width: 100%;
+      }
 
       h1 {
         text-align: center;
@@ -22,34 +30,63 @@
           animation: shakeX 450ms 100ms;
           color: var(--red);
         }
+        @include mobile {
+          font-size: 20px;
+          margin-bottom: 20px;
+        }
       }
     }
     &-list {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 20px;
+      @include mobile {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
       button {
         height: 250px;
         padding: 10px;
         @include border();
         border-radius: 20px;
         transition: all 300ms;
+
+        @include mobile {
+          @include flex;
+          height: auto;
+          padding: 20px 10px;
+          border-radius: 8px;
+        }
+
         & > div {
           @include flex();
           margin-bottom: 10px;
+          @include mobile {
+            margin-bottom: 0px;
+            margin-right: 10px;
+          }
         }
         i {
           color: var(--gray-hard);
           font-size: 30px;
           transition: all 300ms;
+          @include mobile {
+            font-size: 18px;
+          }
         }
         .type-icon-contest {
           display: inline-block;
           font-size: 30px;
+          @include mobile {
+            font-size: 18px;
+          }
         }
         span {
           color: var(--gray-hard);
           transition: all 300ms;
+          @include mobile {
+            font-size: 14px;
+          }
         }
         box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.08);
 

@@ -16,7 +16,7 @@ import { TournamentCandidateType } from "@/_types/post/tournament"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
-import Candidate from "./Candidate"
+import Candidate from "../../../../../_components/Select"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 

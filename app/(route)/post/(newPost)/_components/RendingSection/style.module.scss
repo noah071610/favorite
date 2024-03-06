@@ -7,14 +7,28 @@
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  @include mobile {
+    padding: 0 10px;
+  }
 
   &-section {
+    width: 400px;
     padding-top: 30px;
     padding-bottom: 50px;
 
     h1 {
       font-size: 20px;
       margin-bottom: 20px;
+    }
+
+    @include mobile {
+      width: 100%;
+      padding-top: 20px;
+
+      h1 {
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
     }
   }
 }
@@ -23,6 +37,10 @@
   @include flex();
   flex-direction: column;
   gap: 20px;
+
+  @include mobile {
+    width: 100%;
+  }
   .option {
     width: 170px;
     display: flex;
@@ -59,8 +77,10 @@
 
 .btn-wrapper {
   margin-top: 10px;
-  @include flex();
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
+  width: 100%;
   button {
     width: 200px;
     padding: 15px 20px;
@@ -68,9 +88,14 @@
     font-weight: 700;
     color: var(--text-white);
     background-color: var(--pink);
-    border-radius: 15px;
+    border-radius: 10px;
     &:hover {
       background-color: var(--pink-hard);
+    }
+
+    @include mobile {
+      width: 100%;
+      border-radius: 7px;
     }
   }
 }

@@ -24,7 +24,7 @@ const selectorTypes = [
 ]
 
 export default function ThumbnailStyle() {
-  const { setNewPost, thumbnail, content, candidates, setThumbnail, setThumbnailLayout } = useNewPostStore()
+  const { thumbnail, content, candidates, setThumbnail, setThumbnailLayout } = useNewPostStore()
 
   const onChangeThumbnailStyle = (type: ThumbnailType) => {
     setThumbnail({ type: "type", payload: type })
@@ -110,7 +110,7 @@ export default function ThumbnailStyle() {
         ))}
       {thumbnail.type === "none" && (
         <div className={cx(style["no-thumbnail"])}>
-          <NoThumbnail type="post-card" />
+          <NoThumbnail height={150} type="post-card" />
         </div>
       )}
       <div className={cx(style["thumbnail-selector"])}>
