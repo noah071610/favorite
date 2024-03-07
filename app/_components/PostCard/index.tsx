@@ -15,8 +15,6 @@ import ShareModal from "./ShareModal"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-// todo: 이미지 어레이 그거 타입 지우기
-
 export default function PostCard({
   postCard,
   isTemplate,

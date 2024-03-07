@@ -1,0 +1,87 @@
+@import "@/_styles/variables.scss";
+
+@include scale-up;
+
+.user-page {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+  .inner {
+    width: 700px;
+    padding: 0 10px;
+    @include mobile {
+      width: 100%;
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 15px;
+
+  @include medium {
+    gap: 5px;
+  }
+}
+
+.user-info {
+  span {
+    display: block;
+  }
+  span {
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 5px;
+  }
+  @include medium {
+    span {
+      font-size: 15px;
+      padding-bottom: 3px;
+    }
+  }
+}
+
+.user-icon {
+  @include flex();
+  padding: 3px;
+  border-radius: 100%;
+  transition: all 220ms;
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    transition: all 220ms cubic-bezier(0, 0.96, 0.44, 1.76);
+
+    @include medium {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    @include flex();
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 20px;
+
+    @include medium {
+      width: 30px;
+      height: 30px;
+      font-size: 13px;
+    }
+  }
+}

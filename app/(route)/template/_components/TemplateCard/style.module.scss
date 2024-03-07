@@ -2,8 +2,8 @@
 
 .template-card {
   display: grid;
-  grid-template-columns: 530px 1fr;
-  gap: 30px;
+  grid-template-columns: 400px 1fr;
+  gap: 20px;
   @include medium {
     display: flex;
     flex-direction: column;

@@ -1,18 +1,16 @@
-"use client"
+import { Metadata } from "next"
+import UserPageMain from "./_components"
 
-import { queryKey } from "@/_data"
-import { UserQueryType } from "@/_types/user"
-import { useQuery } from "@tanstack/react-query"
-import classNames from "classNames"
-import UserPageError from "./error"
-import UserPageLoading from "./loading"
-import style from "./style.module.scss"
-const cx = classNames.bind(style)
+type Props = {
+  params: { userId: string }
+}
 
-export default function UserPost() {
-  const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user,
-  })
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: "대시보드",
+  }
+}
 
-  return <>{userData ? userData.msg === "no" ? <UserPageError /> : <div></div> : <UserPageLoading />}</>
+export default function UserPage() {
+  return <UserPageMain />
 }

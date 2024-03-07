@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     default: "Favorite",
     template: "%s | Favorite",
   },
-  description: "What is your Favorite?",
+  description: "너를 통해 알게되는 내 마음 최고의 Favorite",
 }
 
 export default async function RootLayout({
@@ -64,6 +64,8 @@ export default async function RootLayout({
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+          <meta name="keywords" content="퀴즈, 게임, 투표, 픽, 월드컵, 이상형 월드컵" />
+          <meta name="author" content="Noah"></meta>
         </head>
         <body suppressHydrationWarning={true}>
           <ScriptTag />

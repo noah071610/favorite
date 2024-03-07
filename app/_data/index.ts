@@ -36,6 +36,7 @@ export const queryKey = {
   },
   comment: (postId: string) => ["comment", postId],
   user: ["user"],
+  userPost: ["userPost"],
   play: ["play"],
   post: (postId: string) => ["post", postId],
 } as const

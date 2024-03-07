@@ -69,6 +69,7 @@ export default function SelectPart({ index, candidate }: { index: number; candid
     accept: {
       "image/*": [],
     },
+    maxSize: 8000000,
   })
 
   return (

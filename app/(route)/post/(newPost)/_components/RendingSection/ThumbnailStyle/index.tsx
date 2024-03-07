@@ -57,6 +57,7 @@ export default function ThumbnailStyle() {
     accept: {
       "image/*": [],
     },
+    maxSize: 8000000,
   })
 
   useEffect(() => {

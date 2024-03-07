@@ -76,7 +76,7 @@
         height: 50px;
         @include mobile {
           font-size: 11px;
-          height: 30px; //todo:
+          height: 30px;
           -webkit-line-clamp: 2;
         }
       }

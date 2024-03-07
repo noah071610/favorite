@@ -93,6 +93,7 @@ export default function TournamentContent() {
     accept: {
       "image/*": [],
     },
+    maxSize: 8000000,
   })
 
   return (

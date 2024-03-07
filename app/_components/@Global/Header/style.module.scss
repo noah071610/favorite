@@ -86,9 +86,6 @@ $side-width: 300px;
         }
       }
 
-      &:active {
-        background-color: var(--border);
-      }
       &.saved {
         i {
           color: var(--text-white);

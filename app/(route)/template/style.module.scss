@@ -10,6 +10,10 @@
 }
 
 .content {
+  width: 800px !important;
+  @include medium {
+    width: 100% !important;
+  }
   @include mobile {
     padding: 30px !important;
   }

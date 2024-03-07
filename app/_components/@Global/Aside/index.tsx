@@ -92,7 +92,7 @@ export default function Aside() {
           return v.value === "login" ? (
             user ? (
               <Link
-                className={cx({ [style.active]: asPath === v.link })}
+                className={cx({ [style.active]: asPath.includes("/user/") })}
                 onClick={closeModal}
                 href={`/user/${user.userId}`}
                 key={"user"}

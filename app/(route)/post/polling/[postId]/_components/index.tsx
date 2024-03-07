@@ -27,7 +27,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
   })
-  const { windowSize, setModal } = useMainStore()
+  const { windowSize } = useMainStore()
   const [onSelectModal, setOnSelectModal] = useState(false)
 
   const [status, setStatus] = useState<"init" | "result">("init")

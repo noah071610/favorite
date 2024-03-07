@@ -54,13 +54,13 @@ export default function Dropzone({ index }: { index: number }) {
     accept: {
       "image/*": [],
     },
+    maxSize: 8000000,
   })
-  // todo: lef right 클래스 네임 없어짐. 뭐가 달라졌을까
   return (
     <div className={cx("global-select")}>
       <div className={cx("global-select-inner")}>
         {candidate.imageSrc ? (
-          <>
+          <div className={cx(style.thumbnail)}>
             <button onClick={onClickDeleteImage} className={cx(style.close)}>
               <i className={cx("fa-solid", "fa-close")}></i>
             </button>
@@ -76,7 +76,7 @@ export default function Dropzone({ index }: { index: number }) {
                 backgroundImage: getImageUrl({ url: candidate.imageSrc }),
               }}
             ></div>
-          </>
+          </div>
         ) : (
           <div
             style={{

@@ -13,6 +13,13 @@ export async function getPopularPosts() {
   return response.data
 }
 
+export async function getUserPosts(userId?: number) {
+  if (!userId) return
+  const response = await API.get(`/post/user?userId=${userId}`)
+
+  return response.data
+}
+
 export async function getTemplatePosts() {
   const response = await API.get(`/post/template`)
 
