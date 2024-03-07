@@ -90,13 +90,15 @@
         }
         box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.08);
 
-        &:hover {
-          transform: translateY(-10px);
-          border-color: var(--pink-hard);
-          box-shadow: 0px 11px 12px rgba(0, 0, 0, 0.08);
-          i,
-          span {
-            color: var(--pink-hard);
+        @media (hover: hover) {
+          &:hover {
+            transform: translateY(-10px);
+            border-color: var(--pink-hard);
+            box-shadow: 0px 11px 12px rgba(0, 0, 0, 0.08);
+            i,
+            span {
+              color: var(--pink-hard);
+            }
           }
         }
         &.active {
@@ -105,9 +107,11 @@
           span {
             color: var(--pink-hard);
           }
-          &:hover {
-            transform: translateY(0);
-            box-shadow: none;
+          @media (hover: hover) {
+            &:hover {
+              transform: translateY(0);
+              box-shadow: none;
+            }
           }
         }
       }

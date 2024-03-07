@@ -10,6 +10,7 @@ import { ErrorTypes } from "@/_types"
 import { Providers, UserQueryType } from "@/_types/user"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
+import Image from "next/image"
 import { useRef, useState } from "react"
 import style from "../style.module.scss"
 
@@ -241,7 +242,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             className={cx(style.btn, style[value])}
           >
             <div className={cx(style.image)}>
-              <img src={`/images/icon/${value}.png`} alt={value} />
+              <Image width={28} height={28} src={`/images/icon/${value}.png`} alt={value} />
             </div>
           </button>
         ))}

@@ -5,6 +5,7 @@ import { getImageUrl } from "@/_data"
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
 import { TournamentCandidateChartType } from "@/_types/post/tournament"
 import classNames from "classNames"
+import { useEffect, useRef, useState } from "react"
 import Info from "./Info"
 import style from "./style.module.scss"
 
@@ -15,8 +16,6 @@ const dataArr = [
   { label: "매치 승리 확률", value: "winPercent" },
   { label: "매치 패배 확률", value: "losePercent" },
 ] as const
-
-const delay = 130
 
 export default function Candidate({
   selected,
@@ -36,9 +35,38 @@ export default function Candidate({
   candidateLength?: number
 }) {
   const imageStatus = useProgressiveImage(candidate.imageSrc)
+  const ref = useRef<HTMLDivElement | null>()
+  const [isIntersecting, setIntersecting] = useState(false)
+  const [isDisplayed, setIsDisplayed] = useState(false)
+
+  useEffect(() => {
+    if (!isDisplayed) {
+      const observer = new IntersectionObserver(([entry]) => {
+        setIntersecting(entry.isIntersecting)
+      })
+
+      const currentRef = ref.current
+
+      if (currentRef) {
+        if (isIntersecting) {
+          setIntersecting(true)
+          setIsDisplayed(true)
+          observer.unobserve(currentRef)
+        } else {
+          observer.observe(currentRef)
+        }
+      }
+
+      return () => {
+        if (currentRef) {
+          observer.unobserve(currentRef)
+        }
+      }
+    }
+  }, [ref?.current, isIntersecting, isDisplayed])
 
   return (
-    <li className={cx(style.candidate, { [style.selected]: selected })}>
+    <li ref={ref as any} className={cx(style.candidate, { [style.selected]: selected })}>
       <div className={cx(style.top)}>
         <div className={cx(style.left)}>
           {imageStatus === "success" && (
@@ -66,7 +94,7 @@ export default function Candidate({
                   <div style={{ width: `${candidate[value]}%` }} className={cx(style["gauge-inner"])}>
                     <div
                       style={{
-                        animation: `${style.move} 700ms ${index * delay}ms cubic-bezier(0, 0.97, 1, 1.01) forwards`,
+                        animation: isIntersecting ? `${style.move} 700ms cubic-bezier(0, 0.97, 1, 1.01) forwards` : "",
                       }}
                       className={cx(style["gauge"])}
                     />
@@ -75,14 +103,26 @@ export default function Candidate({
               ))}
             </div>
             <div className="global-pc-visible">
-              <Info uniqueData={uniqueData} candidateLength={candidateLength} index={0} candidate={candidate} />
+              <Info
+                isIntersecting={isIntersecting}
+                uniqueData={uniqueData}
+                candidateLength={candidateLength}
+                index={0}
+                candidate={candidate}
+              />
             </div>
           </div>
         </div>
       </div>
 
       <div className="global-mobile-visible">
-        <Info uniqueData={uniqueData} candidateLength={candidateLength} index={0} candidate={candidate} />
+        <Info
+          isIntersecting={isIntersecting}
+          uniqueData={uniqueData}
+          candidateLength={candidateLength}
+          index={0}
+          candidate={candidate}
+        />
       </div>
     </li>
   )

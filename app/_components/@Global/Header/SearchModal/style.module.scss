@@ -118,8 +118,10 @@
         color: var(--black-soft);
         max-height: 32px;
       }
-      &:hover {
-        background-color: var(--gray-soft);
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--gray-soft);
+        }
       }
     }
   }

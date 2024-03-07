@@ -8,6 +8,10 @@
   width: 400px;
   @include z-index(modal);
   color: black;
+
+  @include mobile {
+    width: calc(100% - 20px);
+  }
   .inner {
     width: 100%;
     overflow: hidden;
@@ -65,7 +69,7 @@
         z-index: 20;
         background-color: white;
         transform: scale(0.85) translate(10px, -6px);
-        color: $purple-hover;
+        color: $purple-hard;
       }
     }
 
@@ -96,8 +100,10 @@
     background-color: $purple;
     padding: 15px 13px;
     width: 100%;
-    &:hover {
-      background-color: $purple-hover;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $purple-hard;
+      }
     }
   }
   .btn-text {
@@ -136,8 +142,10 @@
   span {
     color: $gray;
     font-size: 13px;
-    &:hover {
-      color: $gray-hard;
+    @media (hover: hover) {
+      &:hover {
+        color: $gray-hard;
+      }
     }
   }
 }
@@ -153,14 +161,18 @@
     height: 70px;
     border-radius: 10px;
     background-color: $gray-soft;
-    &:hover {
-      background-color: $border;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $border;
+      }
     }
     &:disabled {
       cursor: default;
       opacity: 0.3;
-      &:hover {
-        background-color: $gray-soft;
+      @media (hover: hover) {
+        &:hover {
+          background-color: $gray-soft;
+        }
       }
     }
   }

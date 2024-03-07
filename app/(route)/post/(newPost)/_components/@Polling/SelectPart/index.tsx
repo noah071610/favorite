@@ -60,7 +60,7 @@ export default function SelectPart({ index, candidate }: { index: number; candid
         }
       })
     },
-    [setCandidate]
+    [setCandidate, index]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

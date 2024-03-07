@@ -21,30 +21,11 @@
     height: 60px;
     padding: 10px 0 10px 10px;
     button {
-      width: 42px;
-      height: 100%;
-      border-radius: 100%;
-      .icon {
-        @include flex;
-        i {
-          font-size: 17px;
-        }
-      }
-      &:active {
-        background-color: var(--border);
-      }
+      @include mobile-icon-btn;
     }
     @include medium {
       height: 50px;
       padding: 5px 0;
-      button {
-        padding: 0 5px;
-        .icon {
-          i {
-            font-size: 15px;
-          }
-        }
-      }
     }
   }
 }
@@ -87,7 +68,23 @@
       color: var(--black-soft);
     }
 
-    &:hover,
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(255, 154, 154, 0.2);
+        .label,
+        i,
+        .type-icon-contest {
+          color: var(--pink-hard);
+        }
+        .icon {
+          background-color: var(--white);
+        }
+      }
+    }
+
+    @include mobile-active {
+      background-color: var(--border);
+    }
     &.active {
       background-color: rgba(255, 154, 154, 0.2);
       .label,

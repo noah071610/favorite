@@ -10,7 +10,7 @@ import { nanoid } from "nanoid"
 import { PollingCandidateType } from "@/_types/post/polling"
 import { ContentLayoutType } from "@/_types/post/post"
 import classNames from "classNames"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Candidate from "./Candidate"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
@@ -32,7 +32,7 @@ const ChartDescription = () => {
     setContent({ type: "resultDescription", payload: e.target.value })
   }
   return (
-    <section className={cx(style["styler-section"])}>
+    <section className={cx("styler-section")}>
       <h1>결과 페이지 설명</h1>
       <TextareaAutosize
         placeholder="투표 결과 설명 입력 (옵션)"
@@ -92,27 +92,27 @@ export default function PollingContent() {
   }
 
   return (
-    <div className={cx(style.main)}>
-      <div className={cx(style.editor)}>
-        <section className={cx(style["styler-section"])}>
+    <div className={cx("main")}>
+      <div className={cx("editor")}>
+        <section className={cx("styler-section")}>
           <h1>제목 입력</h1>
           <input
-            className={style["title-input"]}
+            className={"title-input"}
             placeholder="제목 입력"
             value={newPost.title ?? ""}
             onChange={(e) => onChangeInput(e, "title")}
           />
         </section>
-        <section className={cx(style["styler-section"])}>
+        <section className={cx("styler-section")}>
           <h1>설명 입력</h1>
           <input
-            className={style["description-input"]}
+            className={"description-input"}
             placeholder="설명 입력 (옵션)"
             value={newPost.description ?? ""}
             onChange={(e) => onChangeInput(e, "description")}
           />
         </section>
-        <section className={cx(style["styler-section"])}>
+        <section className={cx("styler-section")}>
           <h1>후보 스타일 변경</h1>
           <div className={cx(style["layout-list"])}>
             {selectorTypes.map(({ value, icons, label }) => (
@@ -131,7 +131,7 @@ export default function PollingContent() {
             ))}
           </div>
         </section>
-        <section className={cx(style["styler-section"])}>
+        <section className={cx("styler-section")}>
           <h1>후보 등록</h1>
           <div className={cx(style["candidate-list"])}>
             <DragDropContext
@@ -159,18 +159,45 @@ export default function PollingContent() {
                       </li>
                       {candidates.map((candidate, i) => (
                         <Draggable index={i} key={candidate.listId} draggableId={candidate.listId}>
-                          {(draggableProvided) => (
-                            <li className={cx(style["list"])} ref={draggableProvided.innerRef}>
-                              <div
-                                className={cx(style.list)}
-                                {...draggableProvided.dragHandleProps}
-                                {...draggableProvided.draggableProps}
-                              >
-                                <Candidate candidate={candidate} targetIndex={i} />
-                              </div>
-                              <SelectPart index={i} candidate={candidate as PollingCandidateType} />
-                            </li>
-                          )}
+                          {(draggableProvided) => {
+                            const [grabDisplay, setGrabDisplay] = useState(true)
+                            const [animation, setAnimation] = useState<string | null>(style.opacity)
+                            useEffect(() => {
+                              setTimeout(() => {
+                                setAnimation(null)
+                              }, 800)
+                            }, [])
+
+                            return (
+                              <li {...draggableProvided.draggableProps} ref={draggableProvided.innerRef}>
+                                <div className={cx(style.list)}>
+                                  <button
+                                    style={
+                                      grabDisplay
+                                        ? animation
+                                          ? { animation: animation + " 500ms 300ms forwards" }
+                                          : { opacity: 1 }
+                                        : { display: "none" }
+                                    }
+                                    {...draggableProvided.dragHandleProps}
+                                    className={cx(style.grab)}
+                                  >
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                      <path
+                                        d="M6 15H6.01M6 9H6.01M12 9H12.01M18 9H18.01M18 15H18.01M12 15H12.01M7 9C7 9.55228 6.55228 10 6 10C5.44772 10 5 9.55228 5 9C5 8.44772 5.44772 8 6 8C6.55228 8 7 8.44772 7 9ZM7 15C7 15.5523 6.55228 16 6 16C5.44772 16 5 15.5523 5 15C5 14.4477 5.44772 14 6 14C6.55228 14 7 14.4477 7 15ZM13 9C13 9.55228 12.5523 10 12 10C11.4477 10 11 9.55228 11 9C11 8.44772 11.4477 8 12 8C12.5523 8 13 8.44772 13 9ZM13 15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15C11 14.4477 11.4477 14 12 14C12.5523 14 13 14.4477 13 15ZM19 9C19 9.55228 18.5523 10 18 10C17.4477 10 17 9.55228 17 9C17 8.44772 17.4477 8 18 8C18.5523 8 19 8.44772 19 9ZM19 15C19 15.5523 18.5523 16 18 16C17.4477 16 17 15.5523 17 15C17 14.4477 17.4477 14 18 14C18.5523 14 19 14.4477 19 15Z"
+                                        stroke="rgba(161, 161, 161, 0.6)"
+                                        strokeWidth={2}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </button>
+                                  <Candidate setGrabDisplay={setGrabDisplay} candidate={candidate} targetIndex={i} />
+                                </div>
+                                <SelectPart index={i} candidate={candidate as PollingCandidateType} />
+                              </li>
+                            )
+                          }}
                         </Draggable>
                       ))}
                       {provided.placeholder}

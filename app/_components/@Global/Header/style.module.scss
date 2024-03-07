@@ -35,28 +35,10 @@ $side-width: 300px;
     display: flex;
     align-items: center;
     button {
-      width: 42px;
-      height: 100%;
-      border-radius: 100%;
-      .icon {
-        @include flex;
-        i {
-          font-size: 17px;
-        }
-      }
-      &:active {
-        background-color: var(--border);
-      }
+      @include mobile-icon-btn;
     }
     @include medium {
       width: auto;
-      button {
-        padding: 0 5px;
-
-        .icon i {
-          font-size: 15px;
-        }
-      }
     }
   }
   .center {
@@ -65,23 +47,17 @@ $side-width: 300px;
 
   .right {
     width: $side-width;
-    a,
-    button {
-      padding: 9px 15px;
-      border-radius: 6px;
-      span {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--text-white);
-      }
-    }
 
     .save {
       @include flex;
       background-color: var(--purple);
-      &:hover {
-        background-color: var(--purple-hover);
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--purple-hard);
+        }
       }
+
       i {
         @include full;
         color: var(--text-white);
@@ -91,6 +67,7 @@ $side-width: 300px;
       span {
         margin-left: 5px;
       }
+
       .icon {
         position: relative;
         width: 15px;
@@ -108,13 +85,61 @@ $side-width: 300px;
           transform: rotateY(0deg);
         }
       }
+
+      &:active {
+        background-color: var(--border);
+      }
+      &.saved {
+        i {
+          color: var(--text-white);
+        }
+      }
     }
+
+    .save-mobile {
+      @include mobile-icon-btn;
+      .icon {
+        position: relative;
+        i {
+          @include center;
+          transition: 300ms all;
+        }
+        .check {
+          transform: translate(-50%, -50%) rotateY(90deg);
+        }
+      }
+      &.saved {
+        background-color: var(--green);
+        .disk {
+          transform: translate(-50%, -50%) rotateY(90deg);
+        }
+        .check {
+          transform: translate(-50%, -50%) rotateY(0deg);
+        }
+        &:active {
+          background-color: var(--green);
+        }
+      }
+    }
+
     .pc {
       display: flex;
       justify-content: flex-end;
       align-items: center;
       height: 100%;
       gap: 10px;
+
+      a,
+      button {
+        padding: 9px 15px;
+        border-radius: 6px;
+        span {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: var(--text-white);
+        }
+      }
+
       .login {
         width: 80px;
         background-color: var(--pink);
@@ -125,8 +150,10 @@ $side-width: 300px;
       }
       .new-post {
         background-color: var(--purple);
-        &:hover {
-          background-color: var(--purple-hover);
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--purple-hard);
+          }
         }
       }
     }
@@ -142,18 +169,9 @@ $side-width: 300px;
       .mobile {
         @include flex;
         height: 100%;
-        button {
-          width: 42px;
-          display: block;
-          height: 100%;
-          padding: 0 5px;
-          border-radius: 100%;
-          i {
-            font-size: 15px;
-          }
-          &:active {
-            background-color: var(--border);
-          }
+        button,
+        a {
+          @include mobile-icon-btn;
         }
       }
     }

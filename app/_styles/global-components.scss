@@ -69,10 +69,12 @@
             color: var(--black-soft);
             font-size: 13px;
           }
-          &:hover {
-            border-color: var(--pink);
-            i {
-              color: var(--pink);
+          @media (hover: hover) {
+            &:hover {
+              border-color: var(--pink);
+              i {
+                color: var(--pink);
+              }
             }
           }
         }

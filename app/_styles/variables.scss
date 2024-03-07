@@ -12,7 +12,7 @@ $gray-softest: rgba(225, 225, 225, 0.15);
 $border: rgba(214, 214, 214, 0.7);
 
 $purple: rgba(217, 171, 255, 0.875);
-$purple-hover: rgba(190, 111, 255, 0.903);
+$purple-hard: rgba(190, 111, 255, 0.903);
 
 $orange: rgba(255, 182, 126, 0.875);
 $orange-hover: rgba(255, 148, 34, 0.903);
@@ -41,6 +41,14 @@ $content-width: 950px;
 @mixin mobile {
   @media (max-width: 450px) {
     @content;
+  }
+}
+
+@mixin mobile-active {
+  @media (max-width: 450px) {
+    &:active {
+      @content;
+    }
   }
 }
 
@@ -103,6 +111,23 @@ $z-index-map: (
     to {
       background-position: -200% 0;
     }
+  }
+}
+
+@mixin mobile-icon-btn {
+  width: 42px;
+  height: 100%;
+  border-radius: 100%;
+  .icon {
+    height: 100%;
+    @include flex;
+    i {
+      color: var(--black-soft);
+      font-size: 17px;
+    }
+  }
+  &:active {
+    background-color: var(--border);
   }
 }
 
@@ -193,13 +218,16 @@ $z-index-map: (
     transition: none;
   }
 
-  &:hover {
-    background-color: rgba(255, 154, 154, 0.2);
-    &::before {
-      z-index: 1;
-      animation: shine 1000ms 150ms infinite;
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(255, 154, 154, 0.2);
+      &::before {
+        z-index: 1;
+        animation: shine 1000ms 150ms infinite;
+      }
     }
   }
+
   @include mobile {
     &.active {
       background-color: rgba(255, 154, 154, 0.2);
@@ -255,20 +283,26 @@ $z-index-map: (
   }
   &.polling {
     background-color: var(--pink);
-    &:hover {
-      background-color: var(--pink-hard);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--pink-hard);
+      }
     }
   }
   &.contest {
     background-color: var(--purple);
-    &:hover {
-      background-color: var(--purple-hover);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--purple-hard);
+      }
     }
   }
   &.tournament {
     background-color: var(--orange);
-    &:hover {
-      background-color: var(--orange-hover);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--orange-hover);
+      }
     }
   }
 }

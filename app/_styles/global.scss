@@ -137,6 +137,11 @@ a {
   cursor: pointer;
   display: inline-block;
 }
+a,
+button {
+  -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 제거 */
+  -webkit-touch-callout: none; /* 터치 시 텍스트 선택 방지 */
+}
 
 button {
   display: inline-block;
@@ -247,6 +252,10 @@ input:-webkit-autofill:focus {
 :root {
   body {
     color: black;
+    a,
+    button {
+      color: black;
+    }
     background-color: white;
   }
   --white: white;
@@ -265,7 +274,7 @@ input:-webkit-autofill:focus {
   --border: rgba(214, 214, 214, 0.7);
 
   --purple: rgba(217, 171, 255, 0.875);
-  --purple-hover: rgba(190, 111, 255, 0.9);
+  --purple-hard: rgba(190, 111, 255, 0.9);
   --purple-hard: rgba(170, 68, 254, 0.9);
 
   --orange: rgba(255, 182, 126, 0.875);
@@ -302,7 +311,9 @@ input:-webkit-autofill:focus {
 body.dark {
   color: white;
   background-color: black;
-  i {
+  i,
+  a,
+  button {
     color: white;
   }
   .Toastify__toast {
@@ -325,7 +336,7 @@ body.dark {
   --border: rgb(63, 63, 63);
 
   --purple: rgba(217, 171, 255, 1);
-  --purple-hover: rgba(190, 111, 255, 1);
+  --purple-hard: rgba(190, 111, 255, 1);
 
   --orange: rgba(255, 182, 126, 1);
   --orange-hover: rgba(255, 148, 34, 1);

@@ -17,7 +17,19 @@
     height: calc(100% - 30px);
     border: 15px solid var(--gray-soft);
   }
-  &:hover,
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--gray-soft);
+      &::before {
+        border-color: var(--pink);
+        opacity: 0.3;
+      }
+      i {
+        color: var(--pink-hard);
+      }
+    }
+  }
   &.active {
     background-color: var(--gray-soft);
     &::before {
@@ -28,6 +40,7 @@
       color: var(--pink-hard);
     }
   }
+
   i {
     color: var(--gray-hard);
     font-size: 40px;
@@ -66,7 +79,9 @@
     font-weight: 700;
     color: var(--text-white);
   }
-  &:hover {
-    background-color: var(--pink-hard);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--pink-hard);
+    }
   }
 }

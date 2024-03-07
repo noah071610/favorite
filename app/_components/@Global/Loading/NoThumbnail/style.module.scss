@@ -4,10 +4,11 @@
   &.post-card {
     width: 100%;
     height: var(--post-card-thumbnail-height);
-    border-radius: 15px;
+    border-radius: 10px;
     background: var(--gray-soft);
+
     @include mobile {
-      height: var(--post-card-thumbnail-height)-mobile;
+      border-radius: 5px;
     }
   }
 

@@ -13,7 +13,7 @@
   @include medium {
     padding: 0;
     padding-top: 50px;
-    height: calc(100vh);
+    height: calc(100svh);
   }
 
   &.result {
@@ -53,6 +53,7 @@
     height: 100%;
   }
   @include mobile {
+    height: calc(100svh - 50px);
     flex-direction: column;
     border-radius: 0;
   }
@@ -111,14 +112,16 @@
         transition: all 240ms;
         color: var(--gray-hard);
       }
-      &:hover {
-        border-color: var(--pink-hard);
-        i {
-          color: var(--pink-hard);
-          transform: translateX(5px);
-        }
-        span {
-          color: var(--pink-hard);
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--pink-hard);
+          i {
+            color: var(--pink-hard);
+            transform: translateX(5px);
+          }
+          span {
+            color: var(--pink-hard);
+          }
         }
       }
     }

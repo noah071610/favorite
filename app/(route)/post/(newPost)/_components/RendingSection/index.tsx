@@ -185,8 +185,12 @@ export default function RendingSection() {
             </button>
           </div>
           <div className={cx(style["btn-wrapper"])}>
-            <button onClick={() => validate("preview")}>미리 플레이 해보기</button>
-            <button onClick={() => validate("posting")}>포스팅 하기</button>
+            <button onClick={() => validate("preview")}>
+              <span>미리 플레이 해보기</span>
+            </button>
+            <button onClick={() => validate("posting")}>
+              <span>포스팅 하기</span>
+            </button>
           </div>
         </div>
       </div>

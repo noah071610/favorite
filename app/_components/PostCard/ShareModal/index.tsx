@@ -7,6 +7,7 @@ import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { PostCardType } from "@/_types/post/post"
 import { copyTextToClipboard } from "@/_utils/copy"
 import classNames from "classNames"
+import Image from "next/image"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -54,7 +55,7 @@ export default function ShareModal({
           <li style={fadeMoveUpAnimation(450, i * 80)} key={`share_${value}`}>
             <button onClick={() => onClickShare(value as ShareProviderValue)}>
               <div className={cx(style.image)}>
-                <img src={`/images/icon/${value}.png`} alt={value} />
+                <Image width={22} height={22} src={`/images/icon/${value}.png`} alt={value} />
               </div>
             </button>
           </li>

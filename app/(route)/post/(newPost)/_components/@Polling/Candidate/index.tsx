@@ -7,7 +7,15 @@ import classNames from "classNames"
 import React, { useEffect, useState } from "react"
 import style from "./style.module.scss"
 
-function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any }; targetIndex: number }) {
+function Candidate({
+  candidate,
+  targetIndex,
+  setGrabDisplay,
+}: {
+  candidate: { [key: string]: any }
+  targetIndex: number
+  setGrabDisplay: (b: boolean) => void
+}) {
   const { description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const {
@@ -21,6 +29,7 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
   const onClickSelect = (e: any) => {
     if (e.target.className.includes("delete-")) {
       setCandidateStatus("delete")
+      setGrabDisplay(false)
     } else {
       setSelectedCandidateIndex(targetIndex === selectedCandidateIndex ? -1 : targetIndex)
     }

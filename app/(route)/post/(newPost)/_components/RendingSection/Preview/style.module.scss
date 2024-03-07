@@ -1,80 +1,5 @@
 @import "@/_styles/variables.scss";
 
-.rending {
-  width: 100%;
-  height: calc(100vh - 60px - 100px);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-
-  &-section {
-    padding-top: 30px;
-    padding-bottom: 50px;
-
-    h1 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-  }
-}
-
-.finish {
-  @include flex();
-  flex-direction: column;
-  gap: 20px;
-  .option {
-    width: 170px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    span {
-      font-size: 14px;
-    }
-    .bar {
-      width: 50px;
-      height: 24px;
-      border-radius: 20px;
-      background-color: var(--gray-soft);
-      padding: 2px 4px;
-      .circle {
-        transition: 200ms all ease-out;
-        border-radius: 100%;
-        width: 20px;
-        height: 20px;
-        background-color: var(--gray-hard);
-      }
-    }
-    &.active {
-      .bar {
-        color: var(--pink-soft);
-        .circle {
-          background-color: var(--pink);
-          transform: translateX(calc(100% + 2px));
-        }
-      }
-    }
-  }
-}
-
-.btn-wrapper {
-  margin-top: 10px;
-  @include flex();
-  gap: 10px;
-  button {
-    width: 200px;
-    padding: 15px 20px;
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text-white);
-    background-color: var(--pink);
-    border-radius: 15px;
-    &:hover {
-      background-color: var(--pink-hard);
-    }
-  }
-}
-
 .preview {
   @include full();
   @include z-index(preview);
@@ -95,8 +20,14 @@
       font-weight: 700;
       color: var(--text-white);
     }
-    &:hover {
-      background-color: var(--pink-soft);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--pink-soft);
+      }
+    }
+    @include mobile {
+      top: 5px;
+      right: 5px;
     }
   }
   .preview-triangle {
@@ -109,6 +40,13 @@
     background-color: var(--purple);
     opacity: 0.5;
     transform: rotate(45deg);
+
+    @include mobile {
+      bottom: -75px;
+      right: -75px;
+      width: 150px;
+      height: 150px;
+    }
   }
   .preview-label {
     position: fixed;
@@ -118,5 +56,9 @@
     font-size: 30px;
     font-weight: 700;
     color: var(--text-white);
+
+    @include mobile {
+      font-size: 15px;
+    }
   }
 }

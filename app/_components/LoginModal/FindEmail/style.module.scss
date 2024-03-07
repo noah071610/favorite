@@ -35,7 +35,7 @@
           z-index: 20;
           background-color: var(--white);
           transform: scale(0.85) translate(10px, 0px);
-          color: var(--purple-hover);
+          color: var(--purple-hard);
         }
       }
     }
@@ -48,8 +48,8 @@
       background-color: var(--purple);
       padding: 15px 13px;
       width: 100%;
-      &:hover {
-        background-color: var(--purple-hover);
+      @media (hover: hover) {     &:hover { 
+        background-color: var(--purple-hard);
       }
     }
     span {

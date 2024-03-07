@@ -1,8 +1,9 @@
 "use client"
 
 import CommentPart from "@/_components/CommentPart"
+import Share from "@/_components/Share"
 import { CommentType } from "@/_types/post/post"
-import { TournamentCandidateChartType, TournamentCandidateType } from "@/_types/post/tournament"
+import { TournamentCandidateChartType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import classNames from "classNames"
 import { useMemo, useState } from "react"
 import ReactPaginate from "react-paginate"
@@ -49,12 +50,14 @@ export default function ResultPart({
   comments,
   isPreview,
   authorId,
+  post,
 }: {
   pickedCandidate: TournamentCandidateType
   candidates: TournamentCandidateType[]
   comments: CommentType[]
   isPreview: boolean
   authorId: number
+  post: TournamentPostType
 }) {
   const total = getTotals(_candidates)
   const candidates = _candidates.map((v) => {
@@ -204,6 +207,7 @@ export default function ResultPart({
             <CommentPart isPreview={isPreview} authorId={authorId} comments={comments} />
           </div>
         </section>
+        <Share post={post} />
       </div>
     </div>
   )

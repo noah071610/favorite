@@ -3,7 +3,7 @@
 import { useNewPostStore } from "@/_store/newPost"
 
 import classNames from "classNames"
-import Dropzone from "./Dropzone"
+import Dropzone from "../../../../../_components/Dropzone"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -19,27 +19,27 @@ export default function ContestContent() {
 
   return (
     candidates.length > 0 && (
-      <div className={cx(style["main"])}>
-        <div className={cx(style["editor"])}>
-          <section className={cx(style["styler-section"])}>
+      <div className={"main"}>
+        <div className={cx("editor")}>
+          <section className={cx("styler-section")}>
             <h1>제목 입력</h1>
             <input
-              className={style["title-input"]}
+              className={"title-input"}
               placeholder="제목 입력"
               value={newPost.title ?? ""}
               onChange={(e) => onChangeInput(e, "title")}
             />
           </section>
-          <section className={cx(style["styler-section"])}>
+          <section className={cx("styler-section")}>
             <h1>설명 입력</h1>
             <input
-              className={style["description-input"]}
+              className={"description-input"}
               placeholder="설명 입력 (옵션)"
               value={newPost.description ?? ""}
               onChange={(e) => onChangeInput(e, "description")}
             />
           </section>
-          <section className={cx(style["styler-section"])}>
+          <section className={cx("styler-section")}>
             <h1>후보 입력</h1>
             <div className={cx(style.candidates)}>
               {(["left", "right"] as Array<"left" | "right">).map((dr, i) => (

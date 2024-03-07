@@ -63,6 +63,7 @@ export default async function RootLayout({
           />
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         </head>
         <body suppressHydrationWarning={true}>
           <ScriptTag />

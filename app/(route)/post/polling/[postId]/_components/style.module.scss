@@ -1,5 +1,98 @@
 @import "@/_styles/variables.scss";
 
+@keyframes overlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cta-section {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  .cta-wrapper {
+    width: 450px;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+  .cta-main {
+    background-color: var(--gray-soft);
+    padding: 30px 20px;
+    border-radius: 20px;
+    ul {
+      @include flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      button {
+        border-radius: 100%;
+        padding: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.5);
+        transition: 200ms all;
+        .image {
+          padding: 8px;
+          border-radius: 100%;
+          @include flex;
+          img {
+            width: 22px;
+            height: 22px;
+          }
+        }
+        @media (hover: hover) {
+          &:hover {
+            transform: scale(1.2);
+          }
+        }
+      }
+    }
+    .cta {
+      width: 100%;
+      @include flex;
+      gap: 10px;
+      a,
+      button {
+        width: 200px;
+        padding: 14px 0;
+        background-color: var(--pink);
+        border-radius: 10px;
+        @include flex;
+        span {
+          color: var(--text-white);
+          font-size: 15px;
+          font-weight: 700;
+          margin-left: 5px;
+        }
+        img {
+          margin-left: 5px;
+        }
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--pink-hard);
+          }
+        }
+      }
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay);
+  @include z-index(overlay);
+  animation: overlay 300ms;
+}
+
 .polling-post {
   width: 100%;
   display: flex;
@@ -9,7 +102,6 @@
   @include medium {
     padding-top: 50px;
     padding-bottom: 0;
-    height: calc(100vh);
   }
 
   &.result {
@@ -32,7 +124,6 @@
     align-items: center;
     flex-direction: column;
     @include medium {
-      height: 100%;
       justify-content: center;
     }
   }
@@ -53,9 +144,9 @@
       width: 100%;
     }
     @include medium {
-      height: 100%;
+      height: calc(100svh - 50px);
       padding: 10px;
-      border: none;
+      border-radius: 0;
       flex-direction: column;
       justify-content: flex-start;
     }
@@ -105,6 +196,9 @@
     border-radius: 10px;
     .list {
       padding-bottom: 5px;
+    }
+    @include mobile {
+      min-height: calc(100svh - 50px);
     }
   }
 

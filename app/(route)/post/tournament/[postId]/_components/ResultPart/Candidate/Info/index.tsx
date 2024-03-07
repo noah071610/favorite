@@ -27,6 +27,7 @@ export default function Info({
   index,
   uniqueData,
   candidateLength,
+  isIntersecting,
 }: {
   candidate: TournamentCandidateChartType
   index: number
@@ -36,12 +37,13 @@ export default function Info({
     ratingRank: number
   }
   candidateLength?: number
+  isIntersecting: boolean
 }) {
   return (
     <div className={cx(style.info)}>
       {dataArr.map(({ value, label }, i) => (
         <div
-          style={fadeMoveUpAnimation(1000, index * delay + (i * 100 + 50))}
+          style={isIntersecting ? fadeMoveUpAnimation(1000, index * delay + (i * 100 + 50)) : {}}
           key={`${candidate.listId}_${value}`}
           className={cx(style.table)}
         >
@@ -64,7 +66,7 @@ export default function Info({
       {uniqueData &&
         uniqueDataArr.map(({ value, label, icon }, i) => (
           <div
-            style={fadeMoveUpAnimation(1000, index * delay + (i * 100 * 3 + 50))}
+            style={isIntersecting ? fadeMoveUpAnimation(1000, index * delay + (i * 100 * 3 + 50)) : {}}
             key={`${candidate.listId}_${value}`}
             className={cx(style.table)}
           >

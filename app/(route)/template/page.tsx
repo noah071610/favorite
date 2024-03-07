@@ -10,6 +10,7 @@ import { TemplatePostCardType, ThumbnailType } from "@/_types/post/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { nanoid } from "nanoid"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import TemplateCard from "./_components/TemplateCard"
@@ -83,7 +84,7 @@ export default function TemplatePage() {
             <>
               <div className={"global-page-title"}>
                 <h1>
-                  <img src="/images/emoji/magic.png" />
+                  <Image width={35} height={35} src="/images/emoji/magic.png" alt="magic" />
                   <span>템플릿으로 빠른 시작</span>
                 </h1>
               </div>
@@ -100,7 +101,7 @@ export default function TemplatePage() {
       </div>
       {modalStatus === "loadTemplate" && (
         <Confirm
-          title="템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. <br/>괜찮으세요?"
+          title="템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?"
           onClickConfirm={onClickConfirm}
           customBtn={{ yes: "네 괜찮아요", no: "취소" }}
         />

@@ -81,6 +81,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
               pickedCandidate={pickedCandidate}
               comments={post.comments}
               candidates={originCandidates}
+              post={post}
             />
           ) : (
             <>
@@ -94,7 +95,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
                   originCandidates={originCandidates}
                 />
               ) : (
-                <FavoriteLoading type="full" />
+                <FavoriteLoading type="content" />
               )}
             </>
           )}

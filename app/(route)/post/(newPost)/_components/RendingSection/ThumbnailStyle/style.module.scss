@@ -38,7 +38,18 @@
 
     cursor: pointer;
     @include flex();
-    &:hover,
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--gray-soft);
+        &::before {
+          border-color: var(--pink);
+          opacity: 0.3;
+        }
+        i {
+          color: var(--pink-hard);
+        }
+      }
+    }
     &.active {
       background-color: var(--gray-soft);
       &::before {
@@ -49,6 +60,7 @@
         color: var(--pink-hard);
       }
     }
+
     i {
       color: var(--gray-hard);
       font-size: 40px;
@@ -121,9 +133,11 @@
       padding: 5px 8px;
       font-size: 11px;
       color: var(--black-soft);
-      &:hover {
-        border-color: var(--pink-hard);
-        color: var(--pink-hard);
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--pink-hard);
+          color: var(--pink-hard);
+        }
       }
       &:disabled {
         border-color: var(--gray-hard);

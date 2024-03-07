@@ -16,6 +16,7 @@
     font-size: 16px;
     line-height: 1.4;
     color: var(--black-soft);
+    word-break: keep-all;
     @include mobile {
       font-size: 14px;
     }
@@ -51,8 +52,10 @@
         span {
           color: var(--text-white);
         }
-        &:hover {
-          background-color: var(--pink-hard);
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--pink-hard);
+          }
         }
       }
       &:last-of-type {
@@ -60,8 +63,10 @@
         span {
           color: var(--text-white);
         }
-        &:hover {
-          background-color: var(--gray-hard);
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--gray-hard);
+          }
         }
       }
     }

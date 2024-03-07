@@ -268,7 +268,6 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
           slice: type === "contest" ? 2 : 0,
           isPossibleLayout: false,
         },
-        isEditOn: false,
       }
     }),
   setSelectedCandidateIndex: (state) =>

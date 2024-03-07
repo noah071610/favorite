@@ -16,7 +16,7 @@ import { TournamentCandidateType } from "@/_types/post/tournament"
 
 import { uploadImage } from "@/_queries/newPost"
 import { useDropzone } from "react-dropzone"
-import Dropzone from "../@Contest/Dropzone"
+import Dropzone from "../../../../../_components/Dropzone"
 
 const cx = classNames.bind(style)
 
@@ -98,27 +98,27 @@ export default function TournamentContent() {
   return (
     newPost && (
       <>
-        <div className={cx(style.main)}>
-          <div className={cx(style.editor)}>
-            <section className={cx(style["styler-section"])}>
+        <div className={cx("main")}>
+          <div className={cx("editor")}>
+            <section className={cx("styler-section")}>
               <h1>제목 입력</h1>
               <input
-                className={style["title-input"]}
+                className={"title-input"}
                 placeholder="제목 입력"
                 value={newPost.title ?? ""}
                 onChange={(e) => onChangeInput(e, "title")}
               />
             </section>
-            <section className={cx(style["styler-section"])}>
+            <section className={cx("styler-section")}>
               <h1>설명 입력</h1>
               <input
-                className={style["description-input"]}
+                className={"description-input"}
                 placeholder="설명 입력 (옵션)"
                 value={newPost.description ?? ""}
                 onChange={(e) => onChangeInput(e, "description")}
               />
             </section>
-            <section className={cx(style["styler-section"])}>
+            <section className={cx("styler-section")}>
               <h1>후보 설정</h1>
               <div className={cx(style["slide-section"])}>
                 {candidates.length ? (
@@ -147,7 +147,7 @@ export default function TournamentContent() {
                 )}
               </div>
             </section>
-            <section className={cx(style["styler-section"])}>
+            <section className={cx("styler-section")}>
               <h1>후보 보기 및 추가</h1>
               <ul className={cx(style["candidate-list"])}>
                 {candidates.map(({ listId, imageSrc }, index) => (

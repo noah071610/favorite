@@ -96,14 +96,16 @@
         transition: all 240ms;
         color: var(--gray-hard);
       }
-      &:hover {
-        border-color: var(--pink-hard);
-        i {
-          color: var(--pink-hard);
-          transform: translateX(5px);
-        }
-        span {
-          color: var(--pink-hard);
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--pink-hard);
+          i {
+            color: var(--pink-hard);
+            transform: translateX(5px);
+          }
+          span {
+            color: var(--pink-hard);
+          }
         }
       }
     }

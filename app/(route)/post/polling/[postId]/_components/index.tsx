@@ -4,6 +4,7 @@ import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import Candidate from "@/_components/Candidate"
 import CommentPart from "@/_components/CommentPart"
 import PostInfo from "@/_components/PostInfo"
+import Share from "@/_components/Share"
 import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
 import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
@@ -15,7 +16,7 @@ import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
-import { useEffect, useMemo, useState } from "react"
+import { MouseEvent, useEffect, useMemo, useState } from "react"
 import ChartPart from "./Chartpart"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
@@ -27,6 +28,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
     initialData: initialPost,
   })
   const { windowSize, setModal } = useMainStore()
+  const [onSelectModal, setOnSelectModal] = useState(false)
 
   const [status, setStatus] = useState<"init" | "result">("init")
   const [selectedCandidate, setSelectedCandidate] = useState<PollingCandidateType | null>(null)
@@ -72,19 +74,26 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
           setParticipate({ listId: selectedCandidate.listId, postId: post.postId })
         }
         setStatus("result")
-        setModal("none")
+        setOnSelectModal(false)
       }
       if (type === "select" && candidate) {
         setSelectedCandidate(candidate)
         if ((windowSize === "mobile" || windowSize === "medium") && post.content.layout !== "text") {
-          setModal("mobileSelectCandidate")
+          setOnSelectModal(true)
         }
       }
     }
   }
 
+  const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget.className.includes("overlay")) {
+      setOnSelectModal(false)
+    }
+  }
+
   return isImagesLoaded ? (
     <div className={cx(style["polling-post"], { [style["result"]]: isResultPage })}>
+      {onSelectModal && <div onClick={onClickOverlay} className={cx(style.overlay)} />}
       <div className={cx(style["polling-post-inner"])}>
         <PostInfo title={post.title} description={post.description} user={post.user} />
         <div
@@ -133,6 +142,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
                     comments={post.comments}
                   />
                 </div>
+                <Share post={post} />
               </div>
             ) : (
               <SelectPart selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />
@@ -142,12 +152,17 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
       </div>
       {post.content.layout !== "text" && (
         <div className="global-medium-visible">
-          <SelectPart isMobile={true} selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />
+          <SelectPart
+            onSelectModal={onSelectModal}
+            isMobile={true}
+            selectedCandidate={selectedCandidate}
+            onClickCandidate={onClickCandidate}
+          />
         </div>
       )}
     </div>
   ) : (
-    <FavoriteLoading type="full" text="Image Loading" />
+    <FavoriteLoading type="content" text="Image Loading" />
   )
 }
 

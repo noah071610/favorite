@@ -58,7 +58,23 @@
     border: 15px solid var(--gray-soft);
   }
 
-  &:hover,
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--gray-soft);
+      &::before {
+        border-color: var(--pink);
+        opacity: 0.3;
+      }
+      i {
+        color: var(--pink-hard);
+      }
+    }
+    i {
+      color: var(--gray-hard);
+      font-size: 40px;
+    }
+  }
+
   &.active {
     background-color: var(--gray-soft);
     &::before {

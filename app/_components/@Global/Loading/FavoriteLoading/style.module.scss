@@ -78,6 +78,9 @@
         }
       }
     }
+    &.content {
+      @include center_fix;
+    }
     &.component {
       width: 100%;
       height: 100%;

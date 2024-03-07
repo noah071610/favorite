@@ -29,15 +29,17 @@
   &-inner {
     display: block;
 
-    &.notTemplate:hover {
-      .thumbnail {
-        opacity: 0.85;
-        &-inner {
-          transform: scale(1.1);
+    @media (hover: hover) {
+      &.notTemplate:hover {
+        .thumbnail {
+          opacity: 0.85;
+          &-inner {
+            transform: scale(1.1);
+          }
         }
-      }
-      h1 {
-        color: var(--pink-hard);
+        h1 {
+          color: var(--pink-hard);
+        }
       }
     }
 
@@ -83,17 +85,18 @@
 
   .thumbnail {
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 10px;
     transition: all 250ms;
+
+    @include mobile {
+      border-radius: 5px;
+    }
 
     &-inner {
       display: flex;
       width: 100%;
       height: var(--post-card-thumbnail-height);
       transition: all 250ms;
-      @include mobile {
-        height: var(--post-card-thumbnail-height)-mobile;
-      }
 
       .image {
         width: 100%;
@@ -108,9 +111,6 @@
       position: relative;
       background-color: var(--gray-soft);
 
-      @include mobile {
-        height: var(--post-card-thumbnail-height)-mobile;
-      }
       &::before {
         @include full;
         content: "";
@@ -224,11 +224,13 @@
         span {
           margin-left: 8px;
         }
-        &:hover {
-          background-color: var(--pink);
-          i,
-          span {
-            color: var(--text-white);
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--pink);
+            i,
+            span {
+              color: var(--text-white);
+            }
           }
         }
         @include mobile {
@@ -239,19 +241,29 @@
             font-size: 12px;
           }
         }
-      }
-      &.template {
-        & > button {
-          background-color: var(--purple-hover);
+
+        @include mobile-active {
+          background-color: var(--pink);
           i,
           span {
             color: var(--text-white);
           }
-          &:hover {
-            background-color: var(--purple-hard);
-            i,
-            span {
-              color: var(--text-white);
+        }
+      }
+      &.template {
+        & > button {
+          background-color: var(--purple-hard);
+          i,
+          span {
+            color: var(--text-white);
+          }
+          @media (hover: hover) {
+            &:hover {
+              background-color: var(--purple-hard);
+              i,
+              span {
+                color: var(--text-white);
+              }
             }
           }
         }

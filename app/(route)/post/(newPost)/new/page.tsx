@@ -9,11 +9,8 @@ import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import Confirm from "@/_components/Confirm"
 import { useMainStore } from "@/_store/main"
 import { handleBeforeUnload } from "@/_utils/post"
-import classNames from "classNames"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect, useMemo } from "react"
-import style from "./style.module.scss"
-const cx = classNames.bind(style)
 
 const PollingContent = dynamic(() => import("../_components/@Polling"), {
   ssr: true,
@@ -88,22 +85,20 @@ export default function NewPostPage() {
 
   return (
     <>
-      <div className={cx(style["new-post-page"])}>
-        {/* INIT SECTION */}
-        {newPostStatus === "init" && <InitSection />}
+      {/* INIT SECTION */}
+      {newPostStatus === "init" && <InitSection />}
 
-        {/* EDIT & RESULT SECTION */}
-        {newPostStatus === "edit" && (
-          <>
-            {newPost?.type === "polling" && <PollingContent />}
-            {newPost?.type === "contest" && <ContestContent />}
-            {newPost?.type === "tournament" && <TournamentContent />}
-          </>
-        )}
+      {/* EDIT & RESULT SECTION */}
+      {newPostStatus === "edit" && (
+        <>
+          {newPost?.type === "polling" && <PollingContent />}
+          {newPost?.type === "contest" && <ContestContent />}
+          {newPost?.type === "tournament" && <TournamentContent />}
+        </>
+      )}
 
-        {/* RENDING SECTION */}
-        {newPostStatus === "rending" && <RendingSection />}
-      </div>
+      {/* RENDING SECTION */}
+      {newPostStatus === "rending" && <RendingSection />}
 
       {modalStatus === "newPostLoad" && (
         <Confirm

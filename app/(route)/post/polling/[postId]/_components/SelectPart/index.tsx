@@ -1,7 +1,6 @@
 "use client"
 
 import { getImageUrl } from "@/_data"
-import { useMainStore } from "@/_store/main"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
@@ -12,17 +11,18 @@ export default function SelectPart({
   isMobile,
   selectedCandidate,
   onClickCandidate,
+  onSelectModal,
 }: {
   isMobile?: boolean
   selectedCandidate: PollingCandidateType | null
   onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
+  onSelectModal?: boolean
 }) {
-  const { modalStatus } = useMainStore()
   return (
     <div
       className={cx(style["wrapper"], {
         [style.mobile]: isMobile,
-        [style.open]: modalStatus === "mobileSelectCandidate",
+        [style.open]: onSelectModal,
       })}
     >
       {selectedCandidate ? (

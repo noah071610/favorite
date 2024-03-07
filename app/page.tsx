@@ -1,6 +1,7 @@
 "use client"
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
+import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -78,7 +79,7 @@ export default function HomePage() {
                 <>
                   <div className={"global-page-title"}>
                     <h1>
-                      <img src="/images/emoji/fire.png" />
+                      <Image width={35} height={35} src="/images/emoji/fire.png" alt="fire" />
                       <span>지금 인기에요!</span>
                     </h1>
 
@@ -123,7 +124,7 @@ export default function HomePage() {
               )}
               <div className={"global-page-title"}>
                 <h1>
-                  <img src="/images/emoji/rocket.png" />
+                  <Image width={35} height={35} src="/images/emoji/rocket.png" alt="rocket" />
                   <span>{titleLabel ? (query === "all" ? "모두 보기" : titleLabel + " 콘텐츠") : "모두 보기"}</span>
                 </h1>
               </div>

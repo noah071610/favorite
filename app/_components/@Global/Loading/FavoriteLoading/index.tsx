@@ -2,7 +2,13 @@ import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function FavoriteLoading({ type, text }: { type: "full" | "component" | "overlay"; text?: string }) {
+export default function FavoriteLoading({
+  type,
+  text,
+}: {
+  type: "full" | "component" | "overlay" | "content"
+  text?: string
+}) {
   return (
     <div className={cx(style["loading-wrapper"], { [style[type]]: type })}>
       <div className={cx(style["loading"])}>

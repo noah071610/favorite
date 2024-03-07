@@ -1,6 +1,21 @@
 @import "@/_styles/variables.scss";
 @include shine;
-@include fade-move-up;
+
+@keyframes fade-move-up {
+  // memo: 자바스크립트 용
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 @keyframes opacity {
   from {
@@ -26,6 +41,10 @@
       opacity: 0;
       transform: translateY(100%);
     }
+    @include mobile {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
     button {
       border-radius: 100%;
       padding: 4px;
@@ -43,8 +62,10 @@
           height: 22px;
         }
       }
-      &:hover {
-        transform: scale(1.2);
+      @media (hover: hover) {
+        &:hover {
+          transform: scale(1.2);
+        }
       }
     }
   }

@@ -7,6 +7,7 @@ import ResultPart from "./ResultPart"
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import CommentPart from "@/_components/CommentPart"
 import PostInfo from "@/_components/PostInfo"
+import Share from "@/_components/Share"
 import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
 import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
@@ -90,27 +91,31 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
             </section>
 
             {isResultPage && (
-              <section className={cx(style["comment-section"])}>
-                <div className={cx(style.title)}>
-                  <div className={cx(style.icon)}>
-                    <i className={cx("fa-solid", "fa-comment")} />
+              <>
+                <section className={cx(style["comment-section"])}>
+                  <div className={cx(style.title)}>
+                    <div className={cx(style.icon)}>
+                      <i className={cx("fa-solid", "fa-comment")} />
+                    </div>
+                    <span>코멘트</span>
                   </div>
-                  <span>코멘트</span>
-                </div>
-                <div className={cx(style["contest-comment"])}>
-                  <CommentPart
-                    isPreview={post.format === "preview"}
-                    authorId={post.user?.userId ?? 1}
-                    comments={post.comments}
-                  />
-                </div>
-              </section>
+                  <div className={cx(style["contest-comment"])}>
+                    <CommentPart
+                      isPreview={post.format === "preview"}
+                      authorId={post.user?.userId ?? 1}
+                      comments={post.comments}
+                    />
+                  </div>
+                </section>
+
+                <Share post={post} />
+              </>
             )}
           </div>
         </div>
       </div>
     </>
   ) : (
-    <FavoriteLoading type="full" />
+    <FavoriteLoading type="content" text="Image Loading" />
   )
 }

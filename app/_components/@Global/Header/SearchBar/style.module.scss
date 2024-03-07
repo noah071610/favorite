@@ -39,6 +39,9 @@ $bar-height: 40px;
     @include medium {
       height: 30px;
     }
+    @include mobile {
+      padding: 5px 15px;
+    }
   }
 
   .border {

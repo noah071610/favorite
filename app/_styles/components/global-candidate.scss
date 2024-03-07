@@ -51,11 +51,13 @@
       grid-template-columns: 75px 1fr;
     }
 
-    &:hover {
-      background-color: var(--gray-soft);
-      .content {
-        h3 {
-          color: var(--pink-hard);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--gray-soft);
+        .content {
+          h3 {
+            color: var(--pink-hard);
+          }
         }
       }
     }
@@ -136,8 +138,10 @@
       font-weight: 700;
       color: var(--text-white);
     }
-    &:hover {
-      background: rgba(229, 106, 106, 1);
+    @media (hover: hover) {
+      &:hover {
+        background: rgba(229, 106, 106, 1);
+      }
     }
   }
 
@@ -238,12 +242,14 @@
     &-wrapper {
       height: 150px;
       position: relative;
-      &:hover {
-        .overlay {
-          opacity: 1;
-        }
-        h3 {
-          color: rgb(255, 141, 141);
+      @media (hover: hover) {
+        &:hover {
+          .overlay {
+            opacity: 1;
+          }
+          h3 {
+            color: rgb(255, 141, 141);
+          }
         }
       }
       .title {
