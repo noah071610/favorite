@@ -49,7 +49,7 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
   )
 
   return (
-    <li
+    <div
       className={classNames("global-candidate", `layout-${layout}`, {
         ["selected"]: isSelected,
       })}
@@ -87,7 +87,7 @@ function Candidate({ candidate, targetIndex }: { candidate: { [key: string]: any
           {description ? <p>{description}</p> : <p className={classNames("place-holder")}>후보 설명 입력 (옵션)</p>}
         </div>
       </div>
-    </li>
+    </div>
   )
 }
 

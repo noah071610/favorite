@@ -219,6 +219,21 @@
     display: block;
     padding: 1px;
   }
+  .image-like {
+    @include center;
+    padding: 5px 10px;
+    z-index: 20;
+    font-size: 25px;
+    font-weight: 700;
+    transform: translate(-50%, -50%) rotateZ(-45deg);
+    background: linear-gradient(45deg, var(--pink), var(--purple));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    border: 3px solid transparent;
+    border-image: linear-gradient(45deg, var(--pink), var(--purple)) 10;
+    border-radius: 5px;
+  }
   .image {
     &-wrapper {
       height: 150px;

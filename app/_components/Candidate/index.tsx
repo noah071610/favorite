@@ -52,6 +52,7 @@ function Candidate({
 
       <div className={classNames("inner")}>
         <div className={classNames("image-wrapper")}>
+          {layout === "image" && isResultPage && isSelected && <span className={"image-like"}>LIKE!</span>}
           <div
             style={{
               backgroundImage: !!imageSrc ? getImageUrl({ url: imageSrc }) : noImageUrl,

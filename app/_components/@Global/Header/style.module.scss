@@ -65,13 +65,48 @@ $side-width: 300px;
 
   .right {
     width: $side-width;
-    a {
+    a,
+    button {
       padding: 9px 15px;
       border-radius: 6px;
       span {
         font-size: 0.9rem;
         font-weight: 600;
         color: var(--text-white);
+      }
+    }
+
+    .save {
+      @include flex;
+      background-color: var(--purple);
+      &:hover {
+        background-color: var(--purple-hover);
+      }
+      i {
+        @include full;
+        color: var(--text-white);
+        font-size: 15px;
+        transition: 300ms all;
+      }
+      span {
+        margin-left: 5px;
+      }
+      .icon {
+        position: relative;
+        width: 15px;
+        height: 15px;
+        .check {
+          transform: rotateY(90deg);
+        }
+      }
+      &.saved {
+        background-color: var(--green);
+        .disk {
+          transform: rotateY(90deg);
+        }
+        .check {
+          transform: rotateY(0deg);
+        }
       }
     }
     .pc {

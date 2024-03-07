@@ -2,7 +2,6 @@
 
 import { useNewPostStore } from "@/_store/newPost"
 
-import PostInfo from "@/_components/PostInfo"
 import classNames from "classNames"
 import { nanoid } from "nanoid"
 import { useCallback, useRef, useState } from "react"
@@ -15,13 +14,15 @@ import { getImageUrl } from "@/_data"
 import { noImageUrl } from "@/_data/post"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 
+import { uploadImage } from "@/_queries/newPost"
+import { useDropzone } from "react-dropzone"
 import Dropzone from "../@Contest/Dropzone"
 
 const cx = classNames.bind(style)
 
 export default function TournamentContent() {
   const { newPost } = useNewPostStore()
-  const { addCandidate, deleteCandidate, candidates } = useNewPostStore()
+  const { addCandidate, setNewPost, deleteCandidate, candidates } = useNewPostStore()
   const swiperRef = useRef<any | null>(null)
 
   const createPollingCandidate = useCallback(() => {
@@ -56,46 +57,108 @@ export default function TournamentContent() {
     setCurrentIndex(swiper.activeIndex)
   }
 
+  const onChangeInput = (e: any, type: "title" | "description") => {
+    if (type === "title" && e.target.value.length >= 60) return
+    if (type === "description" && e.target.value.length >= 80) return
+
+    setNewPost({ type, payload: e.target.value })
+  }
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    acceptedFiles.forEach(async (file: any) => {
+      const formData = new FormData()
+      formData.append("image", file)
+
+      const { msg, imageSrc } = await uploadImage(formData)
+      if (msg === "ok") {
+        addCandidate({
+          index: candidates.length,
+          payload: {
+            listId: nanoid(10),
+            title: "",
+            imageSrc,
+            win: 0,
+            lose: 0,
+            pick: 0,
+            number: candidates.length + 1,
+          } as TournamentCandidateType,
+        })
+      }
+    })
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    multiple: true,
+    accept: {
+      "image/*": [],
+    },
+  })
+
   return (
     newPost && (
       <>
-        <div className={cx(style["tournament-post"])}>
-          <div className={cx(style["tournament-post-inner"])}>
-            <PostInfo title={newPost.title} description={newPost.description} isEdit={true} />
-            <div className={cx(style.content)}>
-              {candidates.length ? (
-                <Swiper
-                  ref={swiperRef}
-                  slidesPerView={2}
-                  freeMode={true}
-                  modules={[FreeMode]}
-                  className={cx(style.slider)}
-                  onSlideChange={handleSlideChange}
-                >
-                  {candidates.map(({ listId }, index) => (
-                    <SwiperSlide key={`tournament_candidate_${listId}`}>
-                      <Dropzone index={index} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              ) : (
-                <div className={cx(style["no-candidate"])}>
-                  <div>
-                    <span>토너먼트 후보를 등록해주세요</span>
+        <div className={cx(style.main)}>
+          <div className={cx(style.editor)}>
+            <section className={cx(style["styler-section"])}>
+              <h1>제목 입력</h1>
+              <input
+                className={style["title-input"]}
+                placeholder="제목 입력"
+                value={newPost.title ?? ""}
+                onChange={(e) => onChangeInput(e, "title")}
+              />
+            </section>
+            <section className={cx(style["styler-section"])}>
+              <h1>설명 입력</h1>
+              <input
+                className={style["description-input"]}
+                placeholder="설명 입력 (옵션)"
+                value={newPost.description ?? ""}
+                onChange={(e) => onChangeInput(e, "description")}
+              />
+            </section>
+            <section className={cx(style["styler-section"])}>
+              <h1>후보 설정</h1>
+              <div className={cx(style["slide-section"])}>
+                {candidates.length ? (
+                  <div className={cx(style.slider)}>
+                    <Swiper
+                      ref={swiperRef}
+                      slidesPerView={1}
+                      freeMode={true}
+                      modules={[FreeMode]}
+                      className={cx(style.slider)}
+                      onSlideChange={handleSlideChange}
+                    >
+                      {candidates.map(({ listId }, index) => (
+                        <SwiperSlide key={`tournament_candidate_${listId}`}>
+                          <Dropzone index={index} />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
                   </div>
-                </div>
-              )}
-            </div>
-            <section>
-              <h1 className={cx(style["section-title"])}>토너먼트 후보</h1>
+                ) : (
+                  <div className={cx(style["no-candidate"])}>
+                    <div>
+                      <span>토너먼트 후보를 등록해주세요</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+            <section className={cx(style["styler-section"])}>
+              <h1>후보 보기 및 추가</h1>
               <ul className={cx(style["candidate-list"])}>
                 {candidates.map(({ listId, imageSrc }, index) => (
                   <li className={cx(style.candidate)} key={`tournament_candidate_list_${listId}`}>
                     <button
                       className={cx(style.inner, {
-                        [style.active]: currentIndex === index || currentIndex + 1 === index,
+                        [style.active]: currentIndex === index,
                       })}
-                      onClick={() => clickCandidate(index)}
+                      onClick={() => {
+                        clickCandidate(index)
+                      }}
                     >
                       <div
                         style={{
@@ -109,13 +172,24 @@ export default function TournamentContent() {
                     </button>
                   </li>
                 ))}
-                <li className={cx(style.candidate, style.add)}>
-                  <button className={cx(style.inner)} onClick={createPollingCandidate}>
-                    <div className={cx(style.icon)}>
-                      <i className={cx("fa-solid", "fa-plus")}></i>
+                {candidates.length > 0 ? (
+                  <li {...getRootProps()} className={cx(style.candidate, style.add)}>
+                    <input {...getInputProps()} />
+                    <button className={cx(style.inner)}>
+                      <div className={cx(style.icon)}>
+                        <i className={cx("fa-solid", "fa-plus")}></i>
+                      </div>
+                    </button>
+                  </li>
+                ) : (
+                  <div {...getRootProps()} className={cx(style["no-list"])}>
+                    <input {...getInputProps()} />
+                    <div className={cx(style["no-list-inner"])}>
+                      <i className={cx("fa-solid", "fa-download")}></i>
+                      <span>여러개 사진 추가</span>
                     </div>
-                  </button>
-                </li>
+                  </div>
+                )}
               </ul>
             </section>
           </div>

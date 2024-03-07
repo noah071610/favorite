@@ -27,6 +27,7 @@ interface States {
   newPostStatus: PostingStatus
   selectedCandidateIndex: number
   thumbnail: ThumbnailSettingType
+  isEditOn: boolean
 }
 
 type SetNewPostAction =
@@ -75,6 +76,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
     isPossibleLayout: false,
   },
   selectedCandidateIndex: -1,
+  isEditOn: false,
 
   moveCandidate: ({ from, to }) =>
     set((origin) =>
@@ -84,6 +86,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         candidates.splice(from, 1)
         candidates.splice(to, 0, _target)
         draft.selectedCandidateIndex = -1
+        draft.isEditOn = true
       })
     ),
   addCandidate: ({ payload, index }) =>
@@ -91,6 +94,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
       produce(origin, (draft) => {
         draft.candidates.push(payload as PollingCandidateType)
         draft.thumbnail.slice = draft.candidates.length > 5 ? 5 : draft.candidates.length
+        draft.isEditOn = true
       })
     ),
   deleteCandidate: ({ index }) =>
@@ -103,6 +107,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         draft.selectedCandidateIndex = -1
 
         draft.thumbnail.slice = draft.candidates.length
+        draft.isEditOn = true
       })
     ),
   setCandidate: ({ index, payload, type }) =>
@@ -123,6 +128,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const handler = actionHandlers[type]
         if (handler && target) {
           handler()
+          draft.isEditOn = true
         }
       })
     ),
@@ -134,9 +140,11 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const actionHandlers = {
           title: () => {
             newPostDraft.title = action.payload
+            draft.isEditOn = true
           },
           description: () => {
             newPostDraft.description = action.payload
+            draft.isEditOn = true
           },
           type: () => {
             newPostDraft.type = action.payload as PostContentType
@@ -149,6 +157,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
               default:
                 break
             }
+            draft.isEditOn = true
           },
         }
 
@@ -174,6 +183,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const handler = actionHandlers[type]
         if (handler) {
           handler()
+          draft.isEditOn = true
         }
       })
     ),
@@ -196,6 +206,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const handler = actionHandlers[action.type]
         if (handler) {
           handler()
+          draft.isEditOn = true
         }
       })
     ),
@@ -205,6 +216,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
       produce(origin, (draft) => {
         draft.thumbnail.slice = slice
         draft.thumbnail.layout = draft.candidates.slice(0, slice).map(({ imageSrc }) => imageSrc)
+        draft.isEditOn = true
       })
     ),
 
@@ -212,6 +224,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
   loadNewPost: (state) =>
     set(() => ({
       ...state,
+      isEditOn: true,
     })),
   clearNewPost: (type) =>
     set(() => {
@@ -255,10 +268,12 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
           slice: type === "contest" ? 2 : 0,
           isPossibleLayout: false,
         },
+        isEditOn: false,
       }
     }),
   setSelectedCandidateIndex: (state) =>
     set(() => ({
       selectedCandidateIndex: state,
+      isEditOn: true,
     })),
 }))

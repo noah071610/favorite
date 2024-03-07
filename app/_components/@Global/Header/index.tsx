@@ -2,11 +2,14 @@
 
 import { queryKey } from "@/_data"
 import { useMainStore } from "@/_store/main"
+import { useNewPostStore } from "@/_store/newPost"
 import { UserQueryType } from "@/_types/user"
+import { handleBeforeUnload } from "@/_utils/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
+import { useMemo, useState } from "react"
 import LoginModal from "../../LoginModal"
 import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
@@ -14,14 +17,43 @@ import SearchModal from "./SearchModal"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
+const SaveBtn = () => {
+  const { newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex, loadNewPost, clearNewPost } =
+    useNewPostStore()
+  const [saved, setSaved] = useState(false)
+
+  const saveData = useMemo(
+    () => ({ newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex }),
+    [newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex]
+  )
+
+  const onClickSave = () => {
+    if (!saved) {
+      handleBeforeUnload(saveData)
+      setSaved(true)
+      setTimeout(() => {
+        setSaved(false)
+      }, 5000)
+    }
+  }
+  return (
+    <button onClick={onClickSave} className={cx(style.save, { [style.saved]: saved })}>
+      <div className={cx(style.icon)}>
+        <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
+        <i className={cx("fa-solid", "fa-check", style.check)}></i>
+      </div>
+      <span>저장하기</span>
+    </button>
+  )
+}
+
 export default function Header() {
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
   })
   const { modalStatus, setModal } = useMainStore()
+  const { newPostStatus } = useNewPostStore()
   const pathname = usePathname()
-  const { get } = useSearchParams()
-  const from = get("from")
   const isNewPostPage = pathname.includes("new")
   const isHideHeader = (pathname.includes("/post/") && !isNewPostPage) || pathname.includes("loginSuccess")
 
@@ -53,11 +85,19 @@ export default function Header() {
 
           <div className={cx(style.right)}>
             <div className={cx(style.pc)}>
-              <Link href={isNewPostPage ? `/${from ?? ""}` : "/post/new"} className={cx(style["new-post"])}>
-                <span>
-                  {isNewPostPage ? (from === "template" ? "템플릿 페이지로" : "메인 페이지로") : "만들러가기"}
-                </span>
-              </Link>
+              {isNewPostPage ? (
+                newPostStatus === "init" ? (
+                  <Link href={"/"} className={cx(style["new-post"])}>
+                    <span>메인페이지로</span>
+                  </Link>
+                ) : (
+                  <SaveBtn />
+                )
+              ) : (
+                <Link href={"/post/new"} className={cx(style["new-post"])}>
+                  <span>만들러가기</span>
+                </Link>
+              )}
               {user ? (
                 <Link href={`/user/${user.userId}`} className={cx(style["login"])}>
                   <span>대시보드</span>

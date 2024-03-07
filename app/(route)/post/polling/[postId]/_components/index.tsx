@@ -96,15 +96,16 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
           <div className={cx(style.left)}>
             <ul className={cx(style["candidate-list"])}>
               {candidates.map((candidate, index) => (
-                <Candidate
-                  onClickCandidate={onClickCandidate}
-                  candidate={candidate}
-                  index={index}
-                  layout={post.content.layout}
-                  key={`${candidate.listId}_${status}`}
-                  isResultPage={isResultPage}
-                  isSelected={selectedCandidate?.listId === candidate.listId}
-                />
+                <div className={cx(style.list)} key={`${candidate.listId}_${status}`}>
+                  <Candidate
+                    onClickCandidate={onClickCandidate}
+                    candidate={candidate}
+                    index={index}
+                    layout={post.content.layout}
+                    isResultPage={isResultPage}
+                    isSelected={selectedCandidate?.listId === candidate.listId}
+                  />
+                </div>
               ))}
             </ul>
           </div>

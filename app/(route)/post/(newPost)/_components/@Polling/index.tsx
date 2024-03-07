@@ -133,15 +133,7 @@ export default function PollingContent() {
         </section>
         <section className={cx(style["styler-section"])}>
           <h1>후보 등록</h1>
-          <ul className={cx(style["candidate-list"])}>
-            <div
-              style={{
-                animation: candidates.length === 0 ? "none" : style["no-candidate-disappear"] + " 500ms forwards",
-              }}
-              className={cx(style["no-candidate"])}
-            >
-              <span>후보가 없어요</span>
-            </div>
+          <div className={cx(style["candidate-list"])}>
             <DragDropContext
               onBeforeCapture={() => {
                 setSelectedCandidateIndex(-1)
@@ -150,12 +142,25 @@ export default function PollingContent() {
             >
               <Droppable droppableId="candidate-drop-zone">
                 {(provided) => (
-                  <div className={cx("candidate-drop-zone")} {...provided.droppableProps} ref={provided.innerRef}>
-                    <ul className={cx(style["candidate-list"])}>
+                  <div
+                    className={cx(style["candidate-drop-zone"])}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    <ul>
+                      <li
+                        style={{
+                          animation:
+                            candidates.length === 0 ? "none" : style["no-candidate-disappear"] + " 500ms forwards",
+                        }}
+                        className={cx(style["no-candidate"])}
+                      >
+                        <span>후보가 없어요</span>
+                      </li>
                       {candidates.map((candidate, i) => (
                         <Draggable index={i} key={candidate.listId} draggableId={candidate.listId}>
                           {(draggableProvided) => (
-                            <div ref={draggableProvided.innerRef}>
+                            <li className={cx(style["list"])} ref={draggableProvided.innerRef}>
                               <div
                                 className={cx(style.list)}
                                 {...draggableProvided.dragHandleProps}
@@ -164,7 +169,7 @@ export default function PollingContent() {
                                 <Candidate candidate={candidate} targetIndex={i} />
                               </div>
                               <SelectPart index={i} candidate={candidate as PollingCandidateType} />
-                            </div>
+                            </li>
                           )}
                         </Draggable>
                       ))}
@@ -179,7 +184,7 @@ export default function PollingContent() {
                 <i className={cx("fa-solid", "fa-plus")} />
               </button>
             </div>
-          </ul>
+          </div>
         </section>
         <ChartDescription />
       </div>

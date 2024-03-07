@@ -29,8 +29,17 @@ const TournamentContent = dynamic(() => import("../_components/@Tournament"), {
 })
 
 export default function NewPostPage() {
-  const { newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex, loadNewPost, clearNewPost } =
-    useNewPostStore()
+  const {
+    newPost,
+    newPostStatus,
+    content,
+    candidates,
+    thumbnail,
+    selectedCandidateIndex,
+    loadNewPost,
+    clearNewPost,
+    isEditOn,
+  } = useNewPostStore()
   const { modalStatus, setModal } = useMainStore()
 
   const saveData = useMemo(
@@ -40,7 +49,9 @@ export default function NewPostPage() {
 
   useEffect(() => {
     const handleBeforeUnloadCallback = (e: any) => {
-      handleBeforeUnload(e, saveData)
+      if (isEditOn) {
+        handleBeforeUnload(saveData, e)
+      }
     }
     window.addEventListener("beforeunload", handleBeforeUnloadCallback)
 
@@ -51,13 +62,13 @@ export default function NewPostPage() {
 
   useEffect(() => {
     const _item = localStorage.getItem("favorite_save_data")
-    if (_item) {
+    if (_item && !isEditOn) {
       const item = JSON.parse(_item)
       if (!Object.keys(saveData).every((v) => item[v])) return localStorage.removeItem("favorite_save_data")
       setModal("newPostLoad")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isEditOn])
 
   const onClickConfirm = useCallback(
     (isOk: boolean) => {

@@ -1,10 +1,23 @@
 @import "@/_styles/variables.scss";
 
 @include scale-up;
-@include fade-move-up;
+@keyframes fade-move-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 .select-part {
-  background-color: var(--gray-softest);
+  background-color: var(--white);
   border-radius: 20px;
   display: none;
   overflow: hidden;

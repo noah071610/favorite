@@ -90,7 +90,9 @@ export function generatePostData({
   return target
 }
 
-export const handleBeforeUnload = (event: any, data: any) => {
+export const handleBeforeUnload = (data: any, event?: any) => {
   localStorage.setItem("favorite_save_data", JSON.stringify(data))
-  event.returnValue = "Are you sure you want to leave?"
+  if (event) {
+    event.returnValue = "Are you sure you want to leave?"
+  }
 }
