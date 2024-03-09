@@ -11,7 +11,7 @@ export const errorToastOptions = {
   theme: "light",
   transition: Bounce,
 } as ToastOptions<unknown>
-export const toastError = (key: string) => toast.success(key, errorToastOptions)
+export const toastError = (key: string) => toast.error(key, errorToastOptions)
 
 export const successToastOptions = (id: string) =>
   ({

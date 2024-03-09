@@ -1,9 +1,13 @@
+import translationUS from "@/_locales/en_US/common.json"
+import translationJA from "@/_locales/ja/common.json"
 import translationKO from "@/_locales/ko_KR/common.json"
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
 
 const resources = {
   ko: translationKO,
+  ja: translationJA,
+  en: translationUS,
 }
 
 // i18next 초기화

@@ -99,7 +99,7 @@ export default function Header() {
               {!isNewPostPage &&
                 (user ? (
                   <Link href={`/user/${user.userId}`} className={cx(style["login"])}>
-                    <span>{t("대시보드")}</span>
+                    <span>{t("dashboard")}</span>
                   </Link>
                 ) : (
                   <a onClick={() => setModal("login")} className={cx(style["login"])}>

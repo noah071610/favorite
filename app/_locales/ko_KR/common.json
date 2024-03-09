@@ -6,9 +6,7 @@
     "comment": "코멘트",
     "back": "뒤로 가기",
     "login": "로그인",
-
     "yes": "네",
-
     "no": "아니요"
   },
   "login": {
@@ -74,12 +72,6 @@
     "edit": "제작",
     "rending": "랜딩"
   },
-  "aside": {
-    "template": "템플릿",
-    "makeNew": "만들러가기",
-    "login": "로그인",
-    "dashboard": "대시보드"
-  },
   "search": {
     "emptySearchResult": "검색 결과 없음"
   },
@@ -122,7 +114,11 @@
     "finals": "결승전 (2강)",
     "semiFinals": "준결승전 (4강)",
     "teams": "강",
-    "selectRound": "라운드를 선택해주세요"
+    "selectRound": "라운드를 선택해주세요",
+    "K": "천",
+    "M": "백만",
+    "B": "십억",
+    "T": "조"
   },
   "newPost": {
     "anonymous": "익명",

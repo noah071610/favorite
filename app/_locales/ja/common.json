@@ -1,0 +1,173 @@
+{
+  "common": {
+    "anonymous": "匿名",
+    "author": "作成者",
+    "cancel": "キャンセル",
+    "comment": "コメント欄",
+    "back": "戻る",
+    "login": "ログイン",
+    "yes": "はい",
+    "no": "いいえ"
+  },
+  "login": {
+    "signup": "新規登録",
+    "snsTitle": "SNSで3秒でログイン",
+    "userName": "ニックネーム",
+    "email": "メールアドレス",
+    "password": "パスワード入力",
+    "passwordConfirm": "パスワード確認",
+    "findEmail": "メールアドレス検索",
+    "enterEmail": "メールアドレス入力",
+    "enterPassword": "パスワード入力",
+    "back": "戻る"
+  },
+  "messages": {
+    "error": {
+      "selectType": "コンテンツのタイプを選択してください 🧐",
+      "unknown": "エラーが発生しました 😭",
+      "postTitle": "コンテンツのタイトルを3文字以上入力してください ✍🏻",
+      "login": "ログインが必要です",
+      "candidateLength": "コンテンツ候補は2つ以上必要です 🙀",
+      "noCandidateTitle": "タイトルがない候補があります ✍🏻",
+      "noCandidateImage": "画像のない候補があります！画像は必須です 🏞️",
+      "candidateError": "候補に問題があります。しばらくしてからもう一度お試しください",
+      "tournamentCandidateLength": "トーナメントには最低4つ以上の候補が必要です",
+      "overTenUserName": "ニックネームは15文字以下で入力してください",
+      "noUserName": "ニックネームを入力してください",
+      "noPassword": "パスワードを入力してください",
+      "notSamePassword": "パスワードが一致しません",
+      "noEmail": "メールアドレスを入力してください",
+      "existEmail": "すでに使用されているメールアドレスです",
+      "invalidEmail": "正しいメールアドレス形式ではありません",
+      "safePassword": "英数字と特殊文字を含む8文字以上15文字以下で入力してください",
+      "loginFailBadRequest": "メールアドレスまたはパスワードが正しくありません",
+      "alreadySignupGoogle": "すでにGoogleで登録されています。Googleでログインしてください。",
+      "alreadySignupFacebook": "すでにFacebookで登録されています。Facebookでログインしてください。",
+      "alreadySignupInstagram": "すでにInstagramで登録されています。Instagramでログインしてください。",
+      "alreadySignupTwitter": "すでにTwitterで登録されています。Twitterでログインしてください。",
+      "clear": ""
+    },
+    "success": {
+      "voted": "投票したコンテンツです 😎",
+      "login": "ようこそ！ 👋🏻",
+      "register": "楽しんでみましょう 👋🏻",
+      "loginNewPost": "後ログインだけです！もう終わり！ 🚀",
+      "posting": "投稿しました 🚀",
+      "commenting": "コメントを投稿しました！ 🚀",
+      "copyLink": "リンクをコピーしました！ 🎉"
+    }
+  },
+  "nav": {
+    "template": "テンプレート",
+    "makeNew": "新規作成",
+    "dashboard": "ダッシュボード",
+    "login": "ログイン",
+    "mainPage": "メインページへ",
+    "save": "保存",
+    "polling": "投票",
+    "contest": "対決",
+    "tournament": "トーナメント",
+    "all": "すべて見る",
+    "init": "設定",
+    "edit": "編集",
+    "rending": "ランディング"
+  },
+  "search": {
+    "emptySearchResult": "検索結果がありません"
+  },
+  "title": {
+    "useTemplate": "テンプレートで３秒で始めよう",
+    "popular": "人気急上昇",
+    "all": "すべて見る",
+    "polling": "投票コンテンツ一覧",
+    "contest": "対決コンテンツ一覧",
+    "tournament": "トーナメントコンテンツ一覧"
+  },
+  "content": {
+    "select": "{{title}} 選択",
+    "candidatePreview": "プレビュー",
+    "vote": "票",
+    "participate": "名参加",
+    "enterCandidateName": "候補名入力（必須）",
+    "playContent": "プレイ",
+    "playContentShort": "プレイ",
+    "useTemplate": "テンプレート使用",
+    "shareContent": "共有",
+    "polling": "投票",
+    "contest": "対決",
+    "analytic": "分析",
+    "tournament": "トーナメント",
+    "lookContents": "他のコンテンツ",
+    "makeNew": "作りに行く",
+    "comment": "コメント欄",
+    "selectCandidate": "候補選択",
+    "info": {
+      "pickPercent": "勝利確率",
+      "winPercent": "マッチ勝利確率",
+      "ratingRank": "総合評価順位",
+      "losePercent": "マッチ敗北確率",
+      "pickRank": "決勝勝ち順位",
+      "winRank": "マッチ勝利確率"
+    },
+    "mySelection": "最終選択",
+    "allRank": "トーナメント全体順位",
+    "finals": "決勝戦（2強）",
+    "semiFinals": "準決勝（4強）",
+    "teams": "強",
+    "selectRound": "ラウンドを選択してください",
+    "K": "千",
+    "M": "百万",
+    "B": "十億",
+    "T": "兆"
+  },
+  "newPost": {
+    "anonymous": "匿名",
+
+    "enterTitle": "タイトルを入力",
+    "enterDesc": "説明を入力",
+    "chartDesc": "結果ページの説明",
+    "enterCandidateTitle": "候補のタイトルを入力（必須）",
+    "enterCandidateDesc": "候補の説明を入力（選択）",
+    "enterChartDesc": "投票結果の説明を入力（選択）",
+    "enterCandidate": "候補登録",
+    "editCandidate": "候補編集",
+    "candidatePreviewAndAdd": "候補のプレビュー",
+    "addMultiplePictures": "写真ドラッグ&ドロップ",
+    "noCandidates": "候補がまだありません",
+    "optional": "（選択）",
+    "required": "（必須）",
+    "changeLayoutStyle": "候補のスタイル変更",
+    "selectContentType": "コンテンツタイプを選択してください",
+    "layout": {
+      "textImage": "画像と説明",
+      "image": "画像",
+      "text": "テキストのみ"
+    },
+    "thumbnailType": {
+      "custom": "カスタム",
+      "layout": "レイアウト",
+      "none": "サムネイルなし"
+    },
+    "changeThumb": "サムネイル変更",
+    "moreThanTwoThumb": "せめて2つ以上の候補必要",
+    "secretContent": "非公開",
+    "preview": "プレビュー",
+    "posting": "投稿"
+  },
+  "share": {
+    "twitter": "ツイッターで共有",
+    "facebook": "フェイスブックで共有",
+    "kakaoTalk": "カカオトークで共有",
+    "line": "ラインで共有",
+    "link": "リンクコピー"
+  },
+  "modal": {
+    "changePostType": "コンテンツタイプを変更するとすべてのデータが削除されます。<br/>よろしいですか？",
+    "itIsFine": "うん、大丈夫",
+    "cancel": "キャンセル",
+    "newPostLoad": "コンテンツタイプを変更するとすべてのデータが削除されます。<br/>よろしいですか？",
+    "load": "データを読み込む",
+    "makeNewPost": "新しく作る",
+    "loadTemplate": "テンプレートを呼び出すと、以前保存したエディターのデータは全て削除されます。よろしいですか？"
+  }
+}

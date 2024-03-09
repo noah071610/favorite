@@ -79,7 +79,7 @@ export default function HomePage() {
                   <div className={"global-page-title"}>
                     <h1>
                       <Image width={35} height={35} src="/images/emoji/fire.png" alt="fire" />
-                      <span>지금 인기에요!</span>
+                      <span>{t("popular")}</span>
                     </h1>
 
                     <div className={"global-page-arrows"}>

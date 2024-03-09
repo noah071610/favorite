@@ -122,7 +122,7 @@ export default function PostCard({
                   <div>
                     <CountUp
                       className={cx(style.count)}
-                      suffix={suffix}
+                      suffix={t(suffix)}
                       duration={4}
                       decimals={!suffix ? 0 : 1}
                       decimal="."

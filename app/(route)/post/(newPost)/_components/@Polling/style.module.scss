@@ -173,3 +173,14 @@
     border-radius: 13px;
   }
 }
+
+.description-input {
+  width: 100%;
+  display: block;
+  background-color: var(--input-color);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+  padding: 10px 15px;
+  border-radius: 5px;
+}

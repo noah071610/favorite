@@ -111,6 +111,7 @@ $side-width: 300px;
           transform: translate(-50%, -50%) rotateY(90deg);
         }
         .check {
+          color: var(--text-white);
           transform: translate(-50%, -50%) rotateY(0deg);
         }
         &:active {
@@ -131,14 +132,13 @@ $side-width: 300px;
         padding: 9px 15px;
         border-radius: 6px;
         span {
-          font-size: 0.9rem;
+          font-size: 15px;
           font-weight: 600;
           color: var(--text-white);
         }
       }
 
       .login {
-        width: 80px;
         background-color: var(--pink);
         @include flex();
         &:hover {

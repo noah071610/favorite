@@ -22,7 +22,7 @@ export const queryClientConfig = {
 
 const ReactQueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [queryClientStore] = useState(() => new QueryClient(queryClientConfig))
-
+  i18n.changeLanguage("en")
   return (
     <I18nextProvider i18n={i18n}>
       <QueryClientProvider client={queryClientStore}>

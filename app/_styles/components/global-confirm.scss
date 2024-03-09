@@ -34,6 +34,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     @include mobile {
+      grid-template-columns: 1fr;
       gap: 5px;
     }
     button {
