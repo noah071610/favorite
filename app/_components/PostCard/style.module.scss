@@ -58,6 +58,7 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: var(--black);
         @include mobile {
           font-size: 14px;
         }
@@ -147,6 +148,9 @@
       font-size: 14px;
       padding: 6px 12px;
       border-radius: 2px;
+      .label {
+        margin-left: 5px;
+      }
       &.polling {
         background-color: var(--pink);
       }
@@ -187,6 +191,7 @@
       .count {
         font-size: 15px;
         font-weight: 700;
+        color: var(--black);
         @include mobile {
           font-size: 16px;
         }

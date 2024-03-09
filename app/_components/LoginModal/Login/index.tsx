@@ -84,7 +84,10 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
 
   const sendNewPostError = (target: "email" | "password" | "loginBtn", type: ErrorTypes | null) => {
     if (!type) return
-    setInputStatus((obj) => ({ ...obj, errorMessage: { ...obj.errorMessage, [target]: errorMessage[type] } }))
+    setInputStatus((obj) => ({
+      ...obj,
+      errorMessage: { ...obj.errorMessage, [target]: t(errorMessage[type], { ns: "messages" }) },
+    }))
   }
 
   const finishLogin = ({ msg, user }: UserQueryType) => {

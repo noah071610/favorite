@@ -93,6 +93,7 @@
       width: 100%;
       line-height: 1.2;
       word-break: break-all;
+      color: var(--black);
     }
     .count {
       @include flex();
@@ -117,6 +118,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2;
+    color: var(--black-soft);
     @include mobile {
       font-size: 12px;
     }
@@ -186,8 +188,8 @@
     // memo: 투표시 텍스트 스타일
     &.text {
       .title {
-        font-size: 19px;
         h3 {
+          font-size: 19px;
           line-height: 1.3;
         }
       }

@@ -82,6 +82,9 @@ export default function Aside() {
             <i className={cx("fa-solid", "fa-close")}></i>
           </div>
         </button>
+        <Link onClick={closeModal} href="/">
+          <Image width={150} height={30} alt="logo" src="/images/Favorite.png"></Image>
+        </Link>
       </div>
       <nav className={cx(style.inner)}>
         {typeSelectors.map((v, i) => {

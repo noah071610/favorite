@@ -20,12 +20,19 @@
   .top {
     height: 60px;
     padding: 10px 0 10px 10px;
+    display: flex;
+    align-items: center;
     button {
       @include mobile-icon-btn;
     }
     @include medium {
       height: 50px;
       padding: 5px 0;
+    }
+    img {
+      margin-left: 10px;
+      width: 90px;
+      height: 15px;
     }
   }
 }

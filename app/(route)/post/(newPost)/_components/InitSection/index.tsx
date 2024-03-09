@@ -72,7 +72,7 @@ export default function InitSection() {
         <Confirm
           title={t("changePostType", { ns: "modal" })}
           onClickConfirm={onClickConfirm}
-          customBtn={{ yes: t("itIsFine", { ns: "modal" }), no: t("changePostType", { ns: "cancel" }) }}
+          customBtn={{ yes: t("itIsFine", { ns: "modal" }), no: t("cancel", { ns: "modal" }) }}
         />
       )}
     </div>

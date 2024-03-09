@@ -3,9 +3,4 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   openAnalyzer: true,
 })
 
-module.exports = withBundleAnalyzer({
-  i18n: {
-    defaultLocale: "ko",
-    locales: ["ko", "en", "jp", "th"],
-  },
-})
+module.exports = withBundleAnalyzer({})

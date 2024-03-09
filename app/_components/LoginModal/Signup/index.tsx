@@ -73,7 +73,10 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
 
   const sendNewPostError = (target: InputTypes, type: ErrorTypes | null) => {
     if (!type) return
-    setInputStatus((obj) => ({ ...obj, errorMessage: { ...obj.errorMessage, [target]: errorMessage[type] } }))
+    setInputStatus((obj) => ({
+      ...obj,
+      errorMessage: { ...obj.errorMessage, [target]: t(errorMessage[type], { ns: "messages" }) },
+    }))
   }
 
   const signUp = async () => {

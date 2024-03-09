@@ -97,7 +97,7 @@
     "contest": "Contest",
     "analytic": "Analytics",
     "tournament": "Tournament",
-    "lookContents": "Look another",
+    "lookContents": "Play another",
     "makeNew": "Create now",
     "comment": "Comments",
     "selectCandidate": "Please select a candidate",
@@ -165,7 +165,7 @@
     "changePostType": "Changing content type will delete all data. <br/>Is that okay?",
     "itIsFine": "Okay, i understand",
     "cancel": "Cancel",
-    "newPostLoad": "Changing content type will delete all data. <br/>Is that okay?",
+    "newPostLoad": "You have a saved content <br/>Is that okay to load?",
     "load": "Load Data",
     "makeNewPost": "Create New",
     "loadTemplate": "Loading a template will delete all saved data. Is that okay?"

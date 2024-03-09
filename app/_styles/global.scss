@@ -251,7 +251,7 @@ input:-webkit-autofill:focus {
 
 :root {
   body {
-    color: black;
+    color: var(--black);
     background-color: white;
   }
   --white: white;
@@ -305,13 +305,8 @@ input:-webkit-autofill:focus {
 }
 
 body.dark {
-  color: white;
   background-color: black;
-  i,
-  a,
-  button {
-    color: white;
-  }
+  color: var(--black);
   .Toastify__toast {
     border-color: transparent !important;
   }

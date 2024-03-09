@@ -7,6 +7,7 @@ import { UserQueryType } from "@/_types/user"
 import { handleBeforeUnload } from "@/_utils/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useMemo, useState } from "react"
@@ -64,8 +65,9 @@ export default function Header() {
                 <i className={cx("fa-solid", "fa-bars")}></i>
               </div>
             </button>
-            {/* <img src=""></img> */}
-            {/* todo: 로고 만들기 */}
+            <Link href="/">
+              <Image width={150} height={30} alt="logo" src="/images/Favorite.png"></Image>
+            </Link>
           </div>
 
           {/* CENTER */}

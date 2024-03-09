@@ -167,7 +167,7 @@
     "changePostType": "콘텐츠 타입 변경 시 모든 데이터는 삭제되요. <br/>괜찮으세요?",
     "itIsFine": "네 괜찮아요",
     "cancel": "취소",
-    "newPostLoad": "콘텐츠 타입 변경 시 모든 데이터는 삭제되요. <br/>괜찮으세요?",
+    "newPostLoad": "저장된 콘텐츠가 있어요!<br/>불러올까요?",
     "load": "데이터 불러오기",
     "makeNewPost": "새로 만들래요",
     "loadTemplate": "템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?"
