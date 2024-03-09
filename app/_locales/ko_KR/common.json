@@ -1,0 +1,177 @@
+{
+  "common": {
+    "anonymous": "익명",
+    "author": "작성자",
+    "cancel": "취소",
+    "comment": "코멘트",
+    "back": "뒤로 가기",
+    "login": "로그인",
+
+    "yes": "네",
+
+    "no": "아니요"
+  },
+  "login": {
+    "signup": "회원가입",
+    "snsTitle": "SNS로 3초만에 로그인",
+    "userName": "닉네임",
+    "email": "이메일",
+    "password": "패스워드 입력",
+    "passwordConfirm": "패스워드 확인",
+    "findEmail": "이메일 찾기",
+    "enterEmail": "이메일 입력",
+    "enterPassword": "이메일 입력",
+    "back": "뒤로 가기"
+  },
+  "messages": {
+    "error": {
+      "selectType": "콘텐츠 타입을 선택해주세요 🧐",
+      "unknown": "예상치 못한 에러가 발생했어요 😭",
+      "postTitle": "콘텐츠 제목을 3글자 이상 적어주세요 ✍🏻",
+      "login": "로그인이 필요해요",
+      "candidateLength": "콘텐츠 후보는 적어도 2개 이상 필요해요 🙀",
+      "noCandidateTitle": "제목이 없는 후보가 있어요 ✍🏻",
+      "noCandidateImage": "이미지가 없는 후보가 있어요! 이미지는 필수로 넣어주세요 🏞️",
+      "candidateError": "후보에 문제가 있어요. 잠시 후 다시 시도해주세요",
+      "tournamentCandidateLength": "토너먼트는 최소 4개 이상의 후보가 필요해요",
+      "overTenUserName": "닉네임을 15글자 이하로 입력해주세요",
+      "noUserName": "닉네임을 입력해주세요",
+      "noPassword": "패스워드를 입력해주세요",
+      "notSamePassword": "패스워드가 일치하지 않아요",
+      "noEmail": "이메일을 입력해주세요",
+      "existEmail": "이미 누가 사용하고 있는 이메일이에요",
+      "invalidEmail": "올바른 이메일 형식이 아니에요",
+      "safePassword": "영문, 숫자, 특수문자를 포함한 8자리 이상 15자리 이하로 입력해주세요",
+      "loginFailBadRequest": "이메일 혹은 비밀번호가 올바르지 않아요",
+      "alreadySignupGoogle": "이미 구글로 회원가입을 하셨어요. 구글을 이용해 로그인 해주세요.",
+      "alreadySignupFacebook": "이미 페이스북으로 회원가입을 하셨어요. 페이스북을 이용해 로그인 해주세요.",
+      "alreadySignupInstagram": "이미 인스타그램으로 회원가입을 하셨어요. 인스타그램을 이용해 로그인 해주세요.",
+      "alreadySignupTwitter": "이미 트위터로 회원가입을 하셨어요. 트위터를 이용해 로그인 해주세요.",
+      "clear": ""
+    },
+    "success": {
+      "voted": "이미 투표 하셨어요 😎",
+      "login": "어서오세요! 👋🏻",
+      "register": "이제 즐겨볼까요? 👋🏻",
+      "loginNewPost": "로그인만 하면 끝나요! 다 왔어요! 🚀",
+      "posting": "포스팅 완료! 🚀",
+      "commenting": "댓글을 작성했어요! 🚀",
+      "copyLink": "링크를 복사했어요! 🎉"
+    }
+  },
+  "nav": {
+    "template": "템플릿",
+    "makeNew": "만들러가기",
+    "login": "로그인",
+    "dashboard": "대시보드",
+    "mainPage": "메인페이지로",
+    "save": "저장하기",
+    "polling": "투표",
+    "contest": "1:1 대결",
+    "tournament": "토너먼트",
+    "all": "모두 보기",
+    "init": "양식",
+    "edit": "제작",
+    "rending": "랜딩"
+  },
+  "aside": {
+    "template": "템플릿",
+    "makeNew": "만들러가기",
+    "login": "로그인",
+    "dashboard": "대시보드"
+  },
+  "search": {
+    "emptySearchResult": "검색 결과 없음"
+  },
+  "title": {
+    "useTemplate": "템플릿으로 빠른 시작",
+    "popular": "지금 인기에요!",
+    "all": "모두 보기",
+    "polling": "투표 콘텐츠",
+    "contest": "1:1대결 콘텐츠",
+    "tournament": "토너먼트 콘텐츠"
+  },
+  "content": {
+    "select": "{{title}} 선택",
+    "candidatePreview": "후보 미리보기",
+    "vote": "표",
+    "participate": "명 참여",
+    "enterCandidateName": "후보명 입력 (필수)",
+    "playContent": "플레이 해보기",
+    "playContentShort": "플레이",
+    "useTemplate": "템플릿 사용하기",
+    "shareContent": "공유하기",
+    "polling": "투표",
+    "contest": "1:1 대결",
+    "analytic": "통계",
+    "tournament": "토너먼트",
+    "lookContents": "콘텐츠 둘러보기",
+    "makeNew": "나도 만들기",
+    "comment": "코멘트",
+    "selectCandidate": "후보를 선택해주세요",
+    "info": {
+      "pickPercent": "우승 확률",
+      "winPercent": "매치 승리 확률",
+      "ratingRank": "종합 평가 순위",
+      "losePercent": "매치 패배 확률",
+      "pickRank": "우승 순위",
+      "winRank": "승리 순위"
+    },
+    "mySelection": "내 선택",
+    "allRank": "토너먼트 전체 순위",
+    "finals": "결승전 (2강)",
+    "semiFinals": "준결승전 (4강)",
+    "teams": "강",
+    "selectRound": "라운드를 선택해주세요"
+  },
+  "newPost": {
+    "anonymous": "익명",
+
+    "enterTitle": "제목 입력",
+    "enterDesc": "설명 입력",
+    "chartDesc": "결과 페이지 설명",
+    "enterCandidateTitle": "후보 제목 입력 (필수)",
+    "enterCandidateDesc": "후보 설명 입력 (옵션)",
+    "enterChartDesc": "투표 결과 설명 입력 (옵션)",
+    "enterCandidate": "후보 등록",
+    "editCandidate": "후보 수정",
+    "candidatePreviewAndAdd": "후보 보기 및 추가",
+    "addMultiplePictures": "여러개 사진 추가",
+    "noCandidates": "후보가 없어요",
+    "optional": "(옵션)",
+    "required": "(필수)",
+    "changeLayoutStyle": "후보 스타일 변경",
+    "selectContentType": "콘텐츠 타입을 선택해주세요",
+    "layout": {
+      "textImage": "이미지와 텍스트",
+      "image": "이미지 중심",
+      "text": "텍스트만"
+    },
+    "thumbnailType": {
+      "custom": "커스텀 썸네일",
+      "layout": "콘텐츠 레이아웃",
+      "none": "썸네일 없음"
+    },
+    "changeThumb": "썸네일 변경",
+    "moreThanTwoThumb": "2개 이상 후보 필요",
+    "secretContent": "비공개 콘텐츠",
+    "preview": "미리 플레이 해보기",
+    "posting": "포스팅 하기"
+  },
+  "share": {
+    "twitter": "트위터로 공유",
+    "facebook": "페이스북으로 공유",
+    "kakaoTalk": "카카오톡으로 공유",
+    "line": "라인으로 공유",
+    "link": "링크 복사"
+  },
+  "modal": {
+    "changePostType": "콘텐츠 타입 변경 시 모든 데이터는 삭제되요. <br/>괜찮으세요?",
+    "itIsFine": "네 괜찮아요",
+    "cancel": "취소",
+    "newPostLoad": "콘텐츠 타입 변경 시 모든 데이터는 삭제되요. <br/>괜찮으세요?",
+    "load": "데이터 불러오기",
+    "makeNewPost": "새로 만들래요",
+    "loadTemplate": "템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?"
+  }
+}

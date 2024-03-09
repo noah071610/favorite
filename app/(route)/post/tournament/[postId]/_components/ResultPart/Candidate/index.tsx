@@ -12,21 +12,19 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const dataArr = [
-  { label: "우승 확률", value: "pickPercent" },
-  { label: "매치 승리 확률", value: "winPercent" },
-  { label: "매치 패배 확률", value: "losePercent" },
+  { label: "info.pickPercent", value: "pickPercent" },
+  { label: "info.winPercent", value: "winPercent" },
+  { label: "info.losePercent", value: "losePercent" },
 ] as const
 
 export default function Candidate({
   selected,
   candidate,
-  index,
   uniqueData,
   candidateLength,
 }: {
   selected: boolean
   candidate: TournamentCandidateChartType
-  index: number
   uniqueData?: {
     pickRank: number
     winRank: number

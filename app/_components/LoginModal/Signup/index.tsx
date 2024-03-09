@@ -7,19 +7,21 @@ import { ErrorTypes } from "@/_types"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import style from "../style.module.scss"
-
 const cx = classNames.bind(style)
 
 const label = {
-  userName: "닉네임",
-  email: "이메일",
-  password: "패스워드 입력",
-  passwordConfirm: "패스워드 확인",
+  userName: "userName",
+  email: "email",
+  password: "password",
+  passwordConfirm: "passwordConfirm",
 } as const
 type InputTypes = keyof typeof label
 
 export default function SignUpContent({ setContentPart }: { setContentPart: (state: "signUp" | "login") => void }) {
+  const { t } = useTranslation(["login", "messages"])
+  const { t: message } = useTranslation(["messages"])
   const queryClient = useQueryClient()
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const passwordConfirmRef = useRef<HTMLInputElement | null>(null)
@@ -126,12 +128,13 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
       .then(({ user }) => {
         setTimeout(() => {
           queryClient.setQueryData(["user"], { msg: "ok", user })
-          toastSuccess("register")
+
+          toastSuccess(t("success.login", { ns: "messages" }))
           setModal("none")
         }, 2000)
       })
       .catch(() => {
-        toastError("unknown")
+        toastError(message(`error.unknown`))
       })
   }
 
@@ -160,7 +163,7 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
               }
               className={cx({ [style.active]: inputStatus.focus[key] })}
             />
-            <label className={cx({ [style.active]: inputStatus.focus[key] })}>{label[key as InputTypes]}</label>
+            <label className={cx({ [style.active]: inputStatus.focus[key] })}>{t(`${label[key as InputTypes]}`)}</label>
             {inputStatus.errorMessage[key] && (
               <div className={cx(style["error-message"])}>
                 <span>* {inputStatus.errorMessage[key]}</span>
@@ -170,19 +173,19 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
         ))}
         <div className={cx(style["submit-btn"])}>
           <button type="submit">
-            <span className={cx(style["btn-text"])}>회원가입</span>
+            <span className={cx(style["btn-text"])}>{t("signup")}</span>
           </button>
         </div>
         <div className={cx(style["sub-btn"])}>
           <button>
-            <span>이메일 찾기</span>
+            <span>{t("findEmail")}</span>
           </button>
           <button
             onClick={() => {
               setContentPart("login")
             }}
           >
-            <span>뒤로 가기</span>
+            <span>{t("back")}</span>
           </button>
         </div>
       </form>

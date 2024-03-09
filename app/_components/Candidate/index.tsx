@@ -8,6 +8,7 @@ import { ContentLayoutType } from "@/_types/post/post"
 import classNames from "classNames"
 import React from "react"
 import CountUp from "react-countup"
+import { useTranslation } from "react-i18next"
 
 function Candidate({
   candidate,
@@ -24,6 +25,7 @@ function Candidate({
   isSelected: boolean
   index: number
 }) {
+  const { t } = useTranslation(["content"])
   const { pick, description, title, imageSrc } = candidate
 
   const titleComponent = () => (
@@ -31,7 +33,7 @@ function Candidate({
       <h3>{title}</h3>
       {isResultPage && (
         <span className={classNames("count")}>
-          <CountUp prefix="(" suffix="표)" duration={4} end={pick} />
+          <CountUp prefix="(" suffix={t("vote") + ")"} duration={4} end={pick} />
         </span>
       )}
     </div>
@@ -75,7 +77,7 @@ function Candidate({
       </div>
       {layout === "text" && !isResultPage && (
         <button onClick={() => onClickCandidate("submit")} className={classNames("select-btn")}>
-          <span className={classNames("select")}>{title} 선택</span>
+          <span className={classNames("select")}>{t("select", { title })}</span>
         </button>
       )}
     </li>

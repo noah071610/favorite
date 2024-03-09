@@ -7,6 +7,7 @@ import ResultPart from "./ResultPart"
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import CommentPart from "@/_components/CommentPart"
 import PostInfo from "@/_components/PostInfo"
+import Candidate from "@/_components/Select"
 import Share from "@/_components/Share"
 import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
@@ -17,11 +18,14 @@ import { TournamentCandidateType } from "@/_types/post/tournament"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
-import Candidate from "../../../../../_components/Select"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function ContestPost({ initialPost }: { initialPost: ContestPostType }) {
+  const { t } = useTranslation(["content"])
+  const { t: message } = useTranslation(["messages"])
+
   const { data: post } = useQuery<ContestPostType>({
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
@@ -47,7 +51,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
-      toastSuccess("voted")
+      toastSuccess(message("success.voted"))
     }
   }, [isVoted, isImagesLoaded])
 
@@ -97,7 +101,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
                     <div className={cx(style.icon)}>
                       <i className={cx("fa-solid", "fa-comment")} />
                     </div>
-                    <span>코멘트</span>
+                    <span>{t("comment")}</span>
                   </div>
                   <div className={cx(style["contest-comment"])}>
                     <CommentPart

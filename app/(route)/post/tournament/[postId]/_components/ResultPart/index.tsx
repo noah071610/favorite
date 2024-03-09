@@ -6,6 +6,7 @@ import { CommentType } from "@/_types/post/post"
 import { TournamentCandidateChartType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import classNames from "classNames"
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import ReactPaginate from "react-paginate"
 import Candidate from "./Candidate"
 import style from "./style.module.scss"
@@ -38,10 +39,10 @@ const getSelectedCandidateData = (targetNum: number, candidates: TournamentCandi
   }
 }
 
-const dataArr = [
-  { label: "우승 확률", value: "pick" },
-  { label: "종합 평가 순위", value: "rating" },
-  { label: "매치 승리 확률", value: "win" },
+export const dataArr = [
+  { label: "info.pickPercent", value: "pick" },
+  { label: "info.ratingRank", value: "rating" },
+  { label: "info.winPercent", value: "win" },
 ] as const
 
 export default function ResultPart({
@@ -59,6 +60,7 @@ export default function ResultPart({
   authorId: number
   post: TournamentPostType
 }) {
+  const { t } = useTranslation(["content"])
   const total = getTotals(_candidates)
   const candidates = _candidates.map((v) => {
     const rating = v.win + v.lose * -0.5 + v.pick * 3
@@ -141,13 +143,12 @@ export default function ResultPart({
             <div className={cx(style.icon)}>
               <i className={cx("fa-solid", "fa-chart-simple")} />
             </div>
-            <span>내 선택</span>
+            <span>{t("mySelection")}</span>
           </div>
           <Candidate
             selected={true}
             uniqueData={uniqueData}
             candidateLength={candidates.length}
-            index={0}
             candidate={candidates.find(({ number }) => pickedCandidate.number === number)!} // memo: 이건 확실하다.. 정말로
           />
         </section>
@@ -156,7 +157,7 @@ export default function ResultPart({
             <div className={cx(style.icon)}>
               <i className={cx("fa-solid", "fa-chart-simple")} />
             </div>
-            <span>토너먼트 전체 순위</span>
+            <span>{t("allRank")}</span>
           </div>
           <div className={cx(style.sort)}>
             {dataArr.map(({ label, value }) => (
@@ -165,7 +166,7 @@ export default function ResultPart({
                 onClick={() => onClickSort(value)}
                 className={cx({ [style.active]: sortedStatus.value === value })}
               >
-                <span className={cx(style.text)}>{label}</span>
+                <span className={cx(style.text)}>{t(label)}</span>
                 <i
                   className={cx("fa-solid", "fa-chevron-up", {
                     [style.asc]: sortedStatus.value === value && !sortedStatus.desc,
@@ -177,7 +178,6 @@ export default function ResultPart({
           {sorted.slice(itemOffset, endOffset).map((v, i) => (
             <Candidate
               selected={pickedCandidate.listId === v.listId}
-              index={i}
               candidate={v}
               key={`${v.listId}_${i}_${sortedStatus.value}`}
             />
@@ -201,7 +201,7 @@ export default function ResultPart({
             <div className={cx(style.icon)}>
               <i className={cx("fa-solid", "fa-comment")} />
             </div>
-            <span>코멘트</span>
+            <span>{t("comment")}</span>
           </div>
           <div className={cx(style["tournament-comment"])}>
             <CommentPart isPreview={isPreview} authorId={authorId} comments={comments} />

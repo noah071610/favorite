@@ -2,18 +2,19 @@
 
 import TextareaAutosize from "react-textarea-autosize"
 
-import { uploadImage } from "@/_queries/newPost"
-import React, { useCallback } from "react"
-import { useDropzone } from "react-dropzone"
-
 import { getImageUrl } from "@/_data"
+import { uploadImage } from "@/_queries/newPost"
 import { useNewPostStore } from "@/_store/newPost"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
+import React, { useCallback } from "react"
+import { useDropzone } from "react-dropzone"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const CandidateInput = React.memo(({ index }: { index: number }) => {
+  const { t } = useTranslation(["newPost"])
   const { setCandidate, candidates } = useNewPostStore()
 
   const onChangeInput = (e: any, type: "title" | "description") => {
@@ -27,13 +28,13 @@ const CandidateInput = React.memo(({ index }: { index: number }) => {
     targetCandidate && (
       <>
         <input
-          placeholder="후보명 입력 (필수)"
+          placeholder={t("enterCandidateTitle")}
           className={cx(style["title-input"])}
           value={targetCandidate.title}
           onChange={(e) => onChangeInput(e, "title")}
         />
         <TextareaAutosize
-          placeholder="후보 설명 입력 (옵션)"
+          placeholder={t("enterCandidateDesc")}
           className={cx(style["description-input"])}
           value={targetCandidate.description}
           onChange={(e) => onChangeInput(e, "description")}

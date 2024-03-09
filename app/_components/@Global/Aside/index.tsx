@@ -8,14 +8,16 @@ import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
+
 const cx = classNames.bind(style)
 
 const asideSelectors = [
   {
     value: "template",
     link: "/template",
-    label: "템플릿",
+    label: "template",
     children: (
       <>
         <i className={cx("fa-solid", "fa-wand-magic-sparkles", style.symbol)} />
@@ -25,7 +27,7 @@ const asideSelectors = [
   {
     value: "new",
     link: "/post/new",
-    label: "만들러가기",
+    label: "makeNew",
     children: (
       <>
         <i className={cx("fa-solid", "fa-pen", style.symbol)} />
@@ -35,7 +37,7 @@ const asideSelectors = [
   {
     value: "login",
     link: "/login",
-    label: "로그인",
+    label: "login",
     children: (
       <>
         <i className={cx("fa-solid", "fa-user", style.symbol)} />
@@ -45,6 +47,7 @@ const asideSelectors = [
 ]
 
 export default function Aside() {
+  const { t } = useTranslation(["nav"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
   })
@@ -81,7 +84,7 @@ export default function Aside() {
               key={v.value}
             >
               <div className={cx(style.icon)}>{v.icon(style)}</div>
-              <span className={cx(style.label)}>{v.label}</span>
+              <span className={cx(style.label)}>{t(v.label)}</span>
             </Link>
           )
         })}
@@ -98,12 +101,12 @@ export default function Aside() {
                 key={"user"}
               >
                 <div className={cx(style.icon)}>{v.children}</div>
-                <span className={cx(style.label)}>대시보드</span>
+                <span className={cx(style.label)}>{t("dashboard")}</span>
               </Link>
             ) : (
               <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
                 <div className={cx(style.icon)}>{v.children}</div>
-                <span className={cx(style.label)}>{v.label}</span>
+                <span className={cx(style.label)}>{t(v.label)}</span>
               </button>
             )
           ) : (
@@ -114,7 +117,7 @@ export default function Aside() {
               key={v.value}
             >
               <div className={cx(style.icon)}>{v.children}</div>
-              <span className={cx(style.label)}>{v.label}</span>
+              <span className={cx(style.label)}>{t(v.label)}</span>
             </Link>
           )
         })}

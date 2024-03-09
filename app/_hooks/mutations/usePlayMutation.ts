@@ -5,8 +5,10 @@ import { toastError } from "@/_data/toast"
 import { finishPlay } from "@/_queries/post"
 import { PostCardType, PostPaginationType } from "@/_types/post/post"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useTranslation } from "react-i18next"
 
 export const usePlayMutation = (postId: string) => {
+  const { t } = useTranslation(["messages"])
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationKey: queryKey.play,
@@ -46,7 +48,7 @@ export const usePlayMutation = (postId: string) => {
       return { previous, previous2 }
     },
     onError: () => {
-      toastError("unknown")
+      toastError(t(`error.unknown`))
     },
   })
 

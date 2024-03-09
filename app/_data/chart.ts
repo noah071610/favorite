@@ -28,7 +28,7 @@ export const rankingOptions = {
         precision: 0,
         beginAtZero: true,
         callback: function (value: number) {
-          return value + "표"
+          return value + "vote"
         },
       },
     },
@@ -39,27 +39,4 @@ export const rankingOptions = {
       display: false,
     },
   },
-}
-
-export const generationChartOption = {
-  responsive: true,
-  maintainAspectRatio: false,
-  elements: {
-    bar: {
-      borderWidth: 0,
-    },
-  },
-}
-
-export const generationChartData = {
-  labels: ["10대", "20대", "30대", "40~50대", "60대 이상"],
-  datasets: [
-    {
-      label: "표",
-      data: [12, 19, 3, 5, 2],
-      backgroundColor: chartBackgroundColors,
-      borderColor: chartBorderColors,
-      borderWidth: 1,
-    },
-  ],
 }

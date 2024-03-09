@@ -7,6 +7,7 @@ import { PollingCandidateType } from "@/_types/post/polling"
 import { TemplatePostCardType } from "@/_types/post/post"
 import classNames from "classNames"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -17,6 +18,7 @@ export default function TemplateCard({
   post: TemplatePostCardType
   setTargetTemplate: (post: TemplatePostCardType | null) => void
 }) {
+  const { t } = useTranslation(["content"])
   const [openCandidateList, setOpenCandidateList] = useState(false)
   const { setModal } = useMainStore()
 
@@ -34,7 +36,7 @@ export default function TemplateCard({
       <PostCard postCard={post} isTemplate={true} loadTemplate={onClickUseTemplate} />
       <div className={cx(style["candidates"])}>
         <div onClick={onClickOpenCandidateList} className={cx(style.title)}>
-          <h2>후보 미리보기</h2>
+          <h2>{t("candidatePreview")}</h2>
           <button className={cx({ [style.open]: openCandidateList })}>
             <i className="fa-solid fa-chevron-up"></i>
           </button>

@@ -11,6 +11,7 @@ import { useMainStore } from "@/_store/main"
 import { handleBeforeUnload } from "@/_utils/post"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 const PollingContent = dynamic(() => import("../_components/@Polling"), {
   ssr: true,
@@ -26,6 +27,7 @@ const TournamentContent = dynamic(() => import("../_components/@Tournament"), {
 })
 
 export default function NewPostPage() {
+  const { t } = useTranslation(["modal"])
   const {
     newPost,
     newPostStatus,
@@ -102,9 +104,9 @@ export default function NewPostPage() {
 
       {modalStatus === "newPostLoad" && (
         <Confirm
-          title="자동 저장된 데이터가 있어요! 🙂<br/>불러올까요?"
+          title={t("newPostLoad")}
           onClickConfirm={onClickConfirm}
-          customBtn={{ yes: "데이터 불러오기", no: "새로 만들래요" }}
+          customBtn={{ yes: t("load"), no: t("makeNewPost") }}
         />
       )}
     </>

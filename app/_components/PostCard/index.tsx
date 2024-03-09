@@ -10,6 +10,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import CountUp from "react-countup"
+import { useTranslation } from "react-i18next"
 import NoThumbnail from "../@Global/Loading/NoThumbnail"
 import ShareModal from "./ShareModal"
 import style from "./style.module.scss"
@@ -24,6 +25,7 @@ export default function PostCard({
   isTemplate?: boolean
   loadTemplate?: (postCard: PostCardType) => void
 }) {
+  const { t } = useTranslation(["content"])
   const router = useRouter()
   const { description, type, postId, thumbnail, title, count } = postCard
   const [onShareModal, setOnShareModal] = useState(false)
@@ -89,7 +91,7 @@ export default function PostCard({
               <Link href={typeData.link} className={cx(style["badge-main"], style[typeData.value])}>
                 <span>
                   {typeData.icon(style)}
-                  <span className={cx(style.label)}>{typeData.label}</span>
+                  <span className={cx(style.label)}>{t(`${typeData.label}`)}</span>
                 </span>
               </Link>
             </div>
@@ -101,7 +103,7 @@ export default function PostCard({
                   <div className={cx(style["template-badge"], style[typeData.value])}>
                     <span>
                       {typeData.icon(style)}
-                      <span className={cx(style.label)}>{typeData.label}</span>
+                      <span className={cx(style.label)}>{t(typeData.label)}</span>
                     </span>
                   </div>
                 )
@@ -112,7 +114,7 @@ export default function PostCard({
                       <Link href={typeData.link} className={cx(style["badge-main"], style[typeData.value])}>
                         <span>
                           {typeData.icon(style)}
-                          <span className={cx(style.label)}>{typeData.label}</span>
+                          <span className={cx(style.label)}>{t(typeData.label)}</span>
                         </span>
                       </Link>
                     </div>
@@ -127,7 +129,7 @@ export default function PostCard({
                       separator=" "
                       end={parseFloat(num)}
                     />
-                    <span className={cx(style.suffix)}>명 참여</span>
+                    <span className={cx(style.suffix)}>{t("participate")}</span>
                   </div>
                 </>
               )}
@@ -135,11 +137,11 @@ export default function PostCard({
             <div className={cx(style.right, { [style.template]: isTemplate })}>
               <Link href={`/post/${type}/${postId}`}>
                 <i className={cx("fa-solid", "fa-play")}></i>
-                <span>{isTemplate ? "플레이 해보기" : "플레이"}</span>
+                <span>{isTemplate ? t("playContent") : t("playContentShort")}</span>
               </Link>
               <button onClick={onClickPrimaryBtn}>
                 <i className={cx("fa-solid", "fa-arrow-up-from-bracket")}></i>
-                <span>{isTemplate ? "템플릿 사용하기" : "공유하기"}</span>
+                <span>{isTemplate ? t("useTemplate") : t("shareContent")}</span>
               </button>
             </div>
           </div>

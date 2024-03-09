@@ -12,6 +12,7 @@ import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { useMainStore } from "@/_store/main"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
+import { useTranslation } from "react-i18next"
 import ResultPart from "./ResultPart"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
@@ -30,6 +31,8 @@ const getRound = (totalParticipants: number | undefined) => {
 }
 
 export default function TournamentPost({ initialPost }: { initialPost: TournamentPostType }) {
+  const { t } = useTranslation(["content"])
+  const { t: message } = useTranslation(["messages"])
   const { data: post } = useQuery<TournamentPostType>({
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
@@ -51,7 +54,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
     resolve: (target) => {
       setStatus("result")
       setPickedCandidate(target)
-      toastSuccess("voted")
+      toastSuccess(message("success.voted"))
     },
   })
 
@@ -105,12 +108,15 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
       {rounds && modalStatus === "roundSelect" && (
         <div className={cx(style["round-select"])}>
           <div className={cx(style.inner)}>
-            <h3>라운드를 선택해주세요</h3>
+            <h3>{t("selectRound")}</h3>
             <ul>
               {rounds.map((v, i) => (
                 <li key={`btn_${i}`}>
                   <button onClick={() => onClickRound(v)}>
-                    <span>{v}강</span>
+                    <span>
+                      {v}
+                      {t("teams")}
+                    </span>
                     <i className={cx("fa-solid", "fa-chevron-right")}></i>
                   </button>
                 </li>

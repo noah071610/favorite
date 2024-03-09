@@ -11,18 +11,20 @@ import dayjs from "dayjs"
 import "dayjs/locale/ko" // 한국어 로케일 설정
 import { useParams } from "next/navigation"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import TextareaAutosize from "react-textarea-autosize"
 
 const formattedDate = (date: any) => dayjs(date).locale("ko").format("YYYY년MM월DD일")
 
 function Comment({ user, text, authorId }: { user?: UserType; text: string; authorId: number }) {
+  const { t } = useTranslation(["common"])
   return (
     <div className={"comment-area-wrapper"}>
       <div className={"inner"}>
         <div className={"name-space"}>
-          <span className={"name"}>{user?.userName ?? "익명"}</span>
+          <span className={"name"}>{user?.userName ?? t("anonymous")}</span>
           <span className={"date"}>{formattedDate(new Date())}</span>
-          {user?.userId === authorId && <span className={"author"}>작성자</span>}
+          {user?.userId === authorId && <span className={"author"}>{t("author")}</span>}
         </div>
         <div className={"content"}>
           <p className={"text"}>{text}</p>
@@ -37,6 +39,8 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
     queryKey: queryKey.user,
     queryFn: getUser,
   })
+  const { t } = useTranslation(["common"])
+  const { t: message } = useTranslation(["messages"])
   const user = userData?.user
   const { postId } = useParams()
 
@@ -47,7 +51,7 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
     setText(event.target.value)
   }
   const commented = () => {
-    toastSuccess("commenting")
+    toastSuccess(message("success.commenting"))
     setText("")
     setIsFocused(false)
     setDisplayBtn(false)
@@ -60,7 +64,7 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
       mutate({
         userId: user?.userId ?? 1,
         postId: postId as string,
-        userName: user?.userName ?? "익명",
+        userName: user?.userName ?? t("anonymous"),
         text,
       })
     }
@@ -70,9 +74,9 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
     <div className={"comment-area-wrapper"}>
       <div className={`inner ${isPreview ? "preview" : ""}`}>
         <div className={"name-space"}>
-          <span className={"name"}>{user?.userName ?? "익명"}</span>
+          <span className={"name"}>{user?.userName ?? t("anonymous")}</span>
           <span className={"date"}>{formattedDate(new Date())}</span>
-          {user?.userId === authorId && <span className={"author"}>작성자</span>}
+          {user?.userId === authorId && <span className={"author"}>{t("author")}</span>}
         </div>
         <div className={"commenting"}>
           <div className={`input ${isFocused ? "focus" : ""}`}>
@@ -96,10 +100,10 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
                 }}
                 className={"cancel"}
               >
-                취소
+                {t("cancel")}
               </button>
               <button onClick={onClickCommenting} className={"submit"}>
-                코멘트
+                {t("comment")}
               </button>
             </div>
           </div>

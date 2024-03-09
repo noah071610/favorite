@@ -17,12 +17,15 @@ import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
 import { MouseEvent, useEffect, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import ChartPart from "./Chartpart"
 import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
+  const { t } = useTranslation(["content"])
+  const { t: message } = useTranslation(["messages"])
   const { data: post } = useQuery<PollingPostType>({
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
@@ -49,7 +52,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
-      toastSuccess("voted")
+      toastSuccess(message("success.voted"))
     }
   }, [isVoted, isImagesLoaded])
 
@@ -126,14 +129,14 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
                     <i className={cx("fa-solid", "fa-chart-simple")} />
                   </div>
 
-                  <span>통계</span>
+                  <span>{t("analytic")}</span>
                 </div>
                 <ChartPart chartDescription={post.content.chartDescription} candidates={post.content.candidates} />
                 <div className={cx(style.title)}>
                   <div className={cx(style.icon)}>
                     <i className={cx("fa-solid", "fa-comment")} />
                   </div>
-                  <span>코멘트</span>
+                  <span>{t("comment")}</span>
                 </div>
                 <div className={cx(style["comment-wrapper"])}>
                   <CommentPart

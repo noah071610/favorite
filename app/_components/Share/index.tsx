@@ -7,12 +7,14 @@ import { copyTextToClipboard } from "@/_utils/copy"
 import classNames from "classNames"
 import Image from "next/image"
 import Link from "next/link"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 type ShareProviderValue = "twitter" | "facebook" | "kakaoTalk" | "line" | "link"
 
 export default function Share({ post }: { post: any }) {
+  const { t } = useTranslation(["content", "messages"])
   const onClickShare = async (v: ShareProviderValue) => {
     if (post) {
       const { postId, title, type, description, thumbnail: _thumbnail } = post
@@ -20,7 +22,7 @@ export default function Share({ post }: { post: any }) {
       const url = `${_url.client}/post/${type}/${postId}`
       if (v === "link") {
         await copyTextToClipboard(url).then(() => {
-          toastSuccess("copyLink")
+          toastSuccess(t("copyLink", { ns: "messages" }))
         })
         return
       }
@@ -53,11 +55,11 @@ export default function Share({ post }: { post: any }) {
           </ul>
           <div className={cx(style.cta)}>
             <Link href="/">
-              <span>콘텐츠 둘러보기</span>
+              <span>{t("lookContents")}</span>
               <Image src="/images/emoji/dizzy.png" width={22} height={22} alt="icon-1" />
             </Link>
             <Link href="/post/new" target="_blank">
-              <span>나도 만들기</span>
+              <span>{t("makeNew")}</span>
               <Image src="/images/emoji/rocket.png" width={22} height={22} alt="icon-2" />
             </Link>
           </div>

@@ -13,8 +13,8 @@ import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { ToastContainer } from "react-toastify"
 import Header from "./_components/@Global/Header"
-import OverlayInjector from "./_hooks/OverlayInjector"
-import ReactQueryProvider from "./_queries/provider/reactQueryProvider"
+import OverlayInjector from "./_components/@Global/OverlayInjector"
+import ReactQueryProvider from "./_components/@Global/ReactQueryProvider"
 
 import Aside from "./_components/@Global/Aside"
 import Init from "./_components/@Global/Init"
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   description: "너를 통해 알게되는 내 마음 최고의 Favorite",
 }
 
-export default async function RootLayout({
+async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -82,3 +82,5 @@ export default async function RootLayout({
     </>
   )
 }
+
+export default RootLayout

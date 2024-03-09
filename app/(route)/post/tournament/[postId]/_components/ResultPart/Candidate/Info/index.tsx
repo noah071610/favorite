@@ -4,20 +4,21 @@ import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { TournamentCandidateChartType } from "@/_types/post/tournament"
 import classNames from "classNames"
 import CountUp from "react-countup"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 
 const cx = classNames.bind(style)
 
 const dataArr = [
-  { label: "우승 확률", value: "pickPercent" },
-  { label: "매치 승리 확률", value: "winPercent" },
-  { label: "매치 패배 확률", value: "losePercent" },
+  { label: "info.pickPercent", value: "pickPercent" },
+  { label: "info.winPercent", value: "winPercent" },
+  { label: "info.losePercent", value: "losePercent" },
 ] as const
 
 const uniqueDataArr = [
-  { label: "종합 평가 순위", value: "ratingRank", icon: ["fa-solid", "fa-star"] },
-  { label: "우승 순위", value: "pickRank", icon: ["fa-solid", "fa-trophy"] },
-  { label: "승리 순위", value: "winRank", icon: ["fa-solid", "fa-hand-back-fist"] },
+  { label: "info.ratingRank", value: "ratingRank", icon: ["fa-solid", "fa-star"] },
+  { label: "info.pickRank", value: "pickRank", icon: ["fa-solid", "fa-trophy"] },
+  { label: "info.winRank", value: "winRank", icon: ["fa-solid", "fa-hand-back-fist"] },
 ] as const
 
 const delay = 130
@@ -39,6 +40,7 @@ export default function Info({
   candidateLength?: number
   isIntersecting: boolean
 }) {
+  const { t } = useTranslation(["content"])
   return (
     <div className={cx(style.info)}>
       {dataArr.map(({ value, label }, i) => (
@@ -49,7 +51,7 @@ export default function Info({
         >
           <div className={cx(style["info-label"])}>
             <div className={cx(style.mark, style[value])}></div>
-            <label>{label}</label>
+            <label>{t(label)}</label>
           </div>
           <div className={cx(style["info-percent"])}>
             <CountUp
@@ -74,7 +76,7 @@ export default function Info({
               <div className={cx(style.icon)}>
                 <i className={cx(icon[0], icon[1])}></i>
               </div>
-              <label>{label}</label>
+              <label>{t(label)}</label>
             </div>
             <div className={cx(style["info-percent"])}>
               <CountUp duration={4} end={uniqueData[value]} />

@@ -13,11 +13,13 @@ import { nanoid } from "nanoid"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import TemplateCard from "./_components/TemplateCard"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function TemplatePage() {
+  const { t } = useTranslation(["title", "modal"])
   const [targetTemplate, setTargetTemplate] = useState<TemplatePostCardType | null>(null)
   const router = useRouter()
   const { setModal } = useMainStore()
@@ -85,7 +87,7 @@ export default function TemplatePage() {
               <div className={"global-page-title"}>
                 <h1>
                   <Image width={35} height={35} src="/images/emoji/magic.png" alt="magic" />
-                  <span>템플릿으로 빠른 시작</span>
+                  <span>{t("useTemplate", { ns: "title" })}</span>
                 </h1>
               </div>
               <div className={cx(style.grid)}>
@@ -101,9 +103,9 @@ export default function TemplatePage() {
       </div>
       {modalStatus === "loadTemplate" && (
         <Confirm
-          title="템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?"
+          title={t("loadTemplate", { ns: "modal" })}
           onClickConfirm={onClickConfirm}
-          customBtn={{ yes: "네 괜찮아요", no: "취소" }}
+          customBtn={{ yes: t("itIsFine", { ns: "modal" }), no: t("cancel", { ns: "modal" }) }}
         />
       )}
     </>

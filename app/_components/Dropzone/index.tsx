@@ -8,10 +8,12 @@ import TextareaAutosize from "react-textarea-autosize"
 import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function Dropzone({ index }: { index: number }) {
+  const { t } = useTranslation(["content"])
   const { setCandidate, candidates } = useNewPostStore()
   const candidate = candidates[index]
 
@@ -92,7 +94,7 @@ export default function Dropzone({ index }: { index: number }) {
         <div className={cx("description")}>
           <div className={cx("title-wrapper")}>
             <TextareaAutosize
-              placeholder="후보명 입력 (필수)"
+              placeholder={t("enterCandidateName")}
               className={cx(style["title-input"])}
               value={candidate.title}
               onChange={onChangeInput}

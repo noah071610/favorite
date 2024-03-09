@@ -7,6 +7,7 @@ import { uploadImage } from "@/_queries/newPost"
 import { ThumbnailType } from "@/_types/post/post"
 import { useCallback, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
+import { useTranslation } from "react-i18next"
 
 import { getImageUrl } from "@/_data"
 import classNames from "classNames"
@@ -14,16 +15,17 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const selectorTypes = [
-  { type: "custom", children: <i className={cx("fa-solid", "fa-image")}></i>, label: "커스텀 썸네일" },
+  { type: "custom", children: <i className={cx("fa-solid", "fa-image")}></i>, label: "thumbnailType.custom" },
   {
     type: "layout",
     children: <i className={cx("fa-solid", "fa-film")}></i>,
-    label: "콘텐츠 레이아웃",
+    label: "thumbnailType.layout",
   },
-  { type: "none", children: <i className={cx("fa-solid", "fa-close")}></i>, label: "썸네일 없음" },
+  { type: "none", children: <i className={cx("fa-solid", "fa-close")}></i>, label: "thumbnailType.none" },
 ]
 
 export default function ThumbnailStyle() {
+  const { t } = useTranslation(["newPost"])
   const { thumbnail, content, candidates, setThumbnail, setThumbnailLayout } = useNewPostStore()
 
   const onChangeThumbnailStyle = (type: ThumbnailType) => {
@@ -106,7 +108,7 @@ export default function ThumbnailStyle() {
           </div>
         ) : (
           <div className={cx(style["no-layout"])}>
-            <span>2개 이상 후보 필요</span>
+            <span>{t("moreThanTwoThumb")}</span>
           </div>
         ))}
       {thumbnail.type === "none" && (
@@ -123,7 +125,7 @@ export default function ThumbnailStyle() {
               className={cx(style.btn, { [style.active]: thumbnail.type === type })}
             >
               <div className={cx(style["preview-icon"])}>{children}</div>
-              <span>{label}</span>
+              <span>{t(label)}</span>
             </button>
             {thumbnail.isPossibleLayout && type === thumbnail.type && thumbnail.type === "layout" && (
               <div className={cx(style["layout-customize"])}>

@@ -12,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
 import { useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import style from "../style.module.scss"
 
 const cx = classNames.bind(style)
@@ -39,6 +40,7 @@ const socials = [
 
 export default function LoginContent({ setContentPart }: { setContentPart: (state: "signUp" | "login") => void }) {
   const queryClient = useQueryClient()
+  const { t } = useTranslation(["login", "common", "messages"])
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const { setModal, modalStatus } = useMainStore()
@@ -99,7 +101,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
     if (modalStatus === "login") {
       setTimeout(() => {
         setModal("none")
-        toastSuccess("login")
+        toastSuccess(t("success.login", { ns: "messages" }))
       }, 2000)
     } else {
       setModal("newPostLoginSuccess")
@@ -176,7 +178,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             autoComplete="email"
             className={cx({ [style.active]: inputStatus.focus.email })}
           />
-          <label className={cx({ [style.active]: inputStatus.focus.email })}>이메일 입력</label>
+          <label className={cx({ [style.active]: inputStatus.focus.email })}>{t("enterEmail", { ns: "login" })}</label>
           {inputStatus.errorMessage.email && (
             <div className={cx(style["error-message"])}>
               <span>* {inputStatus.errorMessage.email}</span>
@@ -196,7 +198,9 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             autoComplete="current-password"
             className={cx({ [style.active]: inputStatus.focus.password })}
           />
-          <label className={cx({ [style.active]: inputStatus.focus.password })}>패스워드 입력</label>
+          <label className={cx({ [style.active]: inputStatus.focus.password })}>
+            {t("enterPassword", { ns: "login" })}
+          </label>
           {inputStatus.errorMessage.password && (
             <div className={cx(style["error-message"])}>
               <span>* {inputStatus.errorMessage.password}</span>
@@ -205,7 +209,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
         </div>
         <div className={cx(style["submit-btn"], { [style.error]: !!inputStatus.errorMessage.loginBtn })}>
           <button type="submit">
-            <span className={cx(style["btn-text"])}>로그인</span>
+            <span className={cx(style["btn-text"])}>{t("login", { ns: "common" })}</span>
           </button>
           {inputStatus.errorMessage.loginBtn && (
             <div className={cx(style["error-message"])}>
@@ -216,21 +220,21 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
       </form>
       <div className={cx(style["sub-btn"])}>
         {/* <button>
-          <span>이메일 찾기</span>
+          <span>{t("이메일 찾기")}</span>
         </button>
         <button>
-          <span>비밀번호 찾기</span>
+          <span>{t("비밀번호 찾기")}</span>
         </button> */}
         <button
           onClick={() => {
             setContentPart("signUp")
           }}
         >
-          <span>회원가입</span>
+          <span>{t("signup", { ns: "login" })}</span>
         </button>
       </div>
       <div className={cx(style.title)}>
-        <span>SNS로 3초만에 로그인</span>
+        <span>{t("snsTitle", { ns: "login" })}</span>
         <i className={cx("fa-solid", "fa-rocket")}></i>
       </div>
       <div className={cx(style.sns)}>

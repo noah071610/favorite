@@ -4,6 +4,7 @@ import { getImageUrl } from "@/_data"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { PollingCandidateType } from "@/_types/post/polling"
 import classNames from "classNames"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -18,6 +19,7 @@ export default function SelectPart({
   onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
   onSelectModal?: boolean
 }) {
+  const { t } = useTranslation(["content"])
   return (
     <div
       className={cx(style["wrapper"], {
@@ -48,7 +50,7 @@ export default function SelectPart({
       ) : (
         <div className={cx(style.unselected)}>
           <div>
-            <span>후보를 선택해주세요</span>
+            <span>{t("selectCandidate")}</span>
           </div>
         </div>
       )}

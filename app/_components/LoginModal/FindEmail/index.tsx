@@ -6,11 +6,13 @@ import { useMainStore } from "@/_store/main"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function LoginContent({ setContentPart }: { setContentPart: (state: "signUp" | "login") => void }) {
   const queryClient = useQueryClient()
+  const { t } = useTranslation(["messages"])
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const { setModal, modalStatus } = useMainStore()
   const [input, setInput] = useState({ email: "", password: "" })
@@ -45,7 +47,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
       case "ok":
         if (modalStatus === "login") {
           setModal("none")
-          toastSuccess("login")
+          toastSuccess(t("success.login"))
         } else {
           setModal("newPostLoginSuccess")
         }
@@ -77,11 +79,11 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             autoComplete="email"
             className={cx({ [style.active]: focus.email })}
           />
-          <label className={cx({ [style.active]: focus.email })}>이메일 입력</label>
+          <label className={cx({ [style.active]: focus.email })}>{t("이메일 입력")}</label>
         </div>
         <div className={cx(style["find-email-btn"])}>
           <button type="submit">
-            <span>이메일 찾기</span>
+            <span>{t("이메일 찾기")}</span>
           </button>
         </div>
       </form>

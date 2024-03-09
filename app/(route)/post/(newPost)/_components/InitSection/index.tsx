@@ -10,10 +10,12 @@ import { UserQueryType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useCallback, useState } from "react"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function InitSection() {
+  const { t } = useTranslation(["newPost", "modal", "content"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
   })
@@ -50,7 +52,9 @@ export default function InitSection() {
   return (
     <div className={cx(style.init)}>
       <div className={cx(style["type-wrapper"])}>
-        <h1 className={cx({ [style.error]: error.type === "selectType" })}>콘텐츠 타입을 선택해주세요</h1>
+        <h1 className={cx({ [style.error]: error.type === "selectType" })}>
+          {t("selectContentType", { ns: "newPost" })}
+        </h1>
         <div className={cx(style["type-list"])}>
           {contentTypesArr.map(({ value, icon, label }) => (
             <button
@@ -59,16 +63,16 @@ export default function InitSection() {
               className={cx(`type-${value}`, { [style.active]: newPost?.type === value })}
             >
               <div>{icon(style)}</div>
-              <span>{label}</span>
+              <span> {t(label, { ns: "content" })}</span>
             </button>
           ))}
         </div>
       </div>
       {modalStatus === "changePostType" && (
         <Confirm
-          title="콘텐츠 타입 변경 시 모든 데이터는 삭제되요. <br/>괜찮으세요?"
+          title={t("changePostType", { ns: "modal" })}
           onClickConfirm={onClickConfirm}
-          customBtn={{ yes: "네 괜찮아요", no: "취소" }}
+          customBtn={{ yes: t("itIsFine", { ns: "modal" }), no: t("changePostType", { ns: "cancel" }) }}
         />
       )}
     </div>

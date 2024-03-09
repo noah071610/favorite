@@ -19,12 +19,15 @@ import { ErrorTypes } from "@/_types"
 import { randomNum } from "@/_utils/math"
 import { checkNewPost, generatePostData } from "@/_utils/post"
 import classNames from "classNames"
+import { useTranslation } from "react-i18next"
 import Preview from "./Preview"
 import ThumbnailStyle from "./ThumbnailStyle"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function RendingSection() {
+  const { t } = useTranslation(["newPost"])
+  const { t: message } = useTranslation(["messages"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
     queryFn: getUser,
@@ -64,17 +67,17 @@ export default function RendingSection() {
       clearNewPost("all")
 
       router.push("/") // todo
-      toastSuccess("posting")
+      toastSuccess(message("success.posting"))
     },
     onError: () => {
-      toastError("unknown")
+      toastError(message(`error.unknown`))
     },
   })
 
   const sendNewPostError = (type: ErrorTypes | null) => {
     if (!type) return
     setError({ type, text: errorMessage[type] })
-    toastError(type)
+    toastError(message(`error.${type}`))
     setTimeout(() => {
       setError({ type: "clear" })
     }, 3000)
@@ -90,8 +93,8 @@ export default function RendingSection() {
       ? userData.user
       : {
           userId: 1,
-          userImage: "noah",
-          userName: "익명",
+          userImage: "",
+          userName: t("anonymous"),
         }
     const createPost = {
       ...generatePostData({
@@ -152,7 +155,7 @@ export default function RendingSection() {
     } else {
       if (userData) {
         if (!userData.user) {
-          toastSuccess("loginNewPost")
+          toastSuccess(message("success.loginNewPost"))
           setModal("loginNewPost")
         } else {
           const createPost = generatePostData({ newPost, content, candidates, thumbnail, user: userData.user })
@@ -174,22 +177,22 @@ export default function RendingSection() {
     <>
       <div className={cx(style.rending)}>
         <section className={cx(style["rending-section"])}>
-          <h1>썸네일 변경</h1>
+          <h1>{t("changeThumb")}</h1>
           <ThumbnailStyle />
         </section>
         <div className={cx(style.finish)}>
           <div className={cx(style.option, { [style.active]: newPost?.format === "secret" })}>
-            <span>비공개 콘텐츠</span>
+            <span>{t("secretContent")}</span>
             <button onClick={() => onClickOption("isSecret")} className={cx(style.bar)}>
               <div className={cx(style.circle)}></div>
             </button>
           </div>
           <div className={cx(style["btn-wrapper"])}>
             <button onClick={() => validate("preview")}>
-              <span>미리 플레이 해보기</span>
+              <span>{t("preview")}</span>
             </button>
             <button onClick={() => validate("posting")}>
-              <span>포스팅 하기</span>
+              <span>{t("posting")}</span>
             </button>
           </div>
         </div>

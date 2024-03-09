@@ -4,17 +4,18 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Swiper, SwiperSlide } from "swiper/react"
 import FavoriteLoading from "./_components/@Global/Loading/FavoriteLoading"
 import PostCard from "./_components/PostCard"
 import { queryKey } from "./_data"
-import { contentTypesObj } from "./_data/post"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
 import { getPopularPosts, getPosts } from "./_queries/post"
 import { PostCardType, PostFindQuery } from "./_types/post/post"
 import style from "./style.module.scss"
 
 export default function HomePage() {
+  const { t } = useTranslation(["title"])
   const { get } = useSearchParams()
   const query = get("query") as PostFindQuery
 
@@ -66,8 +67,6 @@ export default function HomePage() {
       setHasNextPage(false)
     }
   }, [posts?.pages])
-
-  const titleLabel = contentTypesObj[query]?.label
 
   return (
     <>
@@ -125,7 +124,7 @@ export default function HomePage() {
               <div className={"global-page-title"}>
                 <h1>
                   <Image width={35} height={35} src="/images/emoji/rocket.png" alt="rocket" />
-                  <span>{titleLabel ? (query === "all" ? "모두 보기" : titleLabel + " 콘텐츠") : "모두 보기"}</span>
+                  <span>{query ? t(query) : t("all")}</span>
                 </h1>
               </div>
               <div className={style.grid}>

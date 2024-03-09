@@ -5,10 +5,12 @@ import { useMainStore } from "@/_store/main"
 import { usePostStore } from "@/_store/post"
 import classNames from "classNames"
 import Link from "next/link"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function SearchModal() {
+  const { t } = useTranslation(["search"])
   const { searchPosts, isSearching, searchQuery } = usePostStore()
   const { modalStatus } = useMainStore()
 
@@ -53,13 +55,13 @@ export default function SearchModal() {
           ) : (
             <div className={cx(style["no-content"])}>
               <span>{"¯\\_(ツ)_/¯"}</span>
-              <span>검색 결과 없음</span>
+              <span>{t("emptySearchResult")}</span>
             </div>
           )
         ) : (
           <div className={cx(style["no-content"])}>
             <span>{"¯\\_(ツ)_/¯"}</span>
-            <span>검색 결과 없음</span>
+            <span>{t("emptySearchResult")}</span>
           </div>
         )}
       </div>

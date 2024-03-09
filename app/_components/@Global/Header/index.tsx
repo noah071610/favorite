@@ -10,6 +10,7 @@ import classNames from "classNames"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import LoginModal from "../../LoginModal"
 import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
@@ -18,6 +19,7 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function Header() {
+  const { t } = useTranslation(["nav"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
   })
@@ -75,7 +77,7 @@ export default function Header() {
               {/* new post */}
               {isNewPostPage && newPostStatus === "init" && (
                 <Link href={"/"} className={cx(style["new-post"])}>
-                  <span>메인페이지로</span>
+                  <span>{t("mainPage")}</span>
                 </Link>
               )}
               {isNewPostPage && newPostStatus !== "init" && (
@@ -84,24 +86,24 @@ export default function Header() {
                     <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
                     <i className={cx("fa-solid", "fa-check", style.check)}></i>
                   </div>
-                  <span>저장하기</span>
+                  <span>{t("save")}</span>
                 </button>
               )}
 
               {/* main */}
               {!isNewPostPage && (
                 <Link href={"/post/new"} className={cx(style["new-post"])}>
-                  <span>만들러가기</span>
+                  <span>{t("makeNew")}</span>
                 </Link>
               )}
               {!isNewPostPage &&
                 (user ? (
                   <Link href={`/user/${user.userId}`} className={cx(style["login"])}>
-                    <span>대시보드</span>
+                    <span>{t("대시보드")}</span>
                   </Link>
                 ) : (
                   <a onClick={() => setModal("login")} className={cx(style["login"])}>
-                    <span>로그인</span>
+                    <span>{t("login")}</span>
                   </a>
                 ))}
             </div>

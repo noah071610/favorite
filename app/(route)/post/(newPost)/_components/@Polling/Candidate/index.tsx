@@ -5,6 +5,7 @@ import { noImageUrl } from "@/_data/post"
 import { useNewPostStore } from "@/_store/newPost"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 
 function Candidate({
@@ -16,6 +17,7 @@ function Candidate({
   targetIndex: number
   setGrabDisplay: (b: boolean) => void
 }) {
+  const { t } = useTranslation(["newPost"])
   const { description, listId, title, imageSrc } = candidate
   const [candidateStatus, setCandidateStatus] = useState<"add" | "delete" | "static">("add")
   const {
@@ -53,7 +55,7 @@ function Candidate({
 
   const titleComponent = () => (
     <div className={classNames("title")}>
-      <h3>{title.trim() ? title : "후보명 입력 (필수)"}</h3>
+      <h3>{title.trim() ? title : t("enterTitle") + " " + t("required")}</h3>
     </div>
   )
 
@@ -93,7 +95,11 @@ function Candidate({
         </div>
         <div className={classNames("content")}>
           {titleComponent()}
-          {description ? <p>{description}</p> : <p className={classNames("place-holder")}>후보 설명 입력 (옵션)</p>}
+          {description ? (
+            <p>{description}</p>
+          ) : (
+            <p className={classNames("place-holder")}>{t("enterDesc") + " " + t("optional")}</p>
+          )}
         </div>
       </div>
     </div>

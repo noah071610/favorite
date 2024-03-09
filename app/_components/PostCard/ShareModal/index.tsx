@@ -13,6 +13,7 @@ const cx = classNames.bind(style)
 
 type ShareProviderValue = "twitter" | "facebook" | "kakaoTalk" | "line" | "link"
 
+import { useTranslation } from "react-i18next"
 export default function ShareModal({
   postCard,
   setOnShareModal,
@@ -20,6 +21,7 @@ export default function ShareModal({
   postCard: PostCardType
   setOnShareModal: (b: boolean) => void
 }) {
+  const { t } = useTranslation(["messages"])
   const onClickShare = async (v: ShareProviderValue) => {
     if (postCard) {
       const { postId, title, type, description, thumbnail: _thumbnail } = postCard
@@ -27,7 +29,7 @@ export default function ShareModal({
       const url = `${_url.client}/post/${type}/${postId}`
       if (v === "link") {
         await copyTextToClipboard(url).then(() => {
-          toastSuccess("copyLink")
+          toastSuccess(t("success.copyLink"))
         })
         return
       }

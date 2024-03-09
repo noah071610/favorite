@@ -1,11 +1,12 @@
 "use client"
-
 import { queryKey } from "@/_data"
 import { toastError } from "@/_data/toast"
 import { commenting } from "@/_queries/post"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useTranslation } from "react-i18next"
 
 export const useCommentMutation = (postId: string, commented: () => void) => {
+  const { t } = useTranslation(["messages"])
   const queryClient = useQueryClient()
   const { mutate, isSuccess } = useMutation({
     mutationKey: queryKey.comment(postId),
@@ -39,7 +40,7 @@ export const useCommentMutation = (postId: string, commented: () => void) => {
       return { previous }
     },
     onError: () => {
-      toastError("unknown")
+      toastError(t(`error.unknown`))
     },
     onSuccess: () => {
       commented()

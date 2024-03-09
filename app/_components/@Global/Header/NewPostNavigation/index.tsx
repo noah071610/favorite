@@ -7,16 +7,19 @@ import { useNewPostStore } from "@/_store/newPost"
 import { PostingStatus } from "@/_types/post/post"
 import classNames from "classNames"
 import { useCallback } from "react"
+import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const navList = {
-  init: "양식",
-  edit: "제작",
-  rending: "랜딩",
+  init: "init",
+  edit: "edit",
+  rending: "rending",
 }
 
 export default function NewPostNavigation() {
+  const { t } = useTranslation(["nav"])
+  const { t: message } = useTranslation(["messages"])
   const { setError } = useMainStore()
   const { newPostStatus, setStatus, newPost } = useNewPostStore()
 
@@ -24,7 +27,7 @@ export default function NewPostNavigation() {
     (status: PostingStatus) => {
       if (!newPost?.type) {
         setError({ type: "selectType", text: errorMessage["selectType"] })
-        toastError("selectType")
+        toastError(message(`error.selectType`))
         setTimeout(() => {
           setError({ type: "clear" })
         }, 3000)
@@ -40,7 +43,7 @@ export default function NewPostNavigation() {
     <nav className={cx(style.nav)}>
       {(Object.keys(navList) as PostingStatus[]).map((status, i) => (
         <a className={cx({ [style.active]: newPostStatus === status })} key={status} onClick={() => onClickNav(status)}>
-          <span>{navList[status]}</span>
+          <span>{t(navList[status])}</span>
         </a>
       ))}
       <div className={cx(style.shadow, { [style[newPostStatus]]: newPostStatus })} />
