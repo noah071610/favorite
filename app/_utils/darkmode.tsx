@@ -1,4 +1,4 @@
-export const ScriptTag = () => {
+export const DarkModeScriptTag = () => {
   const codeToRunOnClient = `
   let preference = "light";
   const persistedColorPreference = window.localStorage.getItem("color-mode");

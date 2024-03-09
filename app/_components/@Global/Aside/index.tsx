@@ -4,8 +4,11 @@ import { queryKey } from "@/_data"
 import { typeSelectors } from "@/_data/post"
 import { useMainStore } from "@/_store/main"
 import { UserQueryType } from "@/_types/user"
+import i18n from "@/_utils/i18n"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
+import dayjs from "dayjs"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useTranslation } from "react-i18next"
@@ -47,7 +50,7 @@ const asideSelectors = [
 ]
 
 export default function Aside() {
-  const { t } = useTranslation(["nav"])
+  const { t, i18n: _i18n } = useTranslation(["nav"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
   })
@@ -57,6 +60,12 @@ export default function Aside() {
   const asPath = pathname + (query ? `?query=${query}` : "")
   const { modalStatus, setModal } = useMainStore()
   const user = userData?.user
+
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang)
+    localStorage.setItem("favorite_lang", lang)
+    setModal("none")
+  }
 
   const closeModal = () => {
     setModal("none")
@@ -122,6 +131,28 @@ export default function Aside() {
           )
         })}
       </nav>
+      <footer className={cx(style.footer)}>
+        <ul>
+          {["ko", "ja", "en", "th"].map((v) => (
+            <li key={v}>
+              <button
+                className={cx(style.lang, { [style.active]: v === _i18n.language })}
+                onClick={() => changeLanguage(v)}
+              >
+                <Image width={16} height={16} src={`/images/emoji/${v}.png`} alt={`flag_${v}`} />
+              </button>
+            </li>
+          ))}
+        </ul>
+        <ul>
+          {["terms-of-service", "privacy-policy"].map((v) => (
+            <li className={cx(style.link)} key={v}>
+              <Link href={`/${v}`}>{t(v)}</Link>
+            </li>
+          ))}
+        </ul>
+        <span className={cx(style["copy-right"])}>© {dayjs(new Date()).format("YYYY")} Jang Hyunsoo</span>
+      </footer>
     </div>
   )
 }

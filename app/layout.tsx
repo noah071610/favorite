@@ -18,7 +18,7 @@ import ReactQueryProvider from "./_components/@Global/ReactQueryProvider"
 
 import Aside from "./_components/@Global/Aside"
 import Init from "./_components/@Global/Init"
-import { ScriptTag } from "./_utils/darkmode"
+import { DarkModeScriptTag } from "./_utils/darkmode"
 
 const pretendard = localFont({
   src: [
@@ -68,7 +68,7 @@ async function RootLayout({
           <meta name="author" content="Noah"></meta>
         </head>
         <body suppressHydrationWarning={true}>
-          <ScriptTag />
+          <DarkModeScriptTag />
           <ReactQueryProvider>
             <Init />
             <Header />

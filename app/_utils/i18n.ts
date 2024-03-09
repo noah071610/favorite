@@ -1,17 +1,23 @@
 import translationUS from "@/_locales/en_US/common.json"
 import translationJA from "@/_locales/ja/common.json"
 import translationKO from "@/_locales/ko_KR/common.json"
+import translationTH from "@/_locales/th/common.json"
 import i18n from "i18next"
+import detector from "i18next-browser-languagedetector"
+import backend from "i18next-http-backend"
 import { initReactI18next } from "react-i18next"
 
 const resources = {
   ko: translationKO,
   ja: translationJA,
   en: translationUS,
+  th: translationTH,
 }
 
 // i18next 초기화
 i18n
+  .use(detector)
+  .use(backend)
   .use(initReactI18next) // initReactI18next를 사용하여 react-i18next를 초기화
   .init({
     // i18next 설정
