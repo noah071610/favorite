@@ -6,26 +6,33 @@ import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { PostCardType } from "@/_types/post/post"
 import { formatNumber } from "@/_utils/math"
 import classNames from "classNames"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { memo, useState } from "react"
 import CountUp from "react-countup"
 import { useTranslation } from "react-i18next"
+import FavoriteLoading from "../@Global/Loading/FavoriteLoading"
 import NoThumbnail from "../@Global/Loading/NoThumbnail"
-import ShareModal from "./ShareModal"
-import style from "./style.module.scss"
-const cx = classNames.bind(style)
 
-export default function PostCard({
+const ShareModal = dynamic(() => import("./ShareModal"), {
+  loading: () => <FavoriteLoading type="full" />,
+})
+
+function PostCard({
   postCard,
   isTemplate,
+  isUserPage,
+  onClickUserPageBtn,
   loadTemplate,
 }: {
   postCard: PostCardType
   isTemplate?: boolean
+  isUserPage?: boolean
+  onClickUserPageBtn?: (type: "delete" | "edit", target: PostCardType) => void
   loadTemplate?: (postCard: PostCardType) => void
 }) {
-  const { t } = useTranslation(["content"])
+  const { t } = useTranslation(["content", "messages"])
   const router = useRouter()
   const { description, type, postId, thumbnail, title, count } = postCard
   const [onShareModal, setOnShareModal] = useState(false)
@@ -52,20 +59,20 @@ export default function PostCard({
   }
 
   return (
-    <article className={cx(style.card)}>
-      <div className={cx(style["card-main"], { [style.template]: isTemplate })}>
-        <div onClick={onClickPlay} className={cx(style["card-inner"], { [style.notTemplate]: !isTemplate })}>
-          <div className={cx(style.thumbnail, { isFull: !description.trim() })}>
-            <div className={cx(style["thumbnail"])}>
+    <article className={classNames("global-post-card")}>
+      <div className={classNames("main", { template: isTemplate })}>
+        <div onClick={onClickPlay} className={classNames("inner", { notTemplate: !isTemplate })}>
+          <div className={classNames(thumbnail, { isFull: !description.trim() })}>
+            <div className={classNames("thumbnail")}>
               {!thumbnail ? (
                 <NoThumbnail type="post-card" />
               ) : isImagesLoaded ? (
                 thumbnailArr.length > 0 && (
-                  <div className={cx(style["thumbnail-inner"])}>
+                  <div className={classNames("thumbnail-inner")}>
                     {thumbnailArr.map((v, i) => (
                       <div
                         key={`thumb_${postId}_${i}`}
-                        className={cx(style.image)}
+                        className={classNames("image")}
                         style={{
                           background: getImageUrl({ url: v, isCenter: true }),
                         }}
@@ -74,54 +81,54 @@ export default function PostCard({
                   </div>
                 )
               ) : (
-                <div className={cx(style.loading)}></div>
+                <div className={classNames("loading")}></div>
               )}
             </div>
           </div>
 
-          <div className={cx(style.text)}>
+          <div className={classNames("text")}>
             <h1>{title}</h1>
             <h2>{description}</h2>
           </div>
         </div>
 
-        <div className={cx(style.info)}>
+        <div className={classNames("info")}>
           {typeData && !isTemplate && (
-            <div className={cx(style.badge)}>
-              <Link href={typeData.link} className={cx(style["badge-main"], style[typeData.value])}>
+            <div className={classNames("badge")}>
+              <Link href={typeData.link} className={classNames("badge-main", typeData.value)}>
                 <span>
-                  {typeData.icon(style)}
-                  <span className={cx(style.label)}>{t(`${typeData.label}`)}</span>
+                  {typeData.icon("style")}
+                  <span className={classNames("label")}>{t(`${typeData.label}`)}</span>
                 </span>
               </Link>
             </div>
           )}
-          <div className={cx(style["info-main"])}>
-            <div className={cx(style.left)}>
+          <div className={classNames("info-main")}>
+            <div className={classNames("left")}>
               {isTemplate ? (
                 typeData && (
-                  <div className={cx(style["template-badge"], style[typeData.value])}>
+                  <div className={classNames("template-badge", typeData.value)}>
                     <span>
-                      {typeData.icon(style)}
-                      <span className={cx(style.label)}>{t(typeData.label)}</span>
+                      {typeData.icon("style")}
+                      <span className={classNames("label")}>{t(typeData.label)}</span>
                     </span>
                   </div>
                 )
               ) : (
                 <>
                   {typeData && (
-                    <div className={cx(style["mobile-badge"])}>
-                      <Link href={typeData.link} className={cx(style["badge-main"], style[typeData.value])}>
+                    <div className={classNames("mobile-badge")}>
+                      <Link href={typeData.link} className={classNames("badge-main", typeData.value)}>
                         <span>
-                          {typeData.icon(style)}
-                          <span className={cx(style.label)}>{t(typeData.label)}</span>
+                          {typeData.icon("style")}
+                          <span className={classNames("label")}>{t(typeData.label)}</span>
                         </span>
                       </Link>
                     </div>
                   )}
                   <div>
                     <CountUp
-                      className={cx(style.count)}
+                      className={classNames("count")}
                       suffix={t(suffix)}
                       duration={4}
                       decimals={!suffix ? 0 : 1}
@@ -129,20 +136,33 @@ export default function PostCard({
                       separator=" "
                       end={parseFloat(num)}
                     />
-                    <span className={cx(style.suffix)}>{t("participate")}</span>
+                    <span className={classNames("suffix")}>{t("participate")}</span>
                   </div>
                 </>
               )}
             </div>
-            <div className={cx(style.right, { [style.template]: isTemplate })}>
-              <Link href={`/post/${type}/${postId}`}>
-                <i className={cx("fa-solid", "fa-play")}></i>
-                <span>{isTemplate ? t("playContent") : t("playContentShort")}</span>
-              </Link>
-              <button onClick={onClickPrimaryBtn}>
-                <i className={cx("fa-solid", "fa-arrow-up-from-bracket")}></i>
-                <span>{isTemplate ? t("useTemplate") : t("shareContent")}</span>
-              </button>
+            <div className={classNames("right", { template: isTemplate })}>
+              {isUserPage ? (
+                <>
+                  <button onClick={() => onClickUserPageBtn && onClickUserPageBtn("edit", postCard)}>
+                    <span style={{ marginLeft: "0" }}>{t("수정하기")}</span>
+                  </button>
+                  <button onClick={() => onClickUserPageBtn && onClickUserPageBtn("delete", postCard)}>
+                    <span style={{ marginLeft: "0" }}>{t("삭제하기")}</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href={`/post/${type}/${postId}`}>
+                    <i className={classNames("fa-solid", "fa-play")}></i>
+                    <span>{isTemplate ? t("playContent") : t("playContentShort")}</span>
+                  </Link>
+                  <button onClick={onClickPrimaryBtn}>
+                    <i className={classNames("fa-solid", "fa-arrow-up-from-bracket")}></i>
+                    <span>{isTemplate ? t("useTemplate") : t("shareContent")}</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -151,3 +171,5 @@ export default function PostCard({
     </article>
   )
 }
+
+export default memo(PostCard)

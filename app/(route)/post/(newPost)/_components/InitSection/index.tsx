@@ -17,7 +17,7 @@ const cx = classNames.bind(style)
 export default function InitSection() {
   const { t } = useTranslation(["newPost", "modal", "content"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user,
+    queryKey: queryKey.user.login,
   })
   const { error } = useMainStore()
   const { newPost, clearNewPost, setNewPost, setStatus } = useNewPostStore()

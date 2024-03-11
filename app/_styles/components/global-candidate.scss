@@ -261,9 +261,11 @@
         margin-bottom: 0px;
         padding: 10px;
         padding-top: 30px;
-        color: var(--text-white);
         background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, rgba(0, 0, 0, 0.6) 100%);
         z-index: 20;
+        h3 {
+          color: var(--text-white);
+        }
       }
       .overlay {
         width: 100%;

@@ -54,7 +54,9 @@
       "loginNewPost": "後ログインだけです！もう終わり！ 🚀",
       "posting": "投稿しました 🚀",
       "commenting": "コメントを投稿しました！ 🚀",
-      "copyLink": "リンクをコピーしました！ 🎉"
+      "copyLink": "リンクをコピーしました！ 🎉",
+      "delete": "コンテンツを削除しました",
+      "editing": "コンテンツを編集しました！😎"
     }
   },
   "nav": {
@@ -70,7 +72,8 @@
     "all": "すべて見る",
     "init": "設定",
     "edit": "編集",
-    "rending": "ランディング"
+    "rending": "ランディング",
+    "goBack": "戻る"
   },
   "search": {
     "emptySearchResult": "検索結果がありません"
@@ -152,7 +155,8 @@
     "moreThanTwoThumb": "せめて2つ以上の候補必要",
     "secretContent": "非公開",
     "preview": "プレビュー",
-    "posting": "投稿"
+    "posting": "投稿",
+    "editing": "編集"
   },
   "share": {
     "twitter": "ツイッターで共有",
@@ -168,6 +172,7 @@
     "newPostLoad": "セーブデータがあります。<br/>読み込みましょうか？",
     "load": "データを読み込む",
     "makeNewPost": "新しく作る",
-    "loadTemplate": "テンプレートを呼び出すと、以前保存したエディターのデータは全て削除されます。よろしいですか？"
+    "loadTemplate": "テンプレートを呼び出すと、以前保存したエディターのデータは全て削除されます。よろしいですか？",
+    "deletePost": "コンテンツを削除します。<br/>よろしいですか？"
   }
 }

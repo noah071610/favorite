@@ -145,7 +145,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
                     comments={post.comments}
                   />
                 </div>
-                <Share post={post} />
+                {!isPreview && <Share post={post} />}
               </div>
             ) : (
               <SelectPart selectedCandidate={selectedCandidate} onClickCandidate={onClickCandidate} />

@@ -1,15 +1,12 @@
 @import "@/_styles/variables.scss";
 
-$nav-width: 100px;
-$nav-width-mobile: 80px;
-
 .nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
   position: relative;
   a {
-    width: $nav-width;
+    width: var(--nav-width);
     padding: 10px 0;
     position: inherit;
     z-index: 10;
@@ -18,7 +15,6 @@ $nav-width-mobile: 80px;
       font-size: 15px;
     }
     @include mobile {
-      width: $nav-width-mobile;
       span {
         font-size: 13px;
       }
@@ -35,7 +31,7 @@ $nav-width-mobile: 80px;
 
 .shadow {
   @include full();
-  width: $nav-width;
+  width: var(--nav-width);
   padding: 0 15px;
   border-radius: 22px;
   background-color: var(--pink);
@@ -45,18 +41,17 @@ $nav-width-mobile: 80px;
     transform: translateX(0);
   }
   &.edit {
-    transform: translateX(calc($nav-width));
+    transform: translateX(calc(var(--nav-width)));
   }
   &.rending {
-    transform: translateX(calc(($nav-width) * 2));
+    transform: translateX(calc((var(--nav-width)) * 2));
   }
-  @include mobile {
-    width: $nav-width-mobile;
+  &.editPage {
     &.edit {
-      transform: translateX(calc($nav-width-mobile));
+      transform: translateX(0);
     }
     &.rending {
-      transform: translateX(calc(($nav-width-mobile) * 2));
+      transform: translateX(calc(var(--nav-width)));
     }
   }
 }

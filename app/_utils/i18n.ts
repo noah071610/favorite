@@ -1,11 +1,11 @@
-import translationUS from "@/_locales/en_US/common.json"
-import translationJA from "@/_locales/ja/common.json"
-import translationKO from "@/_locales/ko_KR/common.json"
-import translationTH from "@/_locales/th/common.json"
 import i18n from "i18next"
 import detector from "i18next-browser-languagedetector"
 import backend from "i18next-http-backend"
 import { initReactI18next } from "react-i18next"
+import translationUS from "../../public/locales/en/translation.json"
+import translationJA from "../../public/locales/ja/translation.json"
+import translationKO from "../../public/locales/ko/translation.json"
+import translationTH from "../../public/locales/th/translation.json"
 
 const resources = {
   ko: translationKO,
@@ -24,7 +24,7 @@ i18n
     resources,
     lng: "ko",
     fallbackLng: "ko",
-    debug: process.env.NODE_ENV === "development",
+    // debug: process.env.NODE_ENV === "development",
     interpolation: { escapeValue: true },
     returnObjects: true,
     returnEmptyString: true,

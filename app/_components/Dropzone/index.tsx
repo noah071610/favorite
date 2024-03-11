@@ -1,7 +1,7 @@
 "use client"
 
 import { uploadImage } from "@/_queries/newPost"
-import { useCallback } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
@@ -12,18 +12,50 @@ import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
+const lineMax = 5
+
 export default function Dropzone({ index }: { index: number }) {
-  const { t } = useTranslation(["content"])
+  const { t, i18n } = useTranslation(["content"])
   const { setCandidate, candidates } = useNewPostStore()
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+  const [originalTitle, setOriginalTitle] = useState("")
   const candidate = candidates[index]
+  const textAreaHeight = () => {
+    if (textareaRef?.current) {
+      return textareaRef?.current.clientHeight ?? 0
+    }
+    return 0
+  }
+
+  useEffect(() => {
+    if (!!originalTitle && textAreaHeight() > 150) {
+      setCandidate({ index, payload: originalTitle, type: "title" })
+      setOriginalTitle("")
+    }
+  })
 
   const onChangeInput = (e: any) => {
-    if (e.target.value.length >= 40) return
-    setCandidate({
-      index,
-      payload: e.target.value,
-      type: "title",
-    })
+    const inputValue = e.target.value
+    const lines = inputValue.split("\n")
+
+    if (lines.length <= lineMax) {
+      let newText = ""
+      lines.forEach((line: string, index: number) => {
+        if (line.length <= 100) {
+          newText += line
+          if (index !== lines.length - 1) {
+            newText += "\n"
+          }
+        }
+      })
+
+      setOriginalTitle(e.target.value.slice(0, -1))
+      setCandidate({
+        index,
+        payload: e.target.value,
+        type: "title",
+      })
+    }
   }
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -58,6 +90,9 @@ export default function Dropzone({ index }: { index: number }) {
     },
     maxSize: 8000000,
   })
+
+  const isBigFont = i18n.language === "ko" || i18n.language === "ja"
+
   return (
     <div className={cx("global-select")}>
       <div className={cx("global-select-inner")}>
@@ -98,6 +133,8 @@ export default function Dropzone({ index }: { index: number }) {
               className={cx(style["title-input"])}
               value={candidate.title}
               onChange={onChangeInput}
+              maxLength={isBigFont ? 155 : 250}
+              ref={textareaRef}
             />
           </div>
         </div>

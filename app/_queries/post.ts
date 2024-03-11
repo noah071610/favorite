@@ -1,5 +1,8 @@
 import { API } from "@/_data"
 import { PostFindQuery } from "@/_types/post/post"
+import { Cookies } from "react-cookie"
+
+const cookies = new Cookies()
 
 export async function getPosts({ pageParam = 0, query }: { pageParam?: number; query: PostFindQuery }) {
   const response = await API.get(`/post/all?cursor=${pageParam}&query=${query}`)
@@ -13,11 +16,13 @@ export async function getPopularPosts() {
   return response.data
 }
 
-export async function getUserPosts(userId?: number) {
-  if (!userId) return
-  const response = await API.get(`/post/user?userId=${userId}`)
+export async function getUserPosts() {
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+  if (cookie) {
+    const response = await API.get(`/post/user`)
 
-  return response.data
+    return response.data
+  }
 }
 
 export async function getTemplatePosts() {

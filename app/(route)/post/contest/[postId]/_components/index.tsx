@@ -14,6 +14,7 @@ import { toastSuccess } from "@/_data/toast"
 import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
+import { setParticipate } from "@/_hooks/useSetParticipate"
 import { TournamentCandidateType } from "@/_types/post/tournament"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
@@ -68,7 +69,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
 
     if (!isPreview) {
       mutate(finishedPost)
-      // setParticipate({ listId: candidates[direction].listId, postId: post.postId })
+      setParticipate({ listId: candidates[direction].listId, postId: post.postId })
     }
     setSelected(target.listId)
     setTimeout(() => {
@@ -112,7 +113,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
                   </div>
                 </section>
 
-                <Share post={post} />
+                {!isPreview && <Share post={post} />}
               </>
             )}
           </div>

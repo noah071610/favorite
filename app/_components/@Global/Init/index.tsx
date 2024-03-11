@@ -1,5 +1,6 @@
 "use client"
 
+import { queryKey } from "@/_data"
 import { refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { useQueryClient } from "@tanstack/react-query"
@@ -59,7 +60,7 @@ export default function Init() {
     !(async function () {
       const { msg, user } = await refreshUser()
       if (user) {
-        queryClient.setQueryData(["user"], { msg, user })
+        queryClient.setQueryData(queryKey.user.login, { msg, user })
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -29,10 +29,13 @@
       height: 50px;
       padding: 5px 0;
     }
-    img {
-      margin-left: 10px;
-      width: 90px;
-      height: 15px;
+    a {
+      display: flex;
+      img {
+        margin-left: 10px;
+        width: 90px;
+        height: 15px;
+      }
     }
   }
 }

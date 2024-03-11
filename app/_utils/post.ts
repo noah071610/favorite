@@ -70,24 +70,33 @@ export function generatePostData({
   candidates,
   thumbnail,
   user,
+  isEditPost,
 }: {
   newPost: any
   content: any
   candidates: { [key: string]: any }[]
   thumbnail: ThumbnailSettingType
   user: UserType
+  isEditPost?: boolean
 }) {
   const thumbnailCreate =
     thumbnail.type === "layout" ? thumbnail.layout.join("${}$") : thumbnail.type === "none" ? "" : thumbnail.imageSrc
-  const target = cloneDeep({
-    ...newPost,
-    thumbnail: thumbnailCreate,
-    postId: nanoid(10),
-    count: 0,
-    userId: user.userId,
-    content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
-  })
-  return target
+  if (isEditPost) {
+    return cloneDeep({
+      ...newPost,
+      thumbnail: thumbnailCreate,
+      content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
+    })
+  } else {
+    return cloneDeep({
+      ...newPost,
+      thumbnail: thumbnailCreate,
+      postId: nanoid(10),
+      count: 0,
+      userId: user.userId,
+      content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
+    })
+  }
 }
 
 export const handleBeforeUnload = (data: any, event?: any) => {

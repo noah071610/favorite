@@ -52,7 +52,7 @@ const asideSelectors = [
 export default function Aside() {
   const { t, i18n: _i18n } = useTranslation(["nav"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user,
+    queryKey: queryKey.user.login,
   })
   const pathname = usePathname()
   const { get } = useSearchParams()

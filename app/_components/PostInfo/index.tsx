@@ -16,7 +16,7 @@ export default function PostInfo({
     <div className={"global-post-info"}>
       <div className={"title"}>
         <h1>{title}</h1>
-        {description.trim() && <h2>{description}</h2>}
+        {description?.trim() && <h2>{description}</h2>}
       </div>
       {user && (
         <div className={"profile"}>

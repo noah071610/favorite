@@ -54,7 +54,9 @@
       "loginNewPost": "Almost finish! Please login 🚀",
       "posting": "Posting! 🚀",
       "commenting": "Commenting 🚀",
-      "copyLink": "Link copied! 🎉"
+      "copyLink": "Link copied! 🎉",
+      "delete": "Content deleted",
+      "editing": "Edited! 😎"
     }
   },
   "nav": {
@@ -70,7 +72,8 @@
     "all": "View All",
     "init": "Type",
     "edit": "Edit",
-    "rending": "Post"
+    "rending": "Post",
+    "goBack": "Go Back"
   },
   "search": {
     "emptySearchResult": "No Search Results"
@@ -152,7 +155,8 @@
     "moreThanTwoThumb": "At least 2 candidates needed",
     "secretContent": "Private content",
     "preview": "Preview",
-    "posting": "Post now"
+    "posting": "Post now",
+    "editing": "Edit"
   },
   "share": {
     "twitter": "Share on Twitter",
@@ -168,6 +172,7 @@
     "newPostLoad": "You have a saved content <br/>Is that okay to load?",
     "load": "Load Data",
     "makeNewPost": "Create New",
-    "loadTemplate": "Loading a template will delete all saved data. Is that okay?"
+    "loadTemplate": "Loading a template will delete all saved data. Is that okay?",
+    "deletePost": "Deleting the content is irreversible. <br/> Are you sure?"
   }
 }

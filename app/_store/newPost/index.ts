@@ -8,6 +8,7 @@ import {
   ThumbnailType,
 } from "@/_types/post/post"
 import { produce } from "immer"
+import { cloneDeep } from "lodash"
 import { create } from "zustand"
 
 const newPostInit: NewPostType = {
@@ -28,6 +29,13 @@ interface States {
   selectedCandidateIndex: number
   thumbnail: ThumbnailSettingType
   isEditOn: boolean
+  saveDataForEdit: {
+    newPost: NewPostType
+    content: { [key: string]: any }
+    candidates: { [key: string]: any }[]
+    newPostStatus: PostingStatus
+    thumbnail: ThumbnailSettingType
+  } | null
 }
 
 type SetNewPostAction =
@@ -59,6 +67,8 @@ type Actions = {
   setNewPost: (action: SetNewPostAction) => void
   setContent: (action: SetContentAction) => void
   setThumbnail: (action: SetThumbnailAction) => void
+  setSaveDataForEdit: () => void
+  setLoadSaveData: () => void
   setThumbnailLayout: ({ slice, isShuffle }: { slice: number; isShuffle?: boolean }) => void
   clearNewPost: (type: PostContentType | "all") => void
 }
@@ -77,6 +87,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
   },
   selectedCandidateIndex: -1,
   isEditOn: false,
+  saveDataForEdit: null,
 
   moveCandidate: ({ from, to }) =>
     set((origin) =>
@@ -275,4 +286,29 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
       selectedCandidateIndex: state,
       isEditOn: true,
     })),
+
+  setSaveDataForEdit: () =>
+    set((origin) => ({
+      saveDataForEdit: cloneDeep({
+        newPost: origin.newPost,
+        content: origin.content,
+        candidates: origin.candidates,
+        newPostStatus: origin.newPostStatus,
+        thumbnail: origin.thumbnail,
+      }),
+    })),
+  setLoadSaveData: () =>
+    set((origin) => {
+      if (origin.saveDataForEdit) {
+        return {
+          newPost: origin.saveDataForEdit.newPost,
+          content: origin.saveDataForEdit.content,
+          candidates: origin.saveDataForEdit.candidates,
+          newPostStatus: origin.saveDataForEdit.newPostStatus,
+          thumbnail: origin.saveDataForEdit.thumbnail,
+        }
+      } else {
+        return origin
+      }
+    }),
 }))

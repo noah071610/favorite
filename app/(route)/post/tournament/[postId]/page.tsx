@@ -1,5 +1,5 @@
 import { _url } from "@/_data"
-import { getThumbnail } from "@/_data/post"
+import { getThumbnail, noThumbnailUrl } from "@/_data/post"
 import { getPost } from "@/_queries/post"
 import { TournamentPostType } from "@/_types/post/tournament"
 import { Metadata } from "next"
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: { postId: string } 
     openGraph: {
       title,
       description,
-      images: thumbnail.length > 0 ? thumbnail : ["/images/post/todo:"],
+      images: thumbnail.length > 0 ? thumbnail : [noThumbnailUrl],
       url: _url.client + `/post/tournament/${params.postId}`,
       type: "website",
       siteName: "favorite",

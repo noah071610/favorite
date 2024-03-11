@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import LoginModal from "../../LoginModal"
@@ -21,13 +21,18 @@ const cx = classNames.bind(style)
 
 export default function Header() {
   const { t } = useTranslation(["nav"])
-  const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user,
-  })
-  const { modalStatus, setModal } = useMainStore()
   const pathname = usePathname()
-  const isNewPostPage = pathname.includes("new")
+  const router = useRouter()
+  const { data: userData } = useQuery<UserQueryType>({
+    queryKey: queryKey.user.login,
+  })
+  const user = userData?.user
+
+  const { modalStatus, setModal } = useMainStore()
+  const isNewPostPage = pathname.includes("new") || pathname.includes("edit")
+  const isEditPostPage = pathname.includes("edit")
   const isHideHeader = (pathname.includes("/post/") && !isNewPostPage) || pathname.includes("loginSuccess")
+
   const { newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex, loadNewPost, clearNewPost } =
     useNewPostStore()
   const [saved, setSaved] = useState(false)
@@ -46,13 +51,15 @@ export default function Header() {
       }, 5000)
     }
   }
-  const user = userData?.user
 
   const onClickOpenAside = () => {
     setModal("aside")
   }
   const onClickSearch = (isOpen: boolean) => {
     setModal(isOpen ? "search" : "none")
+  }
+  const onClickGoBack = () => {
+    router.back()
   }
 
   return isHideHeader ? null : (
@@ -65,9 +72,11 @@ export default function Header() {
                 <i className={cx("fa-solid", "fa-bars")}></i>
               </div>
             </button>
-            <Link href="/">
-              <Image width={150} height={30} alt="logo" src="/images/Favorite.png"></Image>
-            </Link>
+            {modalStatus !== "search" && (
+              <Link className={cx({ [style.newPost]: isNewPostPage })} href="/">
+                <Image width={150} height={30} alt="logo" src="/images/Favorite.png"></Image>
+              </Link>
+            )}
           </div>
 
           {/* CENTER */}
@@ -82,15 +91,22 @@ export default function Header() {
                   <span>{t("mainPage")}</span>
                 </Link>
               )}
-              {isNewPostPage && newPostStatus !== "init" && (
-                <button onClick={onClickSave} className={cx(style.save, { [style.saved]: saved })}>
-                  <div className={cx(style.icon)}>
-                    <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
-                    <i className={cx("fa-solid", "fa-check", style.check)}></i>
-                  </div>
-                  <span>{t("save")}</span>
-                </button>
-              )}
+              {isNewPostPage &&
+                newPostStatus !== "init" &&
+                (isEditPostPage ? (
+                  // edit post
+                  <button onClick={onClickGoBack} className={cx(style["new-post"])}>
+                    <span>{t("goBack")}</span>
+                  </button>
+                ) : (
+                  <button onClick={onClickSave} className={cx(style.save, { [style.saved]: saved })}>
+                    <div className={cx(style.icon)}>
+                      <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
+                      <i className={cx("fa-solid", "fa-check", style.check)}></i>
+                    </div>
+                    <span>{t("save")}</span>
+                  </button>
+                ))}
 
               {/* main */}
               {!isNewPostPage && (
@@ -120,19 +136,30 @@ export default function Header() {
                   </div>
                 </Link>
               )}
-              {isNewPostPage && newPostStatus !== "init" && (
-                <button onClick={onClickSave} className={cx(style["save-mobile"], { [style.saved]: saved })}>
-                  <div className={cx(style.icon)}>
-                    <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
-                    <i className={cx("fa-solid", "fa-check", style.check)}></i>
-                  </div>
-                </button>
-              )}
+              {isNewPostPage &&
+                newPostStatus !== "init" &&
+                (isEditPostPage ? (
+                  // edit post
+                  <button onClick={onClickGoBack}>
+                    <div className={cx(style.icon)}>
+                      <i className={cx("fa-solid", "fa-chevron-left")}></i>
+                    </div>
+                  </button>
+                ) : (
+                  <button onClick={onClickSave} className={cx(style["save-mobile"], { [style.saved]: saved })}>
+                    <div className={cx(style.icon)}>
+                      <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
+                      <i className={cx("fa-solid", "fa-check", style.check)}></i>
+                    </div>
+                  </button>
+                ))}
 
               {/* search  */}
               {!isNewPostPage && modalStatus === "search" && (
                 <button onClick={() => onClickSearch(false)} className={cx(style["search-btn"])}>
-                  <i className="fa-solid fa-close"></i>
+                  <div className={cx(style.icon)}>
+                    <i className="fa-solid fa-close"></i>
+                  </div>
                 </button>
               )}
               {!isNewPostPage && modalStatus !== "search" && (

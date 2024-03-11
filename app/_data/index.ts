@@ -33,10 +33,14 @@ export const queryKey = {
   },
   new: {
     create: ["new", "create"],
+    edit: ["new", "edit"],
   },
   comment: (postId: string) => ["comment", postId],
-  user: ["user"],
-  userPost: ["userPost"],
+  user: {
+    login: ["user", "login"],
+    deletePost: ["user", "delete"],
+    posts: ["user", "posts"],
+  },
   play: ["play"],
   post: (postId: string) => ["post", postId],
 } as const

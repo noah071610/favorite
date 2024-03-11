@@ -48,6 +48,8 @@ export default function Candidate({
     }
   }, [cardRef])
 
+  console.log(candidate)
+
   return (
     <div ref={cardRef} className={classNames("global-select", "select-part", direction)}>
       <TinderCard
@@ -68,7 +70,7 @@ export default function Candidate({
         ></div>
         <div className={classNames("description")}>
           <div className={classNames("title-wrapper")}>
-            <h1 className={classNames("title")}>{candidate?.title}</h1>
+            <h1 className={classNames("title")} dangerouslySetInnerHTML={{ __html: candidate?.title ?? "" }}></h1>
           </div>
         </div>
       </TinderCard>

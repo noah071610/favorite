@@ -6,9 +6,9 @@ import { useNewPostStore } from "@/_store/newPost"
 import { UserQueryType } from "@/_types/user"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { posting } from "@/_queries/newPost"
-import { PostType } from "@/_types/post/post"
-import { useRouter } from "next/navigation"
+import { editPost, posting } from "@/_queries/newPost"
+import { PostContentType, PostType } from "@/_types/post/post"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 import { queryKey } from "@/_data"
@@ -29,10 +29,13 @@ export default function RendingSection() {
   const { t } = useTranslation(["newPost"])
   const { t: message } = useTranslation(["messages"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user,
+    queryKey: queryKey.user.login,
     queryFn: getUser,
   })
 
+  const pathname = usePathname()
+  const { postId } = useParams()
+  const isEditPage = pathname.includes("edit")
   const queryClient = useQueryClient()
   const router = useRouter()
   const { setModal, modalStatus, setError } = useMainStore()
@@ -41,33 +44,29 @@ export default function RendingSection() {
   const [isOnPreview, setIsOnPreview] = useState(false)
 
   const { mutate } = useMutation({
-    mutationKey: queryKey.new.create,
-    mutationFn: (newPost: { [key: string]: any }) => posting(newPost),
-    onMutate: async (createNewPost) => {
-      await queryClient.cancelQueries({ queryKey: queryKey.home.all })
-
-      // Snapshot the previous value
-      const previous = queryClient.getQueryData(queryKey.home.all)
-
-      // Optimistically update to the new value
-      queryClient.setQueryData(queryKey.home.all, (old: any) => {
-        if (!old) return undefined
-        old.pages[0].unshift(createNewPost)
-        return old
-      })
-
-      // Return a context object with the snapshotted value
-      return { previous }
+    mutationKey: isEditPage ? queryKey.new.edit : queryKey.new.create,
+    mutationFn: isEditPage
+      ? (newPost: { [key: string]: any }) => editPost(newPost)
+      : (newPost: { [key: string]: any }) => posting(newPost),
+    onMutate: async (newPost) => {
+      const targetContentsKey = queryKey.home[newPost.type as PostContentType]
+      await queryClient.invalidateQueries({ queryKey: queryKey.home.all })
+      await queryClient.invalidateQueries({ queryKey: targetContentsKey })
     },
-    onSuccess: () => {
-      localStorage.removeItem("favorite_save_data")
-
-      setStatus("init")
-      setModal("none")
-      clearNewPost("all")
-
-      router.push("/") // todo
-      toastSuccess(message("success.posting"))
+    onSuccess: async ({ data }) => {
+      if (isEditPage) {
+        await queryClient.invalidateQueries({ queryKey: queryKey.post(newPost.postId) })
+        await queryClient.invalidateQueries({ queryKey: queryKey.user.posts })
+        router.push(`/user/${userData?.user?.userId}`)
+        toastSuccess(message("success.editing"))
+      } else {
+        localStorage.removeItem("favorite_save_data")
+        setStatus("init")
+        setModal("none")
+        clearNewPost("all")
+        toastSuccess(message("success.posting"))
+        router.push("/")
+      }
     },
     onError: () => {
       toastError(message(`error.unknown`))
@@ -110,6 +109,7 @@ export default function RendingSection() {
       user,
       createdAt: new Date(),
     }
+
     switch (createPost.type) {
       case "polling":
         createPost.content.candidates = createPost.content.candidates.map((v: any) => ({
@@ -146,23 +146,42 @@ export default function RendingSection() {
     setIsOnPreview(true)
   }
 
-  const validate = async (type: "preview" | "posting") => {
+  const validate = async (type: "preview" | "posting" | "editing") => {
     const check = checkNewPost(newPost, content, candidates, thumbnail)
     if (check) return sendNewPostError(check)
 
-    if (type === "preview") {
-      preview()
-    } else {
-      if (userData) {
-        if (!userData.user) {
-          toastSuccess(message("success.loginNewPost"))
-          setModal("loginNewPost")
-        } else {
-          const createPost = generatePostData({ newPost, content, candidates, thumbnail, user: userData.user })
+    switch (true) {
+      case type === "preview":
+        preview()
+        break
 
-          mutate(createPost)
+      case type === "posting":
+        if (userData) {
+          if (!userData.user) {
+            toastSuccess(message("success.loginNewPost"))
+            setModal("loginNewPost")
+          } else {
+            const createPost = generatePostData({ newPost, content, candidates, thumbnail, user: userData.user })
+            mutate(createPost)
+          }
         }
-      }
+        break
+
+      case type === "editing" && typeof postId === "string" && typeof userData?.user?.userId === "number":
+        const editPost = generatePostData({
+          isEditPost: true,
+          newPost,
+          content,
+          candidates,
+          thumbnail,
+          user: userData.user,
+        })
+        mutate(editPost)
+        break
+
+      default:
+        toastError(message(`error.unknown`))
+        break
     }
   }
   useEffect(() => {
@@ -191,8 +210,8 @@ export default function RendingSection() {
             <button onClick={() => validate("preview")}>
               <span>{t("preview")}</span>
             </button>
-            <button onClick={() => validate("posting")}>
-              <span>{t("posting")}</span>
+            <button onClick={() => validate(isEditPage ? "editing" : "posting")}>
+              <span>{isEditPage ? t("editing") : t("posting")}</span>
             </button>
           </div>
         </div>

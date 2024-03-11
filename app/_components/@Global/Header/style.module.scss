@@ -40,10 +40,18 @@ $side-width: 300px;
     @include medium {
       width: auto;
     }
-    img {
-      margin-left: 10px;
-      width: 90px;
-      height: 15px;
+    a {
+      display: flex;
+      img {
+        margin-left: 10px;
+        width: 90px;
+        height: 15px;
+      }
+      @include mobile {
+        &.newPost {
+          display: none;
+        }
+      }
     }
   }
   .center {

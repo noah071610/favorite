@@ -14,6 +14,19 @@ import { getPopularPosts, getPosts } from "./_queries/post"
 import { PostCardType, PostFindQuery } from "./_types/post/post"
 import style from "./style.module.scss"
 
+const breakpoints = {
+  // when window width is >= 0px
+  0: {
+    slidesPerView: 2,
+    spaceBetween: 5,
+  },
+  // when window width is >=450px
+  450: {
+    slidesPerView: 3,
+    spaceBetween: 20,
+  },
+}
+
 export default function HomePage() {
   const { t } = useTranslation(["title"])
   const { get } = useSearchParams()
@@ -99,18 +112,7 @@ export default function HomePage() {
                       navigation={true}
                       className={"slider"}
                       ref={sliderRef}
-                      breakpoints={{
-                        // when window width is >= 0px
-                        0: {
-                          slidesPerView: 2,
-                          spaceBetween: 5,
-                        },
-                        // when window width is >=450px
-                        450: {
-                          slidesPerView: 3,
-                          spaceBetween: 20,
-                        },
-                      }}
+                      breakpoints={breakpoints}
                     >
                       {popularPosts.map((v: PostCardType) => (
                         <SwiperSlide className={"slide"} key={`popular_${v.postId}`}>

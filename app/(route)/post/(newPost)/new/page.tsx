@@ -48,9 +48,7 @@ export default function NewPostPage() {
 
   useEffect(() => {
     const handleBeforeUnloadCallback = (e: any) => {
-      if (isEditOn) {
-        handleBeforeUnload(saveData, e)
-      }
+      handleBeforeUnload(saveData, e)
     }
     window.addEventListener("beforeunload", handleBeforeUnloadCallback)
 

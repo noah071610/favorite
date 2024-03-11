@@ -207,7 +207,7 @@ export default function ResultPart({
             <CommentPart isPreview={isPreview} authorId={authorId} comments={comments} />
           </div>
         </section>
-        <Share post={post} />
+        {!isPreview && <Share post={post} />}
       </div>
     </div>
   )

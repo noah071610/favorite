@@ -1,7 +1,7 @@
 "use client"
 
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
-import { _url } from "@/_data"
+import { _url, queryKey } from "@/_data"
 import { errorMessage } from "@/_data/message"
 import { toastSuccess } from "@/_data/toast"
 import { login, refreshUser } from "@/_queries/user"
@@ -92,7 +92,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
 
   const finishLogin = ({ msg, user }: UserQueryType) => {
     if (msg === "ok") {
-      queryClient.setQueryData(["user"], { msg: "ok", user })
+      queryClient.setQueryData(queryKey.user.login, { msg: "ok", user })
     } else {
       setTimeout(() => {
         setIsLoading(false)
@@ -134,6 +134,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
     setIsLoading(true)
 
     const data = await login({ email: input.email, password: input.password })
+
     finishLogin(data)
   }
 

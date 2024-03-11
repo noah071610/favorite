@@ -25,6 +25,11 @@ export async function posting(newPost: { [key: string]: any }) {
   return { msg: "ok", data: response.data }
 }
 
+export async function editPost(newPost: { [key: string]: any }) {
+  const response = await API.put(`/post`, newPost)
+  return { msg: "ok", data: response.data }
+}
+
 export const onMutatePosting = async (queryClient: any, post: PostCardType) => {
   await queryClient.cancelQueries({ queryKey: ["homePosts"] })
 
@@ -37,4 +42,9 @@ export const onMutatePosting = async (queryClient: any, post: PostCardType) => {
       }
     })
   )
+}
+
+export async function deletePost(postId: string) {
+  await API.delete(`/post?postId=${postId}`)
+  return { msg: "ok" }
 }

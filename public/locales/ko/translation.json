@@ -4,7 +4,7 @@
     "author": "작성자",
     "cancel": "취소",
     "comment": "코멘트",
-    "back": "뒤로 가기",
+    "back": "뒤로가기",
     "login": "로그인",
     "yes": "네",
     "no": "아니요"
@@ -19,7 +19,7 @@
     "findEmail": "이메일 찾기",
     "enterEmail": "이메일 입력",
     "enterPassword": "이메일 입력",
-    "back": "뒤로 가기"
+    "back": "뒤로가기"
   },
   "messages": {
     "error": {
@@ -54,7 +54,9 @@
       "loginNewPost": "로그인만 하면 끝나요! 다 왔어요! 🚀",
       "posting": "포스팅 완료! 🚀",
       "commenting": "댓글을 작성했어요! 🚀",
-      "copyLink": "링크를 복사했어요! 🎉"
+      "copyLink": "링크를 복사했어요! 🎉",
+      "delete": "콘텐츠를 삭제했어요.",
+      "editing": "콘텐츠를 수정했어요! 😎"
     }
   },
   "nav": {
@@ -64,6 +66,7 @@
     "dashboard": "대시보드",
     "mainPage": "메인페이지로",
     "save": "저장하기",
+    "goBack": "뒤로가기",
     "polling": "투표",
     "contest": "1:1 대결",
     "tournament": "토너먼트",
@@ -154,7 +157,8 @@
     "moreThanTwoThumb": "2개 이상 후보 필요",
     "secretContent": "비공개 콘텐츠",
     "preview": "미리 플레이 해보기",
-    "posting": "포스팅 하기"
+    "posting": "포스팅 하기",
+    "editing": "수정 하기"
   },
   "share": {
     "twitter": "트위터로 공유",
@@ -170,6 +174,7 @@
     "newPostLoad": "저장된 콘텐츠가 있어요!<br/>불러올까요?",
     "load": "데이터 불러오기",
     "makeNewPost": "새로 만들래요",
-    "loadTemplate": "템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?"
+    "loadTemplate": "템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?",
+    "deletePost": "콘텐츠를 삭제하면 복구가 불가능해요. <br/>괜찮으세요?"
   }
 }

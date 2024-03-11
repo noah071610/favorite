@@ -15,6 +15,7 @@ export type ModalStatus =
   | "share"
   | "loadTemplate"
   | "mobileSelectCandidate"
+  | "deletePost"
 
 export interface PostCardListType {
   pageParams: number[]

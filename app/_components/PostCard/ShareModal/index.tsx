@@ -1,15 +1,12 @@
 "use client"
 
 import { _url, getShareUrl, kakaoShare } from "@/_data"
-import { getThumbnail, shareProviders } from "@/_data/post"
+import { getThumbnail, noThumbnailUrl, shareProviders } from "@/_data/post"
 import { toastSuccess } from "@/_data/toast"
-import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { PostCardType } from "@/_types/post/post"
 import { copyTextToClipboard } from "@/_utils/copy"
 import classNames from "classNames"
 import Image from "next/image"
-import style from "./style.module.scss"
-const cx = classNames.bind(style)
 
 type ShareProviderValue = "twitter" | "facebook" | "kakaoTalk" | "line" | "link"
 
@@ -37,7 +34,7 @@ export default function ShareModal({
         return kakaoShare({
           title,
           description,
-          imageUrl: thumbnail.length > 0 ? thumbnail[0] : "// todo: 기본 썸네일",
+          imageUrl: thumbnail.length > 0 ? thumbnail[0] : noThumbnailUrl,
           link: url,
         })
       }
@@ -51,12 +48,12 @@ export default function ShareModal({
   }
 
   return (
-    <div onClick={onClickOverlay} className={cx(style.modal)}>
+    <div onClick={onClickOverlay} className={classNames("modal")}>
       <ul>
         {shareProviders.map(({ value }, i) => (
-          <li style={fadeMoveUpAnimation(450, i * 80)} key={`share_${value}`}>
+          <li style={{ animation: `fade-move-up-little 450ms ${i * 80}ms forwards` }} key={`share_${value}`}>
             <button onClick={() => onClickShare(value as ShareProviderValue)}>
-              <div className={cx(style.image)}>
+              <div className={classNames("image")}>
                 <Image width={22} height={22} src={`/images/icon/${value}.png`} alt={value} />
               </div>
             </button>

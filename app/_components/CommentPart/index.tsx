@@ -36,7 +36,7 @@ function Comment({ user, text, authorId }: { user?: UserType; text: string; auth
 
 function Commenting({ authorId, isPreview }: { authorId: number; isPreview: boolean }) {
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user,
+    queryKey: queryKey.user.login,
     queryFn: getUser,
   })
   const { t } = useTranslation(["common"])

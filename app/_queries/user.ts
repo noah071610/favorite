@@ -8,6 +8,7 @@ export async function getUser() {
 
   if (cookie) {
     const response = await API.get(`/auth/user`)
+
     API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
 
     return response.data

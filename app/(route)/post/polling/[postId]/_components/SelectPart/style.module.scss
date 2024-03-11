@@ -75,6 +75,7 @@
       transform: translateY(50px);
       opacity: 0;
       text-align: center;
+      white-space: pre-line;
     }
     @include medium {
       h2,

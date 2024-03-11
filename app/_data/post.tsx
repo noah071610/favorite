@@ -66,6 +66,7 @@ export const getThumbnail = (thumbnail: string) => {
 }
 
 export const noImageUrl = "url('/images/post/no-image.png')"
+export const noThumbnailUrl = "/images/post/noThumbnail.png"
 
 export const shareProviders = [
   { value: "twitter", label: "twitter", color: "rgba(29, 161, 242, 0.2)" }, // 트위터 파란색

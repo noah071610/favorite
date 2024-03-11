@@ -1,7 +1,7 @@
 "use client"
 
 import { _url, getShareUrl, kakaoShare } from "@/_data"
-import { getThumbnail, shareProviders } from "@/_data/post"
+import { getThumbnail, noThumbnailUrl, shareProviders } from "@/_data/post"
 import { toastSuccess } from "@/_data/toast"
 import { copyTextToClipboard } from "@/_utils/copy"
 import classNames from "classNames"
@@ -22,7 +22,7 @@ export default function Share({ post }: { post: any }) {
       const url = `${_url.client}/post/${type}/${postId}`
       if (v === "link") {
         await copyTextToClipboard(url).then(() => {
-          toastSuccess(t("copyLink", { ns: "messages" }))
+          toastSuccess(t("success.copyLink", { ns: "messages" }))
         })
         return
       }
@@ -30,7 +30,7 @@ export default function Share({ post }: { post: any }) {
         return kakaoShare({
           title,
           description,
-          imageUrl: thumbnail.length > 0 ? thumbnail[0] : "// todo: 기본 썸네일",
+          imageUrl: thumbnail.length > 0 ? thumbnail[0] : noThumbnailUrl,
           link: url,
         })
       }
