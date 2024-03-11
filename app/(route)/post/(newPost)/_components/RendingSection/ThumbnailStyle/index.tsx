@@ -10,18 +10,20 @@ import { useDropzone } from "react-dropzone"
 import { useTranslation } from "react-i18next"
 
 import { getImageUrl } from "@/_data"
+import { faChevronLeft, faChevronRight, faClose, faFilm, faImage, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const selectorTypes = [
-  { type: "custom", children: <i className={cx("fa-solid", "fa-image")}></i>, label: "thumbnailType.custom" },
+  { type: "custom", children: <FontAwesomeIcon icon={faImage} />, label: "thumbnailType.custom" },
   {
     type: "layout",
-    children: <i className={cx("fa-solid", "fa-film")}></i>,
+    children: <FontAwesomeIcon icon={faFilm} />,
     label: "thumbnailType.layout",
   },
-  { type: "none", children: <i className={cx("fa-solid", "fa-close")}></i>, label: "thumbnailType.none" },
+  { type: "none", children: <FontAwesomeIcon icon={faClose} />, label: "thumbnailType.none" },
 ]
 
 export default function ThumbnailStyle() {
@@ -89,7 +91,7 @@ export default function ThumbnailStyle() {
           {...getRootProps()}
         >
           <input {...getInputProps()} />
-          <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
+          <FontAwesomeIcon className={cx({ [style.active]: isDragActive })} icon={faPlus} />
         </div>
       )}
       {thumbnail.type === "layout" &&
@@ -131,14 +133,14 @@ export default function ThumbnailStyle() {
               <div className={cx(style["layout-customize"])}>
                 <div className={cx(style.slice)}>
                   <button onClick={() => sliceThumbnailLayout(-1)} disabled={thumbnail.slice <= 2}>
-                    <i className={cx("fa-solid", "fa-chevron-left")}></i>
+                    <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
                   <span>{thumbnail.slice}</span>
                   <button
                     onClick={() => sliceThumbnailLayout(1)}
                     disabled={thumbnail.slice >= candidates.length || thumbnail.slice >= 5}
                   >
-                    <i className={cx("fa-solid", "fa-chevron-right")}></i>
+                    <FontAwesomeIcon icon={faChevronRight} />
                   </button>
                 </div>
               </div>

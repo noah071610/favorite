@@ -236,7 +236,7 @@
         border-radius: 6px;
         background-color: var(--gray-soft);
         @include flex();
-        i,
+        svg,
         span {
           color: var(--black-soft);
           font-size: 14px;
@@ -247,7 +247,7 @@
         @media (hover: hover) {
           &:hover {
             background-color: var(--pink);
-            i,
+            svg,
             span {
               color: var(--text-white);
             }
@@ -256,7 +256,7 @@
         @include mobile {
           padding: 10px 0;
           border-radius: 3px;
-          i,
+          svg,
           span {
             font-size: 12px;
           }
@@ -264,7 +264,7 @@
 
         @include mobile-active {
           background-color: var(--pink);
-          i,
+          svg,
           span {
             color: var(--text-white);
           }
@@ -273,14 +273,14 @@
       &.template {
         & > button {
           background-color: var(--purple-hard);
-          i,
+          svg,
           span {
             color: var(--text-white);
           }
           @media (hover: hover) {
             &:hover {
               background-color: var(--purple-hard);
-              i,
+              svg,
               span {
                 color: var(--text-white);
               }

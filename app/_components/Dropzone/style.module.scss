@@ -32,7 +32,7 @@
         border-color: var(--pink);
         opacity: 0.3;
       }
-      i {
+      svg {
         color: var(--pink-hard);
       }
     }
@@ -43,12 +43,12 @@
       border-color: var(--pink);
       opacity: 0.3;
     }
-    i {
+    svg {
       color: var(--pink-hard);
     }
   }
 
-  i {
+  svg {
     color: var(--gray-hard);
     font-size: 40px;
   }
@@ -81,7 +81,7 @@
   border-radius: 100%;
   @include flex();
   background-color: var(--gray-soft);
-  i {
+  svg {
     font-size: 20px;
     font-weight: 700;
     color: var(--text-white);

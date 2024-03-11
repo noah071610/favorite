@@ -1,3 +1,5 @@
+import { faGift, faHeart, faRocket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
@@ -7,9 +9,9 @@ const LoadingComponent = ({ type, text }: { type: "full" | "component" | "overla
     <div className={cx(style["loading-wrapper"], { [style[type]]: type })}>
       <div className={cx(style["loading"])}>
         <div className={cx(style["loading-inner"])}>
-          <i className={cx("fa-solid", "fa-gift", style["loading-icon"])} />
-          <i className={cx("fa-solid", "fa-heart", style["loading-icon"])} />
-          <i className={cx("fa-solid", "fa-rocket", style["loading-icon"])} />
+          <FontAwesomeIcon className={cx(style["loading-icon"])} icon={faGift} />
+          <FontAwesomeIcon className={cx(style["loading-icon"])} icon={faHeart} />
+          <FontAwesomeIcon className={cx(style["loading-icon"])} icon={faRocket} />
         </div>
         <span>{text ?? "Loading"}</span>
       </div>

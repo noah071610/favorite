@@ -71,7 +71,7 @@ $side-width: 300px;
         }
       }
 
-      i {
+      svg {
         @include full;
         color: var(--text-white);
         font-size: 15px;
@@ -100,7 +100,7 @@ $side-width: 300px;
       }
 
       &.saved {
-        i {
+        svg {
           color: var(--text-white);
         }
       }
@@ -110,7 +110,7 @@ $side-width: 300px;
       @include mobile-icon-btn;
       .icon {
         position: relative;
-        i {
+        svg {
           @include center;
           transition: 300ms all;
         }

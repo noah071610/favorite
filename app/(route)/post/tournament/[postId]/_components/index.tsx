@@ -10,6 +10,8 @@ import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { useMainStore } from "@/_store/main"
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { useTranslation } from "react-i18next"
@@ -117,7 +119,7 @@ export default function TournamentPost({ initialPost }: { initialPost: Tournamen
                       {v}
                       {t("teams")}
                     </span>
-                    <i className={cx("fa-solid", "fa-chevron-right")}></i>
+                    <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
                 </li>
               ))}

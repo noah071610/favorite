@@ -13,6 +13,8 @@ import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
 import { useMainStore } from "@/_store/main"
 import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
+import { faChartSimple, faComment } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
@@ -54,7 +56,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
     if (isVoted && isImagesLoaded) {
       toastSuccess(message("success.voted"))
     }
-  }, [isVoted, isImagesLoaded])
+  }, [isVoted, isImagesLoaded, message])
 
   const candidates = useMemo(() => {
     const target = post.content.candidates
@@ -126,7 +128,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
               <div className={cx(style["right-inner"])}>
                 <div className={cx(style.title)}>
                   <div className={cx(style.icon)}>
-                    <i className={cx("fa-solid", "fa-chart-simple")} />
+                    <FontAwesomeIcon icon={faChartSimple} />
                   </div>
 
                   <span>{t("analytic")}</span>
@@ -134,7 +136,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
                 <ChartPart chartDescription={post.content.chartDescription} candidates={post.content.candidates} />
                 <div className={cx(style.title)}>
                   <div className={cx(style.icon)}>
-                    <i className={cx("fa-solid", "fa-comment")} />
+                    <FontAwesomeIcon icon={faComment} />
                   </div>
                   <span>{t("comment")}</span>
                 </div>

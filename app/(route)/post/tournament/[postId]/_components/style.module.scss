@@ -108,14 +108,14 @@
         color: var(--black-soft);
         font-size: 14px;
       }
-      i {
+      svg {
         transition: all 240ms;
         color: var(--gray-hard);
       }
       @media (hover: hover) {
         &:hover {
           border-color: var(--pink-hard);
-          i {
+          svg {
             color: var(--pink-hard);
             transform: translateX(5px);
           }

@@ -121,7 +121,7 @@ $z-index-map: (
   .icon {
     height: 100%;
     @include flex;
-    i {
+    svg {
       color: var(--black-soft);
       font-size: 17px;
     }
@@ -251,7 +251,7 @@ $z-index-map: (
       background-color: var(--pink-soft);
       border-radius: 100%;
       @include flex();
-      i {
+      svg {
         color: var(--text-white);
         font-size: 14px;
       }

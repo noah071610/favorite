@@ -4,6 +4,8 @@ import CommentPart from "@/_components/CommentPart"
 import Share from "@/_components/Share"
 import { CommentType } from "@/_types/post/post"
 import { TournamentCandidateChartType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
+import { faChartSimple, faComment } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -141,7 +143,7 @@ export default function ResultPart({
         <section className={cx(style["section"])}>
           <div className={cx(style.title)}>
             <div className={cx(style.icon)}>
-              <i className={cx("fa-solid", "fa-chart-simple")} />
+              <FontAwesomeIcon icon={faChartSimple} />
             </div>
             <span>{t("mySelection")}</span>
           </div>
@@ -155,7 +157,7 @@ export default function ResultPart({
         <section className={cx(style["section"])}>
           <div className={cx(style.title)}>
             <div className={cx(style.icon)}>
-              <i className={cx("fa-solid", "fa-chart-simple")} />
+              <FontAwesomeIcon icon={faChartSimple} />
             </div>
             <span>{t("allRank")}</span>
           </div>
@@ -199,7 +201,7 @@ export default function ResultPart({
         <section className={cx(style["section"])}>
           <div className={cx(style.title)}>
             <div className={cx(style.icon)}>
-              <i className={cx("fa-solid", "fa-comment")} />
+              <FontAwesomeIcon icon={faComment} />
             </div>
             <span>{t("comment")}</span>
           </div>

@@ -1,5 +1,7 @@
 "use client"
 
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
@@ -97,10 +99,10 @@ export default function HomePage() {
 
                     <div className={"global-page-arrows"}>
                       <button className={"arrow prev"} onClick={handlePrev}>
-                        <i className="fa-solid fa-chevron-left"></i>
+                        <FontAwesomeIcon icon={faChevronLeft} />
                       </button>
                       <button className={"arrow next"} onClick={handleNext}>
-                        <i className="fa-solid fa-chevron-right"></i>
+                        <FontAwesomeIcon icon={faChevronRight} />
                       </button>
                     </div>
                   </div>
@@ -126,7 +128,7 @@ export default function HomePage() {
               <div className={"global-page-title"}>
                 <h1>
                   <Image width={35} height={35} src="/images/emoji/rocket.png" alt="rocket" />
-                  <span>{query ? t(query) : t("all")}</span>
+                  <span>{t(query ?? "all")}</span>
                 </h1>
               </div>
               <div className={style.grid}>

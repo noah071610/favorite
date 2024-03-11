@@ -8,6 +8,8 @@ import { login, refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
 import { Providers, UserQueryType } from "@/_types/user"
+import { faRocket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
@@ -239,7 +241,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
       </div>
       <div className={cx(style.title)}>
         <span>{t("snsTitle", { ns: "login" })}</span>
-        <i className={cx("fa-solid", "fa-rocket")}></i>
+        <FontAwesomeIcon icon={faRocket} />
       </div>
       <div className={cx(style.sns)}>
         {socials.map(({ value, disable }) => (

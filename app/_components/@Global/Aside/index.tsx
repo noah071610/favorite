@@ -5,6 +5,8 @@ import { typeSelectors } from "@/_data/post"
 import { useMainStore } from "@/_store/main"
 import { UserQueryType } from "@/_types/user"
 import i18n from "@/_utils/i18n"
+import { faClose, faPen, faUser, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import dayjs from "dayjs"
@@ -23,7 +25,7 @@ const asideSelectors = [
     label: "template",
     children: (
       <>
-        <i className={cx("fa-solid", "fa-wand-magic-sparkles", style.symbol)} />
+        <FontAwesomeIcon className={cx(style.symbol)} icon={faWandMagicSparkles} />
       </>
     ),
   },
@@ -33,7 +35,7 @@ const asideSelectors = [
     label: "makeNew",
     children: (
       <>
-        <i className={cx("fa-solid", "fa-pen", style.symbol)} />
+        <FontAwesomeIcon className={cx(style.symbol)} icon={faPen} />
       </>
     ),
   },
@@ -43,7 +45,7 @@ const asideSelectors = [
     label: "login",
     children: (
       <>
-        <i className={cx("fa-solid", "fa-user", style.symbol)} />
+        <FontAwesomeIcon className={cx(style.symbol)} icon={faUser} />
       </>
     ),
   },
@@ -79,7 +81,7 @@ export default function Aside() {
       <div className={cx(style.top)}>
         <button onClick={closeModal}>
           <div className={cx(style.icon)}>
-            <i className={cx("fa-solid", "fa-close")}></i>
+            <FontAwesomeIcon icon={faClose} />
           </div>
         </button>
         <Link onClick={closeModal} href="/">

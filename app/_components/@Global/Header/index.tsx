@@ -5,6 +5,17 @@ import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
 import { UserQueryType } from "@/_types/user"
 import { handleBeforeUnload } from "@/_utils/post"
+import {
+  faBars,
+  faCheck,
+  faChevronLeft,
+  faClose,
+  faFloppyDisk,
+  faHouse,
+  faMagnifyingGlass,
+  faPen,
+} from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
@@ -69,7 +80,7 @@ export default function Header() {
           <div className={cx(style.left)}>
             <button onClick={onClickOpenAside}>
               <div className={cx(style.icon)}>
-                <i className={cx("fa-solid", "fa-bars")}></i>
+                <FontAwesomeIcon icon={faBars} />
               </div>
             </button>
             {modalStatus !== "search" && (
@@ -101,8 +112,8 @@ export default function Header() {
                 ) : (
                   <button onClick={onClickSave} className={cx(style.save, { [style.saved]: saved })}>
                     <div className={cx(style.icon)}>
-                      <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
-                      <i className={cx("fa-solid", "fa-check", style.check)}></i>
+                      <FontAwesomeIcon className={cx(style.disk)} icon={faFloppyDisk} />
+                      <FontAwesomeIcon className={cx(style.check)} icon={faCheck} />
                     </div>
                     <span>{t("save")}</span>
                   </button>
@@ -132,7 +143,7 @@ export default function Header() {
               {isNewPostPage && newPostStatus === "init" && (
                 <Link href="/">
                   <div className={cx(style.icon)}>
-                    <i className="fa-solid fa-house"></i>
+                    <FontAwesomeIcon icon={faHouse} />
                   </div>
                 </Link>
               )}
@@ -142,14 +153,14 @@ export default function Header() {
                   // edit post
                   <button onClick={onClickGoBack}>
                     <div className={cx(style.icon)}>
-                      <i className={cx("fa-solid", "fa-chevron-left")}></i>
+                      <FontAwesomeIcon icon={faChevronLeft} />
                     </div>
                   </button>
                 ) : (
                   <button onClick={onClickSave} className={cx(style["save-mobile"], { [style.saved]: saved })}>
                     <div className={cx(style.icon)}>
-                      <i className={cx("fa-solid", "fa-floppy-disk", style.disk)}></i>
-                      <i className={cx("fa-solid", "fa-check", style.check)}></i>
+                      <FontAwesomeIcon className={cx(style.disk)} icon={faFloppyDisk} />
+                      <FontAwesomeIcon className={cx(style.check)} icon={faCheck} />
                     </div>
                   </button>
                 ))}
@@ -158,7 +169,7 @@ export default function Header() {
               {!isNewPostPage && modalStatus === "search" && (
                 <button onClick={() => onClickSearch(false)} className={cx(style["search-btn"])}>
                   <div className={cx(style.icon)}>
-                    <i className="fa-solid fa-close"></i>
+                    <FontAwesomeIcon icon={faClose} />
                   </div>
                 </button>
               )}
@@ -166,12 +177,12 @@ export default function Header() {
                 <>
                   <Link href="/post/new">
                     <div className={cx(style.icon)}>
-                      <i className="fa-solid fa-pen"></i>
+                      <FontAwesomeIcon icon={faPen} />
                     </div>
                   </Link>
                   <button onClick={() => onClickSearch(true)}>
                     <div className={cx(style.icon)}>
-                      <i className="fa-solid fa-magnifying-glass"></i>
+                      <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </div>
                   </button>
                 </>

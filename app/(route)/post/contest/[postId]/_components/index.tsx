@@ -16,6 +16,8 @@ import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
 import { TournamentCandidateType } from "@/_types/post/tournament"
+import { faComment } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import { cloneDeep } from "lodash"
@@ -100,7 +102,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
                 <section className={cx(style["comment-section"])}>
                   <div className={cx(style.title)}>
                     <div className={cx(style.icon)}>
-                      <i className={cx("fa-solid", "fa-comment")} />
+                      <FontAwesomeIcon icon={faComment} />
                     </div>
                     <span>{t("comment")}</span>
                   </div>

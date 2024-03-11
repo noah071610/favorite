@@ -6,6 +6,8 @@ import { getImageUrl } from "@/_data"
 import { uploadImage } from "@/_queries/newPost"
 import { useNewPostStore } from "@/_store/newPost"
 import { PollingCandidateType } from "@/_types/post/polling"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
@@ -125,7 +127,7 @@ export default function SelectPart({ index, candidate }: { index: number; candid
             {...getRootProps()}
           >
             <input {...getInputProps()} />
-            <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
+            <FontAwesomeIcon className={cx({ [style.active]: isDragActive })} icon={faPlus} />
           </div>
         )}
         <div className={cx(style["input-wrapper"])}>

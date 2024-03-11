@@ -37,7 +37,7 @@
       border-radius: 100%;
       width: 25px;
       height: 25px;
-      i {
+      svg {
         color: var(--black-soft);
         font-size: 12px;
         transition: 200ms all;
@@ -52,7 +52,7 @@
       button {
         @include flex;
         &.open {
-          i {
+          svg {
             transform: rotate(180deg);
           }
         }

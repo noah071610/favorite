@@ -66,14 +66,14 @@
           @include border;
           border-radius: 100%;
           @include flex;
-          i {
+          svg {
             color: var(--black-soft);
             font-size: 13px;
           }
           @media (hover: hover) {
             &:hover {
               border-color: var(--pink);
-              i {
+              svg {
                 color: var(--pink);
               }
             }

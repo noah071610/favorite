@@ -5,6 +5,8 @@ import { contentTypesArr, getThumbnail } from "@/_data/post"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { PostCardType } from "@/_types/post/post"
 import { formatNumber } from "@/_utils/math"
+import { faArrowUpFromBracket, faPlay } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
 import Link from "next/link"
@@ -154,11 +156,11 @@ function PostCard({
               ) : (
                 <>
                   <Link href={`/post/${type}/${postId}`}>
-                    <i className={classNames("fa-solid", "fa-play")}></i>
+                    <FontAwesomeIcon icon={faPlay} />
                     <span>{isTemplate ? t("playContent") : t("playContentShort")}</span>
                   </Link>
                   <button onClick={onClickPrimaryBtn}>
-                    <i className={classNames("fa-solid", "fa-arrow-up-from-bracket")}></i>
+                    <FontAwesomeIcon icon={faArrowUpFromBracket} />
                     <span>{isTemplate ? t("useTemplate") : t("shareContent")}</span>
                   </button>
                 </>

@@ -3,6 +3,8 @@
 import { getImageUrl } from "@/_data"
 import { noImageUrl } from "@/_data/post"
 import { useNewPostStore } from "@/_store/newPost"
+import { faX } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import React, { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -77,7 +79,7 @@ function Candidate({
     >
       <div className={classNames("border")} />
       <button className={classNames(style["delete-candidate"])}>
-        <i className={classNames("fa-solid", "fa-x", style["delete-icon"])} />
+        <FontAwesomeIcon className={classNames(style["delete-icon"])} icon={faX} />
       </button>
 
       <div className={classNames("inner")}>

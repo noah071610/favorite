@@ -8,6 +8,8 @@ import { setParticipate } from "@/_hooks/useSetParticipate"
 import { ContestCandidateType } from "@/_types/post/contest"
 import { TournamentCandidateOnGameType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
 import { shuffleArray } from "@/_utils/math"
+import { faRocket } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import { produce } from "immer"
 import { cloneDeep } from "lodash"
@@ -182,7 +184,7 @@ export default function SelectPart({
   ) : (
     <div className={cx(style["next-round"])}>
       <div className={cx(style.inner)}>
-        <i className={cx("fa-solid", "fa-rocket")} />
+        <FontAwesomeIcon icon={faRocket} />
         <h1>
           {curRound === 2 && t("finals")}
           {curRound === 4 && t("semiFinals")}

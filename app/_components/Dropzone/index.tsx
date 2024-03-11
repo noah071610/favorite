@@ -7,6 +7,8 @@ import TextareaAutosize from "react-textarea-autosize"
 
 import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
+import { faClose, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
@@ -99,7 +101,7 @@ export default function Dropzone({ index }: { index: number }) {
         {candidate.imageSrc ? (
           <div className={cx(style.thumbnail)}>
             <button onClick={onClickDeleteImage} className={cx(style.close)}>
-              <i className={cx("fa-solid", "fa-close")}></i>
+              <FontAwesomeIcon icon={faClose} />
             </button>
             <div
               style={{
@@ -123,7 +125,7 @@ export default function Dropzone({ index }: { index: number }) {
             {...getRootProps()}
           >
             <input {...getInputProps()} />
-            <i className={cx("fa-solid", "fa-plus", { [style.active]: isDragActive })} />
+            <FontAwesomeIcon className={cx({ [style.active]: isDragActive })} icon={faPlus} />
           </div>
         )}
         <div className={cx("description")}>

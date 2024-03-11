@@ -45,7 +45,7 @@
           border-color: var(--pink);
           opacity: 0.3;
         }
-        i {
+        svg {
           color: var(--pink-hard);
         }
       }
@@ -56,12 +56,12 @@
         border-color: var(--pink);
         opacity: 0.3;
       }
-      i {
+      svg {
         color: var(--pink-hard);
       }
     }
 
-    i {
+    svg {
       color: var(--gray-hard);
       font-size: 40px;
     }
@@ -86,7 +86,7 @@
       border-radius: 10px;
       margin-bottom: 10px;
       @include flex();
-      i {
+      svg {
         font-size: 25px;
         color: var(--gray-hard);
       }
@@ -103,7 +103,7 @@
       .preview-icon {
         border-color: var(--pink-hard);
       }
-      i,
+      svg,
       span {
         color: var(--pink-hard);
       }

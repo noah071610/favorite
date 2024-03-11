@@ -1,3 +1,6 @@
+import { faChartSimple, faList, faTrophy } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 export const contentTypesArr = [
   {
     value: "polling",
@@ -5,7 +8,7 @@ export const contentTypesArr = [
     label: "polling",
     color: "rgba(255, 138, 138, 0.8)",
     icon: (style: any = {}) => {
-      return <i className={"fa-solid fa-chart-simple " + style["type-icon"]} />
+      return <FontAwesomeIcon className={style["type-icon"]} icon={faChartSimple} />
     },
   },
   {
@@ -23,7 +26,7 @@ export const contentTypesArr = [
     label: "tournament",
     color: "rgba(217, 171, 255, 0.875)",
     icon: (style: any = {}) => {
-      return <i className={"fa-solid fa-trophy " + style["type-icon"]} />
+      return <FontAwesomeIcon className={style["type-icon"]} icon={faTrophy} />
     },
   },
 ]
@@ -35,7 +38,7 @@ export const typeSelectors = [
     label: "all",
     icon: (style: any = {}) => (
       <>
-        <i className={"fa-solid fa-list " + style["type-icon"]} />
+        <FontAwesomeIcon className={style["type-icon"]} icon={faList} />
       </>
     ),
   },

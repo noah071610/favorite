@@ -4,6 +4,8 @@ import { useMainStore } from "@/_store/main"
 import { ContestPostType } from "@/_types/post/contest"
 import { PollingPostType } from "@/_types/post/polling"
 import { TournamentPostType } from "@/_types/post/tournament"
+import { faClose } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
 import style from "./style.module.scss"
@@ -29,7 +31,7 @@ export default function Preview({
     <div className={cx(style.preview, { [style.visible]: setIsOnPreview })}>
       <div className={cx(style["preview-back"])}>
         <button onClick={onClickClosePreview}>
-          <i className={cx("fa-solid", "fa-close")}></i>
+          <FontAwesomeIcon icon={faClose} />
         </button>
       </div>
       {previewPost.type === "polling" && <PollingPost initialPost={previewPost as PollingPostType} />}

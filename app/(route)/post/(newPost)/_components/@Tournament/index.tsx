@@ -16,6 +16,8 @@ import { TournamentCandidateType } from "@/_types/post/tournament"
 
 import NewPostLayout from "@/_components/NewPostLayout"
 import { uploadImage } from "@/_queries/newPost"
+import { faClose, faDownload, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useDropzone } from "react-dropzone"
 import Dropzone from "../../../../../_components/Dropzone"
 
@@ -134,7 +136,7 @@ export default function TournamentContent() {
                     className={cx(style.image)}
                   ></div>
                   <div onClick={() => deleteCandidateList(index)} className={cx(style.delete)}>
-                    <i className={cx("fa-solid", "fa-close")}></i>
+                    <FontAwesomeIcon icon={faClose} />
                   </div>
                 </button>
               </li>
@@ -144,7 +146,7 @@ export default function TournamentContent() {
                 <input {...getInputProps()} />
                 <button className={cx(style.inner)}>
                   <div className={cx(style.icon)}>
-                    <i className={cx("fa-solid", "fa-plus")}></i>
+                    <FontAwesomeIcon icon={faPlus} />
                   </div>
                 </button>
               </li>
@@ -152,7 +154,7 @@ export default function TournamentContent() {
               <div {...getRootProps()} className={cx(style["no-list"])}>
                 <input {...getInputProps()} />
                 <div className={cx(style["no-list-inner"])}>
-                  <i className={cx("fa-solid", "fa-download")}></i>
+                  <FontAwesomeIcon icon={faDownload} />
                   <span>{t("addMultiplePictures")}</span>
                 </div>
               </div>

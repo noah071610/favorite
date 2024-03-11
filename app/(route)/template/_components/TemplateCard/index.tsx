@@ -5,6 +5,8 @@ import PostCard from "@/_components/PostCard"
 import { useMainStore } from "@/_store/main"
 import { PollingCandidateType } from "@/_types/post/polling"
 import { TemplatePostCardType } from "@/_types/post/post"
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -38,7 +40,7 @@ export default function TemplateCard({
         <div onClick={onClickOpenCandidateList} className={cx(style.title)}>
           <h2>{t("candidatePreview")}</h2>
           <button className={cx({ [style.open]: openCandidateList })}>
-            <i className="fa-solid fa-chevron-up"></i>
+            <FontAwesomeIcon icon={faChevronUp} />
           </button>
         </div>
         <div className={cx(style["candidates-inner"], { [style.open]: openCandidateList })}>

@@ -2,6 +2,8 @@
 
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { TournamentCandidateChartType } from "@/_types/post/tournament"
+import { faHandBackFist, faStar, faTrophy } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import CountUp from "react-countup"
 import { useTranslation } from "react-i18next"
@@ -16,9 +18,9 @@ const dataArr = [
 ] as const
 
 const uniqueDataArr = [
-  { label: "info.ratingRank", value: "ratingRank", icon: ["fa-solid", "fa-star"] },
-  { label: "info.pickRank", value: "pickRank", icon: ["fa-solid", "fa-trophy"] },
-  { label: "info.winRank", value: "winRank", icon: ["fa-solid", "fa-hand-back-fist"] },
+  { label: "info.ratingRank", value: "ratingRank", icon: faStar },
+  { label: "info.pickRank", value: "pickRank", icon: faTrophy },
+  { label: "info.winRank", value: "winRank", icon: faHandBackFist },
 ] as const
 
 const delay = 130
@@ -74,7 +76,7 @@ export default function Info({
           >
             <div className={cx(style["info-label"])}>
               <div className={cx(style.icon)}>
-                <i className={cx(icon[0], icon[1])}></i>
+                <FontAwesomeIcon icon={icon} />
               </div>
               <label>{t(label)}</label>
             </div>

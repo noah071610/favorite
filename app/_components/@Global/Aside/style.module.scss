@@ -64,7 +64,7 @@
       background-color: var(--gray-soft);
       position: inherit;
       z-index: 10;
-      i,
+      svg,
       .type-icon-contest {
         font-size: 11px;
         color: var(--black-soft);
@@ -82,7 +82,7 @@
       &:hover {
         background-color: rgba(255, 154, 154, 0.2);
         .label,
-        i,
+        svg,
         .type-icon-contest {
           color: var(--pink-hard);
         }
@@ -98,7 +98,7 @@
     &.active {
       background-color: rgba(255, 154, 154, 0.2);
       .label,
-      i,
+      svg,
       .type-icon-contest {
         color: var(--pink-hard);
       }

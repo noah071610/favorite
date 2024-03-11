@@ -69,13 +69,7 @@ export default function Init() {
   return (
     <>
       <button className={style["dark-mode-toggle"]}>
-        <DarkModeSwitch
-          sunColor="#FFC9A8"
-          moonColor="#C0B3C9"
-          checked={isDarkMode}
-          onChange={toggleDarkMode}
-          size={120}
-        />
+        <DarkModeSwitch sunColor="#FFC9A8" moonColor="#C0B3C9" checked={isDarkMode} onChange={toggleDarkMode} />
       </button>
     </>
   )
