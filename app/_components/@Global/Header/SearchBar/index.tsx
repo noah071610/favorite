@@ -1,4 +1,4 @@
-import { getSearchPosts } from "@/_queries/post"
+import { getSearchPosts } from "@/_queries/posts"
 import { useMainStore } from "@/_store/main"
 import { usePostStore } from "@/_store/post"
 import classNames from "classNames"

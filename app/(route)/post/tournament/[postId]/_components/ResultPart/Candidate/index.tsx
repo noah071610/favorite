@@ -3,7 +3,7 @@
 import LoadingBar from "@/_components/@Global/Loading/LoadingBar"
 import { getImageUrl } from "@/_data"
 import { useProgressiveImage } from "@/_hooks/useProgressiveImage"
-import { TournamentCandidateChartType } from "@/_types/post/tournament"
+import { TournamentCandidateChartType } from "@/_types/post"
 import classNames from "classNames"
 import { useEffect, useRef, useState } from "react"
 import Info from "./Info"

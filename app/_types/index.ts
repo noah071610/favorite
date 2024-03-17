@@ -1,5 +1,5 @@
 import { errorMessage } from "@/_data/message"
-import { PostCardType } from "./post/post"
+import { PostCardType } from "./post"
 
 export type ModalStatus =
   | "none"
@@ -16,6 +16,7 @@ export type ModalStatus =
   | "loadTemplate"
   | "mobileSelectCandidate"
   | "deletePost"
+  | "createPost"
 
 export interface PostCardListType {
   pageParams: number[]

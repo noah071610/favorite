@@ -1,11 +1,13 @@
 import { API } from "@/_data"
-import { PostCardType } from "@/_types/post/post"
+import { NewPostStates } from "@/_store/newPost"
+import { PostType } from "@/_types/post"
 import { randomNum } from "@/_utils/math"
-import { produce } from "immer"
+import { Cookies } from "react-cookie"
 
-export async function uploadImage(file: FormData, dev?: number) {
+const cookies = new Cookies()
+
+export async function uploadImage(file: FormData) {
   if (process.env.NODE_ENV !== "production") {
-    dev = dev ?? 0
     return {
       msg: "ok",
       imageSrc: `https://picsum.photos/id/${randomNum(100, 500)}/500/300`,
@@ -20,28 +22,42 @@ export async function uploadImage(file: FormData, dev?: number) {
   }
 }
 
-export async function posting(newPost: { [key: string]: any }) {
+export async function posting(newPost: NewPostStates) {
   const response = await API.post(`/post`, newPost)
   return { msg: "ok", data: response.data }
 }
 
-export async function editPost(newPost: { [key: string]: any }) {
-  const response = await API.put(`/post`, newPost)
-  return { msg: "ok", data: response.data }
+export async function copyPost(newPost: PostType) {
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+  if (cookie) {
+    const response = await API.post(`/post/copy`, newPost)
+    return response.data
+  }
 }
 
-export const onMutatePosting = async (queryClient: any, post: PostCardType) => {
-  await queryClient.cancelQueries({ queryKey: ["homePosts"] })
+export async function savePost(saveData: NewPostStates) {
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+  if (cookie) {
+    const response = await API.post(`/post/save`, saveData)
 
-  await queryClient.setQueryData(["homePosts"], (oldData: any) =>
-    produce(oldData, (draft: any) => {
-      draft.pages[0].push(post)
-      return {
-        pageParams: oldData.pageParams,
-        pages: draft.pages,
-      }
-    })
-  )
+    return { msg: "ok", data: response.data }
+  }
+}
+
+export async function getSavePost(postId: string) {
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+  if (cookie) {
+    const response = await API.get(`/post/save?postId=${postId}`)
+    return response.data
+  }
+}
+
+export async function initNewPost() {
+  const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
+  if (cookie) {
+    const response = await API.post(`/post/init`)
+    return response.data
+  }
 }
 
 export async function deletePost(postId: string) {

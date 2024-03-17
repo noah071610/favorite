@@ -151,12 +151,20 @@
       "layout": "Layout",
       "none": "No Thumb"
     },
+    "options": {
+      "default": "Public",
+      "editing": "Private",
+      "secret": "Share Only"
+    },
+    "optionsTitle": "Visibility",
     "changeThumb": "Change Thumbnail",
     "moreThanTwoThumb": "At least 2 candidates needed",
     "secretContent": "Private content",
     "preview": "Preview",
     "posting": "Post now",
-    "editing": "Edit"
+    "editing": "Edit",
+    "deletePost": "Delete",
+    "createNewPost": "Create New Content"
   },
   "share": {
     "twitter": "Share on Twitter",
@@ -172,6 +180,7 @@
     "newPostLoad": "You have a saved content <br/>Is that okay to load?",
     "load": "Load Data",
     "makeNewPost": "Create New",
+    "createPost": "New post created!<br/> Would you like to view the post?",
     "loadTemplate": "Loading a template will delete all saved data. Is that okay?",
     "deletePost": "Deleting the content is irreversible. <br/> Are you sure?"
   }

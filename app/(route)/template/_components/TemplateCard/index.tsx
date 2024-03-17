@@ -3,8 +3,7 @@
 import Candidate from "@/_components/Candidate"
 import PostCard from "@/_components/PostCard"
 import { useMainStore } from "@/_store/main"
-import { PollingCandidateType } from "@/_types/post/polling"
-import { TemplatePostCardType } from "@/_types/post/post"
+import { PostType } from "@/_types/post"
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
@@ -17,8 +16,8 @@ export default function TemplateCard({
   post,
   setTargetTemplate,
 }: {
-  post: TemplatePostCardType
-  setTargetTemplate: (post: TemplatePostCardType | null) => void
+  post: PostType
+  setTargetTemplate: (post: PostType | null) => void
 }) {
   const { t } = useTranslation(["content"])
   const [openCandidateList, setOpenCandidateList] = useState(false)
@@ -47,7 +46,7 @@ export default function TemplateCard({
           {post.content.candidates.map((v, i) => (
             <Candidate
               key={`template_list_${post.postId}_${v.listId}`}
-              candidate={v as PollingCandidateType}
+              candidate={v}
               onClickCandidate={() => {}}
               index={i}
               isResultPage={false}

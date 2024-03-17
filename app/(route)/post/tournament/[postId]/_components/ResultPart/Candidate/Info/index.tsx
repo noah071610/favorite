@@ -1,7 +1,7 @@
 "use client"
 
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { TournamentCandidateChartType } from "@/_types/post/tournament"
+import { TournamentCandidateChartType } from "@/_types/post"
 import { faHandBackFist, faStar, faTrophy } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"

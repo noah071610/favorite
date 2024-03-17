@@ -12,7 +12,7 @@ import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
 import { useMainStore } from "@/_store/main"
-import { PollingCandidateType, PollingPostType } from "@/_types/post/polling"
+import { CandidateType, PostType } from "@/_types/post"
 import { faChartSimple, faComment } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
@@ -25,10 +25,10 @@ import SelectPart from "./SelectPart"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
+const PollingPost = ({ initialPost }: { initialPost: PostType }) => {
   const { t } = useTranslation(["content"])
   const { t: message } = useTranslation(["messages"])
-  const { data: post } = useQuery<PollingPostType>({
+  const { data: post } = useQuery<PostType>({
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
   })
@@ -36,7 +36,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
   const [onSelectModal, setOnSelectModal] = useState(false)
 
   const [status, setStatus] = useState<"init" | "result">("init")
-  const [selectedCandidate, setSelectedCandidate] = useState<PollingCandidateType | null>(null)
+  const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null)
 
   const isPreview = post.format === "preview"
   const isImagesLoaded = usePreloadImages(post.content.candidates.map(({ imageSrc }) => imageSrc))
@@ -63,7 +63,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
     return isResultPage ? [...target].sort((a, b) => b.pick - a.pick) : target
   }, [isResultPage, post])
 
-  const onClickCandidate = async (type: "submit" | "select", candidate?: PollingCandidateType) => {
+  const onClickCandidate = async (type: "submit" | "select", candidate?: CandidateType) => {
     if (!isResultPage) {
       if (type === "submit" && selectedCandidate) {
         const finishedPost = cloneDeep({
@@ -133,7 +133,7 @@ const PollingPost = ({ initialPost }: { initialPost: PollingPostType }) => {
 
                   <span>{t("analytic")}</span>
                 </div>
-                <ChartPart chartDescription={post.content.chartDescription} candidates={post.content.candidates} />
+                <ChartPart resultDescription={post.content.resultDescription} candidates={post.content.candidates} />
                 <div className={cx(style.title)}>
                   <div className={cx(style.icon)}>
                     <FontAwesomeIcon icon={faComment} />

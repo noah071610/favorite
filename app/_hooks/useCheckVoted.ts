@@ -1,6 +1,6 @@
 "use client"
 
-import { VoteIdType } from "@/_types/post/post"
+import { VoteIdType } from "@/_types/post"
 import { useEffect, useState } from "react"
 
 export const useCheckVoted = ({

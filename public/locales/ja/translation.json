@@ -151,12 +151,20 @@
       "layout": "レイアウト",
       "none": "サムネイルなし"
     },
+    "options": {
+      "default": "公開",
+      "editing": "非公開",
+      "secret": "共有のみ許可"
+    },
+    "optionsTitle": "公開範囲設定",
     "changeThumb": "サムネイル変更",
     "moreThanTwoThumb": "せめて2つ以上の候補必要",
     "secretContent": "非公開",
     "preview": "プレビュー",
     "posting": "投稿",
-    "editing": "編集"
+    "editing": "編集",
+    "deletePost": "削除",
+    "createNewPost": "新しいコンテンツ"
   },
   "share": {
     "twitter": "ツイッターで共有",
@@ -172,6 +180,7 @@
     "newPostLoad": "セーブデータがあります。<br/>読み込みましょうか？",
     "load": "データを読み込む",
     "makeNewPost": "新しく作る",
+    "createPost": "ポストを作成しました！<br/> 確認しますか？",
     "loadTemplate": "テンプレートを呼び出すと、以前保存したエディターのデータは全て削除されます。よろしいですか？",
     "deletePost": "コンテンツを削除します。<br/>よろしいですか？"
   }

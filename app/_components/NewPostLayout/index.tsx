@@ -6,7 +6,7 @@ import { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 
 export default function NewPostLayout({ children }: { children: ReactNode }) {
-  const { newPost, setNewPost } = useNewPostStore()
+  const { title, description, setNewPost } = useNewPostStore()
   const { t } = useTranslation(["newPost"])
 
   const onChangeInput = (e: any, type: "title" | "description") => {
@@ -23,7 +23,7 @@ export default function NewPostLayout({ children }: { children: ReactNode }) {
           <input
             className={"title-input"}
             placeholder={t("enterTitle") + " " + t("required")}
-            value={newPost.title ?? ""}
+            value={title ?? ""}
             onChange={(e) => onChangeInput(e, "title")}
           />
         </section>
@@ -32,7 +32,7 @@ export default function NewPostLayout({ children }: { children: ReactNode }) {
           <input
             className={"description-input"}
             placeholder={t("enterDesc") + " " + t("optional")}
-            value={newPost.description ?? ""}
+            value={description ?? ""}
             onChange={(e) => onChangeInput(e, "description")}
           />
         </section>

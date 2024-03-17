@@ -2,8 +2,7 @@
 
 import CommentPart from "@/_components/CommentPart"
 import Share from "@/_components/Share"
-import { CommentType } from "@/_types/post/post"
-import { TournamentCandidateChartType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
+import { CandidateType, CommentType, PostType, TournamentCandidateChartType } from "@/_types/post"
 import { faChartSimple, faComment } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
@@ -17,7 +16,7 @@ const cx = classNames.bind(style)
 
 const itemsPerPage = 10
 
-const getTotals = (candidates: TournamentCandidateType[]) => {
+const getTotals = (candidates: CandidateType[]) => {
   return candidates.reduce(
     (acc, { win, lose, pick }) => {
       acc.win += win
@@ -55,12 +54,12 @@ export default function ResultPart({
   authorId,
   post,
 }: {
-  pickedCandidate: TournamentCandidateType
-  candidates: TournamentCandidateType[]
+  pickedCandidate: CandidateType
+  candidates: CandidateType[]
   comments: CommentType[]
   isPreview: boolean
   authorId: number
-  post: TournamentPostType
+  post: PostType
 }) {
   const { t } = useTranslation(["content"])
   const total = getTotals(_candidates)

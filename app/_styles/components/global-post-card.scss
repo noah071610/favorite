@@ -149,8 +149,31 @@
     .badge {
       margin-top: 12px;
       display: flex;
+      gap: 5px;
       &-main {
         @include badge-main;
+      }
+      &-format-main {
+        border-radius: 2px;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        font-size: 11px;
+        .label {
+          margin-left: 5px;
+        }
+        border: 1px solid var(--orange);
+        .label,
+        svg {
+          color: var(--orange-hover);
+        }
+        &.default {
+          border: 1px solid var(--green);
+          .label,
+          svg {
+            color: var(--green);
+          }
+        }
       }
       @include mobile {
         display: none;
@@ -177,7 +200,8 @@
     .mobile-badge {
       display: none;
       @include mobile {
-        display: block;
+        display: flex;
+        gap: 5px;
       }
     }
 
@@ -236,6 +260,7 @@
         border-radius: 6px;
         background-color: var(--gray-soft);
         @include flex();
+        min-width: 80px;
         svg,
         span {
           color: var(--black-soft);
@@ -256,6 +281,7 @@
         @include mobile {
           padding: 10px 0;
           border-radius: 3px;
+          min-width: auto;
           svg,
           span {
             font-size: 12px;

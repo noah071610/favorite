@@ -61,6 +61,8 @@ export default function Init() {
       const { msg, user } = await refreshUser()
       if (user) {
         queryClient.setQueryData(queryKey.user.login, { msg, user })
+      } else {
+        queryClient.setQueryData(queryKey.user.login, { msg: "no", user: null })
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

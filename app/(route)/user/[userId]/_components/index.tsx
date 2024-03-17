@@ -2,26 +2,25 @@
 
 import Confirm from "@/_components/Confirm"
 import PostCard from "@/_components/PostCard"
-import { API, queryKey } from "@/_data"
-import { chartBackgroundColors } from "@/_data/chart"
+import { queryKey } from "@/_data"
 import { toastError, toastSuccess } from "@/_data/toast"
-import { deletePost } from "@/_queries/newPost"
-import { getUserPosts } from "@/_queries/post"
+import { deletePost, initNewPost } from "@/_queries/newPost"
+import { getUserPosts } from "@/_queries/posts"
 import { useMainStore } from "@/_store/main"
-import { PostCardType, PostContentType } from "@/_types/post/post"
+import { PostCardType } from "@/_types/post"
 import { UserQueryType } from "@/_types/user"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
+import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import UserPageError from "../error"
 import UserPageLoading from "../loading"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function UserPageMain() {
-  const { t } = useTranslation(["modal", "messages"])
+  const { t } = useTranslation(["modal", "messages", "newPost"])
   const queryClient = useQueryClient()
   const router = useRouter()
   const [targetPost, setTargetPost] = useState<null | PostCardType>(null)
@@ -29,52 +28,14 @@ export default function UserPageMain() {
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user.login,
   })
-
-  console.log(API.defaults.headers.common["Authorization"])
+  const [loadingNewPostCreate, setLoadingNewPostCreate] = useState(false)
 
   const user = userData?.user
-  const { mutate } = useMutation({
-    mutationKey: queryKey.new.create,
-    mutationFn: (targetPost: any) => deletePost(targetPost.postId),
-    onMutate: async (targetPost) => {
-      const targetContentsKey = queryKey.home[targetPost.type as PostContentType]
-      await queryClient.cancelQueries({ queryKey: queryKey.home.all })
-      await queryClient.cancelQueries({ queryKey: targetContentsKey })
-      await queryClient.cancelQueries({ queryKey: queryKey.user.posts })
-      ;[queryKey.home.all, targetContentsKey].forEach((key) => {
-        queryClient.setQueryData(key, (old: any) => {
-          if (!old) return undefined
-          const flat = [...old.pages.flat()].filter((v) => v.postId !== targetPost.postId)
-
-          return {
-            ...old,
-            pages: flat.reduce((acc: PostCardType[][], curr: PostCardType, index: number) => {
-              if (index % 12 === 0) {
-                acc.push([curr])
-              } else {
-                acc[acc.length - 1].push(curr)
-              }
-              return acc
-            }, []),
-          }
-        })
-      })
-
-      queryClient.setQueryData(queryKey.user.posts, (old: PostCardType[]) => {
-        if (!old) return undefined
-        const filter = old.filter((v) => v.postId !== targetPost.postId)
-        return filter
-      })
-    },
-    onSuccess: async () => {
-      toastSuccess(t("success.delete", { ns: "messages" }))
-    },
-  })
 
   const { modalStatus, setModal } = useMainStore()
 
   const { data: userPosts } = useQuery<PostCardType[]>({
-    queryKey: queryKey.user.posts,
+    queryKey: queryKey.posts.user,
     queryFn: () => getUserPosts(),
     enabled: !!(user?.userId === parseInt(queryUserId as string)),
   })
@@ -92,44 +53,76 @@ export default function UserPageMain() {
     }
   }
 
-  const onClickConfirm = (isOk: boolean) => {
-    if (isOk) {
-      mutate(targetPost)
+  const onClickConfirmDelete = async (isOk: boolean) => {
+    if (isOk && targetPost) {
+      await deletePost(targetPost.postId)
+      toastSuccess(t("success.delete", { ns: "messages" }))
+      ;(
+        ["all", targetPost.type, "popular", "user", "template"] as Array<
+          "all" | "tournament" | "polling" | "contest" | "popular" | "template" | "user"
+        >
+      ).forEach(async (v) => await queryClient.invalidateQueries({ queryKey: queryKey.posts[v] }))
     }
     setTargetPost(null)
     setModal("none")
   }
 
+  const onClickCreateNewPost = async () => {
+    if (user?.userId) {
+      setLoadingNewPostCreate(true)
+      await initNewPost()
+        .then(async (postId) => {
+          await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
+          router.push(`/post/edit/${postId}`)
+        })
+        .catch(() => {
+          setLoadingNewPostCreate(false)
+        })
+    }
+  }
+
+  useEffect(() => {
+    if (userData?.msg === "no") {
+      router.push("/")
+    }
+  }, [userData])
+
   return (
     <>
-      {userData ? (
-        !user ? (
-          <UserPageError />
-        ) : (
-          <div className={cx(style["user-page"])}>
-            <div className={cx(style.inner)}>
-              <div className={style["profile"]}>
-                <div className={style["user-icon"]}>
-                  <div style={{ backgroundColor: chartBackgroundColors[1] }} className={style["icon"]}>
-                    <span>{user.userName.slice(0, 1)}</span>
-                  </div>
-                </div>
-                <div className={style["user-info"]}>
-                  <span>{user.userName}</span>
+      {user && !loadingNewPostCreate ? (
+        <div className={cx(style["user-page"])}>
+          <div className={cx(style.inner)}>
+            <div className={style["profile"]}>
+              <div className={style["user-icon"]}>
+                <div style={{ backgroundColor: user.color }} className={style["icon"]}>
+                  <span>{user.userName.slice(0, 1)}</span>
                 </div>
               </div>
-              <div className={cx(style.grid)}>
-                {userPosts?.map((v: PostCardType) => (
-                  <PostCard onClickUserPageBtn={onClickUserPageBtn} isUserPage={true} key={v.postId} postCard={v} />
-                ))}
+              <div className={style["user-info"]}>
+                <span>{user.userName}</span>
               </div>
             </div>
+            <div className={cx(style.grid)}>
+              <button onClick={onClickCreateNewPost} className={cx(style["create-new"])}>
+                <div className={cx(style["create-new-inner"])}>
+                  <div className={cx(style["create-new-content"])}>
+                    <div className={cx(style["image-wrapper"])}>
+                      <Image width={35} height={35} alt="writing_emoji" src="/images/emoji/writing.png" />
+                    </div>
+                    <span>{t("createNewPost", { ns: "newPost" })}</span>
+                  </div>
+                </div>
+              </button>
+              {userPosts?.map((v) => (
+                <PostCard key={v.postId} onClickUserPageBtn={onClickUserPageBtn} isUserPage={true} postCard={v} />
+              ))}
+            </div>
           </div>
-        )
+        </div>
       ) : (
         <UserPageLoading />
       )}
-      {modalStatus === "deletePost" && <Confirm onClickConfirm={onClickConfirm} title={t("deletePost")} />}
+      {modalStatus === "deletePost" && <Confirm onClickConfirm={onClickConfirmDelete} title={t("deletePost")} />}
     </>
   )
 }

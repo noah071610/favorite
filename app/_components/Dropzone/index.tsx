@@ -18,7 +18,10 @@ const lineMax = 5
 
 export default function Dropzone({ index }: { index: number }) {
   const { t, i18n } = useTranslation(["content"])
-  const { setCandidate, candidates } = useNewPostStore()
+  const {
+    setCandidate,
+    content: { candidates },
+  } = useNewPostStore()
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const [originalTitle, setOriginalTitle] = useState("")
   const candidate = candidates[index]

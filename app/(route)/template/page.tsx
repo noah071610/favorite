@@ -3,13 +3,13 @@
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 import Confirm from "@/_components/Confirm"
 import { queryKey } from "@/_data"
-import { getTemplatePosts } from "@/_queries/post"
+import { copyPost } from "@/_queries/newPost"
+import { getTemplatePosts } from "@/_queries/posts"
 import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
-import { TemplatePostCardType, ThumbnailType } from "@/_types/post/post"
+import { PostType } from "@/_types/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
-import { nanoid } from "nanoid"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -20,60 +20,22 @@ const cx = classNames.bind(style)
 
 export default function TemplatePage() {
   const { t } = useTranslation(["title", "modal"])
-  const [targetTemplate, setTargetTemplate] = useState<TemplatePostCardType | null>(null)
+  const [targetTemplate, setTargetTemplate] = useState<PostType | null>(null)
   const router = useRouter()
   const { setModal } = useMainStore()
   const { loadNewPost } = useNewPostStore()
 
   const { modalStatus } = useMainStore()
-  const { data: templatePosts } = useQuery<TemplatePostCardType[]>({
-    queryKey: queryKey.home["template"],
+  const { data: templatePosts } = useQuery<PostType[]>({
+    queryKey: queryKey.posts["template"],
     queryFn: getTemplatePosts,
   })
 
-  const onClickConfirm = (isOk: boolean) => {
+  const onClickConfirm = async (isOk: boolean) => {
     if (isOk && targetTemplate) {
-      const {
-        content: { candidates, ...newContent },
-        ...newPost
-      } = targetTemplate
-      const { popular, lastPlayedAt, createdAt, ...restNewPost } = newPost
-
-      localStorage.removeItem("favorite_save_data")
-      const thumbnailArr = targetTemplate.thumbnail.split("${}$")
-      const thumbnailType: ThumbnailType =
-        thumbnailArr.length > 1 ? "layout" : targetTemplate.thumbnail.trim() ? "custom" : "none"
-      loadNewPost({
-        newPost: {
-          ...restNewPost,
-          postId: nanoid(10),
-          count: 0,
-          format: "default",
-        },
-        candidates:
-          newPost.type === "tournament"
-            ? candidates.map((v) => ({
-                ...v,
-                pick: 0,
-                win: 0,
-                lose: 0,
-              }))
-            : candidates.map((v) => ({
-                ...v,
-                pick: 0,
-              })),
-        content: newContent,
-        selectedCandidateIndex: -1,
-        newPostStatus: "edit",
-        thumbnail: {
-          imageSrc: thumbnailType === "custom" ? targetTemplate.thumbnail : "",
-          isPossibleLayout: false,
-          layout: thumbnailType === "layout" ? thumbnailArr : [],
-          slice: thumbnailType === "layout" ? thumbnailArr.length : candidates.length > 5 ? 5 : candidates.length,
-          type: thumbnailType,
-        },
+      await copyPost(targetTemplate).then((postId: string) => {
+        router.push(`/post/edit/${postId}`)
       })
-      router.push("/post/new?from=template")
     }
     setModal("none")
   }
@@ -91,7 +53,7 @@ export default function TemplatePage() {
                 </h1>
               </div>
               <div className={cx(style.grid)}>
-                {templatePosts.map((post: TemplatePostCardType) => (
+                {templatePosts.map((post: PostType) => (
                   <TemplateCard post={post} setTargetTemplate={setTargetTemplate} key={`template_${post.postId}`} />
                 ))}
               </div>

@@ -13,6 +13,7 @@
     @include flex();
     span {
       font-size: 15px;
+      text-align: center;
     }
     @include mobile {
       span {
@@ -45,13 +46,5 @@
   }
   &.rending {
     transform: translateX(calc((var(--nav-width)) * 2));
-  }
-  &.editPage {
-    &.edit {
-      transform: translateX(0);
-    }
-    &.rending {
-      transform: translateX(calc(var(--nav-width)));
-    }
   }
 }

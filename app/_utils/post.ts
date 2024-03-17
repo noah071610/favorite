@@ -1,12 +1,9 @@
 // import { PostCardDataType, PostDataType } from "@/_types/post"
 
-import { contestCandidateKeys } from "@/_types/post/contest"
-import { pollingCandidateKeys } from "@/_types/post/polling"
-import { PostContentType, ThumbnailSettingType } from "@/_types/post/post"
-import { tournamentCandidateKeys } from "@/_types/post/tournament"
-import { UserType } from "@/_types/user"
+import { savePost } from "@/_queries/newPost"
+import { NewPostStates } from "@/_store/newPost"
+import { candidateKeys } from "@/_types/post"
 import { cloneDeep } from "lodash"
-import { nanoid } from "nanoid"
 
 // export const abstractPostsInfo = (posts: PostCardDataType[]) => posts.map((v) => ({ ...v, info: JSON.parse(v.info) }))
 
@@ -15,13 +12,8 @@ import { nanoid } from "nanoid"
 //   content: JSON.parse(post.content),
 // })
 
-const keys = {
-  polling: pollingCandidateKeys,
-  contest: contestCandidateKeys,
-  tournament: tournamentCandidateKeys,
-}
-
-export function checkNewPost(newPost: any, content: any, candidates: { [key: string]: any }[], thumbnail: any) {
+export function checkNewPost(newPost: NewPostStates) {
+  const candidates = newPost.content.candidates
   if (!newPost) return "unknown"
   if (!newPost.type) return "unknown"
   if (newPost.title.trim().length < 3) return "postTitle"
@@ -32,9 +24,7 @@ export function checkNewPost(newPost: any, content: any, candidates: { [key: str
   if (candidates.length < 2) return "candidateLength"
   if (!candidates.every(({ title }) => !!title.trim())) return "noCandidateTitle"
 
-  if (candidates.length < 2) return "candidateLength"
-  if (!candidates.every(({ title }) => !!title.trim())) return "noCandidateTitle"
-
+  const content = newPost.content
   if (
     newPost.type === "contest" ||
     newPost.type === "tournament" ||
@@ -43,20 +33,21 @@ export function checkNewPost(newPost: any, content: any, candidates: { [key: str
     if (!candidates.every(({ imageSrc }) => !!imageSrc.trim())) return "noCandidateImage"
   }
 
-  const type = newPost.type as PostContentType
+  const type = newPost.type
   for (let i = 0; i < candidates.length; i++) {
     const target = candidates[i]
 
-    if (Object.keys(target).length !== keys[type].length) {
+    if (Object.keys(target).length !== candidateKeys.length) {
       return "candidateError"
     }
-    for (const key of keys[type]) {
+    for (const key of candidateKeys) {
       if (typeof candidates[i][key] === "undefined") {
         return "candidateError"
       }
     }
   }
 
+  const thumbnail = newPost.content.thumbnail
   if (thumbnail.type === "layout" && thumbnail.layout.length < 2) {
     return "unknown"
   }
@@ -64,43 +55,15 @@ export function checkNewPost(newPost: any, content: any, candidates: { [key: str
   return null
 }
 
-export function generatePostData({
-  newPost,
-  content,
-  candidates,
-  thumbnail,
-  user,
-  isEditPost,
-}: {
-  newPost: any
-  content: any
-  candidates: { [key: string]: any }[]
-  thumbnail: ThumbnailSettingType
-  user: UserType
-  isEditPost?: boolean
-}) {
-  const thumbnailCreate =
-    thumbnail.type === "layout" ? thumbnail.layout.join("${}$") : thumbnail.type === "none" ? "" : thumbnail.imageSrc
-  if (isEditPost) {
-    return cloneDeep({
-      ...newPost,
-      thumbnail: thumbnailCreate,
-      content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
-    })
-  } else {
-    return cloneDeep({
-      ...newPost,
-      thumbnail: thumbnailCreate,
-      postId: nanoid(10),
-      count: 0,
-      userId: user.userId,
-      content: { ...content, candidates: candidates.map((v, i) => ({ ...v, number: i + 1 })) },
-    })
-  }
+export function generatePostData({ newPost }: { newPost: NewPostStates }): NewPostStates {
+  return cloneDeep({
+    ...newPost,
+    content: { ...newPost.content, candidates: newPost.content.candidates.map((v, i) => ({ ...v, number: i + 1 })) },
+  })
 }
 
-export const handleBeforeUnload = (data: any, event?: any) => {
-  localStorage.setItem("favorite_save_data", JSON.stringify(data))
+export const handleBeforeUnload = async (data: any, event?: any) => {
+  await savePost(data)
   if (event) {
     event.returnValue = "Are you sure you want to leave?"
   }

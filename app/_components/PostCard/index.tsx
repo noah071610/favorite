@@ -3,9 +3,9 @@
 import { getImageUrl } from "@/_data"
 import { contentTypesArr, getThumbnail } from "@/_data/post"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
-import { PostCardType } from "@/_types/post/post"
+import { PostCardType } from "@/_types/post"
 import { formatNumber } from "@/_utils/math"
-import { faArrowUpFromBracket, faPlay } from "@fortawesome/free-solid-svg-icons"
+import { faArrowUpFromBracket, faEye, faEyeSlash, faPlay } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
@@ -34,10 +34,11 @@ function PostCard({
   onClickUserPageBtn?: (type: "delete" | "edit", target: PostCardType) => void
   loadTemplate?: (postCard: PostCardType) => void
 }) {
-  const { t } = useTranslation(["content", "messages"])
+  const { t } = useTranslation(["content", "messages", "newPost"])
   const router = useRouter()
-  const { description, type, postId, thumbnail, title, count } = postCard
+  const { description, type, postId, thumbnail, title, count, format } = postCard
   const [onShareModal, setOnShareModal] = useState(false)
+
   const thumbnailArr = getThumbnail(thumbnail)
   const isImagesLoaded = usePreloadImages(thumbnailArr)
 
@@ -54,17 +55,17 @@ function PostCard({
   }
 
   const onClickPlay = () => {
-    if (isTemplate) {
-    } else {
-      router.push(`/post/${type}/${postId}`)
+    if (isUserPage) {
+      return router.push(`/post/edit/${postId}`)
     }
+    return router.push(`/post/${type}/${postId}`)
   }
 
   return (
     <article className={classNames("global-post-card")}>
       <div className={classNames("main", { template: isTemplate })}>
         <div onClick={onClickPlay} className={classNames("inner", { notTemplate: !isTemplate })}>
-          <div className={classNames(thumbnail, { isFull: !description.trim() })}>
+          <div className={classNames(thumbnail, { isFull: !description?.trim() })}>
             <div className={classNames("thumbnail")}>
               {!thumbnail ? (
                 <NoThumbnail type="post-card" />
@@ -89,7 +90,7 @@ function PostCard({
           </div>
 
           <div className={classNames("text")}>
-            <h1>{title}</h1>
+            <h1>{!!title ? title : "제목 없음"}</h1>
             <h2>{description}</h2>
           </div>
         </div>
@@ -103,6 +104,14 @@ function PostCard({
                   <span className={classNames("label")}>{t(`${typeData.label}`)}</span>
                 </span>
               </Link>
+              {isUserPage && (
+                <div className={classNames("badge-format-main", format)}>
+                  <span>
+                    <FontAwesomeIcon icon={format === "default" ? faEye : faEyeSlash} />
+                    <span className={classNames("label")}>{t(`options.${format}`, { ns: "newPost" })}</span>
+                  </span>
+                </div>
+              )}
             </div>
           )}
           <div className={classNames("info-main")}>
@@ -126,6 +135,14 @@ function PostCard({
                           <span className={classNames("label")}>{t(typeData.label)}</span>
                         </span>
                       </Link>
+                      {isUserPage && (
+                        <div className={classNames("badge-format-main", format)}>
+                          <span>
+                            <FontAwesomeIcon icon={format === "default" ? faEye : faEyeSlash} />
+                            <span className={classNames("label")}>{t(`options.${format}`, { ns: "newPost" })}</span>
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
                   <div>
@@ -147,10 +164,10 @@ function PostCard({
               {isUserPage ? (
                 <>
                   <button onClick={() => onClickUserPageBtn && onClickUserPageBtn("edit", postCard)}>
-                    <span style={{ marginLeft: "0" }}>{t("수정하기")}</span>
+                    <span style={{ marginLeft: "0" }}>{t("editing", { ns: "newPost" })}</span>
                   </button>
                   <button onClick={() => onClickUserPageBtn && onClickUserPageBtn("delete", postCard)}>
-                    <span style={{ marginLeft: "0" }}>{t("삭제하기")}</span>
+                    <span style={{ marginLeft: "0" }}>{t("deletePost", { ns: "newPost" })}</span>
                   </button>
                 </>
               ) : (

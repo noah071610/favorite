@@ -1,0 +1,123 @@
+@import "@/_styles/variables.scss";
+
+.rending {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  @include mobile {
+    padding: 0 10px;
+  }
+
+  &-section {
+    width: 400px;
+
+    &.thumbnail-section {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    &.options-section {
+      padding-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    @include mobile {
+      width: 100%;
+      padding-top: 20px;
+
+      h1 {
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.options-section {
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+  }
+  .option {
+    @include flex;
+    flex-direction: column;
+    @include border();
+    padding: 10px 12px;
+    border-radius: 8px;
+    gap: 6px;
+    span {
+      color: var(--black-soft);
+      font-size: 14px;
+    }
+    .circle {
+      width: 17px;
+      height: 17px;
+      border-radius: 100%;
+      background-color: var(--gray-soft);
+      @include flex;
+      transition: 300ms all;
+      &-inner {
+        border-radius: 100%;
+        width: 10px;
+        height: 10px;
+        transform: scale(0);
+        transition: 300ms all;
+      }
+    }
+    &.active {
+      border-color: var(--pink-hard);
+      span {
+        color: var(--pink-hard);
+      }
+      .circle-inner {
+        background-color: var(--pink-hard);
+        transform: scale(1);
+      }
+    }
+  }
+}
+
+.finish {
+  @include flex();
+  flex-direction: column;
+  gap: 20px;
+
+  @include mobile {
+    width: 100%;
+  }
+}
+
+.btn-wrapper {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  button {
+    width: 200px;
+    padding: 15px 20px;
+    background-color: var(--pink);
+    border-radius: 10px;
+    span {
+      color: var(--text-white);
+      font-size: 17px;
+      font-weight: 700;
+    }
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--pink-hard);
+      }
+    }
+
+    @include mobile {
+      width: 100%;
+      border-radius: 7px;
+    }
+  }
+}

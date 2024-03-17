@@ -1,18 +1,20 @@
 import { getImageUrl } from "@/_data"
-import { ContestCandidateType } from "@/_types/post/contest"
+import { CandidateType } from "@/_types/post"
 import { calculateVoteRatio } from "@/_utils/math"
 import classNames from "classNames"
 import CountUp from "react-countup"
+import { useTranslation } from "react-i18next"
 
 export default function ResultPart({
   candidates,
   direction,
   selected,
 }: {
-  candidates: ContestCandidateType[]
+  candidates: CandidateType[]
   direction: "left" | "right"
   selected: string | null
 }) {
+  const { t } = useTranslation(["content"])
   const candidate = candidates[direction === "left" ? 0 : 1]
   const ratio = calculateVoteRatio(candidates[0].pick, candidates[1].pick)[direction]
 
@@ -52,7 +54,7 @@ export default function ResultPart({
             <h1 className={classNames("title")}>{candidate?.title}</h1>
             <p className={classNames("count")}>
               <span>
-                <CountUp prefix="(" suffix="표)" duration={4} end={candidate.pick} />
+                <CountUp prefix="(" suffix={t("vote") + ")"} duration={4} end={candidate.pick} />
               </span>
               {" / "}
               <span>

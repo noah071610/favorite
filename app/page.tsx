@@ -12,8 +12,8 @@ import FavoriteLoading from "./_components/@Global/Loading/FavoriteLoading"
 import PostCard from "./_components/PostCard"
 import { queryKey } from "./_data"
 import { useIntersectionObserver } from "./_hooks/useIntersectionObserver"
-import { getPopularPosts, getPosts } from "./_queries/post"
-import { PostCardType, PostFindQuery } from "./_types/post/post"
+import { getPopularPosts, getPosts } from "./_queries/posts"
+import { PostCardType, PostFindQuery } from "./_types/post"
 import style from "./style.module.scss"
 
 const breakpoints = {
@@ -42,7 +42,7 @@ export default function HomePage() {
     fetchNextPage,
     isSuccess,
   } = useInfiniteQuery({
-    queryKey: queryKey.home[query ?? "all"],
+    queryKey: queryKey.posts[query ?? "all"],
     queryFn: ({ pageParam }) => getPosts({ pageParam, query: query ?? "all" }),
     initialPageParam: 0,
     getNextPageParam: () => {
@@ -50,7 +50,7 @@ export default function HomePage() {
     },
   })
   const { data: popularPosts } = useQuery<PostCardType[]>({
-    queryKey: queryKey.home["popular"],
+    queryKey: queryKey.posts["popular"],
     queryFn: getPopularPosts,
   })
 

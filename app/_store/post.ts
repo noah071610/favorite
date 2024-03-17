@@ -1,4 +1,4 @@
-import { PostCardType } from "@/_types/post/post"
+import { PostCardType } from "@/_types/post"
 import { create } from "zustand"
 
 interface States {

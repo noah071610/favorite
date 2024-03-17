@@ -23,27 +23,22 @@ export const getImageUrl = ({ isCenter, url }: { url: string; isCenter?: boolean
 }
 
 export const queryKey = {
-  home: {
-    all: ["home", "all"],
-    tournament: ["home", "tournament"],
-    polling: ["home", "polling"],
-    contest: ["home", "contest"],
-    popular: ["home", "popular"],
-    template: ["home", "template"],
+  posts: {
+    all: ["posts", "all"],
+    tournament: ["posts", "tournament"],
+    polling: ["posts", "polling"],
+    contest: ["posts", "contest"],
+    popular: ["posts", "popular"],
+    template: ["posts", "template"],
+    user: ["posts", "user"],
   },
-  new: {
-    create: ["new", "create"],
-    edit: ["new", "edit"],
-  },
-  comment: (postId: string) => ["comment", postId],
+  post: (postId: string) => ["post", postId],
+  comment: ["post", "comment"],
+  play: ["post", "play"],
   user: {
     login: ["user", "login"],
-    deletePost: ["user", "delete"],
-    posts: ["user", "posts"],
   },
-  play: ["play"],
-  post: (postId: string) => ["post", postId],
-} as const
+}
 
 export const shares = [
   {

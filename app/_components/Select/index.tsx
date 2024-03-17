@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react"
 import TinderCard from "react-tinder-card"
 
 import { getImageUrl } from "@/_data"
+import { TournamentCandidateType } from "@/_types/post"
 import { ContestCandidateType } from "@/_types/post/contest"
-import { TournamentCandidateType } from "@/_types/post/tournament"
 import classNames from "classNames"
 
 export default function Candidate({

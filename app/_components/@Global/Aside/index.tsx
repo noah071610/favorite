@@ -106,34 +106,52 @@ export default function Aside() {
           <div></div>
         </div>
         {asideSelectors.map((v) => {
-          return v.value === "login" ? (
-            user ? (
-              <Link
-                className={cx({ [style.active]: asPath.includes("/user/") })}
-                onClick={closeModal}
-                href={`/user/${user.userId}`}
-                key={"user"}
-              >
-                <div className={cx(style.icon)}>{v.children}</div>
-                <span className={cx(style.label)}>{t("dashboard")}</span>
-              </Link>
-            ) : (
-              <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
-                <div className={cx(style.icon)}>{v.children}</div>
-                <span className={cx(style.label)}>{t(v.label)}</span>
-              </button>
-            )
-          ) : (
-            <Link
-              className={cx({ [style.active]: asPath === v.link })}
-              onClick={closeModal}
-              href={v.link}
-              key={v.value}
-            >
-              <div className={cx(style.icon)}>{v.children}</div>
-              <span className={cx(style.label)}>{t(v.label)}</span>
-            </Link>
-          )
+          switch (true) {
+            case v.value === "login":
+              if (user) {
+                return (
+                  <Link
+                    className={cx({ [style.active]: asPath.includes("/user/") })}
+                    onClick={closeModal}
+                    href={`/user/${user.userId}`}
+                    key={"user"}
+                  >
+                    <div className={cx(style.icon)}>{v.children}</div>
+                    <span className={cx(style.label)}>{v.value === "login" ? t("dashboard") : t(v.label)}</span>
+                  </Link>
+                )
+              } else {
+                return (
+                  <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
+                    <div className={cx(style.icon)}>{v.children}</div>
+                    <span className={cx(style.label)}>{t(v.label)}</span>
+                  </button>
+                )
+              }
+            case v.value === "new":
+              if (user) {
+                return <div key={v.value}></div>
+              } else {
+                return (
+                  <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
+                    <div className={cx(style.icon)}>{v.children}</div>
+                    <span className={cx(style.label)}>{t(v.label)}</span>
+                  </button>
+                )
+              }
+            default:
+              return (
+                <Link
+                  className={cx({ [style.active]: asPath === v.link })}
+                  onClick={closeModal}
+                  href={v.link}
+                  key={v.value}
+                >
+                  <div className={cx(style.icon)}>{v.children}</div>
+                  <span className={cx(style.label)}>{t(v.label)}</span>
+                </Link>
+              )
+          }
         })}
       </nav>
       <footer className={cx(style.footer)}>

@@ -2,6 +2,7 @@ export interface UserType {
   userId: number
   userName: string
   userImage: string
+  color: string
 }
 
 export interface UserExpendType extends UserType {

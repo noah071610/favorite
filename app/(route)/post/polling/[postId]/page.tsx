@@ -1,7 +1,6 @@
 import { _url } from "@/_data"
-import { getThumbnail, noThumbnailUrl } from "@/_data/post"
 import { getPost } from "@/_queries/post"
-import { PollingPostType } from "@/_types/post/polling"
+import { PostType } from "@/_types/post"
 import { Metadata } from "next"
 import { Suspense } from "react"
 import PollingPost from "./_components"
@@ -13,19 +12,34 @@ export const getData = async (postId: string) => {
 }
 
 export async function generateMetadata({ params }: { params: { postId: string } }): Promise<Metadata> {
-  const { title, description: _description, thumbnail: _thumbnail }: PollingPostType = await getPost(params.postId)
+  const { title, description: _description, thumbnail: _thumbnail }: PostType = await getPost(params.postId)
   const description = _description.trim() ? _description.slice(0, 100) : undefined
-  const thumbnail = getThumbnail(_thumbnail)
+
+  const ogUrl = new URL(`${_url.client}/api/og/${params.postId}`)
+
   return {
     title: title.length > 50 ? title.slice(0, 50) + "..." : title,
     description,
     openGraph: {
       title,
       description,
-      images: thumbnail.length > 0 ? thumbnail : [noThumbnailUrl],
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
       url: _url.client + `/post/polling/${params.postId}`,
       type: "website",
       siteName: "favorite",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogUrl.toString()],
     },
   }
 }

@@ -2,7 +2,7 @@
 
 import { getImageUrl } from "@/_data"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { PollingCandidateType } from "@/_types/post/polling"
+import { CandidateType } from "@/_types/post"
 import classNames from "classNames"
 import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
@@ -15,8 +15,8 @@ export default function SelectPart({
   onSelectModal,
 }: {
   isMobile?: boolean
-  selectedCandidate: PollingCandidateType | null
-  onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
+  selectedCandidate: CandidateType | null
+  onClickCandidate: (type: "submit" | "select", candidate?: CandidateType) => void
   onSelectModal?: boolean
 }) {
   const { t } = useTranslation(["content"])

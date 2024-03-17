@@ -1,6 +1,5 @@
 "use client"
 
-import { ContestCandidateType, ContestPostType } from "@/_types/post/contest"
 import { useEffect, useState } from "react"
 import ResultPart from "./ResultPart"
 
@@ -15,7 +14,7 @@ import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { useCheckVoted } from "@/_hooks/useCheckVoted"
 import { usePreloadImages } from "@/_hooks/usePreloadImages"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { TournamentCandidateType } from "@/_types/post/tournament"
+import { CandidateType, PostType } from "@/_types/post"
 import { faComment } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
@@ -25,15 +24,15 @@ import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function ContestPost({ initialPost }: { initialPost: ContestPostType }) {
+export default function ContestPost({ initialPost }: { initialPost: PostType }) {
   const { t } = useTranslation(["content"])
   const { t: message } = useTranslation(["messages"])
 
-  const { data: post } = useQuery<ContestPostType>({
+  const { data: post } = useQuery<PostType>({
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
   })
-  const candidates: ContestCandidateType[] = post.content.candidates
+  const candidates: CandidateType[] = post.content.candidates
 
   const [status, setStatus] = useState<"init" | "result">("init")
   const [selected, setSelected] = useState<string | null>(null)
@@ -58,7 +57,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
     }
   }, [isVoted, isImagesLoaded])
 
-  const swiped = async (_direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => {
+  const swiped = async (_direction: "left" | "right", target: CandidateType) => {
     const direction = _direction === "left" ? 0 : 1
     const finishedPost = cloneDeep({
       ...post,
@@ -109,7 +108,7 @@ export default function ContestPost({ initialPost }: { initialPost: ContestPostT
                   <div className={cx(style["contest-comment"])}>
                     <CommentPart
                       isPreview={post.format === "preview"}
-                      authorId={post.user?.userId ?? 1}
+                      authorId={post.user.userId}
                       comments={post.comments}
                     />
                   </div>

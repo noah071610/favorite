@@ -4,7 +4,7 @@ import { queryKey } from "@/_data"
 import { toastSuccess } from "@/_data/toast"
 import { useCommentMutation } from "@/_hooks/mutations/useCommentMutation"
 import { getUser } from "@/_queries/user"
-import { CommentType } from "@/_types/post/post"
+import { CommentType } from "@/_types/post"
 import { UserQueryType, UserType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -57,7 +57,7 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
     setDisplayBtn(false)
   }
 
-  const { mutate } = useCommentMutation(postId as string, commented)
+  const { mutate } = useCommentMutation(commented)
 
   const onClickCommenting = async () => {
     if (!!text.trim() && !isPreview) {

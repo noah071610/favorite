@@ -1,7 +1,7 @@
 "use client"
 
-import { chartBackgroundColors, chartBorderColors, rankingOptions } from "@/_data/chart"
-import { PollingCandidateType } from "@/_types/post/polling"
+import { backgroundColors, borderColors } from "@/_data/colors"
+import { CandidateType } from "@/_types/post"
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
 import classNames from "classNames"
 import { useMemo } from "react"
@@ -12,12 +12,40 @@ const cx = classNames.bind(style)
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 ChartJS.register(ArcElement)
 
+const rankingOptions = {
+  indexAxis: "y" as const,
+  maintainAspectRatio: false,
+  elements: {
+    bar: {
+      borderWidth: 1,
+    },
+  },
+  scales: {
+    x: {
+      ticks: {
+        min: 0,
+        precision: 0,
+        beginAtZero: true,
+        callback: function (value: number) {
+          return value
+        },
+      },
+    },
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+}
+
 export default function ChartPart({
   candidates,
-  chartDescription,
+  resultDescription,
 }: {
-  chartDescription?: string
-  candidates: PollingCandidateType[]
+  resultDescription?: string
+  candidates: CandidateType[]
 }) {
   const ranking_data = useMemo(
     () => ({
@@ -32,8 +60,8 @@ export default function ChartPart({
     datasets: [
       {
         data: ranking_data.data,
-        backgroundColor: chartBackgroundColors,
-        borderColor: chartBorderColors,
+        backgroundColor: backgroundColors,
+        borderColor: borderColors,
       },
     ],
   }
@@ -52,9 +80,9 @@ export default function ChartPart({
           <Bar options={rankingOptions as any} data={rankingData} />
         </section>
       </div>
-      {chartDescription && (
+      {resultDescription && (
         <section className={cx(style["chart-description"])}>
-          <p>{chartDescription}</p>
+          <p>{resultDescription}</p>
         </section>
       )}
     </>

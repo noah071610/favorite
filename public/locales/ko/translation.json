@@ -153,12 +153,20 @@
       "layout": "콘텐츠 레이아웃",
       "none": "썸네일 없음"
     },
+    "options": {
+      "default": "공개",
+      "editing": "비공개",
+      "secret": "공유만 허용"
+    },
+    "optionsTitle": "공개 범위 설정",
     "changeThumb": "썸네일 변경",
     "moreThanTwoThumb": "2개 이상 후보 필요",
     "secretContent": "비공개 콘텐츠",
     "preview": "미리 플레이 해보기",
-    "posting": "포스팅 하기",
-    "editing": "수정 하기"
+    "posting": "포스팅",
+    "editing": "수정하기",
+    "deletePost": "삭제하기",
+    "createNewPost": "새로운 콘텐츠 생성"
   },
   "share": {
     "twitter": "트위터로 공유",
@@ -172,6 +180,7 @@
     "itIsFine": "네 괜찮아요",
     "cancel": "취소",
     "newPostLoad": "저장된 콘텐츠가 있어요!<br/>불러올까요?",
+    "createPost": "새로운 포스트를 생성했어요!<br/> 포스트를 확인하시겠어요?",
     "load": "데이터 불러오기",
     "makeNewPost": "새로 만들래요",
     "loadTemplate": "템플릿을 업로드하면 저장된 모든 콘텐츠는 삭제되요. 괜찮으세요?",

@@ -1,6 +1,5 @@
 "use client"
 
-import { chartBackgroundColors } from "@/_data/chart"
 import { UserType } from "@/_types/user"
 
 export default function PostInfo({
@@ -21,7 +20,7 @@ export default function PostInfo({
       {user && (
         <div className={"profile"}>
           <div className={"user-icon"}>
-            <div style={{ backgroundColor: chartBackgroundColors[1] }} className={"icon"}>
+            <div style={{ backgroundColor: user.color ?? "rgba(255, 176, 176, 0.7)" }} className={"icon"}>
               <span>{user?.userName.slice(0, 1)}</span>
             </div>
           </div>

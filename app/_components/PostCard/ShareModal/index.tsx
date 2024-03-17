@@ -3,7 +3,7 @@
 import { _url, getShareUrl, kakaoShare } from "@/_data"
 import { getThumbnail, noThumbnailUrl, shareProviders } from "@/_data/post"
 import { toastSuccess } from "@/_data/toast"
-import { PostCardType } from "@/_types/post/post"
+import { PostCardType } from "@/_types/post"
 import { copyTextToClipboard } from "@/_utils/copy"
 import classNames from "classNames"
 import Image from "next/image"

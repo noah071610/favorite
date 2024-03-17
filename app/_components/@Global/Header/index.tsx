@@ -2,26 +2,17 @@
 
 import { queryKey } from "@/_data"
 import { useMainStore } from "@/_store/main"
-import { useNewPostStore } from "@/_store/newPost"
+import { NewPostStates, useNewPostStore } from "@/_store/newPost"
 import { UserQueryType } from "@/_types/user"
 import { handleBeforeUnload } from "@/_utils/post"
-import {
-  faBars,
-  faCheck,
-  faChevronLeft,
-  faClose,
-  faFloppyDisk,
-  faHouse,
-  faMagnifyingGlass,
-  faPen,
-} from "@fortawesome/free-solid-svg-icons"
+import { faBars, faCheck, faClose, faFloppyDisk, faMagnifyingGlass, faPen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import LoginModal from "../../LoginModal"
 import NewPostNavigation from "./NewPostNavigation"
@@ -31,31 +22,37 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function Header() {
+  const queryClient = useQueryClient()
   const { t } = useTranslation(["nav"])
   const pathname = usePathname()
-  const router = useRouter()
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user.login,
   })
+  const { push } = useRouter()
   const user = userData?.user
 
   const { modalStatus, setModal } = useMainStore()
   const isNewPostPage = pathname.includes("new") || pathname.includes("edit")
-  const isEditPostPage = pathname.includes("edit")
   const isHideHeader = (pathname.includes("/post/") && !isNewPostPage) || pathname.includes("loginSuccess")
 
-  const { newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex, loadNewPost, clearNewPost } =
-    useNewPostStore()
+  const { content, postId, type, thumbnail, title, description, format, count } = useNewPostStore()
   const [saved, setSaved] = useState(false)
 
-  const saveData = useMemo(
-    () => ({ newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex }),
-    [newPost, newPostStatus, content, candidates, thumbnail, selectedCandidateIndex]
-  )
+  const newPost: NewPostStates = {
+    postId,
+    type,
+    thumbnail,
+    title,
+    description,
+    format,
+    count,
+    content,
+  }
 
-  const onClickSave = () => {
-    if (!saved) {
-      handleBeforeUnload(saveData)
+  const onClickSave = async () => {
+    if (!saved && user) {
+      await handleBeforeUnload(newPost)
+      await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
       setSaved(true)
       setTimeout(() => {
         setSaved(false)
@@ -69,8 +66,12 @@ export default function Header() {
   const onClickSearch = (isOpen: boolean) => {
     setModal(isOpen ? "search" : "none")
   }
-  const onClickGoBack = () => {
-    router.back()
+  const onClickMobileCreateNewPost = () => {
+    if (user) {
+      push(`/user/${user.userId}`)
+    } else {
+      setModal("login")
+    }
   }
 
   return isHideHeader ? null : (
@@ -97,33 +98,21 @@ export default function Header() {
             {/* PC */}
             <div className={cx(style.pc)}>
               {/* new post */}
-              {isNewPostPage && newPostStatus === "init" && (
-                <Link href={"/"} className={cx(style["new-post"])}>
-                  <span>{t("mainPage")}</span>
-                </Link>
+              {isNewPostPage && (
+                <button onClick={onClickSave} className={cx(style.save, { [style.saved]: saved })}>
+                  <div className={cx(style.icon)}>
+                    <FontAwesomeIcon className={cx(style.disk)} icon={faFloppyDisk} />
+                    <FontAwesomeIcon className={cx(style.check)} icon={faCheck} />
+                  </div>
+                  <span>{t("save")}</span>
+                </button>
               )}
-              {isNewPostPage &&
-                newPostStatus !== "init" &&
-                (isEditPostPage ? (
-                  // edit post
-                  <button onClick={onClickGoBack} className={cx(style["new-post"])}>
-                    <span>{t("goBack")}</span>
-                  </button>
-                ) : (
-                  <button onClick={onClickSave} className={cx(style.save, { [style.saved]: saved })}>
-                    <div className={cx(style.icon)}>
-                      <FontAwesomeIcon className={cx(style.disk)} icon={faFloppyDisk} />
-                      <FontAwesomeIcon className={cx(style.check)} icon={faCheck} />
-                    </div>
-                    <span>{t("save")}</span>
-                  </button>
-                ))}
 
               {/* main */}
-              {!isNewPostPage && (
-                <Link href={"/post/new"} className={cx(style["new-post"])}>
+              {!isNewPostPage && !user && (
+                <button onClick={() => setModal("login")} className={cx(style["new-post"])}>
                   <span>{t("makeNew")}</span>
-                </Link>
+                </button>
               )}
               {!isNewPostPage &&
                 (user ? (
@@ -140,30 +129,14 @@ export default function Header() {
             {/* mobile */}
             <div className={cx(style.mobile)}>
               {/* new post */}
-              {isNewPostPage && newPostStatus === "init" && (
-                <Link href="/">
+              {isNewPostPage && (
+                <button onClick={onClickSave} className={cx(style["save-mobile"], { [style.saved]: saved })}>
                   <div className={cx(style.icon)}>
-                    <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon className={cx(style.disk)} icon={faFloppyDisk} />
+                    <FontAwesomeIcon className={cx(style.check)} icon={faCheck} />
                   </div>
-                </Link>
+                </button>
               )}
-              {isNewPostPage &&
-                newPostStatus !== "init" &&
-                (isEditPostPage ? (
-                  // edit post
-                  <button onClick={onClickGoBack}>
-                    <div className={cx(style.icon)}>
-                      <FontAwesomeIcon icon={faChevronLeft} />
-                    </div>
-                  </button>
-                ) : (
-                  <button onClick={onClickSave} className={cx(style["save-mobile"], { [style.saved]: saved })}>
-                    <div className={cx(style.icon)}>
-                      <FontAwesomeIcon className={cx(style.disk)} icon={faFloppyDisk} />
-                      <FontAwesomeIcon className={cx(style.check)} icon={faCheck} />
-                    </div>
-                  </button>
-                ))}
 
               {/* search  */}
               {!isNewPostPage && modalStatus === "search" && (
@@ -175,11 +148,11 @@ export default function Header() {
               )}
               {!isNewPostPage && modalStatus !== "search" && (
                 <>
-                  <Link href="/post/new">
+                  <button onClick={onClickMobileCreateNewPost}>
                     <div className={cx(style.icon)}>
                       <FontAwesomeIcon icon={faPen} />
                     </div>
-                  </Link>
+                  </button>
                   <button onClick={() => onClickSearch(true)}>
                     <div className={cx(style.icon)}>
                       <FontAwesomeIcon icon={faMagnifyingGlass} />

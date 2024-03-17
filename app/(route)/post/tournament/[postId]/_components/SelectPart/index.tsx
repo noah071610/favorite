@@ -5,8 +5,7 @@ import { useEffect, useState } from "react"
 import Candidate from "@/_components/Select"
 import { usePlayMutation } from "@/_hooks/mutations/usePlayMutation"
 import { setParticipate } from "@/_hooks/useSetParticipate"
-import { ContestCandidateType } from "@/_types/post/contest"
-import { TournamentCandidateOnGameType, TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
+import { CandidateType, PostType, TournamentCandidateOnGameType } from "@/_types/post"
 import { shuffleArray } from "@/_utils/math"
 import { faRocket } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -25,11 +24,11 @@ export default function SelectPart({
   round,
   isPreview,
 }: {
-  originCandidates: TournamentCandidateType[]
-  setPickedCandidate: (target: TournamentCandidateType) => void
+  originCandidates: CandidateType[]
+  setPickedCandidate: (target: CandidateType) => void
   setStatus: (type: "init" | "result") => void
   round: number
-  post: TournamentPostType
+  post: PostType
   isPreview: boolean
 }) {
   const { t } = useTranslation(["content"])
@@ -55,10 +54,9 @@ export default function SelectPart({
 
   const displayCandidates = candidates.slice(curIndex, curIndex + 2)
 
-  const swiped = async (direction: "left" | "right", target: TournamentCandidateOnGameType | ContestCandidateType) => {
+  const swiped = async (direction: "left" | "right", target: TournamentCandidateOnGameType) => {
     const winIndex = direction === "left" ? 0 : 1
     const loseIndex = winIndex === 1 ? 0 : 1
-    const select = target as TournamentCandidateOnGameType
 
     if (curRound > 2) {
       setDataMap((obj) =>
@@ -95,11 +93,11 @@ export default function SelectPart({
         })
         if (!isPreview) {
           mutate(finishedPost)
-          setParticipate({ listId: select.listId, postId: post.postId })
+          setParticipate({ listId: target.listId, postId: post.postId })
         }
 
-        delete select.out
-        setPickedCandidate(select)
+        delete target.out
+        setPickedCandidate(target)
 
         setTimeout(() => {
           setStatus("result")

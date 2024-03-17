@@ -3,8 +3,7 @@
 import { getImageUrl } from "@/_data"
 import { noImageUrl } from "@/_data/post"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
-import { PollingCandidateType } from "@/_types/post/polling"
-import { ContentLayoutType } from "@/_types/post/post"
+import { CandidateType, ContentLayoutType } from "@/_types/post"
 import classNames from "classNames"
 import React from "react"
 import CountUp from "react-countup"
@@ -18,8 +17,8 @@ function Candidate({
   isSelected,
   index,
 }: {
-  candidate: PollingCandidateType
-  onClickCandidate: (type: "submit" | "select", candidate?: PollingCandidateType) => void
+  candidate: CandidateType
+  onClickCandidate: (type: "submit" | "select", candidate?: CandidateType) => void
   isResultPage: boolean
   layout: ContentLayoutType
   isSelected: boolean

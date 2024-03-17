@@ -1,6 +1,6 @@
 "use client"
 
-import { TournamentCandidateType, TournamentPostType } from "@/_types/post/tournament"
+import { CandidateType, PostType } from "@/_types/post"
 import { useEffect, useState } from "react"
 
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
@@ -32,18 +32,18 @@ const getRound = (totalParticipants: number | undefined) => {
   return { rounds: null }
 }
 
-export default function TournamentPost({ initialPost }: { initialPost: TournamentPostType }) {
+export default function TournamentPost({ initialPost }: { initialPost: PostType }) {
   const { t } = useTranslation(["content"])
   const { t: message } = useTranslation(["messages"])
-  const { data: post } = useQuery<TournamentPostType>({
+  const { data: post } = useQuery<PostType>({
     queryKey: queryKey.post(initialPost.postId),
     initialData: initialPost,
   })
-  const originCandidates: TournamentCandidateType[] = post.content.candidates
+  const originCandidates: CandidateType[] = post.content.candidates
 
   const [round, setRound] = useState<number | null>(null)
   const { modalStatus, setModal } = useMainStore()
-  const [pickedCandidate, setPickedCandidate] = useState<TournamentCandidateType | null>(null)
+  const [pickedCandidate, setPickedCandidate] = useState<CandidateType | null>(null)
 
   const [status, setStatus] = useState<"init" | "result">("init")
   const isResultPage = status === "result"

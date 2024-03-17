@@ -3,7 +3,7 @@
 import { queryKey } from "@/_data"
 import { toastError } from "@/_data/toast"
 import { finishPlay } from "@/_queries/post"
-import { PostCardType, PostPaginationType } from "@/_types/post/post"
+import { PostCardType, PostPaginationType } from "@/_types/post"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 
@@ -15,15 +15,16 @@ export const usePlayMutation = (postId: string) => {
     mutationFn: (finishedPost: any) => finishPlay(postId, finishedPost),
     onMutate: async (finishedPost) => {
       const postKey = queryKey.post(postId)
-      await queryClient.cancelQueries({ queryKey: queryKey.home.all })
+      await queryClient.cancelQueries({ queryKey: queryKey.posts.all })
       await queryClient.cancelQueries({ queryKey: postKey })
+      await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
 
       // Snapshot the previous value
-      const previous = queryClient.getQueryData(queryKey.home.all)
+      const previous = queryClient.getQueryData(queryKey.posts.all)
       const previous2 = queryClient.getQueryData(postKey)
 
       // Optimistically update to the new value
-      queryClient.setQueryData(queryKey.home.all, (old: PostPaginationType) => {
+      queryClient.setQueryData(queryKey.posts.all, (old: PostPaginationType) => {
         if (!old) return
         const flat = [...old.pages.flat()]
         const targetIndex = flat.findIndex((v) => v.postId === postId)

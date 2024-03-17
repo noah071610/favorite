@@ -1,41 +1,32 @@
-import { PollingCandidateType } from "@/_types/post/polling"
 import {
+  CandidateType,
   ContentLayoutType,
-  NewPostType,
   PostContentType,
+  PostFormatType,
   PostingStatus,
   ThumbnailSettingType,
   ThumbnailType,
-} from "@/_types/post/post"
+} from "@/_types/post"
 import { produce } from "immer"
-import { cloneDeep } from "lodash"
 import { create } from "zustand"
 
-const newPostInit: NewPostType = {
-  postId: "newPost",
-  type: null,
-  thumbnail: "",
-  title: "",
-  description: "",
-  format: "default",
-  count: 0,
-}
-
-interface States {
-  newPost: NewPostType
-  content: { [key: string]: any }
-  candidates: { [key: string]: any }[]
-  newPostStatus: PostingStatus
-  selectedCandidateIndex: number
-  thumbnail: ThumbnailSettingType
-  isEditOn: boolean
-  saveDataForEdit: {
-    newPost: NewPostType
-    content: { [key: string]: any }
-    candidates: { [key: string]: any }[]
+export interface NewPostStates {
+  postId: string
+  type: PostContentType | "none"
+  thumbnail: string
+  title: string
+  description: string
+  format: PostFormatType
+  count: number
+  content: {
+    layout: ContentLayoutType
+    resultDescription: string
     newPostStatus: PostingStatus
+    candidates: CandidateType[]
     thumbnail: ThumbnailSettingType
-  } | null
+    selectedCandidateIndex: number
+    isEditOn: boolean
+  }
 }
 
 type SetNewPostAction =
@@ -60,71 +51,77 @@ type Actions = {
   setCandidate: (action: SetCandidateAction) => void
   setSelectedCandidateIndex: (state: number) => void
   moveCandidate: ({ from, to }: { from: number; to: number }) => void
-  addCandidate: ({ payload, index }: { payload: any; index: number }) => void
+  addCandidate: ({ payload }: { payload: CandidateType }) => void
   deleteCandidate: ({ index }: { index: number }) => void
-  loadNewPost: (state: any) => void
-  setStatus: (state: States["newPostStatus"]) => void
+  loadNewPost: (state: NewPostStates) => void
+  clearNewPost: (postId: string, type: PostContentType) => void
+  setStatus: (state: PostingStatus) => void
   setNewPost: (action: SetNewPostAction) => void
   setContent: (action: SetContentAction) => void
   setThumbnail: (action: SetThumbnailAction) => void
-  setSaveDataForEdit: () => void
-  setLoadSaveData: () => void
-  setThumbnailLayout: ({ slice, isShuffle }: { slice: number; isShuffle?: boolean }) => void
-  clearNewPost: (type: PostContentType | "all") => void
+  setThumbnailLayout: ({ slice, isSetThumbnail }: { slice: number; isSetThumbnail?: boolean }) => void
 }
 
-export const useNewPostStore = create<States & Actions>()((set) => ({
-  newPost: newPostInit,
-  content: {},
-  candidates: [],
-  newPostStatus: "init",
-  thumbnail: {
-    imageSrc: "",
-    type: "custom",
-    layout: [],
-    slice: 0,
-    isPossibleLayout: false,
+export const useNewPostStore = create<NewPostStates & Actions>()((set) => ({
+  postId: "",
+  type: "none",
+  thumbnail: "",
+  title: "",
+  description: "",
+  format: "editing",
+  count: 0,
+  content: {
+    layout: "textImage",
+    resultDescription: "",
+    newPostStatus: "init",
+    candidates: [],
+    thumbnail: {
+      imageSrc: "",
+      type: "custom",
+      layout: [],
+      slice: 0,
+      isPossibleLayout: false,
+    },
+    selectedCandidateIndex: -1,
+    isEditOn: false,
   },
-  selectedCandidateIndex: -1,
-  isEditOn: false,
-  saveDataForEdit: null,
 
   moveCandidate: ({ from, to }) =>
     set((origin) =>
       produce(origin, (draft) => {
-        const candidates = draft.candidates
+        const candidates = draft.content.candidates
         const _target = { ...candidates[from] }
         candidates.splice(from, 1)
         candidates.splice(to, 0, _target)
-        draft.selectedCandidateIndex = -1
-        draft.isEditOn = true
+        draft.content.selectedCandidateIndex = -1
+        draft.content.isEditOn = true
       })
     ),
-  addCandidate: ({ payload, index }) =>
+  addCandidate: ({ payload }) =>
     set((origin) =>
       produce(origin, (draft) => {
-        draft.candidates.push(payload as PollingCandidateType)
-        draft.thumbnail.slice = draft.candidates.length > 5 ? 5 : draft.candidates.length
-        draft.isEditOn = true
+        draft.content.candidates.push(payload as CandidateType)
+        draft.content.thumbnail.slice = draft.content.candidates.length > 5 ? 5 : draft.content.candidates.length
+        draft.content.isEditOn = true
       })
     ),
   deleteCandidate: ({ index }) =>
     set((origin) =>
       produce(origin, (draft) => {
-        const candidates = draft.candidates
+        const candidates = draft.content.candidates
 
-        draft.candidates = candidates.filter((_: any, i: number) => i !== index)
+        draft.content.candidates = candidates.filter((_: any, i: number) => i !== index)
 
-        draft.selectedCandidateIndex = -1
+        draft.content.selectedCandidateIndex = -1
 
-        draft.thumbnail.slice = draft.candidates.length
-        draft.isEditOn = true
+        draft.content.thumbnail.slice = draft.content.candidates.length
+        draft.content.isEditOn = true
       })
     ),
   setCandidate: ({ index, payload, type }) =>
     set((origin) =>
       produce(origin, (draft) => {
-        const target = draft.candidates[index]
+        const target = draft.content.candidates[index]
         const actionHandlers = {
           title: () => {
             target.title = payload as string
@@ -139,7 +136,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const handler = actionHandlers[type]
         if (handler && target) {
           handler()
-          draft.isEditOn = true
+          draft.content.isEditOn = true
         }
       })
     ),
@@ -147,28 +144,21 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
   setNewPost: (action) =>
     set((origin) =>
       produce(origin, (draft) => {
-        const newPostDraft = draft.newPost
         const actionHandlers = {
           title: () => {
-            newPostDraft.title = action.payload
-            draft.isEditOn = true
+            draft.title = action.payload
+            draft.content.isEditOn = true
           },
           description: () => {
-            newPostDraft.description = action.payload
-            draft.isEditOn = true
+            draft.description = action.payload
+            draft.content.isEditOn = true
           },
           type: () => {
-            newPostDraft.type = action.payload as PostContentType
+            draft.type = action.payload as PostContentType
           },
           format: () => {
-            switch (action.payload) {
-              case "isSecret":
-                newPostDraft.format = newPostDraft.format === "default" ? "secret" : "default"
-                break
-              default:
-                break
-            }
-            draft.isEditOn = true
+            draft.format = action.payload as PostFormatType
+            draft.content.isEditOn = true
           },
         }
 
@@ -194,7 +184,7 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
         const handler = actionHandlers[type]
         if (handler) {
           handler()
-          draft.isEditOn = true
+          draft.content.isEditOn = true
         }
       })
     ),
@@ -204,111 +194,118 @@ export const useNewPostStore = create<States & Actions>()((set) => ({
       produce(origin, (draft) => {
         const actionHandlers = {
           imageSrc: () => {
-            draft.thumbnail.imageSrc = action.payload as string
+            draft.content.thumbnail.imageSrc = action.payload as string
+            draft.thumbnail = action.payload as string
           },
           type: () => {
-            draft.thumbnail.type = action.payload as ThumbnailType
+            draft.content.thumbnail.type = action.payload as ThumbnailType
+            if (draft.content.thumbnail.type === "custom") {
+              draft.thumbnail = draft.content.thumbnail.imageSrc as string
+            }
+            if (draft.content.thumbnail.type === "layout") {
+              const layoutArr = draft.content.candidates
+                .slice(0, draft.content.thumbnail.slice)
+                .map(({ imageSrc }) => imageSrc)
+              draft.thumbnail = layoutArr.join("${}$")
+            }
+            if (draft.content.thumbnail.type === "none") {
+              draft.thumbnail = ""
+            }
           },
           isPossibleLayout: () => {
-            draft.thumbnail.isPossibleLayout = action.payload as boolean
+            draft.content.thumbnail.isPossibleLayout = action.payload as boolean
           },
         }
 
         const handler = actionHandlers[action.type]
         if (handler) {
           handler()
-          draft.isEditOn = true
+          draft.content.isEditOn = true
         }
       })
     ),
 
-  setThumbnailLayout: ({ slice }) =>
+  setThumbnailLayout: ({ slice, isSetThumbnail }) =>
     set((origin) =>
       produce(origin, (draft) => {
-        draft.thumbnail.slice = slice
-        draft.thumbnail.layout = draft.candidates.slice(0, slice).map(({ imageSrc }) => imageSrc)
-        draft.isEditOn = true
+        const layoutArr = draft.content.candidates.slice(0, slice).map(({ imageSrc }) => imageSrc)
+        draft.content.thumbnail.slice = slice
+        draft.content.thumbnail.layout = layoutArr
+        draft.content.isEditOn = true
+        if (isSetThumbnail) {
+          draft.thumbnail = layoutArr.join("${}$")
+        }
       })
     ),
 
-  setStatus: (state) => set(() => ({ newPostStatus: state })),
+  setStatus: (state) =>
+    set((origin) =>
+      produce(origin, (draft) => {
+        draft.content.newPostStatus = state
+        draft.content.isEditOn = true
+      })
+    ),
+
   loadNewPost: (state) =>
     set(() => ({
       ...state,
-      isEditOn: true,
     })),
-  clearNewPost: (type) =>
+  clearNewPost: (postId, type) =>
     set(() => {
-      let [content, candidates] = [{}, []] as any[]
-      switch (type) {
-        case "polling":
-          content = {
-            layout: "textImage",
-            resultDescription: "",
-          }
-          break
-        case "contest":
-          candidates = [
-            {
-              listId: "left",
-              title: "",
-              imageSrc: "",
-              pick: 0,
-              number: 1,
-            },
-            {
-              listId: "right",
-              title: "",
-              imageSrc: "",
-              pick: 0,
-              number: 2,
-            },
-          ]
-          break
-        default:
-          break
-      }
       return {
-        newPost: newPostInit,
-        content,
-        candidates,
-        thumbnail: {
-          imageSrc: "",
-          type: "custom",
-          layout: [],
-          slice: type === "contest" ? 2 : 0,
-          isPossibleLayout: false,
+        postId,
+        type,
+        thumbnail: "",
+        title: "",
+        description: "",
+        format: "editing",
+        count: 0,
+        content: {
+          layout: "textImage",
+          resultDescription: "",
+          newPostStatus: "init",
+          candidates:
+            type === "contest"
+              ? [
+                  {
+                    listId: "left",
+                    title: "",
+                    description: "",
+                    imageSrc: "",
+                    lose: 0,
+                    win: 0,
+                    number: 1,
+                    pick: 0,
+                  },
+                  {
+                    listId: "right",
+                    title: "",
+                    description: "",
+                    imageSrc: "",
+                    lose: 0,
+                    win: 0,
+                    number: 2,
+                    pick: 0,
+                  },
+                ]
+              : [],
+          thumbnail: {
+            imageSrc: "",
+            type: "custom",
+            layout: [],
+            slice: 0,
+            isPossibleLayout: false,
+          },
+          selectedCandidateIndex: -1,
+          isEditOn: true,
         },
       }
     }),
   setSelectedCandidateIndex: (state) =>
-    set(() => ({
-      selectedCandidateIndex: state,
-      isEditOn: true,
-    })),
-
-  setSaveDataForEdit: () =>
-    set((origin) => ({
-      saveDataForEdit: cloneDeep({
-        newPost: origin.newPost,
-        content: origin.content,
-        candidates: origin.candidates,
-        newPostStatus: origin.newPostStatus,
-        thumbnail: origin.thumbnail,
-      }),
-    })),
-  setLoadSaveData: () =>
-    set((origin) => {
-      if (origin.saveDataForEdit) {
-        return {
-          newPost: origin.saveDataForEdit.newPost,
-          content: origin.saveDataForEdit.content,
-          candidates: origin.saveDataForEdit.candidates,
-          newPostStatus: origin.saveDataForEdit.newPostStatus,
-          thumbnail: origin.saveDataForEdit.thumbnail,
-        }
-      } else {
-        return origin
-      }
-    }),
+    set((origin) =>
+      produce(origin, (draft) => {
+        draft.content.selectedCandidateIndex = state
+        draft.content.isEditOn = true
+      })
+    ),
 }))
