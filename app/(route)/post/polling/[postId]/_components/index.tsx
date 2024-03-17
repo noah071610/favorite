@@ -108,7 +108,7 @@ const PollingPost = ({ initialPost }: { initialPost: PostType }) => {
           })}
         >
           <div className={cx(style.left)}>
-            <ul className={cx(style["candidate-list"])}>
+            <ul className={cx(style["candidate-list"], { [style["result"]]: isResultPage })}>
               {candidates.map((candidate, index) => (
                 <div className={cx(style.list)} key={`${candidate.listId}_${status}`}>
                   <Candidate

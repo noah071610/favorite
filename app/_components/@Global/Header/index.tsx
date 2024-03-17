@@ -14,7 +14,6 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import LoginModal from "../../LoginModal"
 import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
 import SearchModal from "./SearchModal"
@@ -166,9 +165,6 @@ export default function Header() {
       </header>
       <SearchModal />
       <div className={cx(style.ghost)} />
-      {(modalStatus === "login" || modalStatus === "loginNewPost" || modalStatus === "newPostLoginSuccess") && (
-        <LoginModal />
-      )}
     </>
   )
 }

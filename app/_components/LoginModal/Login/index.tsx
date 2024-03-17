@@ -109,7 +109,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
         toastSuccess(t("success.login", { ns: "messages" }))
       }, 2000)
     } else {
-      setModal("newPostLoginSuccess")
+      setModal("loginInContentSuccess")
     }
   }
 

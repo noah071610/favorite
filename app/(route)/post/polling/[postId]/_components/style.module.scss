@@ -124,8 +124,12 @@
     .list {
       padding-bottom: 5px;
     }
+    min-height: calc(100svh - 50px);
     @include mobile {
-      min-height: calc(100svh - 50px);
+      min-height: calc(100svh - 70px);
+    }
+    &.result {
+      min-height: auto;
     }
   }
 

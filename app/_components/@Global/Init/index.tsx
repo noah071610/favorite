@@ -1,5 +1,6 @@
 "use client"
 
+import LoginModal from "@/_components/LoginModal"
 import { queryKey } from "@/_data"
 import { refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
@@ -12,6 +13,7 @@ export default function Init() {
   const queryClient = useQueryClient()
   const { setWindowSize } = useMainStore()
   const [isDarkMode, setDarkMode] = useState(false)
+  const { modalStatus, setModal } = useMainStore()
 
   useEffect(() => {
     const handleResize = () => {
@@ -73,6 +75,9 @@ export default function Init() {
       <button className={style["dark-mode-toggle"]}>
         <DarkModeSwitch sunColor="#FFC9A8" moonColor="#C0B3C9" checked={isDarkMode} onChange={toggleDarkMode} />
       </button>
+      {(modalStatus === "login" || modalStatus === "loginNewPost" || modalStatus === "loginInContent") && (
+        <LoginModal />
+      )}
     </>
   )
 }

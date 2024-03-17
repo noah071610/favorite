@@ -10,13 +10,15 @@ export type ModalStatus =
   | "roundSelect"
   | "login"
   | "loginNewPost"
-  | "newPostLoginSuccess"
+  | "loginInContent"
   | "aside"
   | "share"
   | "loadTemplate"
   | "mobileSelectCandidate"
   | "deletePost"
   | "createPost"
+  | "loginInContent"
+  | "loginInContentSuccess"
 
 export interface PostCardListType {
   pageParams: number[]
