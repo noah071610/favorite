@@ -1,6 +1,6 @@
 import ContentPage from "./_pages/ContentPage"
 
-const HomePage = () => {
+const HomePage = async () => {
   return <ContentPage query="all" />
 }
 

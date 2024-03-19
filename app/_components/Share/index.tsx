@@ -21,7 +21,7 @@ type ShareProviderValue = "twitter" | "facebook" | "kakaoTalk" | "line" | "link"
 export default function Share({ post }: { post: any }) {
   const { t } = useTranslation(["content", "messages"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
   const user = userData?.user
   const { push } = useRouter()

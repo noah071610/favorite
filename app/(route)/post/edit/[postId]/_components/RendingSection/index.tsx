@@ -10,7 +10,7 @@ import { PostContentType, PostFormatType, PostType } from "@/_types/post"
 import { useState } from "react"
 
 import Confirm from "@/_components/Confirm"
-import { queryKey } from "@/_data"
+import { getPredicatePostsByType, queryKey } from "@/_data"
 import { errorMessage } from "@/_data/message"
 import { toastError, toastSuccess } from "@/_data/toast"
 import { posting } from "@/_queries/newPost"
@@ -38,7 +38,7 @@ export default function RendingSection() {
   const { t } = useTranslation(["newPost", "modal"])
   const { t: message } = useTranslation(["messages"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
     queryFn: getUser,
   })
 
@@ -150,9 +150,7 @@ export default function RendingSection() {
             if (createPost.format !== "editing") {
               setModal("createPost")
             }
-            await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
-            await queryClient.invalidateQueries({ queryKey: queryKey.posts.all })
-            await queryClient.invalidateQueries({ queryKey: queryKey.posts[createPost.type] })
+            await queryClient.invalidateQueries(getPredicatePostsByType(createPost.type))
             await queryClient.invalidateQueries({ queryKey: queryKey.post(createPost.postId) })
           })
         }

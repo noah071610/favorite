@@ -3,6 +3,7 @@
 import { queryKey } from "@/_data"
 import { useMainStore } from "@/_store/main"
 import { NewPostStates, useNewPostStore } from "@/_store/newPost"
+import { PostCardType } from "@/_types/post"
 import { UserQueryType } from "@/_types/user"
 import { handleBeforeUnload } from "@/_utils/post"
 import { faBars, faCheck, faClose, faFloppyDisk, faMagnifyingGlass, faPen } from "@fortawesome/free-solid-svg-icons"
@@ -25,7 +26,7 @@ export default function Header() {
   const { t } = useTranslation(["nav"])
   const pathname = usePathname()
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
   const { push } = useRouter()
   const user = userData?.user
@@ -52,7 +53,16 @@ export default function Header() {
   const onClickSave = async () => {
     if (!saved && user) {
       await handleBeforeUnload(newPost)
-      await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
+      const targets = queryClient.getQueriesData({ predicate: (v) => v.queryKey.includes("userPosts") })
+      await Promise.allSettled(
+        targets.map(async (targetKey) => {
+          await queryClient.setQueryData(targetKey[0], (old: PostCardType[]) => {
+            if (!old) return
+            return old.map((v) => (v.postId === postId ? { ...v, title, thumbnail, description, type } : v))
+          })
+        })
+      )
+
       setSaved(true)
       setTimeout(() => {
         setSaved(false)

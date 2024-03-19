@@ -50,7 +50,7 @@ export default function NewPostEditPage() {
     content,
   }
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
 
   useEffect(() => {

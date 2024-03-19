@@ -1,4 +1,5 @@
 import { PostContentType, PostSortOptions } from "@/_types/post"
+import { Query, QueryKey } from "@tanstack/react-query"
 import axios from "axios"
 
 export const _url = {
@@ -29,7 +30,7 @@ export const queryKey = {
     tournament: (cursor: string, sort: PostSortOptions) => ["posts", "tournamentPosts", sort, cursor],
     polling: (cursor: string, sort: PostSortOptions) => ["posts", "pollingPosts", sort, cursor],
     contest: (cursor: string, sort: PostSortOptions) => ["posts", "contestPosts", sort, cursor],
-    count: (query: PostContentType | "user" | "all") => ["posts", query, "count"],
+    count: (query: PostContentType | "user" | "all") => ["posts", `${query}Count`],
     popular: ["posts", "popular"],
     template: ["posts", "template"],
     user: (cursor: string) => ["posts", "userPosts", cursor],
@@ -37,10 +38,18 @@ export const queryKey = {
   post: (postId: string) => ["post", postId],
   comment: ["post", "comment"],
   play: ["post", "play"],
-  user: {
-    login: ["user", "login"],
-  },
+  user: ["user"],
 }
+
+export const getPredicatePostsByType = (type: PostContentType | "user" | "all") => ({
+  predicate: (v: Query<unknown, Error, unknown, QueryKey>) =>
+    v.queryKey.includes("allPosts") ||
+    v.queryKey.includes(`${type}Posts`) ||
+    v.queryKey.includes("userPosts") ||
+    v.queryKey.includes("allCount") ||
+    v.queryKey.includes(`${type}Count`) ||
+    v.queryKey.includes("userCount"),
+})
 
 export const shares = [
   {

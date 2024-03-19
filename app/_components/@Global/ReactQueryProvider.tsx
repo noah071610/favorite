@@ -1,6 +1,6 @@
 "use client"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren, useState } from "react"
 
 import { _url } from "@/_data"
 import i18n from "@/_utils/i18n"
@@ -22,13 +22,6 @@ export const queryClientConfig = {
 
 const ReactQueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [queryClientStore] = useState(() => new QueryClient(queryClientConfig))
-
-  useEffect(() => {
-    const lang = localStorage.getItem("favorite_lang")
-    if (lang) {
-      i18n.changeLanguage(lang)
-    }
-  }, [])
 
   return (
     <I18nextProvider i18n={i18n}>

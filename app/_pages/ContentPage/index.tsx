@@ -17,8 +17,6 @@ import { useTranslation } from "react-i18next"
 import { Swiper, SwiperSlide } from "swiper/react"
 import style from "./style.module.scss"
 
-const itemsPerPage = 18
-
 const breakpoints = {
   // when window width is >= 0px
   0: {
@@ -35,7 +33,7 @@ const breakpoints = {
 const sortOptions = [{ value: "createdAt" }, { value: "lastPlayedAt" }, { value: "popular" }] as const
 
 export default function ContentPage({ query }: { query: PostFindQuery }) {
-  const { t, i18n } = useTranslation(["title"])
+  const { t, i18n } = useTranslation(["title", "nav"])
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -152,7 +150,7 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
                   onClick={() => onClickSort(value)}
                   className={value === sortOption ? "active" : ""}
                 >
-                  <span>{t(value)}</span>
+                  <span>{t(value, { ns: "nav" })}</span>
                   <FontAwesomeIcon icon={faChevronUp} />
                 </button>
               ))}

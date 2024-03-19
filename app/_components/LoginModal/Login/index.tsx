@@ -92,9 +92,9 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
     }))
   }
 
-  const finishLogin = ({ msg, user }: UserQueryType) => {
+  const finishLogin = async ({ msg, user }: UserQueryType) => {
     if (msg === "ok") {
-      queryClient.setQueryData(queryKey.user.login, { msg: "ok", user })
+      await queryClient.setQueryData(queryKey.user, { msg: "ok", user })
     } else {
       setTimeout(() => {
         setIsLoading(false)

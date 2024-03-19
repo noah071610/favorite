@@ -20,7 +20,7 @@ const cx = classNames.bind(style)
 export default function InitSection() {
   const { t, i18n } = useTranslation(["newPost", "modal", "content", "messages"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
   const { push } = useRouter()
   const { postId } = useParams()

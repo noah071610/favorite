@@ -14,16 +14,23 @@ const resources = {
   th: translationTH,
 }
 
+const options = {
+  order: ["querystring", "navigator"],
+  lookupQuerystring: "lng",
+}
+
 // i18next 초기화
 i18n
-  .use(detector)
   .use(backend)
+  .use(detector)
   .use(initReactI18next) // initReactI18next를 사용하여 react-i18next를 초기화
   .init({
     // i18next 설정
     resources,
     lng: "ko",
     fallbackLng: "ko",
+    detection: options,
+    supportedLngs: ["ko", "en", "ja", "th"],
     // debug: process.env.NODE_ENV === "development",
     interpolation: { escapeValue: true },
     returnObjects: true,

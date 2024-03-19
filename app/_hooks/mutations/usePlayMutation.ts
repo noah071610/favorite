@@ -14,20 +14,22 @@ export const usePlayMutation = (postId: string) => {
     mutationKey: queryKey.play,
     mutationFn: (finishedPost: any) => finishPlay(postId, finishedPost),
     onMutate: async (finishedPost) => {
-      const postKey = queryKey.post(postId)
       await queryClient.invalidateQueries({
         predicate: (target) => target.queryKey.includes("userPosts"),
       })
 
-      await queryClient.cancelQueries({ queryKey: postKey })
-      const previous = queryClient.getQueriesData({
+      await queryClient.cancelQueries({ queryKey: queryKey.post(postId) })
+      await queryClient.cancelQueries({
         predicate: (target) =>
           target.queryKey.includes("allPosts") || target.queryKey.includes(`${finishedPost.type}Posts`),
       })
-      const previous2 = queryClient.getQueryData(postKey)
 
+      const targetPosts = queryClient.getQueriesData({
+        predicate: (target) =>
+          target.queryKey.includes("allPosts") || target.queryKey.includes(`${finishedPost.type}Posts`),
+      })
       Promise.allSettled(
-        previous.map(async (targetKey) => {
+        targetPosts.map(async (targetKey) => {
           await queryClient.setQueryData(targetKey[0], (old: PostCardType[]) => {
             if (!old) return
             const targetIndex = old.findIndex((v) => v.postId === postId)
@@ -38,9 +40,9 @@ export const usePlayMutation = (postId: string) => {
           })
         })
       )
-      queryClient.setQueryData(postKey, finishedPost)
+      await queryClient.setQueryData(queryKey.post(postId), finishedPost)
 
-      return { previous, previous2 }
+      return
     },
     onError: () => {
       toastError(t(`error.unknown`))

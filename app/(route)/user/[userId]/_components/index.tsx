@@ -31,7 +31,7 @@ export default function UserPageMain() {
   const [targetPost, setTargetPost] = useState<null | PostCardType>(null)
   const { userId: queryUserId } = useParams()
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
   const [loadingNewPostCreate, setLoadingNewPostCreate] = useState(false)
 
@@ -67,15 +67,24 @@ export default function UserPageMain() {
   const onClickConfirmDelete = async (isOk: boolean) => {
     if (isOk && targetPost) {
       await deletePost(targetPost.postId)
-      const previous = queryClient.getQueriesData({
+      await queryClient.invalidateQueries({
         predicate: (target) =>
-          target.queryKey.includes("allPosts") || target.queryKey.includes(`${targetPost.type}Posts`),
+          target.queryKey.includes("allPosts") ||
+          target.queryKey.includes(`${targetPost.type}Posts`) ||
+          target.queryKey.includes(`userPosts`),
+      })
+
+      const cachedCounts = queryClient.getQueriesData({
+        predicate: (target) =>
+          target.queryKey.includes("allCount") ||
+          target.queryKey.includes(`${targetPost.type}Count`) ||
+          target.queryKey.includes(`userCount`),
       })
       await Promise.allSettled(
-        previous.map(async (targetKey) => {
-          await queryClient.setQueryData(targetKey[0], (old: PostCardType[]) => {
+        cachedCounts.map(async (targetKey) => {
+          await queryClient.setQueryData(targetKey[0], (old: number) => {
             if (!old) return
-            return old.filter((v) => v.postId !== targetPost.postId)
+            return old - 1
           })
         })
       )
@@ -92,7 +101,7 @@ export default function UserPageMain() {
       await initNewPost(i18n.language as LangType)
         .then(async (postId) => {
           await queryClient.invalidateQueries({
-            predicate: (target) => target.queryKey.includes("userPosts"),
+            predicate: (target) => target.queryKey.includes("userPosts") || target.queryKey.includes("userCount"),
           })
           push(`/post/edit/${postId}`)
         })

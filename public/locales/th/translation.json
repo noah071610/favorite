@@ -72,7 +72,10 @@
     "init": "เริ่มต้น",
     "edit": "แก้ไข",
     "rending": "กำลังดำเนินการ",
-    "goBack": "ย้อนกลับ"
+    "goBack": "ย้อนกลับ",
+    "popular": "นิยม",
+    "lastPlayedAt": "เล่นล่าสุด",
+    "createdAt": "สร้างใหม่"
   },
   "search": {
     "emptySearchResult": "ไม่พบผลลัพธ์"

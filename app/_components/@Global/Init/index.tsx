@@ -34,6 +34,7 @@ export default function Init() {
     return () => {
       window.removeEventListener("resize", handleResize)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -62,9 +63,9 @@ export default function Init() {
     !(async function () {
       const { msg, user } = await refreshUser()
       if (user) {
-        queryClient.setQueryData(queryKey.user.login, { msg, user })
+        await queryClient.setQueryData(queryKey.user, { msg, user })
       } else {
-        queryClient.setQueryData(queryKey.user.login, { msg: "no", user: null })
+        await queryClient.setQueryData(queryKey.user, { msg: "no", user: null })
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

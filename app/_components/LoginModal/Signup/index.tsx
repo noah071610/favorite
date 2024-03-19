@@ -1,4 +1,5 @@
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
+import { queryKey } from "@/_data"
 import { errorMessage } from "@/_data/message"
 import { toastError, toastSuccess } from "@/_data/toast"
 import { hasEmail, registerUser } from "@/_queries/user"
@@ -129,8 +130,8 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
 
     await registerUser({ email, password, userName })
       .then(({ user }) => {
-        setTimeout(() => {
-          queryClient.setQueryData(["user"], { msg: "ok", user })
+        setTimeout(async () => {
+          await queryClient.setQueryData(queryKey.user, { msg: "ok", user })
 
           toastSuccess(t("success.login", { ns: "messages" }))
           setModal("none")

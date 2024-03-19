@@ -73,7 +73,10 @@
     "init": "Type",
     "edit": "Edit",
     "rending": "Post",
-    "goBack": "Go Back"
+    "goBack": "Go Back",
+    "popular": "Popular",
+    "lastPlayedAt": "Latest played",
+    "createdAt": "New Created"
   },
   "search": {
     "emptySearchResult": "No Search Results"

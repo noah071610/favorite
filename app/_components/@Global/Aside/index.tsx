@@ -54,7 +54,7 @@ const asideSelectors = [
 export default function Aside() {
   const { t, i18n: _i18n } = useTranslation(["nav"])
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
   const pathname = usePathname()
   const { modalStatus, setModal } = useMainStore()

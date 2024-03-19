@@ -17,7 +17,7 @@ const AdminPage = () => {
   const [templateRawData, setTemplateRawData] = useState("")
   const [popularRawData, setPopularRawData] = useState("")
   const { data: userData } = useQuery<UserQueryType>({
-    queryKey: queryKey.user.login,
+    queryKey: queryKey.user,
   })
   const user = userData?.user
 
