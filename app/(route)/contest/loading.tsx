@@ -1,7 +1,7 @@
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
 
-const HomePageLoading = () => {
+const ContestPageLoading = () => {
   return <FavoriteLoading type="full" />
 }
 
-export default HomePageLoading
+export default ContestPageLoading

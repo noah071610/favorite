@@ -1,3 +1,4 @@
+import { PostContentType, PostSortOptions } from "@/_types/post"
 import axios from "axios"
 
 export const _url = {
@@ -24,10 +25,11 @@ export const getImageUrl = ({ isCenter, url }: { url: string; isCenter?: boolean
 
 export const queryKey = {
   posts: {
-    all: ["posts", "all"],
-    tournament: ["posts", "tournament"],
-    polling: ["posts", "polling"],
-    contest: ["posts", "contest"],
+    all: (cursor: string, sort: PostSortOptions) => ["posts", "all", sort, cursor],
+    tournament: (cursor: string, sort: PostSortOptions) => ["posts", "tournament", sort, cursor],
+    polling: (cursor: string, sort: PostSortOptions) => ["posts", "polling", sort, cursor],
+    contest: (cursor: string, sort: PostSortOptions) => ["posts", "contest", sort, cursor],
+    count: (query: PostContentType | "all") => ["posts", query, "count"],
     popular: ["posts", "popular"],
     template: ["posts", "template"],
     user: ["posts", "user"],

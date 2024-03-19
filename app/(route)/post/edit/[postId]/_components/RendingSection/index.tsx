@@ -15,7 +15,7 @@ import { errorMessage } from "@/_data/message"
 import { toastError, toastSuccess } from "@/_data/toast"
 import { posting } from "@/_queries/newPost"
 import { useMainStore } from "@/_store/main"
-import { ErrorTypes } from "@/_types"
+import { ErrorTypes, LangType } from "@/_types"
 import { randomNum } from "@/_utils/math"
 import { checkNewPost, generatePostData } from "@/_utils/post"
 import classNames from "classNames"
@@ -26,6 +26,12 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const options = [{ value: "editing" }, { value: "secret" }, { value: "default" }]
+const langs = [
+  { value: "ko", label: "한국어" },
+  { value: "ja", label: "日本語" },
+  { value: "en", label: "English" },
+  { value: "th", label: "ภาษาไทย" },
+]
 
 export default function RendingSection() {
   const queryClient = useQueryClient()
@@ -37,7 +43,7 @@ export default function RendingSection() {
   })
 
   const { modalStatus, setModal, setError } = useMainStore()
-  const { content, postId, type, thumbnail, title, description, format, count, setNewPost, setStatus } =
+  const { content, postId, type, thumbnail, title, description, format, count, setNewPost, setStatus, lang } =
     useNewPostStore()
   const [previewPost, setPreviewPost] = useState<PostType | null>(null)
   const [isOnPreview, setIsOnPreview] = useState(false)
@@ -46,6 +52,7 @@ export default function RendingSection() {
     type,
     thumbnail,
     title,
+    lang,
     description,
     format,
     count,
@@ -64,6 +71,10 @@ export default function RendingSection() {
 
   const onClickOption = (format: PostFormatType) => {
     setNewPost({ type: "format", payload: format })
+  }
+
+  const onClickLang = (lang: LangType) => {
+    setNewPost({ type: "lang", payload: lang })
   }
 
   const preview = () => {
@@ -178,6 +189,24 @@ export default function RendingSection() {
                 className={cx(style.option, { [style.active]: format === value })}
               >
                 <span>{t(`options.${value}`)}</span>
+                <div className={cx(style.circle)}>
+                  <div className={cx(style["circle-inner"])}></div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className={cx(style["rending-section"], style["lang-section"])}>
+          <h1>{t("changeLang")}</h1>
+          <div className={cx(style.options)}>
+            {langs.map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => onClickLang(value as LangType)}
+                className={cx(style.option, { [style.active]: lang === value })}
+              >
+                <span>{label}</span>
                 <div className={cx(style.circle)}>
                   <div className={cx(style["circle-inner"])}></div>
                 </div>

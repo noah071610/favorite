@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react"
 
 export const useIntersectionObserver = () => {
-  const ref = useRef<HTMLDivElement | null>()
+  const ref = useRef<HTMLDivElement | null>(null)
   const [isIntersecting, setIntersecting] = useState(false)
 
   useEffect(() => {
@@ -16,12 +16,17 @@ export const useIntersectionObserver = () => {
       observer.observe(currentRef)
     }
 
+    // isIntersecting 값이 true가 되면 unobserve
+    if (isIntersecting && currentRef) {
+      observer.unobserve(currentRef)
+    }
+
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef)
       }
     }
-  }, [ref?.current])
+  }, [ref?.current, isIntersecting])
 
   return [ref, isIntersecting]
 }

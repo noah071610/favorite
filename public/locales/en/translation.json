@@ -164,7 +164,8 @@
     "posting": "Post now",
     "editing": "Edit",
     "deletePost": "Delete",
-    "createNewPost": "Create New Content"
+    "createNewPost": "Create New Content",
+    "changeLang": "Change Language"
   },
   "share": {
     "twitter": "Share on Twitter",

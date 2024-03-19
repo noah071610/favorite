@@ -1,3 +1,4 @@
+import { LangType } from "@/_types"
 import {
   CandidateType,
   ContentLayoutType,
@@ -17,6 +18,7 @@ export interface NewPostStates {
   title: string
   description: string
   format: PostFormatType
+  lang: LangType
   count: number
   content: {
     layout: ContentLayoutType
@@ -34,6 +36,7 @@ type SetNewPostAction =
   | { type: "title"; payload: string }
   | { type: "description"; payload: string }
   | { type: "format"; payload: string }
+  | { type: "lang"; payload: LangType }
 
 type SetThumbnailAction =
   | { type: "type"; payload: ThumbnailType }
@@ -54,7 +57,7 @@ type Actions = {
   addCandidate: ({ payload }: { payload: CandidateType }) => void
   deleteCandidate: ({ index }: { index: number }) => void
   loadNewPost: (state: NewPostStates) => void
-  clearNewPost: (postId: string, type: PostContentType) => void
+  clearNewPost: (postId: string, type: PostContentType, lang: LangType) => void
   setStatus: (state: PostingStatus) => void
   setNewPost: (action: SetNewPostAction) => void
   setContent: (action: SetContentAction) => void
@@ -70,6 +73,7 @@ export const useNewPostStore = create<NewPostStates & Actions>()((set) => ({
   description: "",
   format: "editing",
   count: 0,
+  lang: "ko",
   content: {
     layout: "textImage",
     resultDescription: "",
@@ -155,6 +159,10 @@ export const useNewPostStore = create<NewPostStates & Actions>()((set) => ({
           },
           type: () => {
             draft.type = action.payload as PostContentType
+          },
+          lang: () => {
+            draft.lang = action.payload as LangType
+            draft.content.isEditOn = true
           },
           format: () => {
             draft.format = action.payload as PostFormatType
@@ -250,7 +258,7 @@ export const useNewPostStore = create<NewPostStates & Actions>()((set) => ({
     set(() => ({
       ...state,
     })),
-  clearNewPost: (postId, type) =>
+  clearNewPost: (postId, type, lang) =>
     set(() => {
       return {
         postId,
@@ -260,6 +268,7 @@ export const useNewPostStore = create<NewPostStates & Actions>()((set) => ({
         description: "",
         format: "editing",
         count: 0,
+        lang,
         content: {
           layout: "textImage",
           resultDescription: "",

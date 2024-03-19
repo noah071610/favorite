@@ -7,6 +7,7 @@ import { toastError, toastSuccess } from "@/_data/toast"
 import { deletePost, initNewPost } from "@/_queries/newPost"
 import { getUserPosts } from "@/_queries/posts"
 import { useMainStore } from "@/_store/main"
+import { LangType } from "@/_types"
 import { PostCardType } from "@/_types/post"
 import { UserQueryType } from "@/_types/user"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
@@ -20,7 +21,7 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function UserPageMain() {
-  const { t } = useTranslation(["modal", "messages", "newPost"])
+  const { t, i18n } = useTranslation(["modal", "messages", "newPost"])
   const queryClient = useQueryClient()
   const router = useRouter()
   const [targetPost, setTargetPost] = useState<null | PostCardType>(null)
@@ -70,7 +71,7 @@ export default function UserPageMain() {
   const onClickCreateNewPost = async () => {
     if (user?.userId) {
       setLoadingNewPostCreate(true)
-      await initNewPost()
+      await initNewPost(i18n.language as LangType)
         .then(async (postId) => {
           await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
           router.push(`/post/edit/${postId}`)

@@ -65,6 +65,9 @@
       z-index: 0;
       transform: translate(14px, 18px);
       transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 350ms;
+      @include mobile {
+        transition: 350ms;
+      }
       &.active {
         z-index: 20;
         background-color: white;

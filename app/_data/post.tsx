@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export const contentTypesArr = [
   {
     value: "polling",
-    link: "/?query=polling",
+    link: "/polling?sort=createdAt&cursor=0",
     label: "polling",
     color: "rgba(255, 138, 138, 0.8)",
     icon: (style: any = {}) => {
@@ -13,7 +13,7 @@ export const contentTypesArr = [
   },
   {
     value: "contest",
-    link: "/?query=contest",
+    link: "/contest?sort=createdAt&cursor=0",
     color: "rgba(255, 207, 171, 0.8)",
     label: "contest",
     icon: (style: any = {}) => {
@@ -22,7 +22,7 @@ export const contentTypesArr = [
   },
   {
     value: "tournament",
-    link: "/?query=tournament",
+    link: "/tournament?sort=createdAt&cursor=0",
     label: "tournament",
     color: "rgba(217, 171, 255, 0.875)",
     icon: (style: any = {}) => {
@@ -34,7 +34,7 @@ export const contentTypesArr = [
 export const typeSelectors = [
   {
     value: "all",
-    link: "/?query=all",
+    link: "/?sort=createdAt&cursor=0",
     label: "all",
     icon: (style: any = {}) => (
       <>

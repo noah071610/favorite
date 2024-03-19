@@ -1,5 +1,6 @@
 import { API } from "@/_data"
 import { NewPostStates } from "@/_store/newPost"
+import { LangType } from "@/_types"
 import { PostType } from "@/_types/post"
 import { randomNum } from "@/_utils/math"
 import { Cookies } from "react-cookie"
@@ -52,10 +53,10 @@ export async function getSavePost(postId: string) {
   }
 }
 
-export async function initNewPost() {
+export async function initNewPost(lang: LangType) {
   const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
   if (cookie) {
-    const response = await API.post(`/post/init`)
+    const response = await API.post(`/post/init?lang=${lang}`)
     return response.data
   }
 }

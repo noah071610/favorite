@@ -184,6 +184,19 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px white inset !important; /* 원하는 배경색으로 변경 */
 }
 
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* iOS에서 터치 이벤트 발생 시 배경색을 투명하게 설정 */
+}
+
+input,
+textarea {
+  touch-action: manipulation;
+}
+
 .Toastify__toast {
   background: var(--white) !important;
   background: var(--radial-bg) !important;

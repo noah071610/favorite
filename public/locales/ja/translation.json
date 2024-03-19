@@ -164,7 +164,8 @@
     "posting": "投稿",
     "editing": "編集",
     "deletePost": "削除",
-    "createNewPost": "新しいコンテンツ"
+    "createNewPost": "新しいコンテンツ",
+    "changeLang": "言語変更"
   },
   "share": {
     "twitter": "ツイッターで共有",

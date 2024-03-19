@@ -4,8 +4,7 @@ import { useEffect, useRef } from "react"
 import TinderCard from "react-tinder-card"
 
 import { getImageUrl } from "@/_data"
-import { TournamentCandidateType } from "@/_types/post"
-import { ContestCandidateType } from "@/_types/post/contest"
+import { CandidateType } from "@/_types/post"
 import classNames from "classNames"
 
 export default function Candidate({
@@ -13,9 +12,9 @@ export default function Candidate({
   direction,
   swiped,
 }: {
-  candidate: ContestCandidateType | TournamentCandidateType
+  candidate: CandidateType
   direction: "left" | "right"
-  swiped: (direction: "left" | "right", target: ContestCandidateType | TournamentCandidateType) => void
+  swiped: (direction: "left" | "right", target: CandidateType) => void
 }) {
   const cardRef = useRef<HTMLDivElement | null>(null)
 
@@ -47,8 +46,6 @@ export default function Candidate({
       }
     }
   }, [cardRef])
-
-  console.log(candidate)
 
   return (
     <div ref={cardRef} className={classNames("global-select", "select-part", direction)}>

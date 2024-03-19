@@ -6,6 +6,7 @@ import { contentTypesArr } from "@/_data/post"
 import { toastError } from "@/_data/toast"
 import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
+import { LangType } from "@/_types"
 import { PostContentType } from "@/_types/post"
 import { UserQueryType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
@@ -17,7 +18,7 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function InitSection() {
-  const { t } = useTranslation(["newPost", "modal", "content", "messages"])
+  const { t, i18n } = useTranslation(["newPost", "modal", "content", "messages"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user.login,
   })
@@ -36,7 +37,7 @@ export default function InitSection() {
         toastError(t("error.unknown", { ns: "messages" }))
         return
       }
-      clearNewPost(postId, value)
+      clearNewPost(postId, value, i18n.language as LangType)
       setStatus("edit")
     } else {
       if (type !== value) {
@@ -57,13 +58,13 @@ export default function InitSection() {
           toastError(t("error.unknown", { ns: "messages" }))
           return
         }
-        clearNewPost(postId, typeSave)
+        clearNewPost(postId, typeSave, i18n.language as LangType)
         setStatus("edit")
       }
       setModal("none")
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [typeSave, userData?.user?.userId, postId]
+    [typeSave, userData?.user?.userId, postId, i18n.language]
   )
   return (
     <div className={cx(style.init)}>

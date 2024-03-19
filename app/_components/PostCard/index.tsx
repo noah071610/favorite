@@ -2,7 +2,7 @@
 
 import { getImageUrl } from "@/_data"
 import { contentTypesArr, getThumbnail } from "@/_data/post"
-import { usePreloadImages } from "@/_hooks/usePreloadImages"
+import { useIntersectionObserver } from "@/_hooks/useIntersectionObserver"
 import { PostCardType } from "@/_types/post"
 import { formatNumber } from "@/_utils/math"
 import { faArrowUpFromBracket, faEye, faEyeSlash, faPlay } from "@fortawesome/free-solid-svg-icons"
@@ -11,7 +11,7 @@ import classNames from "classNames"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { memo, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import CountUp from "react-countup"
 import { useTranslation } from "react-i18next"
 import FavoriteLoading from "../@Global/Loading/FavoriteLoading"
@@ -39,12 +39,40 @@ function PostCard({
   const { description, type, postId, thumbnail, title, count, format } = postCard
   const [onShareModal, setOnShareModal] = useState(false)
 
+  const [ref, isIntersecting] = useIntersectionObserver()
   const thumbnailArr = getThumbnail(thumbnail)
-  const isImagesLoaded = usePreloadImages(thumbnailArr)
+  const [isImagesLoaded, setIsImagesLoaded] = useState(false)
+  const [alreadyLoaded, setAlreadyLoaded] = useState(false)
+  const [imageLoadedCount, setImageLoadedCount] = useState(0)
 
   const { num, suffix } = formatNumber(count)
-
   const typeData = contentTypesArr.find((v) => v.value === type)
+
+  useEffect(() => {
+    if (imageLoadedCount >= thumbnailArr.length && alreadyLoaded) {
+      setTimeout(() => {
+        setIsImagesLoaded(true)
+      })
+    }
+  }, [thumbnailArr, imageLoadedCount, alreadyLoaded])
+
+  useEffect(() => {
+    if (!!thumbnailArr.length && isIntersecting && !alreadyLoaded) {
+      setAlreadyLoaded(true)
+      thumbnailArr.forEach((imageSrc) => {
+        const image = new Image()
+        image.src = imageSrc
+        image.onload = () => {
+          setImageLoadedCount((prevCount) => prevCount + 1)
+        }
+        image.onerror = () => {
+          setImageLoadedCount((prevCount) => prevCount + 1)
+        }
+      })
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [thumbnailArr, isIntersecting, alreadyLoaded])
 
   const onClickPrimaryBtn = () => {
     if (isTemplate && loadTemplate) {
@@ -63,7 +91,7 @@ function PostCard({
 
   return (
     <article className={classNames("global-post-card")}>
-      <div className={classNames("main", { template: isTemplate })}>
+      <div ref={ref as any} className={classNames("main", { template: isTemplate })}>
         <div onClick={onClickPlay} className={classNames("inner", { notTemplate: !isTemplate })}>
           <div className={classNames(thumbnail, { isFull: !description?.trim() })}>
             <div className={classNames("thumbnail")}>

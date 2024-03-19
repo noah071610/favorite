@@ -163,7 +163,8 @@
     "posting": "โพสต์",
     "editing": "กำลังแก้ไข",
     "deletePost": "ลบ",
-    "createNewPost": "สร้างเนื้อหาใหม่"
+    "createNewPost": "สร้างเนื้อหาใหม่",
+    "changeLang": "เปลี่ยนภาษา"
   },
   "share": {
     "twitter": "แชร์ทวิตเตอร์",

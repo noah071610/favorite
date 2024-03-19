@@ -13,10 +13,11 @@ export interface ThumbnailSettingType {
   isPossibleLayout: boolean
 }
 export type PostFindQuery = "all" | PostContentType
-
-export interface PostPaginationType {
-  pageParams: number[]
-  pages: PostCardType[][]
+export type PostSortOptions = "createdAt" | "lastPlayedAt" | "popular"
+export interface ContentPageParams {
+  sort?: PostSortOptions | null
+  cursor?: string | null
+  query?: PostFindQuery | null
 }
 
 export type VoteIdType = {

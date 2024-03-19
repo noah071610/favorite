@@ -13,7 +13,7 @@ export default function Init() {
   const queryClient = useQueryClient()
   const { setWindowSize } = useMainStore()
   const [isDarkMode, setDarkMode] = useState(false)
-  const { modalStatus, setModal } = useMainStore()
+  const { modalStatus } = useMainStore()
 
   useEffect(() => {
     const handleResize = () => {

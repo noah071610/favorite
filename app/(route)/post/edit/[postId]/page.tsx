@@ -37,12 +37,13 @@ export default function NewPostEditPage() {
   const [editPostStatus, setEditPostStatus] = useState<"pending" | "ready">("pending")
 
   const router = useRouter()
-  const { loadNewPost, content, type, thumbnail, title, description, format, count } = useNewPostStore()
+  const { loadNewPost, content, type, thumbnail, title, description, format, lang, count } = useNewPostStore()
   const newPost: NewPostStates = {
     postId: postId as string,
     type,
     thumbnail,
     title,
+    lang,
     description,
     format,
     count,

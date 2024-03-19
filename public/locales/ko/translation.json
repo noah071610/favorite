@@ -18,7 +18,7 @@
     "passwordConfirm": "패스워드 확인",
     "findEmail": "이메일 찾기",
     "enterEmail": "이메일 입력",
-    "enterPassword": "이메일 입력",
+    "enterPassword": "비밀번호 입력",
     "back": "뒤로가기"
   },
   "messages": {
@@ -166,7 +166,8 @@
     "posting": "포스팅",
     "editing": "수정하기",
     "deletePost": "삭제하기",
-    "createNewPost": "새로운 콘텐츠 생성"
+    "createNewPost": "새로운 콘텐츠 생성",
+    "changeLang": "언어 변경"
   },
   "share": {
     "twitter": "트위터로 공유",

@@ -12,7 +12,7 @@ import classNames from "classNames"
 import dayjs from "dayjs"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 
@@ -57,9 +57,6 @@ export default function Aside() {
     queryKey: queryKey.user.login,
   })
   const pathname = usePathname()
-  const { get } = useSearchParams()
-  const query = get("query")
-  const asPath = pathname + (query ? `?query=${query}` : "")
   const { modalStatus, setModal } = useMainStore()
   const user = userData?.user
 
@@ -92,7 +89,7 @@ export default function Aside() {
         {typeSelectors.map((v, i) => {
           return (
             <Link
-              className={cx({ [style.active]: asPath === v.link || (i === 0 && asPath === "/") })}
+              className={cx({ [style.active]: pathname === "/" + v.value || (i === 0 && pathname === "/") })}
               onClick={closeModal}
               href={v.link}
               key={v.value}
@@ -111,7 +108,7 @@ export default function Aside() {
               if (user) {
                 return (
                   <Link
-                    className={cx({ [style.active]: asPath.includes("/user/") })}
+                    className={cx({ [style.active]: pathname.includes("/user/") })}
                     onClick={closeModal}
                     href={`/user/${user.userId}`}
                     key={"user"}
@@ -122,7 +119,7 @@ export default function Aside() {
                 )
               } else {
                 return (
-                  <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
+                  <button className={cx({ [style.active]: pathname === v.link })} onClick={onClickLogin} key={v.value}>
                     <div className={cx(style.icon)}>{v.children}</div>
                     <span className={cx(style.label)}>{t(v.label)}</span>
                   </button>
@@ -133,7 +130,7 @@ export default function Aside() {
                 return <div key={v.value}></div>
               } else {
                 return (
-                  <button className={cx({ [style.active]: asPath === v.link })} onClick={onClickLogin} key={v.value}>
+                  <button className={cx({ [style.active]: pathname === v.link })} onClick={onClickLogin} key={v.value}>
                     <div className={cx(style.icon)}>{v.children}</div>
                     <span className={cx(style.label)}>{t(v.label)}</span>
                   </button>
@@ -142,7 +139,7 @@ export default function Aside() {
             default:
               return (
                 <Link
-                  className={cx({ [style.active]: asPath === v.link })}
+                  className={cx({ [style.active]: pathname === v.link })}
                   onClick={closeModal}
                   href={v.link}
                   key={v.value}

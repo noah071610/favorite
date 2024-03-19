@@ -18,6 +18,14 @@
     .global-page-title {
       position: relative;
       margin-bottom: 20px;
+
+      &-observer {
+        position: absolute;
+        top: -100px;
+        @include mobile {
+          top: -70px;
+        }
+      }
       h1 {
         padding-right: 20px;
         padding-left: 5px;
@@ -48,6 +56,60 @@
         height: 1px;
         width: 100%;
         background-color: var(--border);
+      }
+
+      &-sort {
+        @include mobile {
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      .global-page-sort {
+        position: absolute;
+        display: flex;
+        gap: 10px;
+        padding-left: 20px;
+        top: 50%;
+        right: 0;
+        background-color: var(--bg-color);
+        transform: translateY(-50%);
+        z-index: 20;
+
+        @include mobile {
+          position: relative;
+          transform: translateY(0%);
+          padding-left: 0;
+          padding-top: 10px;
+        }
+        button {
+          @include border();
+          @include flex();
+          border-radius: 5px;
+          padding: 7px 10px;
+          background-color: var(--white);
+          span {
+            color: var(--black-soft);
+            font-size: 13px;
+            margin-right: 7px;
+          }
+          svg {
+            font-size: 11px;
+            color: var(--black-soft);
+            transition: 300ms all;
+          }
+          &.active {
+            border-color: var(--pink-hard);
+            span {
+              color: var(--pink-hard);
+            }
+            svg {
+              color: var(--pink-hard);
+              transform: rotate(180deg);
+            }
+          }
+        }
       }
 
       .global-page-arrows {
@@ -91,7 +153,7 @@
         width: 100%;
         margin-bottom: 20px;
         article {
-          height: 300px; // memo: 어쩔수 없는 선택
+          height: 290px; // memo: 어쩔수 없는 선택
         }
       }
     }
