@@ -62,32 +62,3 @@
     }
   }
 }
-
-.paginate {
-  width: 100%;
-  margin-top: 20px;
-  @include flex();
-  gap: 8px;
-  li {
-    display: inline-block;
-    @include border();
-    border-radius: 5px;
-    & > a {
-      padding: 7px 10px;
-      font-size: 13px;
-      color: var(--black-soft);
-    }
-    &.active {
-      border-color: var(--pink-hard);
-      & > a {
-        color: var(--pink-hard);
-      }
-    }
-    &.disabled {
-      background-color: var(--border);
-      & > a {
-        color: var(--gray-hard);
-      }
-    }
-  }
-}

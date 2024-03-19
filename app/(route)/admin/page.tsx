@@ -2,50 +2,62 @@
 import { queryKey } from "@/_data"
 import { toastError, toastSuccess } from "@/_data/toast"
 import { getAdminRawData, setAdminPosts } from "@/_queries/admin"
+import { LangType } from "@/_types"
 import { UserQueryType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
-import { produce } from "immer"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import TextareaAutosize from "react-textarea-autosize"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const AdminPage = () => {
-  const [input, setInput] = useState([
-    { id: 1, rawData: "" },
-    { id: 2, rawData: "" },
-  ])
+  const { i18n } = useTranslation()
+  const [templateRawData, setTemplateRawData] = useState("")
+  const [popularRawData, setPopularRawData] = useState("")
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user.login,
   })
   const user = userData?.user
 
-  const { data } = useQuery<{ id: number; rawData: string }[]>({
+  const { data } = useQuery<{ name: "template" | "popular"; rawData: string }[]>({
     queryKey: ["admin"],
-    queryFn: () => getAdminRawData(),
+    queryFn: () => getAdminRawData(i18n.language as LangType),
     enabled: typeof user?.userId === "number",
   })
 
   useEffect(() => {
     if (data) {
-      setInput(data)
+      data.forEach(({ name, rawData }) => {
+        switch (name) {
+          case "template":
+            setTemplateRawData(rawData)
+            break
+          case "popular":
+            setPopularRawData(rawData)
+            break
+        }
+      })
     }
   }, [data])
 
   const onChangeInput = (e: any, value: "popular" | "template") => {
-    setInput((arr) =>
-      produce(arr, (draft) => {
-        draft[value === "template" ? 0 : 1].rawData = e.target.value
-      })
-    )
+    switch (value) {
+      case "template":
+        setTemplateRawData(e.target.value)
+        break
+      case "popular":
+        setPopularRawData(e.target.value)
+        break
+    }
   }
 
   const onClickUpload = async (value: "popular" | "template") => {
-    const rawData = input[value === "template" ? 0 : 1].rawData
+    const rawData = value === "template" ? templateRawData : popularRawData
     const postIdArr = rawData.split("\n").map((v) => v.trim())
 
-    await setAdminPosts(value, postIdArr, rawData)
+    await setAdminPosts(value, postIdArr, rawData, i18n.language as LangType)
       .then(() => {
         toastSuccess(`${value} ㅇㅋ업로드 완료`)
       })
@@ -57,17 +69,18 @@ const AdminPage = () => {
   return (
     <div className={cx(style.admin)}>
       <div className={cx(style.main)}>
+        <h1>현재 언어 : {i18n.language}</h1>
         <h1>템플렛 설정</h1>
         <TextareaAutosize
           className={cx(style.textarea)}
-          value={input[0].rawData}
+          value={templateRawData}
           onChange={(e) => onChangeInput(e, "template")}
         />
         <button onClick={() => onClickUpload("template")}>템플릿 업로드</button>
         <h1>인기 콘텐츠 설정</h1>
         <TextareaAutosize
           className={cx(style.textarea)}
-          value={input[1].rawData}
+          value={popularRawData}
           onChange={(e) => onChangeInput(e, "popular")}
         />
         <button onClick={() => onClickUpload("popular")}>인기 콘텐츠 업로드</button>

@@ -1,12 +1,22 @@
 import { MetadataRoute } from "next"
+import { _url } from "./_data"
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/$", "/template$", "/post/polling", "/post/contest", "/post/tournament"],
-      disallow: "/auth",
+      allow: [
+        "/$",
+        "/polling$",
+        "/contest$",
+        "/tournament$",
+        "/template$",
+        "/post/polling",
+        "/post/contest",
+        "/post/tournament",
+      ],
+      disallow: ["/auth", "/admin"],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_CLIENT_URL}/sitemap.xml`,
+    sitemap: `${_url.client}/sitemap.xml`,
   }
 }

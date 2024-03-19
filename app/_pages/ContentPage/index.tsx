@@ -1,9 +1,11 @@
 "use client"
 
 import FavoriteLoading from "@/_components/@Global/Loading/FavoriteLoading"
+import Pagination from "@/_components/Pagination"
 import PostCard from "@/_components/PostCard"
 import { queryKey } from "@/_data"
 import { getAllPostsCount, getPopularPosts, getPosts } from "@/_queries/posts"
+import { LangType } from "@/_types"
 import { PostCardType, PostFindQuery, PostSortOptions } from "@/_types/post"
 import { faChevronLeft, faChevronRight, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -12,7 +14,6 @@ import Image from "next/image"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
-import ReactPaginate from "react-paginate"
 import { Swiper, SwiperSlide } from "swiper/react"
 import style from "./style.module.scss"
 
@@ -34,7 +35,7 @@ const breakpoints = {
 const sortOptions = [{ value: "createdAt" }, { value: "lastPlayedAt" }, { value: "popular" }] as const
 
 export default function ContentPage({ query }: { query: PostFindQuery }) {
-  const { t } = useTranslation(["title"])
+  const { t, i18n } = useTranslation(["title"])
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -51,14 +52,8 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
   })
   const { data: popularPosts } = useQuery<PostCardType[]>({
     queryKey: queryKey.posts["popular"],
-    queryFn: getPopularPosts,
+    queryFn: () => getPopularPosts(i18n.language as LangType),
   })
-
-  const pageCount = Math.ceil((postCount ?? 0) / itemsPerPage)
-
-  const handlePageClick = (event: any) => {
-    setQuery(sortOption, event.selected)
-  }
 
   const sliderRef = useRef(null)
   const postsRef = useRef<HTMLDivElement | null>(null)
@@ -89,6 +84,10 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
 
   const onClickSort = (value: "createdAt" | "lastPlayedAt" | "popular") => {
     setQuery(value)
+  }
+
+  const handlePageClick = (event: any) => {
+    setQuery(sortOption, event.selected)
   }
 
   useEffect(() => {
@@ -166,20 +165,7 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
                   <PostCard key={v.postId} postCard={v} />
                 ))}
               </div>
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel={">"}
-                onPageChange={handlePageClick}
-                forcePage={parseInt(cursor ?? "0")}
-                pageRangeDisplayed={5}
-                marginPagesDisplayed={1}
-                pageCount={pageCount}
-                previousLabel="<"
-                renderOnZeroPageCount={null}
-                className={style.paginate}
-                activeClassName={style.active}
-                disabledClassName={style.disabled}
-              />
+              <Pagination cursor={cursor} handlePageClick={handlePageClick} itemsPerPage={18} postCount={postCount} />
             </>
           ) : (
             <div className={style["loading-wrapper"]}>

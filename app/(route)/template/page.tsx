@@ -6,7 +6,7 @@ import { queryKey } from "@/_data"
 import { copyPost } from "@/_queries/newPost"
 import { getTemplatePosts } from "@/_queries/posts"
 import { useMainStore } from "@/_store/main"
-import { useNewPostStore } from "@/_store/newPost"
+import { LangType } from "@/_types"
 import { PostType } from "@/_types/post"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
@@ -19,16 +19,15 @@ import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function TemplatePage() {
-  const { t } = useTranslation(["title", "modal"])
+  const { t, i18n } = useTranslation(["title", "modal"])
   const [targetTemplate, setTargetTemplate] = useState<PostType | null>(null)
   const router = useRouter()
   const { setModal } = useMainStore()
-  const { loadNewPost } = useNewPostStore()
 
   const { modalStatus } = useMainStore()
   const { data: templatePosts } = useQuery<PostType[]>({
     queryKey: queryKey.posts["template"],
-    queryFn: getTemplatePosts,
+    queryFn: () => getTemplatePosts(i18n.language as LangType),
   })
 
   const onClickConfirm = async (isOk: boolean) => {

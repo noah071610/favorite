@@ -1,6 +1,7 @@
 import "@/_styles/components/global-candidate.scss"
 import "@/_styles/components/global-comment.scss"
 import "@/_styles/components/global-confirm.scss"
+import "@/_styles/components/global-pagination.scss"
 import "@/_styles/components/global-post-card.scss"
 import "@/_styles/components/global-post-info.scss"
 import "@/_styles/components/global-select.scss"

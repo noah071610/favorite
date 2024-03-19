@@ -189,12 +189,13 @@ export default function ResultPart({
             onPageChange={handlePageClick}
             forcePage={page}
             pageRangeDisplayed={5}
+            marginPagesDisplayed={1}
             pageCount={pageCount}
             previousLabel="<"
             renderOnZeroPageCount={null}
-            className={cx(style.paginate)}
-            activeClassName={cx(style.active)}
-            disabledClassName={cx(style.disabled)}
+            className="global-pagination"
+            activeClassName="active"
+            disabledClassName="disable"
           />
         </section>
         <section className={cx(style["section"])}>

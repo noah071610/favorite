@@ -1,11 +1,12 @@
 "use client"
 
 import Confirm from "@/_components/Confirm"
+import Pagination from "@/_components/Pagination"
 import PostCard from "@/_components/PostCard"
 import { queryKey } from "@/_data"
 import { toastError, toastSuccess } from "@/_data/toast"
 import { deletePost, initNewPost } from "@/_queries/newPost"
-import { getUserPosts } from "@/_queries/posts"
+import { getAllUserSaveCount, getUserPosts } from "@/_queries/posts"
 import { useMainStore } from "@/_store/main"
 import { LangType } from "@/_types"
 import { PostCardType } from "@/_types/post"
@@ -13,7 +14,7 @@ import { UserQueryType } from "@/_types/user"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import UserPageLoading from "../loading"
@@ -22,8 +23,11 @@ const cx = classNames.bind(style)
 
 export default function UserPageMain() {
   const { t, i18n } = useTranslation(["modal", "messages", "newPost"])
+  const searchParams = useSearchParams()
+  const { replace, push } = useRouter()
+  const pathname = usePathname()
   const queryClient = useQueryClient()
-  const router = useRouter()
+  const cursor = searchParams.get("cursor")
   const [targetPost, setTargetPost] = useState<null | PostCardType>(null)
   const { userId: queryUserId } = useParams()
   const { data: userData } = useQuery<UserQueryType>({
@@ -35,9 +39,15 @@ export default function UserPageMain() {
 
   const { modalStatus, setModal } = useMainStore()
 
+  const { data: postCount } = useQuery<number>({
+    queryKey: queryKey.posts.count("user"),
+    queryFn: getAllUserSaveCount,
+    enabled: !!(user?.userId === parseInt(queryUserId as string)),
+  })
+
   const { data: userPosts } = useQuery<PostCardType[]>({
-    queryKey: queryKey.posts.user,
-    queryFn: () => getUserPosts(),
+    queryKey: queryKey.posts.user(cursor ?? "0"),
+    queryFn: () => getUserPosts(cursor ?? "0"),
     enabled: !!(user?.userId === parseInt(queryUserId as string)),
   })
 
@@ -47,7 +57,7 @@ export default function UserPageMain() {
       setTargetPost(target)
     } else {
       if (user?.userId) {
-        router.push(`/post/edit/${target.postId}`)
+        push(`/post/edit/${target.postId}`)
       } else {
         toastError(t("error.unknown", { ns: "messages" }))
       }
@@ -57,12 +67,20 @@ export default function UserPageMain() {
   const onClickConfirmDelete = async (isOk: boolean) => {
     if (isOk && targetPost) {
       await deletePost(targetPost.postId)
+      const previous = queryClient.getQueriesData({
+        predicate: (target) =>
+          target.queryKey.includes("allPosts") || target.queryKey.includes(`${targetPost.type}Posts`),
+      })
+      await Promise.allSettled(
+        previous.map(async (targetKey) => {
+          await queryClient.setQueryData(targetKey[0], (old: PostCardType[]) => {
+            if (!old) return
+            return old.filter((v) => v.postId !== targetPost.postId)
+          })
+        })
+      )
+
       toastSuccess(t("success.delete", { ns: "messages" }))
-      ;(
-        ["all", targetPost.type, "popular", "user", "template"] as Array<
-          "all" | "tournament" | "polling" | "contest" | "popular" | "template" | "user"
-        >
-      ).forEach(async (v) => await queryClient.invalidateQueries({ queryKey: queryKey.posts[v] }))
     }
     setTargetPost(null)
     setModal("none")
@@ -73,8 +91,10 @@ export default function UserPageMain() {
       setLoadingNewPostCreate(true)
       await initNewPost(i18n.language as LangType)
         .then(async (postId) => {
-          await queryClient.invalidateQueries({ queryKey: queryKey.posts.user })
-          router.push(`/post/edit/${postId}`)
+          await queryClient.invalidateQueries({
+            predicate: (target) => target.queryKey.includes("userPosts"),
+          })
+          push(`/post/edit/${postId}`)
         })
         .catch(() => {
           setLoadingNewPostCreate(false)
@@ -82,11 +102,30 @@ export default function UserPageMain() {
     }
   }
 
+  const setQuery = (_cursor: number = 0) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()))
+    current.set("cursor", String(_cursor))
+    const search = current.toString()
+    const query = search ? `?${search}` : ""
+
+    replace(`${pathname}${query}`)
+  }
+
+  const handlePageClick = (event: any) => {
+    setQuery(event.selected)
+  }
+
   useEffect(() => {
     if (userData?.msg === "no") {
-      router.push("/")
+      push("/")
     }
   }, [userData])
+
+  useEffect(() => {
+    if (!cursor) {
+      setQuery(0)
+    }
+  }, [cursor])
 
   return (
     <>
@@ -118,6 +157,9 @@ export default function UserPageMain() {
                 <PostCard key={v.postId} onClickUserPageBtn={onClickUserPageBtn} isUserPage={true} postCard={v} />
               ))}
             </div>
+            {!!userPosts && typeof postCount === "number" && (
+              <Pagination cursor={cursor} handlePageClick={handlePageClick} itemsPerPage={11} postCount={postCount} />
+            )}
           </div>
         </div>
       ) : (

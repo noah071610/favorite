@@ -25,14 +25,14 @@ export const getImageUrl = ({ isCenter, url }: { url: string; isCenter?: boolean
 
 export const queryKey = {
   posts: {
-    all: (cursor: string, sort: PostSortOptions) => ["posts", "all", sort, cursor],
-    tournament: (cursor: string, sort: PostSortOptions) => ["posts", "tournament", sort, cursor],
-    polling: (cursor: string, sort: PostSortOptions) => ["posts", "polling", sort, cursor],
-    contest: (cursor: string, sort: PostSortOptions) => ["posts", "contest", sort, cursor],
-    count: (query: PostContentType | "all") => ["posts", query, "count"],
+    all: (cursor: string, sort: PostSortOptions) => ["posts", "allPosts", sort, cursor],
+    tournament: (cursor: string, sort: PostSortOptions) => ["posts", "tournamentPosts", sort, cursor],
+    polling: (cursor: string, sort: PostSortOptions) => ["posts", "pollingPosts", sort, cursor],
+    contest: (cursor: string, sort: PostSortOptions) => ["posts", "contestPosts", sort, cursor],
+    count: (query: PostContentType | "user" | "all") => ["posts", query, "count"],
     popular: ["posts", "popular"],
     template: ["posts", "template"],
-    user: ["posts", "user"],
+    user: (cursor: string) => ["posts", "userPosts", cursor],
   },
   post: (postId: string) => ["post", postId],
   comment: ["post", "comment"],

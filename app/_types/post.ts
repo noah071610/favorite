@@ -1,3 +1,4 @@
+import { LangType } from "."
 import { UserType } from "./user"
 
 export type ContentLayoutType = "text" | "image" | "textImage"
@@ -18,6 +19,7 @@ export interface ContentPageParams {
   sort?: PostSortOptions | null
   cursor?: string | null
   query?: PostFindQuery | null
+  lang?: LangType | null
 }
 
 export type VoteIdType = {

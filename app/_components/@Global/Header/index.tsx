@@ -34,12 +34,13 @@ export default function Header() {
   const isNewPostPage = pathname.includes("new") || pathname.includes("edit")
   const isHideHeader = (pathname.includes("/post/") && !isNewPostPage) || pathname.includes("loginSuccess")
 
-  const { content, postId, type, thumbnail, title, description, format, count } = useNewPostStore()
+  const { content, postId, type, thumbnail, title, description, format, count, lang } = useNewPostStore()
   const [saved, setSaved] = useState(false)
 
   const newPost: NewPostStates = {
     postId,
     type,
+    lang,
     thumbnail,
     title,
     description,
