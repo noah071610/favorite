@@ -2,6 +2,7 @@ import { errorMessage } from "@/_data/message"
 import { PostCardType } from "./post"
 
 export type LangType = "ko" | "en" | "ja" | "th"
+export type LngParamsType = { params: { lang: LangType } }
 export type ModalStatus =
   | "none"
   | "search"

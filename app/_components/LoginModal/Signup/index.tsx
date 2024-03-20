@@ -5,10 +5,11 @@ import { toastError, toastSuccess } from "@/_data/toast"
 import { hasEmail, registerUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
+import { useTranslation } from "@/i18n/client"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
+import { useParams } from "next/navigation"
 import { useRef, useState } from "react"
-import { useTranslation } from "react-i18next"
 import style from "../style.module.scss"
 const cx = classNames.bind(style)
 
@@ -21,8 +22,9 @@ const label = {
 type InputTypes = keyof typeof label
 
 export default function SignUpContent({ setContentPart }: { setContentPart: (state: "signUp" | "login") => void }) {
-  const { t } = useTranslation(["login", "messages"])
-  const { t: message } = useTranslation(["messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["login", "messages"])
+  const { t: message } = useTranslation(lang, ["messages"])
   const queryClient = useQueryClient()
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const passwordConfirmRef = useRef<HTMLInputElement | null>(null)

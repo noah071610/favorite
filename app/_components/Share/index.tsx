@@ -3,25 +3,28 @@
 import { _url, getShareUrl, kakaoShare, queryKey } from "@/_data"
 import { getThumbnail, noThumbnailUrl, shareProviders } from "@/_data/post"
 import { toastSuccess } from "@/_data/toast"
+import { getUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { UserQueryType } from "@/_types/user"
 import { copyTextToClipboard } from "@/_utils/copy"
+import { useTranslation } from "@/i18n/client"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 type ShareProviderValue = "twitter" | "facebook" | "kakaoTalk" | "line" | "link"
 
 export default function Share({ post }: { post: any }) {
-  const { t } = useTranslation(["content", "messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["post-page", "messages"])
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
+    queryFn: getUser,
   })
   const user = userData?.user
   const { push } = useRouter()
@@ -68,7 +71,7 @@ export default function Share({ post }: { post: any }) {
         setModal("none")
       }
     }
-  }, [modalStatus, user])
+  }, [modalStatus, user, t, push, setModal])
 
   return (
     <section className={cx(style["cta-section"])}>

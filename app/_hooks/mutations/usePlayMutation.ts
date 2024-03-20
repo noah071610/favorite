@@ -4,11 +4,13 @@ import { queryKey } from "@/_data"
 import { toastError } from "@/_data/toast"
 import { finishPlay } from "@/_queries/post"
 import { PostCardType } from "@/_types/post"
+import { useTranslation } from "@/i18n/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useTranslation } from "react-i18next"
+import { useParams } from "next/navigation"
 
 export const usePlayMutation = (postId: string) => {
-  const { t } = useTranslation(["messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["messages"])
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationKey: queryKey.play,

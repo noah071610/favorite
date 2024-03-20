@@ -1,0 +1,44 @@
+{
+  "anonymous": "Anonymous",
+
+  "enterTitle": "Enter Title",
+  "enterDesc": "Enter Description",
+  "chartDesc": "Chart Description",
+  "enterCandidateTitle": "Enter candidate title (Required)",
+  "enterCandidateDesc": "Enter candidate description (Optional)",
+  "enterChartDesc": "Enter chart description (Optional)",
+  "enterCandidate": "Add Candidate",
+  "editCandidate": "Edit Candidate",
+  "candidatePreviewAndAdd": "Preview and Add",
+  "addMultiplePictures": "Drag & Drop Pictures",
+  "noCandidates": "No candidates yet",
+  "optional": "(Optional)",
+  "required": "(Required)",
+  "changeLayoutStyle": "Change Style",
+  "selectContentType": "Select content type",
+  "layout": {
+    "textImage": "Text & Image",
+    "image": "Image",
+    "text": "Text Only"
+  },
+  "thumbnailType": {
+    "custom": "Custom",
+    "layout": "Layout",
+    "none": "No Thumb"
+  },
+  "options": {
+    "default": "Public",
+    "editing": "Private",
+    "secret": "Share Only"
+  },
+  "optionsTitle": "Visibility",
+  "changeThumb": "Change Thumbnail",
+  "moreThanTwoThumb": "At least 2 candidates needed",
+  "secretContent": "Private content",
+  "preview": "Preview",
+  "posting": "Post now",
+  "editing": "Edit",
+  "deletePost": "Delete",
+  "createNewPost": "Create New Content",
+  "changeLang": "Change Language"
+}

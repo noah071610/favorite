@@ -1,21 +1,20 @@
 "use client"
 
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "@/i18n/client"
+import { useParams } from "next/navigation"
 export default function Confirm({
   title,
   description,
   onClickConfirm,
-  customBtn,
+  itIsFine,
 }: {
   title: string
   description?: string
   onClickConfirm: (isOk: boolean) => void
-  customBtn?: {
-    yes?: string
-    no?: string
-  }
+  itIsFine?: boolean
 }) {
-  const { t } = useTranslation(["common"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang)
   return (
     <div className={"global-confirm"}>
       <div className={"inner"}>
@@ -23,10 +22,10 @@ export default function Confirm({
         {description && <p>{description}</p>}
         <div className={"btn"}>
           <button onClick={() => onClickConfirm(true)}>
-            <span>{customBtn && customBtn?.yes ? customBtn.yes : t("yes")}</span>
+            <span>{itIsFine ? t("itIsFine") : t("yes")}</span>
           </button>
           <button onClick={() => onClickConfirm(false)}>
-            <span>{customBtn && customBtn?.no ? customBtn.no : t("no")}</span>
+            <span>{itIsFine ? t("cancel") : t("no")}</span>
           </button>
         </div>
       </div>

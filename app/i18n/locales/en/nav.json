@@ -1,0 +1,22 @@
+{
+  "template": "Template",
+  "makeNew": "Create",
+  "dashboard": "Dashboard",
+  "login": "Login",
+  "mainPage": "Go to Main",
+  "save": "Save",
+  "polling": "Polling",
+  "contest": "Contest",
+  "tournament": "Tournament",
+  "all": "View All",
+  "init": "Type",
+  "edit": "Edit",
+  "rending": "Post",
+  "goBack": "Go Back",
+  "popular": "Popular",
+  "lastPlayedAt": "Latest played",
+  "createdAt": "New Created",
+  "emptySearchResult": "No Search Results",
+  "terms-of-service": "Terms of service",
+  "privacy-policy": "Privacy Policy"
+}

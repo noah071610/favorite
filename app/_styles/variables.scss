@@ -131,6 +131,28 @@ $z-index-map: (
   }
 }
 
+@mixin skeleton {
+  width: 100%;
+  position: relative;
+  background-color: var(--gray-soft);
+
+  &::before {
+    @include full;
+    content: "";
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0.7) 80%,
+      rgba(255, 255, 255, 0) 90%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 200%;
+    animation: shine 1000ms 100ms infinite;
+  }
+}
+
 @mixin modal-inner {
   background: rgb(255, 255, 255);
   background: var(--radial-bg);

@@ -2,9 +2,10 @@
 
 import { queryKey } from "@/_data"
 import { typeSelectors } from "@/_data/post"
+import { getUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { UserQueryType } from "@/_types/user"
-import i18n from "@/_utils/i18n"
+import { useTranslation } from "@/i18n/client"
 import { faClose, faPen, faUser, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
@@ -12,8 +13,7 @@ import classNames from "classNames"
 import dayjs from "dayjs"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useTranslation } from "react-i18next"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import style from "./style.module.scss"
 
 const cx = classNames.bind(style)
@@ -52,15 +52,24 @@ const asideSelectors = [
 ]
 
 export default function Aside() {
-  const { t, i18n: _i18n } = useTranslation(["nav"])
+  const { lang } = useParams()
+  const { replace } = useRouter()
+  const searchParams = useSearchParams()
+  const { t, i18n } = useTranslation(lang, "nav")
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
+    queryFn: getUser,
   })
   const pathname = usePathname()
   const { modalStatus, setModal } = useMainStore()
   const user = userData?.user
 
   const changeLanguage = (lang: string) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()))
+    const search = current.toString()
+    const query = search ? `?${search}` : ""
+
+    replace(`/${lang}/${pathname.split("/").slice(2).join("/")}${query}`)
     i18n.changeLanguage(lang)
     localStorage.setItem("favorite_lang", lang)
     setModal("none")
@@ -89,9 +98,9 @@ export default function Aside() {
         {typeSelectors.map((v, i) => {
           return (
             <Link
-              className={cx({ [style.active]: pathname === "/" + v.value || (i === 0 && pathname === "/") })}
+              className={cx({ [style.active]: pathname.includes(v.value) || (i === 0 && pathname === `/${lang}`) })}
               onClick={closeModal}
-              href={v.link}
+              href={`${v.link}`}
               key={v.value}
             >
               <div className={cx(style.icon)}>{v.icon(style)}</div>
@@ -155,10 +164,7 @@ export default function Aside() {
         <ul>
           {["ko", "ja", "en", "th"].map((v) => (
             <li key={v}>
-              <button
-                className={cx(style.lang, { [style.active]: v === _i18n.language })}
-                onClick={() => changeLanguage(v)}
-              >
+              <button className={cx(style.lang, { [style.active]: v === lang })} onClick={() => changeLanguage(v)}>
                 <Image width={16} height={16} src={`/images/emoji/${v}.png`} alt={`flag_${v}`} />
               </button>
             </li>

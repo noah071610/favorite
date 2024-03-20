@@ -1,0 +1,11 @@
+{
+  "changePostType": "Changing content type will delete all data. <br/>Is that okay?",
+  "itIsFine": "Okay, i understand",
+  "cancel": "Cancel",
+  "newPostLoad": "You have a saved content <br/>Is that okay to load?",
+  "load": "Load Data",
+  "makeNewPost": "Create New",
+  "createPost": "New post created!<br/> Would you like to view the post?",
+  "loadTemplate": "Loading a template will delete all saved data. Is that okay?",
+  "deletePost": "Deleting the content is irreversible. <br/> Are you sure?"
+}

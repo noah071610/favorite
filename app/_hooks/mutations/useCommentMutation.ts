@@ -2,11 +2,13 @@
 import { queryKey } from "@/_data"
 import { toastError } from "@/_data/toast"
 import { commenting } from "@/_queries/post"
+import { useTranslation } from "@/i18n/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useTranslation } from "react-i18next"
+import { useParams } from "next/navigation"
 
 export const useCommentMutation = (commented: () => void) => {
-  const { t } = useTranslation(["messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["messages"])
   const queryClient = useQueryClient()
   const { mutate, isSuccess } = useMutation({
     mutationKey: queryKey.comment,

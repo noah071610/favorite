@@ -3,8 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { PropsWithChildren, useState } from "react"
 
 import { _url } from "@/_data"
-import i18n from "@/_utils/i18n"
-import { I18nextProvider } from "react-i18next"
+import { CookiesProvider } from "react-cookie"
 
 const STALE_TIME = 1000 * 60 * 5 // 5 minutes
 
@@ -24,12 +23,12 @@ const ReactQueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [queryClientStore] = useState(() => new QueryClient(queryClientConfig))
 
   return (
-    <I18nextProvider i18n={i18n}>
+    <CookiesProvider>
       <QueryClientProvider client={queryClientStore}>
         {children}
         {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
-    </I18nextProvider>
+    </CookiesProvider>
   )
 }
 

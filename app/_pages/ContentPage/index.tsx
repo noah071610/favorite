@@ -7,13 +7,13 @@ import { queryKey } from "@/_data"
 import { getAllPostsCount, getPopularPosts, getPosts } from "@/_queries/posts"
 import { LangType } from "@/_types"
 import { PostCardType, PostFindQuery, PostSortOptions } from "@/_types/post"
+import { useTranslation } from "@/i18n/client"
 import { faChevronLeft, faChevronRight, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useRef } from "react"
-import { useTranslation } from "react-i18next"
 import { Swiper, SwiperSlide } from "swiper/react"
 import style from "./style.module.scss"
 
@@ -33,7 +33,8 @@ const breakpoints = {
 const sortOptions = [{ value: "createdAt" }, { value: "lastPlayedAt" }, { value: "popular" }] as const
 
 export default function ContentPage({ query }: { query: PostFindQuery }) {
-  const { t, i18n } = useTranslation(["title", "nav"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["posts-page"])
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const { replace } = useRouter()
@@ -42,7 +43,7 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
 
   const { data: posts } = useQuery<PostCardType[]>({
     queryKey: queryKey.posts[query](cursor ?? "0", sortOption),
-    queryFn: () => getPosts({ cursor: cursor ?? "0", query, sort: sortOption }),
+    queryFn: () => getPosts({ cursor: cursor ?? "0", query, lang: lang as LangType, sort: sortOption }),
   })
   const { data: postCount } = useQuery<number>({
     queryKey: queryKey.posts.count(query),
@@ -50,7 +51,7 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
   })
   const { data: popularPosts } = useQuery<PostCardType[]>({
     queryKey: queryKey.posts["popular"],
-    queryFn: () => getPopularPosts(i18n.language as LangType),
+    queryFn: () => getPopularPosts(lang as LangType),
   })
 
   const sliderRef = useRef(null)
@@ -64,35 +65,38 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
     ;(sliderRef.current as any).swiper.slideNext()
   }, [])
 
-  const setQuery = (sort: PostSortOptions, _cursor: number = 0) => {
-    const current = new URLSearchParams(Array.from(searchParams.entries()))
-    current.set("sort", sort)
-    current.set("cursor", String(_cursor))
-    const search = current.toString()
-    // or const query = `${'?'.repeat(search.length && 1)}${search}`;
-    const query = search ? `?${search}` : ""
+  const setQuery = useCallback(
+    ({ sort, _cursor = 0, scroll }: { sort: PostSortOptions; _cursor?: number; scroll?: boolean }) => {
+      const current = new URLSearchParams(Array.from(searchParams.entries()))
+      current.set("sort", sort)
+      current.set("cursor", String(_cursor))
+      const search = current.toString()
+      // or const query = `${'?'.repeat(search.length && 1)}${search}`;
+      const query = search ? `?${search}` : ""
 
-    replace(`${pathname}${query}`, {
-      scroll: false,
-    })
-    if (postsRef?.current) {
-      postsRef?.current.scrollIntoView()
-    }
-  }
+      replace(`${pathname}${query}`, {
+        scroll: false,
+      })
+      if (scroll && postsRef?.current) {
+        postsRef?.current.scrollIntoView()
+      }
+    },
+    [pathname, replace, searchParams]
+  )
 
-  const onClickSort = (value: "createdAt" | "lastPlayedAt" | "popular") => {
-    setQuery(value)
+  const onClickSort = (value: PostSortOptions) => {
+    setQuery({ sort: value, scroll: true })
   }
 
   const handlePageClick = (event: any) => {
-    setQuery(sortOption, event.selected)
+    setQuery({ sort: sortOption, _cursor: event.selected, scroll: true })
   }
 
   useEffect(() => {
     if (!sortOption || !cursor) {
-      setQuery("createdAt")
+      setQuery({ sort: "createdAt" })
     }
-  }, [sortOption, cursor])
+  }, [sortOption, cursor, setQuery])
 
   return (
     <>
@@ -168,6 +172,7 @@ export default function ContentPage({ query }: { query: PostFindQuery }) {
           ) : (
             <div className={style["loading-wrapper"]}>
               <FavoriteLoading type="full" />
+              <div style={{ paddingBottom: "2000px" }} />
             </div>
           )}
         </div>

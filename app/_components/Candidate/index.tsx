@@ -4,10 +4,11 @@ import { getImageUrl } from "@/_data"
 import { noImageUrl } from "@/_data/post"
 import { fadeMoveUpAnimation } from "@/_styles/animation"
 import { CandidateType, ContentLayoutType } from "@/_types/post"
+import { useTranslation } from "@/i18n/client"
 import classNames from "classNames"
+import { useParams } from "next/navigation"
 import React from "react"
 import CountUp from "react-countup"
-import { useTranslation } from "react-i18next"
 
 function Candidate({
   candidate,
@@ -24,7 +25,8 @@ function Candidate({
   isSelected: boolean
   index: number
 }) {
-  const { t } = useTranslation(["content"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["post-page"])
   const { pick, description, title, imageSrc } = candidate
 
   const titleComponent = () => (

@@ -5,10 +5,10 @@ import { toastError } from "@/_data/toast"
 import { useMainStore } from "@/_store/main"
 import { useNewPostStore } from "@/_store/newPost"
 import { PostingStatus } from "@/_types/post"
+import { useTranslation } from "@/i18n/client"
 import classNames from "classNames"
-import { usePathname } from "next/navigation"
+import { useParams, usePathname } from "next/navigation"
 import { useCallback } from "react"
-import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
@@ -19,10 +19,11 @@ const navList = {
 }
 
 export default function NewPostNavigation() {
-  const { t } = useTranslation(["nav"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["nav"])
   const pathname = usePathname()
   const isEditPage = pathname.includes("edit")
-  const { t: message } = useTranslation(["messages"])
+  const { t: message } = useTranslation(lang, ["messages"])
   const { setError } = useMainStore()
   const {
     setStatus,

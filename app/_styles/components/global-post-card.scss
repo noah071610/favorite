@@ -16,6 +16,9 @@
 }
 
 .global-post-card {
+  &.loading {
+    min-height: 360px;
+  }
   display: flex;
   position: relative;
   border-radius: 12px;
@@ -76,6 +79,12 @@
           font-size: 14px;
         }
       }
+      .title-loading {
+        @include skeleton;
+        height: 20px;
+        overflow: hidden;
+        border-radius: 5px;
+      }
       h2 {
         font-size: 13px;
         line-height: 1.3;
@@ -93,6 +102,13 @@
           height: 30px;
           -webkit-line-clamp: 2;
         }
+      }
+      .description-loading {
+        @include skeleton;
+        margin-top: 10px;
+        height: 14px;
+        overflow: hidden;
+        border-radius: 5px;
       }
     }
   }
@@ -119,31 +135,16 @@
     }
 
     .loading {
-      width: 100%;
-      height: var(--post-card-thumbnail-height);
+      @include skeleton;
       border-radius: 8px;
-      position: relative;
-      background-color: var(--gray-soft);
-
-      &::before {
-        @include full;
-        content: "";
-        background: rgb(0, 0, 0);
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0) 70%,
-          rgba(255, 255, 255, 0.7) 80%,
-          rgba(255, 255, 255, 0) 90%,
-          rgba(255, 255, 255, 0) 100%
-        );
-        background-size: 200% 200%;
-        animation: shine 1000ms 100ms infinite;
-      }
+      height: var(--post-card-thumbnail-height);
     }
   }
 
   .info {
+    &-loading {
+      height: 67px;
+    }
     width: 100%;
 
     .badge {

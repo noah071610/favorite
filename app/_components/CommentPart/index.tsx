@@ -6,18 +6,19 @@ import { useCommentMutation } from "@/_hooks/mutations/useCommentMutation"
 import { getUser } from "@/_queries/user"
 import { CommentType } from "@/_types/post"
 import { UserQueryType, UserType } from "@/_types/user"
+import { useTranslation } from "@/i18n/client"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import "dayjs/locale/ko" // 한국어 로케일 설정
 import { useParams } from "next/navigation"
 import { useState } from "react"
-import { useTranslation } from "react-i18next"
 import TextareaAutosize from "react-textarea-autosize"
 
 const formattedDate = (date: any) => dayjs(date).locale("ko").format("YYYY년MM월DD일")
 
 function Comment({ user, text, authorId }: { user?: UserType; text: string; authorId: number }) {
-  const { t } = useTranslation(["common"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang)
   return (
     <div className={"comment-area-wrapper"}>
       <div className={"inner"}>
@@ -39,8 +40,8 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
     queryKey: queryKey.user,
     queryFn: getUser,
   })
-  const { t } = useTranslation(["common"])
-  const { t: message } = useTranslation(["messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["messages"])
   const user = userData?.user
   const { postId } = useParams()
 
@@ -51,7 +52,7 @@ function Commenting({ authorId, isPreview }: { authorId: number; isPreview: bool
     setText(event.target.value)
   }
   const commented = () => {
-    toastSuccess(message("success.commenting"))
+    toastSuccess(t("success.commenting", { ns: "messages" }))
     setText("")
     setIsFocused(false)
     setDisplayBtn(false)

@@ -3,14 +3,16 @@
 import { contentTypesObj } from "@/_data/post"
 import { useMainStore } from "@/_store/main"
 import { usePostStore } from "@/_store/post"
+import { useTranslation } from "@/i18n/client"
 import classNames from "classNames"
 import Link from "next/link"
-import { useTranslation } from "react-i18next"
+import { useParams } from "next/navigation"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 export default function SearchModal() {
-  const { t } = useTranslation(["search"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["nav"])
   const { searchPosts, isSearching, searchQuery } = usePostStore()
   const { modalStatus } = useMainStore()
 

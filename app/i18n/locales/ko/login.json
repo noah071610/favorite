@@ -1,0 +1,13 @@
+{
+  "login": "로그인",
+  "signup": "회원가입",
+  "snsTitle": "SNS로 3초만에 로그인",
+  "userName": "닉네임",
+  "email": "이메일",
+  "password": "패스워드 입력",
+  "passwordConfirm": "패스워드 확인",
+  "findEmail": "이메일 찾기",
+  "enterEmail": "이메일 입력",
+  "enterPassword": "비밀번호 입력",
+  "back": "뒤로가기"
+}

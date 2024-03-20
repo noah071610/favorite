@@ -1,20 +1,21 @@
 "use client"
 
 import { queryKey } from "@/_data"
+import { getUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { NewPostStates, useNewPostStore } from "@/_store/newPost"
 import { PostCardType } from "@/_types/post"
 import { UserQueryType } from "@/_types/user"
 import { handleBeforeUnload } from "@/_utils/post"
+import { useTranslation } from "@/i18n/client"
 import { faBars, faCheck, faClose, faFloppyDisk, faMagnifyingGlass, faPen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
-import { useTranslation } from "react-i18next"
 import NewPostNavigation from "./NewPostNavigation"
 import SearchBar from "./SearchBar"
 import SearchModal from "./SearchModal"
@@ -23,10 +24,12 @@ const cx = classNames.bind(style)
 
 export default function Header() {
   const queryClient = useQueryClient()
-  const { t } = useTranslation(["nav"])
+  const params = useParams()
+  const { t } = useTranslation(params.lang, ["nav"])
   const pathname = usePathname()
   const { data: userData } = useQuery<UserQueryType>({
     queryKey: queryKey.user,
+    queryFn: getUser,
   })
   const { push } = useRouter()
   const user = userData?.user

@@ -8,13 +8,14 @@ import { login, refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { ErrorTypes } from "@/_types"
 import { Providers, UserQueryType } from "@/_types/user"
+import { useTranslation } from "@/i18n/client"
 import { faRocket } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
+import { useParams } from "next/navigation"
 import { useRef, useState } from "react"
-import { useTranslation } from "react-i18next"
 import style from "../style.module.scss"
 
 const cx = classNames.bind(style)
@@ -42,7 +43,8 @@ const socials = [
 
 export default function LoginContent({ setContentPart }: { setContentPart: (state: "signUp" | "login") => void }) {
   const queryClient = useQueryClient()
-  const { t } = useTranslation(["login", "common", "messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["login", "messages"])
   const passwordRef = useRef<HTMLInputElement | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const { setModal, modalStatus } = useMainStore()
@@ -184,7 +186,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             autoComplete="email"
             className={cx({ [style.active]: inputStatus.focus.email })}
           />
-          <label className={cx({ [style.active]: inputStatus.focus.email })}>{t("enterEmail", { ns: "login" })}</label>
+          <label className={cx({ [style.active]: inputStatus.focus.email })}>{t("enterEmail")}</label>
           {inputStatus.errorMessage.email && (
             <div className={cx(style["error-message"])}>
               <span>* {inputStatus.errorMessage.email}</span>
@@ -204,9 +206,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             autoComplete="current-password"
             className={cx({ [style.active]: inputStatus.focus.password })}
           />
-          <label className={cx({ [style.active]: inputStatus.focus.password })}>
-            {t("enterPassword", { ns: "login" })}
-          </label>
+          <label className={cx({ [style.active]: inputStatus.focus.password })}>{t("enterPassword")}</label>
           {inputStatus.errorMessage.password && (
             <div className={cx(style["error-message"])}>
               <span>* {inputStatus.errorMessage.password}</span>
@@ -215,7 +215,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
         </div>
         <div className={cx(style["submit-btn"], { [style.error]: !!inputStatus.errorMessage.loginBtn })}>
           <button type="submit">
-            <span className={cx(style["btn-text"])}>{t("login", { ns: "common" })}</span>
+            <span className={cx(style["btn-text"])}>{t("login")}</span>
           </button>
           {inputStatus.errorMessage.loginBtn && (
             <div className={cx(style["error-message"])}>
@@ -236,11 +236,11 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
             setContentPart("signUp")
           }}
         >
-          <span>{t("signup", { ns: "login" })}</span>
+          <span>{t("signup")}</span>
         </button>
       </div>
       <div className={cx(style.title)}>
-        <span>{t("snsTitle", { ns: "login" })}</span>
+        <span>{t("snsTitle")}</span>
         <FontAwesomeIcon icon={faRocket} />
       </div>
       <div className={cx(style.sns)}>

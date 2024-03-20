@@ -5,15 +5,15 @@ import { contentTypesArr, getThumbnail } from "@/_data/post"
 import { useIntersectionObserver } from "@/_hooks/useIntersectionObserver"
 import { PostCardType } from "@/_types/post"
 import { formatNumber } from "@/_utils/math"
+import { useTranslation } from "@/i18n/client"
 import { faArrowUpFromBracket, faEye, faEyeSlash, faPlay } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { memo, useEffect, useState } from "react"
 import CountUp from "react-countup"
-import { useTranslation } from "react-i18next"
 import FavoriteLoading from "../@Global/Loading/FavoriteLoading"
 import NoThumbnail from "../@Global/Loading/NoThumbnail"
 
@@ -34,7 +34,8 @@ function PostCard({
   onClickUserPageBtn?: (type: "delete" | "edit", target: PostCardType) => void
   loadTemplate?: (postCard: PostCardType) => void
 }) {
-  const { t } = useTranslation(["content", "messages", "newPost"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["post-card", "post-common"])
   const router = useRouter()
   const { description, type, postId, thumbnail, title, count, format } = postCard
   const [onShareModal, setOnShareModal] = useState(false)
@@ -50,9 +51,7 @@ function PostCard({
 
   useEffect(() => {
     if (imageLoadedCount >= thumbnailArr.length && alreadyLoaded) {
-      setTimeout(() => {
-        setIsImagesLoaded(true)
-      })
+      setIsImagesLoaded(true)
     }
   }, [thumbnailArr, imageLoadedCount, alreadyLoaded])
 
@@ -129,14 +128,14 @@ function PostCard({
               <Link href={typeData.link} className={classNames("badge-main", typeData.value)}>
                 <span>
                   {typeData.icon("style")}
-                  <span className={classNames("label")}>{t(`${typeData.label}`)}</span>
+                  <span className={classNames("label")}>{t(`${typeData.label}`, { ns: "post-common" })}</span>
                 </span>
               </Link>
               {isUserPage && (
                 <div className={classNames("badge-format-main", format)}>
                   <span>
                     <FontAwesomeIcon icon={format === "default" ? faEye : faEyeSlash} />
-                    <span className={classNames("label")}>{t(`options.${format}`, { ns: "newPost" })}</span>
+                    <span className={classNames("label")}>{t(`options.${format}`, { ns: "post-common" })}</span>
                   </span>
                 </div>
               )}
@@ -149,7 +148,7 @@ function PostCard({
                   <div className={classNames("template-badge", typeData.value)}>
                     <span>
                       {typeData.icon("style")}
-                      <span className={classNames("label")}>{t(typeData.label)}</span>
+                      <span className={classNames("label")}>{t(typeData.label, { ns: "post-common" })}</span>
                     </span>
                   </div>
                 )
@@ -160,14 +159,14 @@ function PostCard({
                       <Link href={typeData.link} className={classNames("badge-main", typeData.value)}>
                         <span>
                           {typeData.icon("style")}
-                          <span className={classNames("label")}>{t(typeData.label)}</span>
+                          <span className={classNames("label")}>{t(typeData.label, { ns: "post-common" })}</span>
                         </span>
                       </Link>
                       {isUserPage && (
                         <div className={classNames("badge-format-main", format)}>
                           <span>
                             <FontAwesomeIcon icon={format === "default" ? faEye : faEyeSlash} />
-                            <span className={classNames("label")}>{t(`options.${format}`, { ns: "newPost" })}</span>
+                            <span className={classNames("label")}>{t(`options.${format}`, { ns: "post-common" })}</span>
                           </span>
                         </div>
                       )}
@@ -192,10 +191,10 @@ function PostCard({
               {isUserPage ? (
                 <>
                   <button onClick={() => onClickUserPageBtn && onClickUserPageBtn("edit", postCard)}>
-                    <span style={{ marginLeft: "0" }}>{t("editing", { ns: "newPost" })}</span>
+                    <span style={{ marginLeft: "0" }}>{t("editing", { ns: "post-common" })}</span>
                   </button>
                   <button onClick={() => onClickUserPageBtn && onClickUserPageBtn("delete", postCard)}>
-                    <span style={{ marginLeft: "0" }}>{t("deletePost", { ns: "newPost" })}</span>
+                    <span style={{ marginLeft: "0" }}>{t("deletePost", { ns: "post-common" })}</span>
                   </button>
                 </>
               ) : (

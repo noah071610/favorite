@@ -2,12 +2,14 @@
 
 import { useNewPostStore } from "@/_store/newPost"
 
+import { useTranslation } from "@/i18n/client"
+import { useParams } from "next/navigation"
 import { ReactNode } from "react"
-import { useTranslation } from "react-i18next"
 
 export default function NewPostLayout({ children }: { children: ReactNode }) {
   const { title, description, setNewPost } = useNewPostStore()
-  const { t } = useTranslation(["newPost"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["new-post-page"])
 
   const onChangeInput = (e: any, type: "title" | "description") => {
     if (type === "title" && e.target.value.length >= 60) return

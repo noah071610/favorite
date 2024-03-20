@@ -1,23 +1,25 @@
 "use client"
 
 import { uploadImage } from "@/_queries/newPost"
+import { useParams } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import TextareaAutosize from "react-textarea-autosize"
 
 import { getImageUrl } from "@/_data"
 import { useNewPostStore } from "@/_store/newPost"
+import { useTranslation } from "@/i18n/client"
 import { faClose, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classNames"
-import { useTranslation } from "react-i18next"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const lineMax = 5
 
 export default function Dropzone({ index }: { index: number }) {
-  const { t, i18n } = useTranslation(["content"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["new-post-page"])
   const {
     setCandidate,
     content: { candidates },
@@ -37,7 +39,7 @@ export default function Dropzone({ index }: { index: number }) {
       setCandidate({ index, payload: originalTitle, type: "title" })
       setOriginalTitle("")
     }
-  })
+  }, [originalTitle, setCandidate, index])
 
   const onChangeInput = (e: any) => {
     const inputValue = e.target.value
@@ -63,21 +65,24 @@ export default function Dropzone({ index }: { index: number }) {
     }
   }
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach(async (file: any) => {
-      const formData = new FormData()
-      formData.append("image", file)
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(async (file: any) => {
+        const formData = new FormData()
+        formData.append("image", file)
 
-      const { msg, imageSrc } = await uploadImage(formData)
-      if (msg === "ok") {
-        setCandidate({
-          index,
-          payload: imageSrc,
-          type: "imageSrc",
-        })
-      }
-    })
-  }, [])
+        const { msg, imageSrc } = await uploadImage(formData)
+        if (msg === "ok") {
+          setCandidate({
+            index,
+            payload: imageSrc,
+            type: "imageSrc",
+          })
+        }
+      })
+    },
+    [index, setCandidate]
+  )
 
   const onClickDeleteImage = () => {
     setCandidate({
@@ -96,7 +101,7 @@ export default function Dropzone({ index }: { index: number }) {
     maxSize: 8000000,
   })
 
-  const isBigFont = i18n.language === "ko" || i18n.language === "ja"
+  const isBigFont = lang === "ko" || lang === "ja"
 
   return (
     <div className={cx("global-select")}>

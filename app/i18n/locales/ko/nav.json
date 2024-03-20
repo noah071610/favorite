@@ -1,0 +1,22 @@
+{
+  "template": "템플릿",
+  "makeNew": "만들러가기",
+  "login": "로그인",
+  "dashboard": "대시보드",
+  "mainPage": "메인페이지로",
+  "save": "저장하기",
+  "goBack": "뒤로가기",
+  "polling": "투표",
+  "contest": "1:1 대결",
+  "tournament": "토너먼트",
+  "all": "모두 보기",
+  "init": "양식",
+  "edit": "제작",
+  "rending": "랜딩",
+  "createdAt": "최신순",
+  "lastPlayedAt": "방금 플레이",
+  "popular": "인기순",
+  "emptySearchResult": "검색 결과 없음",
+  "terms-of-service": "Terms of service",
+  "privacy-policy": "Privacy Policy"
+}

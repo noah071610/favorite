@@ -1,0 +1,44 @@
+{
+  "anonymous": "ไม่ระบุชื่อ",
+
+  "enterTitle": "กรอกชื่อ",
+  "enterDesc": "กรอกรายละเอียด",
+  "chartDesc": "รายละเอียดหน้าผลลัพธ์",
+  "enterCandidateTitle": "กรอกชื่อรายการ (ต้องระบุ)",
+  "enterCandidateDesc": "กรอกรายละเอียดรายการ (เลือก)",
+  "enterChartDesc": "กรอกรายละเอียดผลโหวต (เลือก)",
+  "enterCandidate": "ลงทะเบียนรายการ",
+  "editCandidate": "แก้ไขรายการ",
+  "candidatePreviewAndAdd": "ดูตัวอย่างรายการ",
+  "addMultiplePictures": "ลากและวางรูปภาพ",
+  "noCandidates": "ยังไม่มีรายการ",
+  "optional": "(เลือก)",
+  "required": "(ต้องระบุ)",
+  "changeLayoutStyle": "เปลี่ยนรูปแบบรายการ",
+  "selectContentType": "เลือกประเภทของเนื้อหา",
+  "layout": {
+    "textImage": "ข้อความและรูปภาพ",
+    "image": "รูปภาพ",
+    "text": "ข้อความเท่านั้น"
+  },
+  "thumbnailType": {
+    "custom": "กำหนดเอง",
+    "layout": "เค้าโครง",
+    "none": "ไม่มีรูปภาพย่อ"
+  },
+  "options": {
+    "default": "สาธารณะ",
+    "editing": "ส่วนตัว",
+    "secret": "อนุญาตให้แชร์เท่านั้น"
+  },
+  "optionsTitle": "ตั้งค่าความเปิดเผย",
+  "changeThumb": "เปลี่ยนรูปภาพย่อ",
+  "moreThanTwoThumb": "ต้องมีรายการอย่างน้อย 2 รายการ",
+  "secretContent": "เนื้อหาลับ",
+  "preview": "ดูตัวอย่าง",
+  "posting": "โพสต์",
+  "editing": "กำลังแก้ไข",
+  "deletePost": "ลบ",
+  "createNewPost": "สร้างเนื้อหาใหม่",
+  "changeLang": "เปลี่ยนภาษา"
+}

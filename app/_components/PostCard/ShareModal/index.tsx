@@ -10,7 +10,8 @@ import Image from "next/image"
 
 type ShareProviderValue = "twitter" | "facebook" | "kakaoTalk" | "line" | "link"
 
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "@/i18n/client"
+import { useParams } from "next/navigation"
 export default function ShareModal({
   postCard,
   setOnShareModal,
@@ -18,7 +19,9 @@ export default function ShareModal({
   postCard: PostCardType
   setOnShareModal: (b: boolean) => void
 }) {
-  const { t } = useTranslation(["messages"])
+  const { lang } = useParams()
+  const { t } = useTranslation(lang, ["messages"])
+
   const onClickShare = async (v: ShareProviderValue) => {
     if (postCard) {
       const { postId, title, type, description, thumbnail: _thumbnail } = postCard
