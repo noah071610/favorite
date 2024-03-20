@@ -53,7 +53,7 @@ const asideSelectors = [
 
 export default function Aside() {
   const { lang } = useParams()
-  const { replace } = useRouter()
+  const { push } = useRouter()
   const searchParams = useSearchParams()
   const { t, i18n } = useTranslation(lang, "nav")
   const { data: userData } = useQuery<UserQueryType>({
@@ -69,9 +69,8 @@ export default function Aside() {
     const search = current.toString()
     const query = search ? `?${search}` : ""
 
-    replace(`/${lang}/${pathname.split("/").slice(2).join("/")}${query}`)
+    push(`/${lang}/${pathname.split("/").slice(2).join("/")}${query}`)
     i18n.changeLanguage(lang)
-    localStorage.setItem("favorite_lang", lang)
     setModal("none")
   }
 

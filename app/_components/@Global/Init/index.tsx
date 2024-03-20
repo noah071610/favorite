@@ -5,11 +5,13 @@ import { queryKey } from "@/_data"
 import { refreshUser } from "@/_queries/user"
 import { useMainStore } from "@/_store/main"
 import { useQueryClient } from "@tanstack/react-query"
+import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { DarkModeSwitch } from "react-toggle-dark-mode"
 import style from "./style.module.scss"
 
 export default function Init() {
+  const { lang } = useParams()
   const queryClient = useQueryClient()
   const { setWindowSize } = useMainStore()
   const [isDarkMode, setDarkMode] = useState(false)
@@ -39,15 +41,40 @@ export default function Init() {
 
   useEffect(() => {
     if (typeof window === "object") {
+      const body = document.querySelector("body")
       const curMode = document.querySelector("body")?.className
+      if (!curMode) {
+        const selectMode = localStorage.getItem("color-mode")
+        if (!selectMode) {
+          body?.classList.add("light")
+          setDarkMode(false)
+        } else {
+          body?.classList.add(selectMode)
+          setDarkMode(selectMode === "dark")
+        }
+        return
+      }
       setDarkMode(curMode !== "dark")
     }
-  }, [])
+  }, [lang])
 
   const toggleDarkMode = () => {
     const body = document.querySelector("body")
     const curMode = document.querySelector("body")?.className
 
+    if (!curMode) {
+      const selectMode = localStorage.getItem("color-mode")
+      if (!selectMode || selectMode === "light") {
+        body?.classList.add("dark")
+        localStorage.setItem("color-mode", "dark")
+        setDarkMode(true)
+      } else {
+        body?.classList.add("light")
+        localStorage.setItem("color-mode", "light")
+        setDarkMode(false)
+      }
+      return
+    }
     if (curMode === "light") {
       localStorage.setItem("color-mode", "dark")
       body?.classList.replace("light", "dark")
