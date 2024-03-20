@@ -73,7 +73,7 @@ async function RootLayout({
 }>) {
   return (
     <>
-      <html lang={lang} dir={dir(lang)}>
+      <html className={pretendard.className} lang={lang} dir={dir(lang)}>
         <head>
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
