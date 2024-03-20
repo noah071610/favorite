@@ -14,8 +14,6 @@ import "swiper/css"
 import "swiper/css/free-mode"
 config.autoAddCss = false
 
-import localFont from "next/font/local"
-
 import Aside from "@/_components/@Global/Aside"
 import Header from "@/_components/@Global/Header"
 import Init from "@/_components/@Global/Init"
@@ -24,6 +22,8 @@ import ReactQueryProvider from "@/_components/@Global/ReactQueryProvider"
 import { LangType } from "@/_types"
 import { useTranslation } from "@/i18n"
 import { dir } from "i18next"
+import { Prompt } from "next/font/google"
+import localFont from "next/font/local"
 import { ToastContainer } from "react-toastify"
 import { DarkModeScriptTag } from "../_utils/darkmode"
 import { fallbackLng, languages } from "../i18n/settings"
@@ -43,6 +43,13 @@ const pretendard = localFont({
       weight: "700",
     },
   ],
+  display: "swap",
+})
+
+const prompt = Prompt({
+  weight: ["400", "600", "700"],
+  subsets: ["thai"],
+  display: "swap",
 })
 
 export async function generateStaticParams() {
@@ -73,7 +80,7 @@ async function RootLayout({
 }>) {
   return (
     <>
-      <html className={pretendard.className} lang={lang} dir={dir(lang)}>
+      <html className={lang === "th" ? prompt.className : pretendard.className} lang={lang} dir={dir(lang)}>
         <head>
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
