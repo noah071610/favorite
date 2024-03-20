@@ -4,5 +4,6 @@
   "all": "View All",
   "polling": "Polling Content",
   "contest": "Contest Content",
-  "tournament": "Tournament Content"
+  "tournament": "Tournament Content",
+  "loadTemplate": "Loading a template will delete all saved data. Is that okay?"
 }

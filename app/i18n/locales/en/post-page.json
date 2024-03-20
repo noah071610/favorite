@@ -1,17 +1,8 @@
 {
   "select": "Select {{title}}",
-  "candidatePreview": "Preview",
   "vote": "Votes",
-  "participate": "Part.",
-  "enterCandidateName": "Enter candidate title (Required)",
-  "playContent": "Play",
-  "playContentShort": "Play",
-  "useTemplate": "Use Template",
-  "shareContent": "Share",
-  "polling": "Polling",
-  "contest": "Contest",
+
   "analytic": "Analytics",
-  "tournament": "Tournament",
   "lookContents": "Play another",
   "makeNew": "Create now",
   "comment": "Comments",
@@ -36,9 +27,5 @@
   "finals": "Finals (Top 2)",
   "semiFinals": "Semi-Finals (Top 4)",
   "teams": "Teams",
-  "selectRound": "Please select a round",
-  "K": "K",
-  "M": "M",
-  "B": "B",
-  "T": "T"
+  "selectRound": "Please select a round"
 }

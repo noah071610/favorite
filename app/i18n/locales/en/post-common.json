@@ -1,0 +1,13 @@
+{
+  "options": {
+    "default": "Public",
+    "editing": "Private",
+    "secret": "Share Only"
+  },
+  "editing": "Edit",
+  "deletePost": "Delete",
+  "polling": "Polling",
+  "contest": "VS",
+  "tournament": "Tournament",
+  "candidatePreview": "Preview"
+}

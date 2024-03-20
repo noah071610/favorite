@@ -1,6 +1,10 @@
 {
   "anonymous": "Anonymous",
+  "deletePostMessage": "Deleting the content is irreversible. <br/> Are you sure?",
+  "changePostType": "Changing content type will delete all data. <br/>Is that okay?",
 
+  "createPost": "New post created!<br/> Would you like to view the post?",
+  "enterCandidateName": "Enter Title (Required)",
   "enterTitle": "Enter Title",
   "enterDesc": "Enter Description",
   "chartDesc": "Chart Description",
@@ -26,19 +30,12 @@
     "layout": "Layout",
     "none": "No Thumb"
   },
-  "options": {
-    "default": "Public",
-    "editing": "Private",
-    "secret": "Share Only"
-  },
   "optionsTitle": "Visibility",
   "changeThumb": "Change Thumbnail",
   "moreThanTwoThumb": "At least 2 candidates needed",
   "secretContent": "Private content",
   "preview": "Preview",
   "posting": "Post now",
-  "editing": "Edit",
-  "deletePost": "Delete",
   "createNewPost": "Create New Content",
   "changeLang": "Change Language"
 }

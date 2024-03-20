@@ -1,0 +1,13 @@
+{
+  "options": {
+    "default": "สาธารณะ",
+    "editing": "ส่วนตัว",
+    "secret": "แชร์เท่านั้น"
+  },
+  "editing": "แก้ไข",
+  "deletePost": "ลบ",
+  "polling": "โพลลิ่ง",
+  "contest": "ปะทะ",
+  "tournament": "การแข่งขัน",
+  "candidatePreview": "ดูตัวอย่างผู้สมัคร"
+}
