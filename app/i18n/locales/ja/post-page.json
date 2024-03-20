@@ -1,0 +1,31 @@
+{
+  "select": "{{title}} 選択",
+  "vote": "票",
+
+  "analytic": "分析",
+  "lookContents": "他のコンテンツ",
+  "makeNew": "作りに行く",
+  "comment": "コメント欄",
+  "selectCandidate": "候補選択",
+  "info": {
+    "pickPercent": "勝利確率",
+    "winPercent": "マッチ勝利確率",
+    "ratingRank": "総合評価順位",
+    "losePercent": "マッチ敗北確率",
+    "pickRank": "決勝勝ち順位",
+    "winRank": "マッチ勝利確率"
+  },
+  "share": {
+    "twitter": "ツイッターで共有",
+    "facebook": "フェイスブックで共有",
+    "kakaoTalk": "カカオトークで共有",
+    "line": "ラインで共有",
+    "link": "リンクコピー"
+  },
+  "mySelection": "最終選択",
+  "allRank": "トーナメント全体順位",
+  "finals": "決勝戦（2強）",
+  "semiFinals": "準決勝（4強）",
+  "teams": "強",
+  "selectRound": "ラウンドを選択してください"
+}

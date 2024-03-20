@@ -1,0 +1,22 @@
+{
+  "template": "テンプレート",
+  "makeNew": "新規作成",
+  "dashboard": "ダッシュボード",
+  "login": "ログイン",
+  "mainPage": "メインページへ",
+  "save": "保存",
+  "polling": "投票",
+  "contest": "対決",
+  "tournament": "トーナメント",
+  "all": "すべて見る",
+  "init": "設定",
+  "edit": "編集",
+  "rending": "ランディング",
+  "goBack": "戻る",
+  "popular": "人気順",
+  "createdAt": "新規順",
+  "lastPlayedAt": "最近プレイ",
+  "emptySearchResult": "検索結果がありません",
+  "terms-of-service": "Terms of service",
+  "privacy-policy": "Privacy Policy"
+}

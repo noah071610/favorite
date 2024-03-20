@@ -1,0 +1,13 @@
+{
+  "login": "ログイン",
+  "signup": "新規登録",
+  "snsTitle": "SNSで3秒でログイン",
+  "userName": "ニックネーム",
+  "email": "メールアドレス",
+  "password": "パスワード入力",
+  "passwordConfirm": "パスワード確認",
+  "findEmail": "メールアドレス検索",
+  "enterEmail": "メールアドレス入力",
+  "enterPassword": "パスワード入力",
+  "back": "戻る"
+}
