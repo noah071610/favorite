@@ -59,13 +59,40 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params: { lang } }: { params: { lang: LangType } }) {
   if (languages.indexOf(lang) < 0) lang = fallbackLng
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { t } = await useTranslation(lang)
+  const { t } = await useTranslation(lang, ["meta"])
   return {
     title: {
       default: "Favorite",
       template: "%s | Favorite",
     },
-    description: t("너를 통해 알게되는 내 마음 최고의 Favorite"),
+    description: t("description"),
+    openGraph: {
+      title: "Favorite",
+      description: t("description"),
+      images: [
+        {
+          url: "./images/thumbnail.jpg",
+          width: 600,
+          height: 315,
+          alt: "favorite_thumbnail",
+        },
+      ],
+      type: "website",
+      siteName: "favorite",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Favorite",
+      description: t("description"),
+      images: [
+        {
+          url: "./images/thumbnail.jpg",
+          width: 600,
+          height: 315,
+          alt: "favorite_thumbnail",
+        },
+      ],
+    },
   }
 }
 

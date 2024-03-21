@@ -1,0 +1,20 @@
+@import "@/_styles/variables.scss";
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  @include mobile {
+    gap: 15px;
+  }
+}
+
+.content {
+  width: 800px !important;
+  @include medium {
+    width: 100% !important;
+  }
+  @include mobile {
+    padding: 30px !important;
+  }
+}

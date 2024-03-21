@@ -18,39 +18,6 @@ import style from "./style.module.scss"
 
 const cx = classNames.bind(style)
 
-const asideSelectors = [
-  {
-    value: "template",
-    link: "/template",
-    label: "template",
-    children: (
-      <>
-        <FontAwesomeIcon className={cx(style.symbol)} icon={faWandMagicSparkles} />
-      </>
-    ),
-  },
-  {
-    value: "new",
-    link: "/post/new",
-    label: "makeNew",
-    children: (
-      <>
-        <FontAwesomeIcon className={cx(style.symbol)} icon={faPen} />
-      </>
-    ),
-  },
-  {
-    value: "login",
-    link: "/login",
-    label: "login",
-    children: (
-      <>
-        <FontAwesomeIcon className={cx(style.symbol)} icon={faUser} />
-      </>
-    ),
-  },
-]
-
 export default function Aside() {
   const { lang } = useParams()
   const { replace } = useRouter()
@@ -110,54 +77,42 @@ export default function Aside() {
         <div className={cx(style.border)}>
           <div></div>
         </div>
-        {asideSelectors.map((v) => {
-          switch (true) {
-            case v.value === "login":
-              if (user) {
-                return (
-                  <Link
-                    className={cx({ [style.active]: pathname.includes("/user/") })}
-                    onClick={closeModal}
-                    href={`/user/${user.userId}`}
-                    key={"user"}
-                  >
-                    <div className={cx(style.icon)}>{v.children}</div>
-                    <span className={cx(style.label)}>{v.value === "login" ? t("dashboard") : t(v.label)}</span>
-                  </Link>
-                )
-              } else {
-                return (
-                  <button className={cx({ [style.active]: pathname === v.link })} onClick={onClickLogin} key={v.value}>
-                    <div className={cx(style.icon)}>{v.children}</div>
-                    <span className={cx(style.label)}>{t(v.label)}</span>
-                  </button>
-                )
-              }
-            case v.value === "new":
-              if (user) {
-                return <div key={v.value}></div>
-              } else {
-                return (
-                  <button className={cx({ [style.active]: pathname === v.link })} onClick={onClickLogin} key={v.value}>
-                    <div className={cx(style.icon)}>{v.children}</div>
-                    <span className={cx(style.label)}>{t(v.label)}</span>
-                  </button>
-                )
-              }
-            default:
-              return (
-                <Link
-                  className={cx({ [style.active]: pathname === v.link })}
-                  onClick={closeModal}
-                  href={v.link}
-                  key={v.value}
-                >
-                  <div className={cx(style.icon)}>{v.children}</div>
-                  <span className={cx(style.label)}>{t(v.label)}</span>
-                </Link>
-              )
-          }
-        })}
+        {/* TEMPLATE */}
+        <Link className={cx({ [style.active]: pathname.includes("template") })} onClick={closeModal} href={"/template"}>
+          <div className={cx(style.icon)}>
+            <FontAwesomeIcon className={cx(style.symbol)} icon={faWandMagicSparkles} />
+          </div>
+          <span className={cx(style.label)}>{t("template")}</span>
+        </Link>
+
+        {/* LOGIN */}
+        {user ? (
+          <Link
+            className={cx({ [style.active]: pathname.includes("/user/") })}
+            onClick={closeModal}
+            href={`/user/${user.userId}`}
+          >
+            <div className={cx(style.icon)}>
+              <FontAwesomeIcon className={cx(style.symbol)} icon={faUser} />
+            </div>
+            <span className={cx(style.label)}>{t("dashboard")}</span>
+          </Link>
+        ) : (
+          <button onClick={onClickLogin}>
+            <div className={cx(style.icon)}>
+              <FontAwesomeIcon className={cx(style.symbol)} icon={faUser} />
+            </div>
+            <span className={cx(style.label)}>{t("login")}</span>
+          </button>
+        )}
+        {!user && (
+          <button onClick={onClickLogin}>
+            <div className={cx(style.icon)}>
+              <FontAwesomeIcon className={cx(style.symbol)} icon={faPen} />
+            </div>
+            <span className={cx(style.label)}>{t("new")}</span>
+          </button>
+        )}
       </nav>
       <footer className={cx(style.footer)}>
         <ul>
