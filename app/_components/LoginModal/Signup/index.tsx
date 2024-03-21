@@ -183,9 +183,9 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
           </button>
         </div>
         <div className={cx(style["sub-btn"])}>
-          <button>
+          {/* <button>
             <span>{t("findEmail")}</span>
-          </button>
+          </button> */}
           <button
             onClick={() => {
               setContentPart("login")

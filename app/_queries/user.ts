@@ -1,4 +1,5 @@
 import { API } from "@/_data"
+import { UserQueryType } from "@/_types/user"
 import { Cookies } from "react-cookie"
 
 const cookies = new Cookies()
@@ -38,7 +39,7 @@ export async function hasEmail(email: string) {
   return response.data
 }
 
-export async function refreshUser() {
+export async function refreshUser(): Promise<UserQueryType> {
   const cookie = cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? "")
   if (cookie) {
     const response = await API.get(`/auth/user/refresh`)

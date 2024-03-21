@@ -65,18 +65,21 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: L
       default: "Favorite",
       template: "%s | Favorite",
     },
+    icons: {
+      icon: `/images/favicon.png`, // /public path
+    },
     description: t("description"),
     openGraph: {
       title: "Favorite",
       description: t("description"),
-      images: [
-        {
-          url: "./images/thumbnail.jpg",
-          width: 600,
-          height: 315,
-          alt: "favorite_thumbnail",
-        },
-      ],
+      // images: [
+      //   {
+      //     url: "./images/thumbnail.jpg",
+      //     width: 600,
+      //     height: 315,
+      //     alt: "favorite_thumbnail",
+      //   },
+      // ],
       type: "website",
       siteName: "favorite",
     },
@@ -84,14 +87,14 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: L
       card: "summary_large_image",
       title: "Favorite",
       description: t("description"),
-      images: [
-        {
-          url: "./images/thumbnail.jpg",
-          width: 600,
-          height: 315,
-          alt: "favorite_thumbnail",
-        },
-      ],
+      // images: [
+      //   {
+      //     url: "./images/thumbnail.jpg",
+      //     width: 600,
+      //     height: 315,
+      //     alt: "favorite_thumbnail",
+      //   },
+      // ],
     },
   }
 }

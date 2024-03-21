@@ -84,6 +84,14 @@ export default function Aside() {
           </div>
           <span className={cx(style.label)}>{t("template")}</span>
         </Link>
+        {!user && (
+          <button onClick={onClickLogin}>
+            <div className={cx(style.icon)}>
+              <FontAwesomeIcon className={cx(style.symbol)} icon={faPen} />
+            </div>
+            <span className={cx(style.label)}>{t("makeNew")}</span>
+          </button>
+        )}
 
         {/* LOGIN */}
         {user ? (
@@ -103,14 +111,6 @@ export default function Aside() {
               <FontAwesomeIcon className={cx(style.symbol)} icon={faUser} />
             </div>
             <span className={cx(style.label)}>{t("login")}</span>
-          </button>
-        )}
-        {!user && (
-          <button onClick={onClickLogin}>
-            <div className={cx(style.icon)}>
-              <FontAwesomeIcon className={cx(style.symbol)} icon={faPen} />
-            </div>
-            <span className={cx(style.label)}>{t("new")}</span>
           </button>
         )}
       </nav>
