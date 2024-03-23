@@ -14,7 +14,7 @@ export default function LoginModal() {
     <div className={cx(style.modal)}>
       <div className={cx(style.inner)}>
         <div className={cx(style["logo-wrapper"])}>
-          <Image width={160} height={25} alt="logo" src="/images/Favorite.png"></Image>
+          <Image width={160} height={25} priority={true} alt="logo" src="/images/favorite.png"></Image>
         </div>
         {contentPart === "login" && <LoginContent setContentPart={setContentPart} />}
         {contentPart === "signUp" && <SignUpContent setContentPart={setContentPart} />}

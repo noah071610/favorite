@@ -3,8 +3,8 @@ import { Query, QueryKey } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
 
 export const _url = {
-  client: process.env.NEXT_PUBLIC_CLIENT_URL,
-  server: process.env.NEXT_PUBLIC_SERVER_URL,
+  client: process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_CLIENT_URL : "http://localhost:3000",
+  server: process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_SERVER_URL : "http://localhost:5555",
 }
 
 export const API = axios.create({
@@ -21,10 +21,7 @@ API.interceptors.response.use(
     return response
   },
   (error: AxiosError) => {
-    // 에러 발생 시 처리할 코드 작성
-
-    // 에러를 다시 throw하여 다른 처리기에 전달
-    return error.response
+    return Promise.reject(error?.response?.data ? error.response.data : { msg: "no", data: undefined })
   }
 )
 

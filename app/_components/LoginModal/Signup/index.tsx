@@ -139,8 +139,14 @@ export default function SignUpContent({ setContentPart }: { setContentPart: (sta
           setModal("none")
         }, 2000)
       })
-      .catch(() => {
-        toastError(message(`error.unknown`))
+      .catch((err) => {
+        if (err.data === "unknown") {
+          toastError(err.msg)
+          isValidated = false
+        } else {
+          sendNewPostError(err.data, err.msg)
+          isValidated = false
+        }
       })
   }
 

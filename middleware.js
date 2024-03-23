@@ -10,7 +10,12 @@ export const config = {
 }
 
 export function middleware(req) {
-  if (req.nextUrl.pathname.indexOf("icon") > -1 || req.nextUrl.pathname.indexOf("chrome") > -1)
+  if (
+    req.nextUrl.pathname.indexOf("icon") > -1 ||
+    req.nextUrl.pathname.indexOf("chrome") > -1 ||
+    req.nextUrl.pathname.includes("sitemap") ||
+    req.nextUrl.pathname.includes("robots")
+  )
     return NextResponse.next()
   let lang
   if (req.cookies.has(cookieName)) {

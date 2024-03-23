@@ -2,8 +2,13 @@ import { getTemplatePosts } from "@/_queries/posts"
 import { LangParamsType, LangType } from "@/_types"
 import { useTranslation } from "@/i18n"
 import { fallbackLng, languages } from "@/i18n/settings"
-import { Suspense } from "react"
 import TemplatePageContent from "./_components"
+
+const getData = async (lang: LangType) => {
+  const res = await getTemplatePosts(lang)
+
+  return res
+}
 
 export async function generateMetadata({ params: { lang } }: LangParamsType) {
   if (languages.indexOf(lang) < 0) lang = fallbackLng
@@ -15,12 +20,8 @@ export async function generateMetadata({ params: { lang } }: LangParamsType) {
 }
 
 const TemplatePage = async ({ params: { lang } }: LangParamsType) => {
-  const templates = await getTemplatePosts(lang as LangType)
-  return (
-    <Suspense>
-      <TemplatePageContent templates={templates} />
-    </Suspense>
-  )
+  const templates = await getData(lang as LangType)
+  return <TemplatePageContent templates={templates} />
 }
 
 export default TemplatePage

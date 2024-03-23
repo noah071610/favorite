@@ -1,12 +1,14 @@
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.NODE_ENV === "production",
+  enabled: false,
   openAnalyzer: true,
-  reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
   swcMinify: true,
 })
 
 module.exports = withBundleAnalyzer({
   compress: true,
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
   webpack(config) {
     const prod = process.env.NODE_ENV === "production"
     const plugins = [...config.plugins]

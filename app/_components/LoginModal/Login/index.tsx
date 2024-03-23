@@ -101,7 +101,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
       setTimeout(() => {
         setIsLoading(false)
         sendNewPostError("loginBtn", "loginFailBadRequest")
-      }, 2000)
+      }, 1000)
       return
     }
 
@@ -109,7 +109,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
       setTimeout(() => {
         setModal("none")
         toastSuccess(t("success.login", { ns: "messages" }))
-      }, 2000)
+      }, 1000)
     } else {
       setModal("loginInContentSuccess")
     }
@@ -139,7 +139,7 @@ export default function LoginContent({ setContentPart }: { setContentPart: (stat
 
     const data = await login({ email: input.email, password: input.password })
 
-    finishLogin(data)
+    await finishLogin(data)
   }
 
   const onClickSocialLogin = (provider: Providers) => {

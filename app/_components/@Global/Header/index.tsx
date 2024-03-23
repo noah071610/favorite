@@ -99,7 +99,7 @@ export default function Header() {
             </button>
             {modalStatus !== "search" && (
               <Link className={cx({ [style.newPost]: isNewPostPage })} href="/">
-                <Image width={120} height={20} alt="logo" src="/images/Favorite.png"></Image>
+                <Image width={120} height={20} priority={true} alt="logo" src="/images/favorite.png"></Image>
               </Link>
             )}
           </div>

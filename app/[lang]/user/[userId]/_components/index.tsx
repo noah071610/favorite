@@ -17,12 +17,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import classNames from "classNames"
 import Image from "next/image"
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import UserPageLoading from "../loading"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-export default function UserPage() {
+function UserPageSuspense() {
   const { lang } = useParams()
   const { t } = useTranslation(lang, ["new-post-page", "messages"])
   const searchParams = useSearchParams()
@@ -173,7 +173,12 @@ export default function UserPage() {
               ))}
             </div>
             {!!userPosts && typeof postCount === "number" && (
-              <Pagination cursor={cursor} handlePageClick={handlePageClick} itemsPerPage={11} postCount={postCount} />
+              <Pagination
+                cursor={cursor}
+                handlePageClick={handlePageClick}
+                itemsPerPage={11}
+                postCount={postCount <= 0 ? 1 : postCount}
+              />
             )}
           </div>
         </div>
@@ -182,5 +187,13 @@ export default function UserPage() {
       )}
       {modalStatus === "deletePost" && <Confirm onClickConfirm={onClickConfirmDelete} title={t("deletePostMessage")} />}
     </>
+  )
+}
+
+export default function UserPage() {
+  return (
+    <Suspense fallback={<UserPageLoading />}>
+      <UserPageSuspense />
+    </Suspense>
   )
 }
