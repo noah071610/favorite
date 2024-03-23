@@ -10,25 +10,25 @@ export async function getPosts({ cursor = "0", query = "all", sort = "createdAt"
     `/posts?cursor=${cursor ?? "0"}&query=${query ?? "all"}&sort=${sort ?? "createdAt"}&lang=${lang}`
   )
 
-  return response.data
+  return response.data.data
 }
 
 export async function getAllPostsCount({ query = "all" }: { query?: PostFindQuery | "user" | null }) {
   const response = await API.get(`/posts/count?query=${query ?? "all"}`)
 
-  return response.data
+  return response.data.data
 }
 
 export async function getPopularPosts(lang: LangType) {
   const response = await API.get(`/posts/popular?lang=${lang}`)
 
-  return response.data
+  return response.data.data
 }
 
 export async function getTemplatePosts(lang: LangType) {
   const response = await API.get(`/posts/template?lang=${lang}`)
 
-  return response.data
+  return response.data.data
 }
 
 export async function getUserPosts(cursor: string | null = "0") {
@@ -36,7 +36,7 @@ export async function getUserPosts(cursor: string | null = "0") {
   if (cookie) {
     const response = await API.get(`/posts/user?cursor=${cursor}`)
 
-    return response.data
+    return response.data.data
   }
 }
 
@@ -45,12 +45,12 @@ export async function getAllUserSaveCount() {
   if (cookie) {
     const response = await API.get(`/posts/user/count`)
 
-    return response.data
+    return response.data.data
   }
 }
 
 export async function getSearchPosts(searchQuery: string) {
   const response = await API.get(`/posts/search?searchQuery=${searchQuery}`)
 
-  return response.data
+  return response.data.data
 }

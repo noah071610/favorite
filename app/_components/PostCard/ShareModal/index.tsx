@@ -24,9 +24,9 @@ export default function ShareModal({
 
   const onClickShare = async (v: ShareProviderValue) => {
     if (postCard) {
-      const { postId, title, type, description, thumbnail: _thumbnail } = postCard
+      const { postId, title, description, thumbnail: _thumbnail } = postCard
       const thumbnail = getThumbnail(_thumbnail)
-      const url = `${_url.client}/post/${type}/${postId}`
+      const url = `${_url.client}/post/${postId}`
       if (v === "link") {
         await copyTextToClipboard(url).then(() => {
           toastSuccess(t("success.copyLink"))

@@ -61,7 +61,7 @@ export default function Candidate({
         }
       }
     }
-  }, [ref?.current, isIntersecting, isDisplayed])
+  }, [ref.current, isIntersecting, isDisplayed])
 
   return (
     <li ref={ref as any} className={cx(style.candidate, { [style.selected]: selected })}>

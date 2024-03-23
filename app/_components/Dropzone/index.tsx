@@ -71,7 +71,7 @@ export default function Dropzone({ index }: { index: number }) {
         const formData = new FormData()
         formData.append("image", file)
 
-        const { msg, imageSrc } = await uploadImage(formData)
+        const { msg, data: imageSrc } = await uploadImage(formData)
         if (msg === "ok") {
           setCandidate({
             index,

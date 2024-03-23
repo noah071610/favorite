@@ -40,7 +40,7 @@ export default function SearchModal() {
                 const typeData = contentTypesObj[v.type]
                 return (
                   <li className={cx(style.card)} key={v.postId}>
-                    <Link href={`/post/${v.type}/${v.postId}`}>
+                    <Link href={`/post/${v.postId}`}>
                       <div className={cx(style["badge-main"], style[v.type])}>
                         <span>
                           {typeData.icon(style)}

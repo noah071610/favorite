@@ -27,8 +27,7 @@ const cx = classNames.bind(style)
 
 export default function ContestPost({ initialPost }: { initialPost: PostType }) {
   const { lang } = useParams()
-  const { t } = useTranslation(lang, ["post-page"])
-  const { t: message } = useTranslation(lang, ["messages"])
+  const { t } = useTranslation(lang, ["post-page", "messages"])
 
   const { data: post } = useQuery<PostType>({
     queryKey: queryKey.post(initialPost.postId),
@@ -55,9 +54,9 @@ export default function ContestPost({ initialPost }: { initialPost: PostType }) 
 
   useEffect(() => {
     if (isVoted && isImagesLoaded) {
-      toastSuccess(message("success.voted"))
+      toastSuccess(t("success.voted", { ns: "messages" }))
     }
-  }, [isVoted, isImagesLoaded])
+  }, [isVoted, isImagesLoaded, t])
 
   const swiped = async (_direction: "left" | "right", target: CandidateType) => {
     const direction = _direction === "left" ? 0 : 1

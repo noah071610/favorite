@@ -21,8 +21,7 @@
     "alreadySignupGoogle": "이미 구글로 회원가입을 하셨어요. 구글을 이용해 로그인 해주세요.",
     "alreadySignupFacebook": "이미 페이스북으로 회원가입을 하셨어요. 페이스북을 이용해 로그인 해주세요.",
     "alreadySignupInstagram": "이미 인스타그램으로 회원가입을 하셨어요. 인스타그램을 이용해 로그인 해주세요.",
-    "alreadySignupTwitter": "이미 트위터로 회원가입을 하셨어요. 트위터를 이용해 로그인 해주세요.",
-    "clear": ""
+    "alreadySignupTwitter": "이미 트위터로 회원가입을 하셨어요. 트위터를 이용해 로그인 해주세요."
   },
   "success": {
     "voted": "이미 투표 하셨어요 😎",

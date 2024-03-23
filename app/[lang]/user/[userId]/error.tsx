@@ -1,7 +1,15 @@
 "use client"
 
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+
 const UserPageError = () => {
-  return <>{"알수없는 에러"}</>
+  const { push } = useRouter()
+  useEffect(() => {
+    push("/")
+  }, [push])
+
+  return <></>
 }
 
 export default UserPageError

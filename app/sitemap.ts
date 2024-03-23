@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts_ko = await getPosts({ cursor: "0", query: "all", sort: "popular", lang: "ko" })
   return posts_ko.map((post: PostType) => {
     return {
-      url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/post/polling/${post.postId}`,
+      url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/post/${post.postId}`,
       lastModified: post.createdAt,
       priority: 1,
     }

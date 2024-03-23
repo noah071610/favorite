@@ -7,14 +7,15 @@ import { LangType } from "@/_types"
 import { UserQueryType } from "@/_types/user"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classNames"
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import { Suspense, useEffect, useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
 const AdminPage = () => {
   const { lang } = useParams()
+  const { back } = useRouter()
   const [templateRawData, setTemplateRawData] = useState("")
   const [popularRawData, setPopularRawData] = useState("")
   const { data: userData } = useQuery<UserQueryType>({
@@ -26,7 +27,7 @@ const AdminPage = () => {
   const { data } = useQuery<{ name: "template" | "popular"; rawData: string }[]>({
     queryKey: ["admin"],
     queryFn: () => getAdminRawData(lang as LangType),
-    enabled: typeof user?.userId === "number",
+    enabled: String(user?.userId) === process.env.NEXT_PUBLIC_ADMIN_NUM,
   })
 
   useEffect(() => {
@@ -43,6 +44,14 @@ const AdminPage = () => {
       })
     }
   }, [data])
+
+  useEffect(() => {
+    if (userData?.msg) {
+      if (String(user?.userId) !== process.env.NEXT_PUBLIC_ADMIN_NUM) {
+        back()
+      }
+    }
+  }, [userData, user, back])
 
   const onChangeInput = (e: any, value: "popular" | "template") => {
     switch (value) {
@@ -69,25 +78,29 @@ const AdminPage = () => {
   }
 
   return (
-    <div className={cx(style.admin)}>
-      <div className={cx(style.main)}>
-        <h1>현재 언어 : {lang}</h1>
-        <h1>템플렛 설정</h1>
-        <TextareaAutosize
-          className={cx(style.textarea)}
-          value={templateRawData}
-          onChange={(e) => onChangeInput(e, "template")}
-        />
-        <button onClick={() => onClickUpload("template")}>템플릿 업로드</button>
-        <h1>인기 콘텐츠 설정</h1>
-        <TextareaAutosize
-          className={cx(style.textarea)}
-          value={popularRawData}
-          onChange={(e) => onChangeInput(e, "popular")}
-        />
-        <button onClick={() => onClickUpload("popular")}>인기 콘텐츠 업로드</button>
-      </div>
-    </div>
+    <Suspense>
+      {userData?.msg && String(user?.userId) === process.env.NEXT_PUBLIC_ADMIN_NUM && (
+        <div className={cx(style.admin)}>
+          <div className={cx(style.main)}>
+            <h1>현재 언어 : {lang}</h1>
+            <h1>템플렛 설정</h1>
+            <TextareaAutosize
+              className={cx(style.textarea)}
+              value={templateRawData}
+              onChange={(e) => onChangeInput(e, "template")}
+            />
+            <button onClick={() => onClickUpload("template")}>템플릿 업로드</button>
+            <h1>인기 콘텐츠 설정</h1>
+            <TextareaAutosize
+              className={cx(style.textarea)}
+              value={popularRawData}
+              onChange={(e) => onChangeInput(e, "popular")}
+            />
+            <button onClick={() => onClickUpload("popular")}>인기 콘텐츠 업로드</button>
+          </div>
+        </div>
+      )}
+    </Suspense>
   )
 }
 

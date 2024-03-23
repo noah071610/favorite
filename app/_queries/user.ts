@@ -31,12 +31,12 @@ export async function getUser() {
 
 export async function registerUser(data: { email: string; password: string; userName: string }) {
   const response = await API.post(`/auth/user`, { ...data, provider: "local" })
-  return response.data
+  return response.data.data
 }
 
 export async function hasEmail(email: string) {
   const response = await API.post(`/auth/find-email`, { email })
-  return response.data
+  return response.data.data
 }
 
 export async function refreshUser(): Promise<UserQueryType> {
@@ -59,7 +59,7 @@ export async function login(user: { email: string; password: string }) {
       API.defaults.headers.common["Authorization"] = "Bearer " + response.data.accessToken
     }
 
-    return response.data
+    return response.data.data
   } catch {
     return { msg: "no", user: null }
   }

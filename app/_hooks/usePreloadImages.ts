@@ -13,7 +13,7 @@ export const usePreloadImages = (content: string[], noDelay?: boolean) => {
         noDelay ? 0 : 1200
       )
     }
-  }, [content, imageLoadedCount])
+  }, [content, imageLoadedCount, noDelay])
 
   useEffect(() => {
     if (!!content.length) {

@@ -33,7 +33,7 @@ export default function Share({ post }: { post: any }) {
     if (post) {
       const { postId, title, type, description, thumbnail: _thumbnail } = post
       const thumbnail = getThumbnail(_thumbnail)
-      const url = `${_url.client}/post/${type}/${postId}`
+      const url = `${_url.client}/post/${postId}`
       if (v === "link") {
         await copyTextToClipboard(url).then(() => {
           toastSuccess(t("success.copyLink", { ns: "messages" }))

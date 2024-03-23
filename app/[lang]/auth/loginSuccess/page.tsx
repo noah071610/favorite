@@ -4,9 +4,9 @@ import { useEffect } from "react"
 
 const LoginSuccess = async () => {
   useEffect(() => {
-    !(async () => {
+    if (typeof window === "object") {
       window.opener.postMessage({ msg: "ok" }, "*")
-    })()
+    }
   }, [])
 }
 

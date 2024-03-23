@@ -85,7 +85,7 @@ function PostCard({
     if (isUserPage) {
       return router.push(`/post/edit/${postId}`)
     }
-    return router.push(`/post/${type}/${postId}`)
+    return router.push(`/post/${postId}`)
   }
 
   return (
@@ -199,7 +199,7 @@ function PostCard({
                 </>
               ) : (
                 <>
-                  <Link href={`/post/${type}/${postId}`}>
+                  <Link href={`/post/${postId}`}>
                     <FontAwesomeIcon icon={faPlay} />
                     <span>{isTemplate ? t("playContent") : t("playContentShort")}</span>
                   </Link>

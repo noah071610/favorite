@@ -96,7 +96,7 @@ export default function SelectPart({ index, candidate }: { index: number; candid
         const formData = new FormData()
         formData.append("image", file)
 
-        const { msg, imageSrc } = await uploadImage(formData)
+        const { msg, data: imageSrc } = await uploadImage(formData)
         if (msg === "ok") {
           setCandidate({ index, payload: imageSrc, type: "imageSrc" })
         }

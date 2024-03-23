@@ -49,28 +49,31 @@ export default function TournamentContent() {
     setCurrentIndex(swiper.activeIndex)
   }
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach(async (file: any) => {
-      const formData = new FormData()
-      formData.append("image", file)
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(async (file: any) => {
+        const formData = new FormData()
+        formData.append("image", file)
 
-      const { msg, imageSrc } = await uploadImage(formData)
-      if (msg === "ok") {
-        addCandidate({
-          payload: {
-            listId: nanoid(10),
-            title: "",
-            description: "",
-            imageSrc,
-            win: 0,
-            lose: 0,
-            pick: 0,
-            number: candidates.length + 1,
-          },
-        })
-      }
-    })
-  }, [])
+        const { msg, data: imageSrc } = await uploadImage(formData)
+        if (msg === "ok") {
+          addCandidate({
+            payload: {
+              listId: nanoid(10),
+              title: "",
+              description: "",
+              imageSrc,
+              win: 0,
+              lose: 0,
+              pick: 0,
+              number: candidates.length + 1,
+            },
+          })
+        }
+      })
+    },
+    [addCandidate, candidates.length]
+  )
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,

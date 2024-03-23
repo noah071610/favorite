@@ -2,6 +2,7 @@ import ContentPage from "@/_pages/ContentPage"
 import { LangType } from "@/_types"
 import { useTranslation } from "@/i18n"
 import { fallbackLng, languages } from "@/i18n/settings"
+import { Suspense } from "react"
 
 export async function generateMetadata({ params: { lang } }: { params: { lang: LangType } }) {
   if (languages.indexOf(lang) < 0) lang = fallbackLng
@@ -13,7 +14,11 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: L
 }
 
 const TournamentPage = () => {
-  return <ContentPage query="tournament" />
+  return (
+    <Suspense>
+      <ContentPage query="tournament" />
+    </Suspense>
+  )
 }
 
 export default TournamentPage

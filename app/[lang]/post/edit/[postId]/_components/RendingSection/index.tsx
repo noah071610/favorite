@@ -168,7 +168,7 @@ export default function RendingSection() {
 
   const onClickConfirm = (isOk: boolean) => {
     if (isOk) {
-      window.open(`/post/${newPost.type}/${postId}`)
+      window.open(`/post/${postId}`)
     }
     setModal("none")
   }

@@ -52,7 +52,7 @@ export default function ThumbnailStyle() {
         const formData = new FormData()
         formData.append("image", file)
 
-        const { msg, imageSrc } = await uploadImage(formData)
+        const { msg, data: imageSrc } = await uploadImage(formData)
         if (msg === "ok") {
           setThumbnail({ type: `imageSrc`, payload: imageSrc })
         }

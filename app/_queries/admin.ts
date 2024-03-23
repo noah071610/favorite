@@ -9,7 +9,7 @@ export async function getAdminRawData(lang: LangType) {
 
   if (cookie) {
     const response = await API.get(`/admin/data?lang=${lang}`)
-    return response.data
+    return response.data.data
   }
 }
 
@@ -23,6 +23,6 @@ export async function setAdminPosts(
 
   if (cookie) {
     const response = await API.post(`/admin/data?type=${type}&lang=${lang}`, { rawData, postIdArr })
-    return response.data
+    return response.data.data
   }
 }

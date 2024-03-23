@@ -57,7 +57,7 @@ const PollingPost = ({ initialPost }: { initialPost: PostType }) => {
     if (isVoted && isImagesLoaded) {
       toastSuccess(t("success.voted", { ns: "messages" }))
     }
-  }, [isVoted, isImagesLoaded])
+  }, [isVoted, isImagesLoaded, t])
 
   const candidates = useMemo(() => {
     const target = post.content.candidates

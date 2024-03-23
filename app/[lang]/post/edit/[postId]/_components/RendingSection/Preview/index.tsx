@@ -9,9 +9,9 @@ import dynamic from "next/dynamic"
 import style from "./style.module.scss"
 const cx = classNames.bind(style)
 
-const PollingPost = dynamic(() => import("@/[lang]/post/polling/[postId]/_components"), {})
-const ContestPost = dynamic(() => import("@/[lang]/post/contest/[postId]/_components"), {})
-const TournamentPost = dynamic(() => import("@/[lang]/post/tournament/[postId]/_components"), {})
+const PollingPost = dynamic(() => import("@/[lang]/post/[postId]/_components/Polling"), {})
+const ContestPost = dynamic(() => import("@/[lang]/post/[postId]/_components/Contest"), {})
+const TournamentPost = dynamic(() => import("@/[lang]/post/[postId]/_components/Tournament"), {})
 
 export default function Preview({
   previewPost,

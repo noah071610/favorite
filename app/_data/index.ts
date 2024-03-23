@@ -1,6 +1,6 @@
 import { PostContentType, PostSortOptions } from "@/_types/post"
 import { Query, QueryKey } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 export const _url = {
   client: process.env.NEXT_PUBLIC_CLIENT_URL,
@@ -15,6 +15,18 @@ export const API = axios.create({
     "Content-Type": "application/json",
   },
 })
+
+API.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error: AxiosError) => {
+    // 에러 발생 시 처리할 코드 작성
+
+    // 에러를 다시 throw하여 다른 처리기에 전달
+    return error.response
+  }
+)
 
 export const getImageUrl = ({ isCenter, url }: { url: string; isCenter?: boolean }) => {
   if (isCenter) {

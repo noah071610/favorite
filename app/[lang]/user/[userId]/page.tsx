@@ -1,9 +1,10 @@
 "use server"
 
-import { LangParamsType } from "@/_types"
+import { LangParamsType, LangType } from "@/_types"
 import { useTranslation } from "@/i18n"
 import { fallbackLng, languages } from "@/i18n/settings"
 import UserPageMain from "./_components"
+import UserPageError from "./error"
 
 export async function generateMetadata({ params: { lang } }: LangParamsType) {
   if (languages.indexOf(lang) < 0) lang = fallbackLng
@@ -14,6 +15,9 @@ export async function generateMetadata({ params: { lang } }: LangParamsType) {
   }
 }
 
-export default async function UserPage({ params: { lang } }: LangParamsType) {
+export default async function UserPage({ params: { userId } }: { params: { lang: LangType; userId: string } }) {
+  if (!userId || isNaN(parseInt(userId))) {
+    return <UserPageError />
+  }
   return <UserPageMain />
 }
