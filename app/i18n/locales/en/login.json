@@ -1,0 +1,13 @@
+{
+  "login": "Login",
+  "signup": "Sign Up",
+  "snsTitle": "Login in 3 Sec with SNS",
+  "userName": "Nickname",
+  "email": "Email",
+  "password": "Enter Password",
+  "passwordConfirm": "Confirm Password",
+  "findEmail": "Find Email",
+  "enterEmail": "Enter Email",
+  "enterPassword": "Enter Password",
+  "back": "Back"
+}

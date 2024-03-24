@@ -1,0 +1,41 @@
+{
+  "anonymous": "익명",
+  "deletePostMessage": "콘텐츠를 삭제하면 복구가 불가능해요. <br/>괜찮으세요?",
+  "changePostType": "콘텐츠 타입 변경 시 모든 데이터는 삭제되요. <br/>괜찮으세요?",
+
+  "createPost": "새로운 포스트를 생성했어요!<br/> 포스트를 확인하시겠어요?",
+  "enterCandidateName": "후보명 입력 (필수)",
+  "enterTitle": "제목 입력",
+  "enterDesc": "설명 입력",
+  "chartDesc": "결과 페이지 설명",
+  "enterCandidateTitle": "후보 제목 입력 (필수)",
+  "enterCandidateDesc": "후보 설명 입력 (옵션)",
+  "enterChartDesc": "투표 결과 설명 입력 (옵션)",
+  "enterCandidate": "후보 등록",
+  "editCandidate": "후보 수정",
+  "candidatePreviewAndAdd": "후보 보기 및 추가",
+  "addMultiplePictures": "여러개 사진 추가",
+  "noCandidates": "후보가 없어요",
+  "optional": "(옵션)",
+  "required": "(필수)",
+  "changeLayoutStyle": "후보 스타일 변경",
+  "selectContentType": "콘텐츠 타입을 선택해주세요",
+  "layout": {
+    "textImage": "이미지와 텍스트",
+    "image": "이미지 중심",
+    "text": "텍스트만"
+  },
+  "thumbnailType": {
+    "custom": "커스텀 썸네일",
+    "layout": "콘텐츠 레이아웃",
+    "none": "썸네일 없음"
+  },
+  "optionsTitle": "공개 범위 설정",
+  "changeThumb": "썸네일 변경",
+  "moreThanTwoThumb": "2개 이상 후보 필요",
+  "secretContent": "비공개 콘텐츠",
+  "preview": "미리 플레이 해보기",
+  "posting": "포스팅",
+  "createNewPost": "새로운 콘텐츠 생성",
+  "changeLang": "언어 변경"
+}

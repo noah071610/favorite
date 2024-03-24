@@ -1,0 +1,41 @@
+{
+  "anonymous": "匿名",
+  "deletePostMessage": "コンテンツを削除します。<br/>よろしいですか？",
+  "changePostType": "コンテンツタイプを変更するとすべてのデータが削除されます。<br/>よろしいですか？",
+
+  "createPost": "ポストを作成しました！<br/> 確認しますか？",
+  "enterCandidateName": "候補名入力（必須）",
+  "enterTitle": "タイトルを入力",
+  "enterDesc": "説明を入力",
+  "chartDesc": "結果ページの説明",
+  "enterCandidateTitle": "候補のタイトルを入力（必須）",
+  "enterCandidateDesc": "候補の説明を入力（選択）",
+  "enterChartDesc": "投票結果の説明を入力（選択）",
+  "enterCandidate": "候補登録",
+  "editCandidate": "候補編集",
+  "candidatePreviewAndAdd": "候補のプレビュー",
+  "addMultiplePictures": "写真ドラッグ&ドロップ",
+  "noCandidates": "候補がまだありません",
+  "optional": "（選択）",
+  "required": "（必須）",
+  "changeLayoutStyle": "候補のスタイル変更",
+  "selectContentType": "コンテンツタイプを選択してください",
+  "layout": {
+    "textImage": "画像と説明",
+    "image": "画像",
+    "text": "テキストのみ"
+  },
+  "thumbnailType": {
+    "custom": "カスタム",
+    "layout": "レイアウト",
+    "none": "サムネイルなし"
+  },
+  "optionsTitle": "公開範囲設定",
+  "changeThumb": "サムネイル変更",
+  "moreThanTwoThumb": "せめて2つ以上の候補必要",
+  "secretContent": "非公開",
+  "preview": "プレビュー",
+  "posting": "投稿",
+  "createNewPost": "新しいコンテンツ",
+  "changeLang": "言語変更"
+}

@@ -1,0 +1,38 @@
+{
+  "error": {
+    "selectType": "Please select content type 🧐",
+    "unknown": "An unexpected error occurred 😭",
+    "postTitle": "Please enter a title of at least 3 characters ✍🏻",
+    "login": "Login required",
+    "candidateLength": "At least 2 candidates required 🙀",
+    "noCandidateTitle": "There's a candidate without a title ✍🏻",
+    "noCandidateImage": "There's a candidate without an image! Image is required 🏞️",
+    "candidateError": "There's an issue with the candidate. Please try again later",
+    "tournamentCandidateLength": "Tournament requires at least 4 candidates",
+    "overTenUserName": "Please enter a nickname of 15 characters or less",
+    "noUserName": "Please enter a nickname",
+    "noPassword": "Please enter a password",
+    "notSamePassword": "Passwords do not match",
+    "noEmail": "Please enter an email",
+    "existEmail": "Email is already in use",
+    "invalidEmail": "Invalid email format",
+    "safePassword": "Please enter a password of 8 to 15 characters including alphabets, numbers, and special characters",
+    "loginFailBadRequest": "Incorrect email or password",
+    "alreadySignupGoogle": "Already signed up with Google. Please login with Google.",
+    "alreadySignupFacebook": "Already signed up with Facebook. Please login with Facebook.",
+    "alreadySignupInstagram": "Already signed up with Instagram. Please login with Instagram.",
+    "alreadySignupTwitter": "Already signed up with Twitter. Please login with Twitter.",
+    "clear": ""
+  },
+  "success": {
+    "voted": "You have already voted 😎",
+    "login": "Welcome! 👋🏻",
+    "register": "Ready to enjoy? 👋🏻",
+    "loginNewPost": "Almost finish! Please login 🚀",
+    "posting": "Posting! 🚀",
+    "commenting": "Commenting 🚀",
+    "copyLink": "Link copied! 🎉",
+    "delete": "Content deleted",
+    "editing": "Edited! 😎"
+  }
+}

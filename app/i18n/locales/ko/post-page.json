@@ -1,0 +1,31 @@
+{
+  "select": "{{title}} 선택",
+  "vote": "표",
+
+  "analytic": "통계",
+  "lookContents": "콘텐츠 둘러보기",
+  "makeNew": "나도 만들기",
+  "comment": "코멘트",
+  "selectCandidate": "후보를 선택해주세요",
+  "info": {
+    "pickPercent": "우승 확률",
+    "winPercent": "매치 승리 확률",
+    "ratingRank": "종합 평가 순위",
+    "losePercent": "매치 패배 확률",
+    "pickRank": "우승 순위",
+    "winRank": "승리 순위"
+  },
+  "share": {
+    "twitter": "트위터로 공유",
+    "facebook": "페이스북으로 공유",
+    "kakaoTalk": "카카오톡으로 공유",
+    "line": "라인으로 공유",
+    "link": "링크 복사"
+  },
+  "mySelection": "내 선택",
+  "allRank": "토너먼트 전체 순위",
+  "finals": "결승전 (2강)",
+  "semiFinals": "준결승전 (4강)",
+  "teams": "강",
+  "selectRound": "라운드를 선택해주세요"
+}

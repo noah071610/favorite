@@ -1,0 +1,151 @@
+@import "@/_styles/variables.scss";
+
+@include scale-up;
+
+.user-page {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+  background-color: var(--bg-color);
+  min-height: calc(100svh - 60px);
+  .inner {
+    width: 700px;
+    padding: 0 10px;
+    @include mobile {
+      width: 100%;
+    }
+  }
+}
+
+.create-new {
+  display: block;
+  padding: 15px;
+  border-radius: 12px;
+  min-height: 340px;
+  background-color: var(--white);
+
+  @include mobile {
+    min-height: 250px;
+  }
+  &-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    @include flex;
+    gap: 10px;
+  }
+  &-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    .image-wrapper {
+      padding: 18px;
+      border-radius: 100%;
+      @include flex;
+      background-color: var(--gray-soft);
+    }
+    img {
+      width: 35px;
+      height: 35px;
+    }
+    span {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--black);
+    }
+  }
+  @media (hover: hover) {
+    &:hover {
+      .create-new-inner {
+        background-color: var(--gray-softest);
+      }
+      .create-new-content {
+        span {
+          color: var(--pink-hard);
+        }
+      }
+    }
+  }
+  &:active {
+    .create-new-inner {
+      background-color: var(--gray-softest);
+    }
+    .create-new-content {
+      span {
+        color: var(--pink-hard);
+      }
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 15px;
+
+  @include medium {
+    gap: 5px;
+  }
+}
+
+.user-info {
+  span {
+    display: block;
+  }
+  span {
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 5px;
+  }
+  @include medium {
+    span {
+      font-size: 15px;
+      padding-bottom: 3px;
+    }
+  }
+}
+
+.user-icon {
+  @include flex();
+  padding: 3px;
+  border-radius: 100%;
+  transition: all 220ms;
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    transition: all 220ms cubic-bezier(0, 0.96, 0.44, 1.76);
+
+    @include medium {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    @include flex();
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 20px;
+
+    @include medium {
+      width: 30px;
+      height: 30px;
+      font-size: 13px;
+    }
+  }
+}

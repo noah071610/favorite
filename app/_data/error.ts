@@ -1,1 +1,0 @@
-const errorMessage = Object.freeze({})

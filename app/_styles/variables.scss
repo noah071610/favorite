@@ -1,37 +1,330 @@
-$pink: rgba(255, 138, 138, 0.8);
-$pink-soft: rgba(255, 176, 176, 0.7);
-$pink_hover: rgba(229, 106, 106, 0.9);
-$red: rgba(255, 81, 81, 0.8);
-$red_hover: rgba(255, 81, 81, 0.9);
-$gray: rgba(235, 235, 235, 0.5);
-$gray-hard: rgb(158, 158, 158);
-$border: rgba(214, 214, 214, 0.7);
-$gray-hover: rgba(234, 234, 234, 0.4);
-$purple: rgba(201, 135, 255, 0.875);
-$purple-hover: rgba(190, 111, 255, 0.903);
+$white: white;
 
-@mixin flex_center() {
+$pink-soft: rgba(255, 176, 176, 0.7);
+$pink: rgba(255, 138, 138, 0.8);
+$pink-hard: rgba(229, 106, 106, 0.9);
+
+$gray-soft: rgba(235, 235, 235, 0.45);
+$gray: rgba(161, 161, 161, 0.6);
+$gray-hard: rgb(158, 158, 158);
+$gray-softest: rgba(225, 225, 225, 0.15);
+
+$border: rgba(214, 214, 214, 0.7);
+
+$purple: rgba(217, 171, 255, 0.875);
+$purple-hard: rgba(190, 111, 255, 0.903);
+
+$orange: rgba(255, 182, 126, 0.875);
+$orange-hover: rgba(255, 148, 34, 0.903);
+
+$black-soft: rgb(80, 80, 86);
+
+$bg-color: rgba(249, 249, 249, 0.8);
+$shadow-color: rgba(0, 0, 0, 0.08);
+
+$red: rgb(255, 82, 79, 0.8);
+
+$content-width: 950px;
+
+@mixin large {
+  @media (max-width: 950px) {
+    @content;
+  }
+}
+
+@mixin medium {
+  @media (max-width: 800px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 450px) {
+    @content;
+  }
+}
+
+@mixin mobile-active {
+  @media (max-width: 450px) {
+    &:active {
+      @content;
+    }
+  }
+}
+
+@mixin flex() {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-@mixin absolute_center() {
+@mixin center() {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
+@mixin center_fix() {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@mixin full() {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 $z-index-map: (
-  overlay: 1000,
-  modal: 1100,
+  overlay-search: 50,
+  header: 150,
+  swipe-card: 160,
+  overlay-aside: 180,
+  aside: 200,
+  overlay: 230,
+  modal: 250,
+  preview: 300,
+  preview-content: 350,
+  dark-mode-toggle: 400,
 );
 
 @mixin z-index($id) {
   z-index: map-get($z-index-map, $id);
 }
 
-@mixin border($color: $border) {
+@mixin border($color: var(--border)) {
   border: 1px solid $color;
+}
+
+@mixin bg-shine() {
+  background: linear-gradient(90deg, $pink, #f5ff62, $pink);
+  background-size: 200% 200%;
+  animation: shine 2s linear infinite;
+}
+
+@mixin shine {
+  @keyframes shine {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+@mixin mobile-icon-btn {
+  width: 42px;
+  height: 100%;
+  border-radius: 100%;
+  .icon {
+    height: 100%;
+    @include flex;
+    svg {
+      color: var(--black-soft);
+      font-size: 17px;
+    }
+  }
+  &:active {
+    background-color: var(--border);
+  }
+}
+
+@mixin skeleton {
+  width: 100%;
+  position: relative;
+  background-color: var(--gray-soft);
+
+  &::before {
+    @include full;
+    content: "";
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0.7) 80%,
+      rgba(255, 255, 255, 0) 90%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 200%;
+    animation: shine 1000ms 100ms infinite;
+  }
+}
+
+@mixin modal-inner {
+  background: rgb(255, 255, 255);
+  background: var(--radial-bg);
+  border: 1px solid var(--pink-soft);
+  box-shadow: 0 15px 25px rgba(55, 34, 0, 0.1);
+  padding: 22px 30px;
+  border-radius: 10px;
+  transform-origin: center;
+  animation: scale-up 300ms cubic-bezier(0.32, 0.9, 0.5, 1.01) forwards;
+  @include mobile {
+    padding: 15px 20px;
+  }
+}
+
+@mixin fade-move-up {
+  @keyframes fade-move-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+
+    70% {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@mixin scale-up {
+  @keyframes scale-up {
+    from {
+      transform: scale(0.3);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+@mixin shakeX {
+  @keyframes shakeX {
+    0% {
+      transform: translateX(0);
+    }
+
+    6.5% {
+      transform: translateX(-6px) rotateY(-9deg);
+    }
+
+    18.5% {
+      transform: translateX(5px) rotateY(7deg);
+    }
+
+    31.5% {
+      transform: translateX(-3px) rotateY(-5deg);
+    }
+
+    43.5% {
+      transform: translateX(2px) rotateY(3deg);
+    }
+
+    50% {
+      transform: translateX(0);
+    }
+  }
+}
+
+@mixin twinkle-btn {
+  &::before {
+    @include full;
+    content: "";
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0.7) 80%,
+      rgba(255, 255, 255, 0) 90%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 200%;
+    transition: none;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(255, 154, 154, 0.2);
+      &::before {
+        z-index: 1;
+        animation: shine 1000ms 150ms infinite;
+      }
+    }
+  }
+
+  @include mobile {
+    &.active {
+      background-color: rgba(255, 154, 154, 0.2);
+      &::before {
+        z-index: 1;
+        animation: shine 1000ms 150ms infinite;
+      }
+    }
+  }
+}
+
+@mixin section-title {
+  .title {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 8px;
+      width: 30px;
+      height: 30px;
+      background-color: var(--pink-soft);
+      border-radius: 100%;
+      @include flex();
+      svg {
+        color: var(--text-white);
+        font-size: 14px;
+      }
+    }
+    span {
+      font-size: 20px;
+      font-weight: 700;
+      padding-bottom: 1px;
+    }
+    @include mobile {
+      margin: 7px 0;
+
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@mixin badge-main {
+  border-radius: 2px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-white);
+  .label {
+    margin-left: 5px;
+  }
+  &.polling {
+    background-color: var(--pink);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--pink-hard);
+      }
+    }
+  }
+  &.contest {
+    background-color: var(--purple);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--purple-hard);
+      }
+    }
+  }
+  &.tournament {
+    background-color: var(--orange);
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--orange-hover);
+      }
+    }
+  }
 }

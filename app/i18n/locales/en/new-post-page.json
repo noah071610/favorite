@@ -1,0 +1,41 @@
+{
+  "anonymous": "Anonymous",
+  "deletePostMessage": "Deleting the content is irreversible. <br/> Are you sure?",
+  "changePostType": "Changing content type will delete all data. <br/>Is that okay?",
+
+  "createPost": "New post created!<br/> Would you like to view the post?",
+  "enterCandidateName": "Enter Title (Required)",
+  "enterTitle": "Enter Title",
+  "enterDesc": "Enter Description",
+  "chartDesc": "Chart Description",
+  "enterCandidateTitle": "Enter candidate title (Required)",
+  "enterCandidateDesc": "Enter candidate description (Optional)",
+  "enterChartDesc": "Enter chart description (Optional)",
+  "enterCandidate": "Add Candidate",
+  "editCandidate": "Edit Candidate",
+  "candidatePreviewAndAdd": "Preview and Add",
+  "addMultiplePictures": "Drag & Drop Pictures",
+  "noCandidates": "No candidates yet",
+  "optional": "(Optional)",
+  "required": "(Required)",
+  "changeLayoutStyle": "Change Style",
+  "selectContentType": "Select content type",
+  "layout": {
+    "textImage": "Text & Image",
+    "image": "Image",
+    "text": "Text Only"
+  },
+  "thumbnailType": {
+    "custom": "Custom",
+    "layout": "Layout",
+    "none": "No Thumb"
+  },
+  "optionsTitle": "Visibility",
+  "changeThumb": "Change Thumbnail",
+  "moreThanTwoThumb": "At least 2 candidates needed",
+  "secretContent": "Private content",
+  "preview": "Preview",
+  "posting": "Post now",
+  "createNewPost": "Create New Content",
+  "changeLang": "Change Language"
+}

@@ -1,0 +1,64 @@
+@import "@/_styles/variables.scss";
+
+.result {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  &-inner {
+    width: 600px;
+  }
+
+  @include mobile {
+    &-inner {
+      width: 100%;
+    }
+  }
+}
+
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+
+  @include mobile {
+    margin-bottom: 15px;
+  }
+
+  @include section-title;
+}
+
+.sort {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  button {
+    @include border();
+    @include flex();
+    border-radius: 5px;
+    padding: 7px 10px;
+    .text {
+      color: var(--black-soft);
+      font-size: 13px;
+      margin-right: 7px;
+    }
+    svg {
+      font-size: 11px;
+      color: var(--black-soft);
+      transition: 300ms all;
+      &.asc {
+        transform: rotate(180deg);
+      }
+    }
+    &.active {
+      border-color: var(--pink-hard);
+      .text {
+        color: var(--pink-hard);
+      }
+      svg {
+        color: var(--pink-hard);
+      }
+    }
+  }
+}

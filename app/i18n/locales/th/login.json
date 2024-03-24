@@ -1,0 +1,13 @@
+{
+  "login": "เข้าสู่ระบบ",
+  "signup": "ลงทะเบียน",
+  "snsTitle": "เข้าสู่ระบบด้วย SNS ใน 3 วินาที",
+  "userName": "ชื่อผู้ใช้",
+  "email": "อีเมล",
+  "password": "กรอกรหัสผ่าน",
+  "passwordConfirm": "ยืนยันรหัสผ่าน",
+  "findEmail": "ค้นหาอีเมล",
+  "enterEmail": "กรอกอีเมล",
+  "enterPassword": "กรอกรหัสผ่าน",
+  "back": "ย้อนกลับ"
+}

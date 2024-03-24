@@ -1,0 +1,82 @@
+@import "@/_styles/variables.scss";
+
+.template-card {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 20px;
+  @include medium {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.candidates {
+  padding: 15px;
+  overflow: hidden;
+  border-radius: 15px;
+  background-color: var(--white);
+  @include medium {
+    display: block;
+    padding: 5px;
+    background-color: var(--bg-color);
+  }
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    h2 {
+      color: var(--black);
+      font-size: 18px;
+    }
+    button {
+      background-color: var(--bg-color);
+      display: none;
+      @include border;
+      border-radius: 100%;
+      width: 25px;
+      height: 25px;
+      svg {
+        color: var(--black-soft);
+        font-size: 12px;
+        transition: 200ms all;
+      }
+    }
+
+    @include medium {
+      margin-bottom: 5px;
+      h2 {
+        font-size: 14px;
+      }
+      button {
+        @include flex;
+        &.open {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      &:active {
+        background-color: var(--border);
+      }
+    }
+  }
+  &-inner {
+    overflow: scroll;
+    height: 330px;
+    transition: 300ms height;
+    h4 {
+      font-weight: normal;
+    }
+    ul {
+      height: 100%;
+    }
+    @include medium {
+      height: 0;
+      &.open {
+        height: 300px;
+      }
+    }
+  }
+}

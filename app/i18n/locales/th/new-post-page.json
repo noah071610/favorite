@@ -1,0 +1,41 @@
+{
+  "anonymous": "ไม่ระบุชื่อ",
+  "deletePostMessage": "การลบเนื้อหาไม่สามารถย้อนกลับได้ <br/> คุณแน่ใจหรือไม่?",
+  "changePostType": "การเปลี่ยนประเภทเนื้อหาจะลบข้อมูลทั้งหมด <br/> คุณแน่ใจหรือไม่?",
+
+  "createPost": "สร้างเนื้อหาใหม่แล้ว!<br/> คุณต้องการดูเนื้อหาหรือไม่?",
+  "enterCandidateName": "กรอกชื่อผู้สมัคร (จำเป็น)",
+  "enterTitle": "กรอกหัวข้อ",
+  "enterDesc": "กรอกรายละเอียด",
+  "chartDesc": "คำอธิบายกราฟ",
+  "enterCandidateTitle": "กรอกชื่อผู้สมัคร (จำเป็น)",
+  "enterCandidateDesc": "กรอกรายละเอียดผู้สมัคร (ไม่บังคับ)",
+  "enterChartDesc": "กรอกคำอธิบายกราฟ (ไม่บังคับ)",
+  "enterCandidate": "เพิ่มผู้สมัคร",
+  "editCandidate": "แก้ไขผู้สมัคร",
+  "candidatePreviewAndAdd": "ดูตัวอย่างและเพิ่ม",
+  "addMultiplePictures": "ลากรูปภาพมาหลายรูป",
+  "noCandidates": "ยังไม่มีผู้สมัคร",
+  "optional": "(ไม่บังคับ)",
+  "required": "(จำเป็น)",
+  "changeLayoutStyle": "เปลี่ยนรูปแบบ",
+  "selectContentType": "เลือกประเภทเนื้อหา",
+  "layout": {
+    "textImage": "ข้อความและรูปภาพ",
+    "image": "รูปภาพ",
+    "text": "ข้อความเท่านั้น"
+  },
+  "thumbnailType": {
+    "custom": "กำหนดเอง",
+    "layout": "เค้าโครง",
+    "none": "ไม่มีภาพขนาดย่อ"
+  },
+  "optionsTitle": "การมองเห็น",
+  "changeThumb": "เปลี่ยนรูปขนาดย่อ",
+  "moreThanTwoThumb": "ต้องมีผู้สมัครอย่างน้อย 2 คน",
+  "secretContent": "เนื้อหาส่วนตัว",
+  "preview": "ดูตัวอย่าง",
+  "posting": "โพสต์ทันที",
+  "createNewPost": "สร้างเนื้อหาใหม่",
+  "changeLang": "เปลี่ยนภาษา"
+}

@@ -1,0 +1,78 @@
+@import "@/_styles/variables.scss";
+
+$bar-height: 40px;
+
+@include shine;
+
+@keyframes open-search-bar {
+  from {
+    transform: rotateY(-90deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+.search-bar {
+  width: 400px;
+  position: relative;
+
+  @include medium {
+    display: none;
+    transform: rotateY(-90deg);
+    &.open-mobile {
+      display: block;
+      animation: open-search-bar 300ms forwards;
+      width: 100%;
+    }
+  }
+
+  input {
+    width: calc(100% - 2px);
+    height: $bar-height;
+    background-color: var(--gray-soft);
+    border-radius: 42px;
+    padding: 5px 25px;
+    font-size: 0.875rem;
+    position: inherit;
+    z-index: 10;
+    @include medium {
+      height: 30px;
+    }
+    @include mobile {
+      padding: 5px 15px;
+    }
+  }
+
+  .border {
+    @include center();
+    @include flex();
+    width: 100%;
+    height: calc($bar-height + 2px);
+    border-radius: 42px;
+    background: var(--white);
+    background-size: 200% 200%;
+    opacity: 0;
+    transition: 0.4s opacity;
+    &::before {
+      content: "";
+      border-radius: 42px;
+      width: calc(100% - 2px);
+      height: $bar-height;
+      background-color: var(--white);
+
+      @include medium {
+        height: calc(30px);
+      }
+    }
+    &.active,
+    &.open-mobile {
+      @include bg-shine();
+      opacity: 1;
+    }
+
+    @include medium {
+      height: calc(30px + 2px);
+    }
+  }
+}

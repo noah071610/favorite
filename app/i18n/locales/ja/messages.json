@@ -1,0 +1,38 @@
+{
+  "error": {
+    "selectType": "コンテンツのタイプを選択してください 🧐",
+    "unknown": "エラーが発生しました 😭",
+    "postTitle": "コンテンツのタイトルを3文字以上入力してください ✍🏻",
+    "login": "ログインが必要です",
+    "candidateLength": "コンテンツ候補は2つ以上必要です 🙀",
+    "noCandidateTitle": "タイトルがない候補があります ✍🏻",
+    "noCandidateImage": "画像のない候補があります！画像は必須です 🏞️",
+    "candidateError": "候補に問題があります。しばらくしてからもう一度お試しください",
+    "tournamentCandidateLength": "トーナメントには最低4つ以上の候補が必要です",
+    "overTenUserName": "ニックネームは15文字以下で入力してください",
+    "noUserName": "ニックネームを入力してください",
+    "noPassword": "パスワードを入力してください",
+    "notSamePassword": "パスワードが一致しません",
+    "noEmail": "メールアドレスを入力してください",
+    "existEmail": "すでに使用されているメールアドレスです",
+    "invalidEmail": "正しいメールアドレス形式ではありません",
+    "safePassword": "英数字と特殊文字を含む8文字以上15文字以下で入力してください",
+    "loginFailBadRequest": "メールアドレスまたはパスワードが正しくありません",
+    "alreadySignupGoogle": "すでにGoogleで登録されています。Googleでログインしてください。",
+    "alreadySignupFacebook": "すでにFacebookで登録されています。Facebookでログインしてください。",
+    "alreadySignupInstagram": "すでにInstagramで登録されています。Instagramでログインしてください。",
+    "alreadySignupTwitter": "すでにTwitterで登録されています。Twitterでログインしてください。",
+    "clear": ""
+  },
+  "success": {
+    "voted": "投票したコンテンツです 😎",
+    "login": "ようこそ！ 👋🏻",
+    "register": "楽しんでみましょう 👋🏻",
+    "loginNewPost": "後ログインだけです！もう終わり！ 🚀",
+    "posting": "投稿しました 🚀",
+    "commenting": "コメントを投稿しました！ 🚀",
+    "copyLink": "リンクをコピーしました！ 🎉",
+    "delete": "コンテンツを削除しました",
+    "editing": "コンテンツを編集しました！😎"
+  }
+}

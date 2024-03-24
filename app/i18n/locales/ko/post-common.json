@@ -1,0 +1,13 @@
+{
+  "options": {
+    "default": "공개",
+    "editing": "비공개",
+    "secret": "공유만 허용"
+  },
+  "editing": "수정하기",
+  "deletePost": "삭제하기",
+  "polling": "투표",
+  "contest": "1:1 대결",
+  "tournament": "토너먼트",
+  "candidatePreview": "후보 미리보기"
+}

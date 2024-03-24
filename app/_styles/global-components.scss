@@ -1,0 +1,208 @@
+@import "@/_styles/variables.scss";
+
+.global-secret-post {
+  width: 100%;
+  min-height: calc(100vh);
+  @include flex;
+  @include medium {
+    min-height: calc(100svh);
+  }
+  .main {
+    @include flex;
+    flex-direction: column;
+    img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: var(--black-soft);
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    a,
+    button {
+      background-color: var(--purple);
+      border-radius: 8px;
+      padding: 8px 15px;
+      span {
+        color: var(--text-white);
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--purple-hard);
+        }
+      }
+      &:active {
+        background-color: var(--purple-hard);
+      }
+    }
+  }
+}
+
+.global-page {
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 180px;
+  .global-page-content {
+    width: $content-width;
+    padding: 30px 0;
+    min-height: calc(100vh - 60px);
+    @include medium {
+      width: 100%;
+      padding: 30px 8px;
+    }
+    .global-page-title {
+      position: relative;
+      margin-bottom: 20px;
+
+      &-observer {
+        position: absolute;
+        top: -100px;
+        @include mobile {
+          top: -70px;
+        }
+      }
+      h1 {
+        padding-right: 20px;
+        padding-left: 5px;
+        font-size: 20px;
+        position: relative;
+        background-color: var(--bg-color);
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        color: var(--black);
+        img {
+          width: 35px;
+          height: 35px;
+          margin-right: 10px;
+        }
+        @include mobile {
+          font-size: 17px;
+          img {
+            width: 25px;
+            height: 25px;
+            margin-right: 8px;
+          }
+        }
+      }
+      &::before {
+        @include center;
+        content: "";
+        height: 1px;
+        width: 100%;
+        background-color: var(--border);
+      }
+
+      &-sort {
+        @include mobile {
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      .global-page-sort {
+        position: absolute;
+        display: flex;
+        gap: 10px;
+        padding-left: 20px;
+        top: 50%;
+        right: 0;
+        background-color: var(--bg-color);
+        transform: translateY(-50%);
+        z-index: 20;
+
+        @include mobile {
+          position: relative;
+          transform: translateY(0%);
+          padding-left: 0;
+          padding-top: 10px;
+        }
+        button {
+          @include border();
+          @include flex();
+          border-radius: 5px;
+          padding: 7px 10px;
+          background-color: var(--white);
+          span {
+            color: var(--black-soft);
+            font-size: 13px;
+            margin-right: 7px;
+          }
+          svg {
+            font-size: 11px;
+            color: var(--black-soft);
+            transition: 300ms all;
+          }
+          &.active {
+            border-color: var(--pink-hard);
+            span {
+              color: var(--pink-hard);
+            }
+            svg {
+              color: var(--pink-hard);
+              transform: rotate(180deg);
+            }
+          }
+        }
+      }
+
+      .global-page-arrows {
+        position: absolute;
+        display: flex;
+        gap: 10px;
+        padding-left: 20px;
+        top: 50%;
+        right: 0;
+        background-color: var(--bg-color);
+        transform: translateY(-50%);
+        z-index: 20;
+        .arrow {
+          width: 36px;
+          height: 36px;
+          @include border;
+          border-radius: 100%;
+          @include flex;
+          background-color: var(--white);
+          svg {
+            color: var(--black-soft);
+            font-size: 13px;
+          }
+          @media (hover: hover) {
+            &:hover {
+              border-color: var(--pink);
+              svg {
+                color: var(--pink);
+              }
+            }
+          }
+        }
+      }
+    }
+    .global-page-popular {
+      width: $content-width;
+      margin-bottom: 40px;
+      article {
+        height: 360px; // memo: 어쩔수 없는 선택
+      }
+      @include mobile {
+        width: 100%;
+        margin-bottom: 20px;
+        article {
+          height: 290px; // memo: 어쩔수 없는 선택
+        }
+      }
+    }
+  }
+  .global-page-loading {
+    padding-top: 180px;
+  }
+}

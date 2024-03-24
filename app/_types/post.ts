@@ -1,55 +1,96 @@
-export type PostFindQuery = "all" | "popular" | "like" | "participate"
+import { LangType } from "."
+import { UserType } from "./user"
+
+export type ContentLayoutType = "text" | "image" | "textImage"
+export type PostFormatType = "default" | "secret" | "preview" | "template" | "editing"
+export type PostingStatus = "init" | "edit" | "rending"
+export type PostContentType = "polling" | "contest" | "tournament"
+export type ThumbnailType = "custom" | "layout" | "none"
+export interface ThumbnailSettingType {
+  imageSrc: string
+  type: ThumbnailType
+  layout: string[]
+  slice: number
+  isPossibleLayout: boolean
+}
+export type PostFindQuery = "all" | PostContentType
+export type PostSortOptions = "createdAt" | "lastPlayedAt" | "popular"
+export interface ContentPageParams {
+  sort?: PostSortOptions | null
+  cursor?: string | null
+  query?: PostFindQuery | null
+  lang?: LangType | null
+}
 
 export type VoteIdType = {
   postId: string
   listId: string
 }
 
-export interface CandidateType {
-  listId: string
-  imageSrc?: string
-  title: string
-  description?: string
-  count: number
-  number: number
-  animation?: "candidate-add" | "none" | "fade-up"
-}
-
-export interface UserType {
-  userId: string
-  userName: string
-  userImage: string
-}
-
-export interface PostCardInfo {
-  participateImages: string[]
-  shareCount: number
-  like: number
-  participateCount: number
-}
-
-interface _PostCardType {
+export interface PostCardType {
   postId: string
-  type: string
+  type: PostContentType
   title: string
   description: string
-  chartDescription: string
+  format: PostFormatType
+  count: number
   thumbnail: string
-  user: UserType
-  createdAt: string
-  updatedAt: string
+  popular: number
+  createdAt: Date
+  lastPlayedAt: Date
 }
-export interface PostCardType extends _PostCardType {
-  info: PostCardInfo
-}
-export interface PostType extends _PostCardType {
-  content: CandidateType[]
+
+export interface PostType extends PostCardType {
+  content: ContentType
   comments: CommentType[]
+  user: UserType
+}
+
+export interface ContentType {
+  layout: ContentLayoutType
+  resultDescription: string
+  newPostStatus: PostingStatus
+  candidates: CandidateType[] // 후보자 배열, 타입이 정확히 알려지지 않았으므로 any로 지정
+  thumbnail: ThumbnailSettingType
+  selectedCandidateIndex: number
+  isEditOn: boolean
 }
 
 export interface CommentType {
   commentId: number
-  user: UserType
+  user?: UserType
   text: string
-  like: number
+}
+
+export interface CandidateType {
+  listId: string
+  number: number
+  title: string
+  description: string
+  imageSrc: string
+  win: number
+  lose: number
+  pick: number
+}
+
+export type CandidateKeyType = keyof CandidateType
+export const candidateKeys: CandidateKeyType[] = [
+  "listId",
+  "number",
+  "title",
+  "description",
+  "imageSrc",
+  "win",
+  "lose",
+  "pick",
+]
+
+export interface TournamentCandidateOnGameType extends CandidateType {
+  out?: boolean
+}
+export interface TournamentCandidateChartType extends CandidateType {
+  rating: number
+  winPercent: string
+  pickPercent: string
+  losePercent: string
 }

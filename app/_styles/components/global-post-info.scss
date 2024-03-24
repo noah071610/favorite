@@ -1,0 +1,150 @@
+@import "@/_styles/variables.scss";
+
+.global-post-info {
+  width: $content-width;
+  border-left: 8px solid var(--pink);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  justify-content: space-between;
+  position: relative;
+  height: 60px;
+
+  @include large {
+    width: 100%;
+  }
+  @include medium {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-bottom: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50px;
+    gap: 0;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border);
+    @include z-index(header);
+    border-left: 5px solid var(--pink);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7px;
+    background-color: var(--pink-soft);
+    height: 100%;
+    @include medium {
+      width: 4px;
+    }
+  }
+
+  .title {
+    padding: 5px 0;
+    width: 100%;
+    h1 {
+      font-size: 20px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    h2 {
+      padding-top: 7px;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @include medium {
+      h1 {
+        font-size: 15px;
+      }
+      h2 {
+        padding-top: 3px;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .profile {
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    @include medium {
+      gap: 5px;
+    }
+  }
+
+  .user-icon {
+    @include flex();
+    padding: 3px;
+    border-radius: 100%;
+    transition: all 220ms;
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      transition: all 220ms cubic-bezier(0, 0.96, 0.44, 1.76);
+
+      @include medium {
+        width: 30px;
+        height: 30px;
+      }
+    }
+    .icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      @include flex();
+      color: var(--text-white);
+      font-weight: 700;
+      font-size: 20px;
+
+      @include medium {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .user-info {
+    span {
+      display: block;
+    }
+    span:first-of-type {
+      font-size: 14px;
+      font-weight: 600;
+      padding-bottom: 5px;
+    }
+    span:last-of-type {
+      font-size: 12px;
+      color: rgb(158, 158, 158);
+    }
+    @include medium {
+      span:first-of-type {
+        font-size: 12px;
+        padding-bottom: 3px;
+      }
+      span:last-of-type {
+        font-size: 10px;
+      }
+    }
+  }
+}

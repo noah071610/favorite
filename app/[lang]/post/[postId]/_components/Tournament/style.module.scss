@@ -1,0 +1,134 @@
+@import "@/_styles/variables.scss";
+
+@include scale-up;
+
+.tournament-post {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 10px;
+  overflow: hidden;
+
+  @include medium {
+    padding: 0;
+    padding-top: 50px;
+    height: calc(100svh);
+  }
+
+  &.result {
+    padding-bottom: 100px;
+    height: 100%;
+    .content {
+      height: auto;
+    }
+  }
+
+  &-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    @include medium {
+      padding: 0;
+    }
+  }
+}
+
+.content {
+  width: $content-width;
+  @include flex;
+  height: calc(100vh - 60px - 20px - (30px * 2));
+  background-color: var(--gray-soft);
+
+  border-radius: 10px;
+
+  position: relative;
+
+  @include large {
+    width: 100%;
+  }
+  @include medium {
+    height: 100%;
+  }
+  @include mobile {
+    height: calc(100svh - 50px);
+    flex-direction: column;
+    border-radius: 0;
+  }
+
+  &.result {
+    border: none;
+    height: auto;
+    padding: 20px;
+    background-color: var(--gray-softest);
+    @include mobile {
+      padding: 10px;
+    }
+  }
+}
+
+.round-select {
+  @include center();
+  width: 300px;
+  @include z-index(modal);
+  .inner {
+    width: 100%;
+    @include modal-inner;
+    padding: 20px;
+  }
+
+  h3 {
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--black-soft);
+    margin-bottom: 20px;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    li {
+      width: 100%;
+      display: block;
+    }
+    button {
+      background-color: var(--white);
+      width: 100%;
+      display: block;
+      padding: 10px 15px;
+      @include border();
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span {
+        color: var(--black-soft);
+        font-size: 14px;
+      }
+      svg {
+        transition: all 240ms;
+        color: var(--gray-hard);
+      }
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--pink-hard);
+          svg {
+            color: var(--pink-hard);
+            transform: translateX(5px);
+          }
+          span {
+            color: var(--pink-hard);
+          }
+        }
+      }
+    }
+  }
+}
+
+.tournament-comment {
+  width: $content-width;
+  padding: 0 100px;
+}

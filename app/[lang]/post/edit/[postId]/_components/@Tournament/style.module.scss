@@ -1,0 +1,156 @@
+@import "@/_styles/variables.scss";
+
+.slide-section {
+  padding: 40px;
+  border-radius: 20px;
+  background-color: var(--gray-softest);
+
+  @include mobile {
+    padding: 10px;
+    border-radius: 10px;
+  }
+}
+.slider {
+  width: 100%;
+  height: 650px;
+  position: relative;
+
+  @include mobile {
+    height: 450px;
+  }
+}
+
+.no-candidate {
+  @include flex();
+  width: 100%;
+  height: 650px;
+  & > div {
+    span {
+      display: block;
+      color: var(--gray);
+      font-size: 25px;
+      line-height: 1.3;
+      text-align: center;
+      font-weight: 600;
+    }
+  }
+}
+
+.candidate-list {
+  width: 100%;
+  min-height: 140px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+
+  background-color: var(--gray-softest);
+  border-radius: 20px;
+  padding: 20px;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 10px;
+    border-radius: 10px;
+  }
+}
+
+.no-list {
+  @include full;
+  @include flex;
+  cursor: pointer;
+  border: 10px solid var(--gray-soft);
+  & > div {
+    @include flex;
+    svg {
+      font-size: 30px;
+      color: var(--gray-hard);
+      margin-right: 10px;
+    }
+    span {
+      font-size: 15px;
+      color: var(--gray-hard);
+    }
+  }
+}
+
+.candidate {
+  height: 120px;
+
+  .inner {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+
+    &.active {
+      &::before {
+        border-color: var(--pink-soft);
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(100% - 12px);
+      height: calc(100% - 12px);
+      border: 6px solid transparent;
+    }
+  }
+  .image {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+  }
+  .delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 10px;
+    z-index: 30;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    @include flex();
+    background-color: var(--gray-hard);
+    svg {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--pink-hard);
+      }
+    }
+  }
+
+  &.add {
+    .inner {
+      @include flex();
+      background-color: var(--gray-soft);
+      &::before {
+        border-color: var(--gray-soft);
+      }
+    }
+    .icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      @include border();
+      border-color: var(--gray-hard);
+      padding: 2px;
+      @include flex();
+      svg {
+        font-size: 12px;
+        color: var(--gray-hard);
+      }
+    }
+  }
+}

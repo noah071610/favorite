@@ -1,0 +1,13 @@
+{
+  "options": {
+    "default": "公開",
+    "editing": "非公開",
+    "secret": "共有のみ許可"
+  },
+  "editing": "編集",
+  "deletePost": "削除",
+  "polling": "投票",
+  "contest": "対決",
+  "tournament": "トーナメント",
+  "candidatePreview": "プレビュー"
+}

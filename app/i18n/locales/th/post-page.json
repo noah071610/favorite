@@ -1,0 +1,31 @@
+{
+  "select": "เลือก {{title}}",
+  "vote": "โหวต",
+
+  "analytic": "การวิเคราะห์",
+  "lookContents": "เล่นเนื้อหาอื่น",
+  "makeNew": "สร้างเลย",
+  "comment": "ความคิดเห็น",
+  "selectCandidate": "โปรดเลือกผู้สมัคร",
+  "info": {
+    "pickPercent": "เลือก",
+    "winPercent": "ชนะ",
+    "ratingRank": "อันดับรวม",
+    "losePercent": "แพ้",
+    "pickRank": "อันดับการเลือก",
+    "winRank": "อันดับชนะ"
+  },
+  "share": {
+    "twitter": "แชร์บนทวิตเตอร์",
+    "facebook": "แชร์บนเฟซบุ๊ค",
+    "kakaoTalk": "แชร์บน KakaoTalk",
+    "line": "แชร์บน LINE",
+    "link": "คัดลอกลิงก์"
+  },
+  "mySelection": "การเลือกของฉัน",
+  "allRank": "อันดับการแข่งขัน",
+  "finals": "รอบชิงชนะเลิศ (อันดับ 2 อันดับแรก)",
+  "semiFinals": "รอบรองชนะเลิศ (อันดับ 4 อันดับแรก)",
+  "teams": "ทีม",
+  "selectRound": "โปรดเลือกรอบ"
+}

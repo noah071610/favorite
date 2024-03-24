@@ -1,0 +1,17 @@
+@import "@/_styles/variables.scss";
+
+.candidates {
+  position: relative;
+  height: 500px;
+}
+
+.candidate-wrapper {
+  position: relative;
+  background-color: var(--gray-softest);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 10px;
+  @include mobile {
+    padding: 20px;
+  }
+}

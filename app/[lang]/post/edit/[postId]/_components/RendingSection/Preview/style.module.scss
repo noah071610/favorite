@@ -1,0 +1,64 @@
+@import "@/_styles/variables.scss";
+
+.preview {
+  @include full();
+  @include z-index(preview);
+  background-color: var(--white);
+  .preview-back {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    @include z-index(preview-content);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    @include flex();
+    background-color: var(--gray-hard);
+    svg {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--pink-soft);
+      }
+    }
+    @include mobile {
+      top: 5px;
+      right: 5px;
+    }
+  }
+  .preview-triangle {
+    position: fixed;
+    bottom: -150px;
+    right: -150px;
+    @include z-index(preview-content);
+    width: 300px;
+    height: 300px;
+    background-color: var(--purple);
+    opacity: 0.5;
+    transform: rotate(45deg);
+
+    @include mobile {
+      bottom: -75px;
+      right: -75px;
+      width: 150px;
+      height: 150px;
+    }
+  }
+  .preview-label {
+    position: fixed;
+    @include z-index(preview-content);
+    bottom: 10px;
+    right: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-white);
+
+    @include mobile {
+      font-size: 15px;
+    }
+  }
+}

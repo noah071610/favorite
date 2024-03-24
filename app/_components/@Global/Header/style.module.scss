@@ -1,0 +1,196 @@
+@import "@/_styles/variables.scss";
+
+$side-width: 300px;
+
+.header {
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  @include z-index(header);
+
+  border-bottom: 1px solid rgba(214, 214, 214, 0.7);
+  background-color: var(--white);
+
+  @include medium {
+    .center {
+      flex-grow: 1;
+      padding: 0 10px;
+    }
+    padding: 5px 8px;
+    min-height: 50px;
+  }
+
+  .inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    min-height: calc(60px - 20px);
+  }
+
+  .left {
+    width: $side-width;
+    display: flex;
+    align-items: center;
+    button {
+      @include mobile-icon-btn;
+    }
+    @include medium {
+      width: auto;
+    }
+    a {
+      display: flex;
+      img {
+        margin-left: 10px;
+        width: 90px;
+        height: 15px;
+      }
+      @include mobile {
+        &.newPost {
+          display: none;
+        }
+      }
+    }
+  }
+  .center {
+    @include flex;
+  }
+
+  .right {
+    width: $side-width;
+
+    .save {
+      @include flex;
+      background-color: var(--purple);
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--purple-hard);
+        }
+      }
+
+      svg {
+        @include full;
+        color: var(--text-white);
+        font-size: 15px;
+        transition: 300ms all;
+      }
+      span {
+        margin-left: 5px;
+      }
+
+      .icon {
+        position: relative;
+        width: 15px;
+        height: 15px;
+        .check {
+          transform: rotateY(90deg);
+        }
+      }
+      &.saved {
+        background-color: var(--green);
+        .disk {
+          transform: rotateY(90deg);
+        }
+        .check {
+          transform: rotateY(0deg);
+        }
+      }
+
+      &.saved {
+        svg {
+          color: var(--text-white);
+        }
+      }
+    }
+
+    .save-mobile {
+      @include mobile-icon-btn;
+      .icon {
+        position: relative;
+        svg {
+          @include center;
+          transition: 300ms all;
+        }
+        .check {
+          transform: translate(-50%, -50%) rotateY(90deg);
+        }
+      }
+      &.saved {
+        background-color: var(--green);
+        .disk {
+          transform: translate(-50%, -50%) rotateY(90deg);
+        }
+        .check {
+          color: var(--text-white);
+          transform: translate(-50%, -50%) rotateY(0deg);
+        }
+        &:active {
+          background-color: var(--green);
+        }
+      }
+    }
+
+    .pc {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+      gap: 10px;
+
+      a,
+      button {
+        padding: 9px 15px;
+        border-radius: 6px;
+        span {
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--text-white);
+        }
+      }
+
+      .login {
+        background-color: var(--pink);
+        @include flex();
+        &:hover {
+          background-color: var(--pink-hard);
+        }
+      }
+      .new-post {
+        background-color: var(--purple);
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--purple-hard);
+          }
+        }
+      }
+    }
+    .mobile {
+      display: none;
+    }
+
+    @include medium {
+      width: auto;
+      .pc {
+        display: none;
+      }
+      .mobile {
+        @include flex;
+        height: 100%;
+        button,
+        a {
+          @include mobile-icon-btn;
+        }
+      }
+    }
+  }
+}
+
+.ghost {
+  height: calc(40px + 20px);
+  @include mobile {
+    height: calc(50px);
+  }
+}

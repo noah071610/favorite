@@ -1,0 +1,39 @@
+@import "@/_styles/variables.scss";
+
+.chart-part {
+  position: relative;
+  padding: 5px;
+}
+
+.chart-description {
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+// .sub-chart {
+//   display: grid !important;
+//   gap: 20px;
+//   grid-template-columns: 1fr 1fr !important;
+//   height: 250px;
+//   margin-bottom: 30px;
+// }
+
+// .gender-chart {
+//   padding: 10px;
+//   @include flex();
+//   .inner {
+//     display: flex;
+//     justify-content: space-between;
+//     gap: 30px;
+//     transform: scale(0.3);
+//     .icon {
+//       font-size: 100px;
+//       display: block;
+//       background-clip: text !important;
+//       -webkit-background-clip: text !important;
+//       -webkit-text-fill-color: transparent !important;
+//     }
+//   }
+// }

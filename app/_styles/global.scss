@@ -1,3 +1,5 @@
+@import "@/_styles/variables.scss";
+
 html,
 body,
 div,
@@ -39,7 +41,7 @@ tt,
 var,
 b,
 u,
-i,
+svg,
 center,
 dl,
 dt,
@@ -79,6 +81,7 @@ time,
 mark,
 audio,
 video {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   border: 0;
@@ -118,6 +121,10 @@ q:after {
   content: "";
   content: none;
 }
+li,
+ol {
+  list-style-type: none;
+}
 
 table {
   border-collapse: collapse;
@@ -129,6 +136,11 @@ a {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
+}
+a,
+button {
+  -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 제거 */
+  -webkit-touch-callout: none; /* 터치 시 텍스트 선택 방지 */
 }
 
 button {
@@ -161,10 +173,200 @@ textarea {
 body {
   width: 100%;
   line-height: 1;
-  background-color: white;
 }
 
 main {
-  display: flex;
-  background-color: white;
+  min-height: calc(100vh - 60px);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important; /* 원하는 배경색으로 변경 */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* iOS에서 터치 이벤트 발생 시 배경색을 투명하게 설정 */
+}
+
+input,
+textarea {
+  touch-action: manipulation;
+}
+
+.Toastify__toast {
+  background: var(--white) !important;
+  background: var(--radial-bg) !important;
+  border: 1px solid rgba(235, 235, 235, 0.45) !important;
+}
+.Toastify__toast-body > div:last-child {
+  word-break: keep-all !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+@keyframes fade-move-up {
+  // memo: 자바스크립트 용
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-up {
+  // memo: 자바스크립트 용
+  from {
+    transform: scale(0.3);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes shine {
+  // memo: 자바스크립트 용
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes opacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.global-pc-visible {
+  display: block;
+  @include mobile {
+    display: none;
+  }
+}
+
+.global-mobile-visible {
+  display: none;
+  @include mobile {
+    display: block;
+  }
+}
+
+.global-medium-visible {
+  display: none;
+  @include medium {
+    display: block;
+  }
+}
+
+:root {
+  body {
+    color: var(--black);
+    background-color: white;
+  }
+  --white: white;
+  --text-white: white;
+  --black: black;
+
+  --pink-soft: rgba(255, 176, 176, 0.7);
+  --pink: rgba(255, 138, 138, 0.8);
+  --pink-hard: rgba(229, 106, 106, 0.9);
+
+  --gray-softest: rgba(225, 225, 225, 0.15);
+  --gray-soft: rgba(235, 235, 235, 0.45);
+  --gray: rgba(161, 161, 161, 0.6);
+  --gray-hard: rgb(158, 158, 158);
+
+  --border: rgba(214, 214, 214, 0.7);
+
+  --purple: rgba(217, 171, 255, 0.875);
+  --purple-hard: rgba(190, 111, 255, 0.9);
+  --purple-hard: rgba(170, 68, 254, 0.9);
+
+  --orange: rgba(255, 182, 126, 0.875);
+  --orange-hover: rgba(255, 148, 34, 0.903);
+
+  --black-soft: rgb(80, 80, 86);
+
+  --bg-color: rgba(249, 249, 249, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.08);
+
+  --red: rgba(255, 82, 79, 0.8);
+
+  --input-color: rgba(234, 234, 234, 0.4);
+  --radial-bg: radial-gradient(circle, rgba(255, 255, 255, 1) 70%, rgba(255, 241, 244, 1) 100%);
+  --black-transparent: rgba(0, 0, 0, 0.1);
+  --overlay: rgba(0, 0, 0, 0.3);
+
+  --green: rgba(99, 206, 99, 0.9);
+  --green-hard: rgba(81, 255, 81, 0.9);
+
+  --candidate-height: 94px;
+  --nav-width: 100px;
+  --image-candidate-height: 154px;
+  --post-card-thumbnail-height: 150px;
+}
+
+@include mobile {
+  body {
+    --nav-width: 80px;
+    --candidate-height: 80px;
+    --image-candidate-height: 154px;
+    --post-card-thumbnail-height: 100px;
+  }
+}
+
+body.dark {
+  background-color: black;
+  color: var(--black);
+  .Toastify__toast {
+    border-color: transparent !important;
+  }
+  background-color: rgb(15, 15, 15);
+  --white: rgb(15, 15, 15);
+  --text-white: white;
+  --black: white;
+
+  --pink-soft: rgba(229, 106, 106, 1);
+  --pink: rgba(255, 138, 138, 1);
+  --pink-hard: rgba(255, 176, 176, 1);
+
+  --gray-softest: rgba(68, 68, 68, 0.15);
+  --gray-soft: rgba(68, 68, 68, 0.45);
+  --gray: rgba(104, 104, 104, 0.6);
+  --gray-hard: rgb(125, 125, 125);
+
+  --border: rgb(63, 63, 63);
+
+  --purple: rgba(217, 171, 255, 1);
+  --purple-hard: rgba(190, 111, 255, 1);
+
+  --orange: rgba(255, 182, 126, 1);
+  --orange-hover: rgba(255, 148, 34, 1);
+
+  --black-soft: rgb(255, 255, 255);
+
+  --bg-color: black;
+  --shadow-color: rgba(255, 255, 255, 0.08);
+
+  --red: rgba(242, 60, 60, 0.8);
+
+  --input-color: rgba(255, 255, 255, 0.1);
+  --radial-bg: rgb(15, 15, 15);
+  --black-transparent: rgba(255, 255, 255, 0.3);
+  --overlay: rgba(0, 0, 0, 0.5);
+
+  --green: rgba(105, 246, 105, 0.8);
+  --green-hard: rgba(81, 255, 81, 0.9);
 }

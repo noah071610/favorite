@@ -1,0 +1,31 @@
+{
+  "select": "Select {{title}}",
+  "vote": "Votes",
+
+  "analytic": "Analytics",
+  "lookContents": "Play another",
+  "makeNew": "Create now",
+  "comment": "Comments",
+  "selectCandidate": "Please select a candidate",
+  "info": {
+    "pickPercent": "Pick",
+    "winPercent": "Match Win",
+    "ratingRank": "Total Rank",
+    "losePercent": "Match Loss",
+    "pickRank": "Pick Rank",
+    "winRank": "Win Rank"
+  },
+  "share": {
+    "twitter": "Share on Twitter",
+    "facebook": "Share on Facebook",
+    "kakaoTalk": "Share on KakaoTalk",
+    "line": "Share on LINE",
+    "link": "Copy Link"
+  },
+  "mySelection": "My Selection",
+  "allRank": "Tournament Ranking",
+  "finals": "Finals (Top 2)",
+  "semiFinals": "Semi-Finals (Top 4)",
+  "teams": "Teams",
+  "selectRound": "Please select a round"
+}

@@ -1,0 +1,31 @@
+@import "@/_styles/variables.scss";
+
+.no-thumbnail {
+  &.post-card {
+    width: 100%;
+    height: var(--post-card-thumbnail-height);
+    border-radius: 10px;
+    background: var(--gray-soft);
+
+    @include mobile {
+      border-radius: 5px;
+    }
+  }
+
+  @include flex();
+  & > div {
+    display: flex;
+    gap: 8px;
+    @include mobile {
+      gap: 4px;
+    }
+  }
+
+  svg {
+    font-size: 20px;
+    color: var(--pink-soft);
+    @include mobile {
+      font-size: 16px;
+    }
+  }
+}

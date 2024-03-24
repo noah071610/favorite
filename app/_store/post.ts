@@ -1,19 +1,27 @@
-import { CandidateType } from "@/_types/post"
+import { PostCardType } from "@/_types/post"
 import { create } from "zustand"
 
 interface States {
-  viewCandidate: CandidateType | null // todo: 꼭 전부?
-  postLoaded: boolean
+  searchPosts: PostCardType[]
+  isSearching: boolean
+  sharePost: PostCardType | null
+  searchQuery: string
 }
 
 type Actions = {
-  setViewCandidate: (state: States["viewCandidate"]) => void
-  setPostLoaded: (state: States["postLoaded"]) => void
+  setSearchPosts: (posts: PostCardType[]) => void
+  setIsSearching: (b: boolean) => void
+  setSearchQuery: (str: string) => void
+  setSharePost: (str: PostCardType) => void
 }
 
 export const usePostStore = create<States & Actions>()((set) => ({
-  postLoaded: false,
-  viewCandidate: null,
-  setViewCandidate: (state) => set(() => ({ viewCandidate: state })),
-  setPostLoaded: (state) => set(() => ({ postLoaded: state })),
+  searchPosts: [],
+  isSearching: false,
+  searchQuery: "",
+  sharePost: null,
+  setSearchPosts: (posts) => set(() => ({ searchPosts: posts })),
+  setIsSearching: (b) => set(() => ({ isSearching: b })),
+  setSearchQuery: (str) => set(() => ({ searchQuery: str })),
+  setSharePost: (post) => set(() => ({ sharePost: post })),
 }))

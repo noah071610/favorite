@@ -1,0 +1,83 @@
+@import "@/_styles/variables.scss";
+
+.cta-section {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  .cta-wrapper {
+    width: 450px;
+
+    @include mobile {
+      width: 100%;
+      padding: 0 10px;
+    }
+  }
+  .cta-main {
+    background-color: var(--gray-soft);
+    padding: 30px 20px;
+    border-radius: 20px;
+
+    @include mobile {
+      border-radius: 10px;
+      padding: 20px 10px;
+    }
+    ul {
+      @include flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      button {
+        border-radius: 100%;
+        padding: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.5);
+        transition: 200ms all;
+        .image {
+          padding: 8px;
+          border-radius: 100%;
+          @include flex;
+          img {
+            width: 22px;
+            height: 22px;
+          }
+        }
+        @media (hover: hover) {
+          &:hover {
+            transform: scale(1.2);
+          }
+        }
+      }
+    }
+    .cta {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+
+      a,
+      button {
+        width: 100%;
+        padding: 14px 0;
+        background-color: var(--pink);
+        border-radius: 10px;
+        @include flex;
+        span {
+          color: var(--text-white);
+          font-size: 15px;
+          font-weight: 700;
+          margin-left: 5px;
+        }
+        img {
+          margin-left: 5px;
+        }
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--pink-hard);
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "template": "เทมเพลต",
+  "makeNew": "สร้าง",
+  "dashboard": "แดชบอร์ด",
+  "login": "เข้าสู่ระบบ",
+  "mainPage": "ไปที่หน้าหลัก",
+  "save": "บันทึก",
+  "polling": "โพลลิ่ง",
+  "contest": "การแข่งขัน",
+  "tournament": "การแข่งขัน",
+  "all": "ดูทั้งหมด",
+  "init": "ประเภท",
+  "edit": "แก้ไข",
+  "rending": "โพสต์",
+  "goBack": "ย้อนกลับ",
+  "popular": "ยอดนิยม",
+  "lastPlayedAt": "เล่นครั้งล่าสุด",
+  "createdAt": "สร้างเมื่อ",
+  "emptySearchResult": "ไม่มีผลการค้นหา",
+  "terms-of-service": "Terms of service",
+  "privacy-policy": "Privacy Policy"
+}

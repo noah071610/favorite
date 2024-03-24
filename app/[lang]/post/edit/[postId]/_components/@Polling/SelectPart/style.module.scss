@@ -1,0 +1,124 @@
+@import "@/_styles/variables.scss";
+
+@include scale-up;
+@keyframes fade-move-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.select-part {
+  background-color: var(--white);
+  border-radius: 20px;
+  display: none;
+  overflow: hidden;
+  margin-top: 8px;
+  &.selected {
+    display: block;
+    padding: 40px;
+    margin-bottom: 10px;
+
+    @include mobile {
+      margin-top: 2px;
+      padding: 10px;
+    }
+  }
+}
+
+.drop-zone {
+  cursor: pointer;
+  @include flex();
+  height: 300px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+  animation: scale-up 250ms ease-out forwards;
+  border-radius: 5px;
+
+  @include mobile {
+    height: 200px;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+    border: 15px solid var(--gray-soft);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--gray-soft);
+      &::before {
+        border-color: var(--pink);
+        opacity: 0.3;
+      }
+      svg {
+        color: var(--pink-hard);
+      }
+    }
+    svg {
+      color: var(--gray-hard);
+      font-size: 40px;
+    }
+  }
+
+  &.active {
+    background-color: var(--gray-soft);
+    &::before {
+      border-color: var(--pink);
+      opacity: 0.3;
+    }
+    svg {
+      color: var(--pink-hard);
+    }
+  }
+  svg {
+    color: var(--gray-hard);
+    font-size: 40px;
+  }
+}
+
+.input-wrapper {
+  @include flex();
+  flex-direction: column;
+  width: 100%;
+
+  .title-input {
+    width: 100%;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: var(--gray-soft);
+    padding: 7px 15px;
+    border-radius: 5px;
+    opacity: 0;
+    animation: fade-move-up 380ms 100ms ease-out forwards;
+  }
+
+  .description-input {
+    width: 100%;
+    background-color: var(--gray-soft);
+    font-size: 15px;
+    line-height: 1.2;
+    text-align: center;
+    padding: 7px 15px;
+    border-radius: 5px;
+    opacity: 0;
+    animation: fade-move-up 380ms 200ms ease-out forwards;
+    margin-bottom: 30px;
+  }
+}

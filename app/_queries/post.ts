@@ -1,30 +1,24 @@
-import { PostFindQuery } from "@/_types/post"
-import { server } from "./provider/reactQueryProvider"
-
-export async function getPosts(query: PostFindQuery, page: number) {
-  const response = await server.get(`/post/all?query=${query}&page=${page}`)
-
-  return response.data
-}
+import { API } from "@/_data"
 
 export async function getPost(postId: string) {
-  const response = await server.get(`/post?postId=${postId}`)
+  const response = await API.get(`/post?postId=${postId}`)
 
-  return response.data
+  return response.data.data
 }
 
-export async function uploadImage(file: any) {
-  const response = await server.post(`/file/image`, { file })
+export async function commenting(data: { userId: number; postId: string; text: string }) {
+  const response = await API.post(`/comment`, data)
 
-  return response.data
+  return response.data.data
 }
 
-export async function createNewPost(newPost: { [key: string]: any }) {
-  try {
-    const response = await server.post(`/post`, newPost)
+export async function finishPlay(postId: string, finishedPost: any) {
+  const response = await API.put(`/post/finish?postId=${postId}`, finishedPost)
+  return response.data.data
+}
 
-    return { msg: "ok", data: response.data }
-  } catch (error) {
-    return error
-  }
+export async function likePost(userId?: number, postId?: string) {
+  const response = await API.patch(`/post/like?postId=${postId}&userId=${userId}`)
+
+  return response.data.data
 }
